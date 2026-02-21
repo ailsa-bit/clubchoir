@@ -38,11 +38,12 @@ const Index = () => {
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8 text-center">
             This Week at Club Choir
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { location: "Montreal", color: "bg-pink-light border-pink/20", day: "Tuesday", time: "7:00 PM", dot: "bg-pink" },
-              { location: "Arundel", color: "bg-aqua-light border-aqua/20", day: "Wednesday", time: "7:30 PM", dot: "bg-aqua" },
-              { location: "Pointe-Claire", color: "bg-purple-light border-purple/20", day: "Thursday", time: "7:00 PM", dot: "bg-purple" },
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+              { location: "Montreal", color: "bg-pink-light border-pink/20", day: "Monday", time: "7:00–8:30 PM", dates: "Feb 2 – May 4", dot: "bg-pink" },
+              { location: "Arundel", color: "bg-aqua-light border-aqua/20", day: "Tuesday", time: "6:30–8:00 PM", dates: "Feb 17 – May 26", dot: "bg-aqua" },
+              { location: "St-Hubert", color: "bg-secondary border-secondary/20", day: "Wednesday", time: "7:00–8:30 PM", dates: "Feb 4 – May 13", dot: "bg-foreground" },
+              { location: "Pointe-Claire", color: "bg-purple-light border-purple/20", day: "Thursday", time: "7:00–8:30 PM", dates: "Feb 5 – May 7", dot: "bg-purple" },
             ].map((item) => (
               <div
                 key={item.location}
@@ -54,6 +55,9 @@ const Index = () => {
                 </div>
                 <p className="text-sm text-muted-foreground">
                   {item.day} · {item.time}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {item.dates}
                 </p>
               </div>
             ))}
