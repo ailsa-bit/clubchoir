@@ -10,6 +10,7 @@ import Community from "./pages/Community";
 import Events from "./pages/Events";
 import Corporate from "./pages/Corporate";
 import Profile from "./pages/Profile";
+import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/corporate" element={<Corporate />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
