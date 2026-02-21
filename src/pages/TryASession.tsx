@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Form,
   FormControl,
   FormField,
@@ -17,9 +24,17 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 
+const LOCATIONS = [
+  { value: "Montreal – Monday", label: "Montreal – Monday" },
+  { value: "Arundel – Tuesday", label: "Arundel – Tuesday" },
+  { value: "Saint-Hubert – Wednesday", label: "Saint-Hubert – Wednesday" },
+  { value: "Pointe-Claire – Thursday", label: "Pointe-Claire – Thursday" },
+];
+
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   email: z.string().trim().email("Invalid email address").max(255),
+  location: z.string().min(1, "Please choose a location"),
   message: z
     .string()
     .trim()
@@ -36,7 +51,7 @@ const TryASession = () => {
 
   const form = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", message: "" },
+    defaultValues: { name: "", email: "", location: "", message: "" },
   });
 
   const onSubmit = async (data: ContactForm) => {
@@ -115,6 +130,30 @@ const TryASession = () => {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Preferred location</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Choose a location…" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {LOCATIONS.map((loc) => (
+                            <SelectItem key={loc.value} value={loc.value}>
+                              {loc.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

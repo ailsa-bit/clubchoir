@@ -10,6 +10,8 @@ const corsHeaders = {
 interface ContactRequest {
   name: string;
   email: string;
+  location: string;
+  message: string;
   message: string;
 }
 
@@ -25,10 +27,10 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const resend = new Resend(resendKey);
-    const { name, email, message }: ContactRequest = await req.json();
+    const { name, email, location, message }: ContactRequest = await req.json();
 
-    if (!name || !email || !message) {
-      throw new Error("Missing required fields: name, email, message");
+    if (!name || !email || !location || !message) {
+      throw new Error("Missing required fields: name, email, location, message");
     }
 
     const emailResponse = await resend.emails.send({
@@ -40,6 +42,7 @@ const handler = async (req: Request): Promise<Response> => {
         <h2>Try a Session Request</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Preferred Location:</strong> ${location}</p>
         <p><strong>Message:</strong></p>
         <p>${message}</p>
       `,
