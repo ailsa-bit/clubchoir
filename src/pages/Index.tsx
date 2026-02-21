@@ -51,7 +51,7 @@ const Index = () => {
           {[
               { location: "Montreal", color: "bg-pink-light border-pink/20", day: "Monday", time: "7:00–8:30 PM", dates: "Feb 2 – May 4", dot: "bg-pink" },
               { location: "Arundel", color: "bg-aqua-light border-aqua/20", day: "Tuesday", time: "6:30–8:00 PM", dates: "Feb 17 – May 26", dot: "bg-aqua" },
-              { location: "St-Hubert", color: "bg-secondary border-secondary/20", day: "Wednesday", time: "7:00–8:30 PM", dates: "Feb 4 – May 13", dot: "bg-foreground" },
+              { location: "Saint-Hubert", color: "bg-secondary border-secondary/20", day: "Wednesday", time: "7:00–8:30 PM", dates: "Feb 4 – May 13", dot: "bg-foreground" },
               { location: "Pointe-Claire", color: "bg-purple-light border-purple/20", day: "Thursday", time: "7:00–8:30 PM", dates: "Feb 5 – May 7", dot: "bg-purple" },
             ].map((item) => (
               <div
