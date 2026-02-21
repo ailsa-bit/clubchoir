@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
-import { Users, MapPin, Search, Filter } from "lucide-react";
+import { Users, MapPin, Search, Filter, DollarSign } from "lucide-react";
 import { useMembers, Member } from "@/hooks/use-members";
+import { useAdmin } from "@/hooks/use-admin";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -20,6 +21,7 @@ const statusColors: Record<string, string> = {
 
 const Community = () => {
   const { members, loading } = useMembers();
+  const { isAdmin } = useAdmin();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [locationFilter, setLocationFilter] = useState<string>("ALL");
@@ -131,11 +133,17 @@ const Community = () => {
                     <MapPin className="w-3 h-3" />
                     {m.location}
                   </div>
-                  <div className="flex items-center gap-2 mt-2">
+                  <div className="flex items-center gap-2 mt-2 flex-wrap">
                     <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>
                       {m.status}
                     </Badge>
                     <span className="text-[10px] text-muted-foreground">Joined {m.joined}</span>
+                    {isAdmin && m.paymentStatus && (
+                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30">
+                        <DollarSign className="w-2.5 h-2.5 mr-0.5" />
+                        {m.paymentStatus}
+                      </Badge>
+                    )}
                   </div>
                 </div>
               </div>
