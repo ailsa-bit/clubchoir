@@ -1,10 +1,10 @@
 import { Music, MapPin, Clock } from "lucide-react";
 
 const sessions = [
-  { location: "Montreal", day: "Tuesday", time: "7:00 PM", address: "123 Rue Sainte-Catherine", dot: "bg-pink", bg: "bg-pink-light border-pink/20" },
-  { location: "Arundel", day: "Wednesday", time: "7:30 PM", address: "45 Chemin du Village", dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20" },
-  { location: "St-Hubert", day: "Thursday", time: "6:30 PM", address: "789 Montée St-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20" },
-  { location: "Pointe-Claire", day: "Thursday", time: "7:00 PM", address: "321 Lakeshore Road", dot: "bg-purple", bg: "bg-purple-light border-purple/20" },
+  { location: "Montreal", venue: "Kensington – Kensington Room", day: "Monday", time: "7:00–8:30 PM", address: "6225 Av. Godfrey", dot: "bg-pink", bg: "bg-pink-light border-pink/20" },
+  { location: "Arundel", venue: "Centre Arundel Centre", day: "Tuesday", time: "6:30–8:00 PM", address: "17 rue du Village, Arundel", dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20" },
+  { location: "Saint-Hubert", venue: "St-Gabriel Catholic Church", day: "Wednesday", time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20" },
+  { location: "Pointe-Claire", venue: "Valois United Church", day: "Thursday", time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire", dot: "bg-purple", bg: "bg-purple-light border-purple/20" },
 ];
 
 const ThisWeek = () => {
@@ -25,6 +25,7 @@ const ThisWeek = () => {
                 <span className={`w-3 h-3 rounded-full ${s.dot}`} />
                 <h3 className="font-heading font-bold text-lg text-foreground">{s.location}</h3>
               </div>
+              <p className="text-sm font-medium text-foreground/80 mb-1">{s.venue}</p>
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{s.day} · {s.time}</span>
                 <span className="flex items-center gap-1"><MapPin className="w-4 h-4" />{s.address}</span>
