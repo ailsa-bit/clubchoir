@@ -22,7 +22,7 @@ const statusColors: Record<string, string> = {
 
 const Community = () => {
   const { members, loading } = useMembers();
-  const { isAdmin, user } = useAdmin();
+  const { isAdmin, loading: adminLoading, user } = useAdmin();
   const { location: userLocation } = useProfile();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
@@ -123,7 +123,7 @@ const Community = () => {
         </p>
 
         {/* Members grid */}
-        {loading ? (
+        {loading || adminLoading ? (
           <div className="text-center py-12 text-muted-foreground">Loading members...</div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
