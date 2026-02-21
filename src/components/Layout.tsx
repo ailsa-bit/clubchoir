@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { Menu, X, Music, User } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
+import clubChoirLogo from "@/assets/club-choir-logo.png";
 
 const navItems = [
   { label: "Your Club Choir Space", path: "/" },
@@ -19,10 +20,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <header className="sticky top-0 z-50 bg-card/90 backdrop-blur-md border-b border-border">
         <div className="container mx-auto flex items-center justify-between h-16 px-4">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-full bg-gradient-warm flex items-center justify-center">
-              <Music className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="font-heading font-bold text-xl text-foreground">Club Choir</span>
+            <img src={clubChoirLogo} alt="Club Choir" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop nav */}
