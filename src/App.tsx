@@ -11,6 +11,7 @@ import Events from "./pages/Events";
 import Corporate from "./pages/Corporate";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
+import TryASession from "./pages/TryASession";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/corporate" element={<Corporate />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/try" element={<TryASession />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
