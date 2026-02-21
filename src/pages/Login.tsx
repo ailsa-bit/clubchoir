@@ -3,26 +3,43 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LogIn } from "lucide-react";
+import { LogIn, UserPlus } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setMessage("");
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setError(error.message);
-      setLoading(false);
+
+    if (isSignUp) {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: window.location.origin },
+      });
+      if (error) {
+        setError(error.message);
+      } else {
+        setMessage("Check your email for a confirmation link, then come back and sign in.");
+      }
     } else {
-      navigate("/community");
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setError(error.message);
+      } else {
+        navigate("/community");
+      }
     }
+    setLoading(false);
   };
 
   return (
@@ -30,13 +47,17 @@ const Login = () => {
       <div className="container mx-auto max-w-sm">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
-            <LogIn className="w-7 h-7 text-primary" />
+            {isSignUp ? <UserPlus className="w-7 h-7 text-primary" /> : <LogIn className="w-7 h-7 text-primary" />}
           </div>
-          <h1 className="font-heading font-bold text-2xl text-foreground mb-1">Admin Login</h1>
-          <p className="text-sm text-muted-foreground">Sign in to access admin features</p>
+          <h1 className="font-heading font-bold text-2xl text-foreground mb-1">
+            {isSignUp ? "Create Account" : "Admin Login"}
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            {isSignUp ? "Sign up to get started" : "Sign in to access admin features"}
+          </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             type="email"
             placeholder="Email"
@@ -50,12 +71,25 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            minLength={6}
           />
           {error && <p className="text-sm text-destructive">{error}</p>}
+          {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Please wait..." : isSignUp ? "Sign Up" : "Sign In"}
           </Button>
         </form>
+
+        <p className="text-center text-sm text-muted-foreground mt-6">
+          {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+          <button
+            type="button"
+            className="text-primary hover:underline font-medium"
+            onClick={() => { setIsSignUp(!isSignUp); setError(""); setMessage(""); }}
+          >
+            {isSignUp ? "Sign In" : "Sign Up"}
+          </button>
+        </p>
       </div>
     </div>
   );
