@@ -27,6 +27,7 @@ const Community = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [locationFilter, setLocationFilter] = useState<string>("ALL");
+  const [paymentFilter, setPaymentFilter] = useState<string>("ALL");
 
   // Non-admin logged-in users only see active members at their location
   const baseMembers = useMemo(() => {
@@ -43,6 +44,11 @@ const Community = () => {
     [baseMembers]
   );
 
+  const paymentStatuses = useMemo(
+    () => [...new Set(baseMembers.map((m) => m.paymentStatus).filter(Boolean))].sort(),
+    [baseMembers]
+  );
+
   const filtered = useMemo(() => {
     return baseMembers.filter((m) => {
       const matchesSearch =
@@ -50,9 +56,10 @@ const Community = () => {
         `${m.firstName} ${m.lastName}`.toLowerCase().includes(search.toLowerCase());
       const matchesStatus = statusFilter === "ALL" || m.status === statusFilter;
       const matchesLocation = locationFilter === "ALL" || m.location === locationFilter;
-      return matchesSearch && matchesStatus && matchesLocation;
+      const matchesPayment = paymentFilter === "ALL" || m.paymentStatus === paymentFilter;
+      return matchesSearch && matchesStatus && matchesLocation && matchesPayment;
     });
-  }, [baseMembers, search, statusFilter, locationFilter]);
+  }, [baseMembers, search, statusFilter, locationFilter, paymentFilter]);
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { ALL: baseMembers.length };
@@ -116,6 +123,19 @@ const Community = () => {
               ))}
             </SelectContent>
           </Select>
+          {isAdmin && (
+            <Select value={paymentFilter} onValueChange={setPaymentFilter}>
+              <SelectTrigger className="w-full sm:w-[160px]">
+                <SelectValue placeholder="Payment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All payments</SelectItem>
+                {paymentStatuses.map((ps) => (
+                  <SelectItem key={ps} value={ps}>{ps}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         </div>
 
         <p className="text-sm text-muted-foreground mb-3">
