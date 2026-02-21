@@ -4,6 +4,15 @@ import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LogIn, UserPlus } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const LOCATIONS = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire"] as const;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,6 +22,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [location, setLocation] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,10 +31,18 @@ const Login = () => {
     setLoading(true);
 
     if (isSignUp) {
+      if (!location) {
+        setError("Please select your location.");
+        setLoading(false);
+        return;
+      }
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: window.location.origin },
+        options: {
+          emailRedirectTo: window.location.origin,
+          data: { location },
+        },
       });
       if (error) {
         setError(error.message);
@@ -73,6 +91,18 @@ const Login = () => {
             required
             minLength={6}
           />
+          {isSignUp && (
+            <Select value={location} onValueChange={setLocation}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select your location" />
+              </SelectTrigger>
+              <SelectContent>
+                {LOCATIONS.map((loc) => (
+                  <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
           {error && <p className="text-sm text-destructive">{error}</p>}
           {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
           <Button type="submit" className="w-full" disabled={loading}>

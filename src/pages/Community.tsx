@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Users, MapPin, Search, Filter, DollarSign } from "lucide-react";
 import { useMembers, Member } from "@/hooks/use-members";
 import { useAdmin } from "@/hooks/use-admin";
+import { useProfile } from "@/hooks/use-profile";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -21,18 +22,29 @@ const statusColors: Record<string, string> = {
 
 const Community = () => {
   const { members, loading } = useMembers();
-  const { isAdmin } = useAdmin();
+  const { isAdmin, user } = useAdmin();
+  const { location: userLocation } = useProfile();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [locationFilter, setLocationFilter] = useState<string>("ALL");
 
+  // Non-admin logged-in users only see active members at their location
+  const baseMembers = useMemo(() => {
+    if (isAdmin) return members;
+    if (user && userLocation) {
+      return members.filter((m) => m.status === "ACTIVE" && m.location === userLocation);
+    }
+    // Not logged in: show all (public view)
+    return members;
+  }, [members, isAdmin, user, userLocation]);
+
   const locations = useMemo(
-    () => [...new Set(members.map((m) => m.location))].sort(),
-    [members]
+    () => [...new Set(baseMembers.map((m) => m.location))].sort(),
+    [baseMembers]
   );
 
   const filtered = useMemo(() => {
-    return members.filter((m) => {
+    return baseMembers.filter((m) => {
       const matchesSearch =
         !search ||
         `${m.firstName} ${m.lastName}`.toLowerCase().includes(search.toLowerCase());
@@ -40,13 +52,13 @@ const Community = () => {
       const matchesLocation = locationFilter === "ALL" || m.location === locationFilter;
       return matchesSearch && matchesStatus && matchesLocation;
     });
-  }, [members, search, statusFilter, locationFilter]);
+  }, [baseMembers, search, statusFilter, locationFilter]);
 
   const counts = useMemo(() => {
-    const c: Record<string, number> = { ALL: members.length };
-    members.forEach((m) => (c[m.status] = (c[m.status] || 0) + 1));
+    const c: Record<string, number> = { ALL: baseMembers.length };
+    baseMembers.forEach((m) => (c[m.status] = (c[m.status] || 0) + 1));
     return c;
-  }, [members]);
+  }, [baseMembers]);
 
   return (
     <div className="py-10 px-4">
