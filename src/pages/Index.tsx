@@ -1,7 +1,16 @@
 import { Link } from "react-router-dom";
 import { Users, UserPlus, Calendar, Sparkles } from "lucide-react";
+import { useMembers } from "@/hooks/use-members";
 
 const Index = () => {
+  const { members } = useMembers();
+
+  const activeCountByLocation = members
+    .filter((m) => m.status === "ACTIVE")
+    .reduce<Record<string, number>>((acc, m) => {
+      acc[m.location] = (acc[m.location] || 0) + 1;
+      return acc;
+    }, {});
   return (
     <div>
       {/* Hero */}
@@ -59,6 +68,12 @@ const Index = () => {
                 <p className="text-xs text-muted-foreground mt-1">
                   {item.dates}
                 </p>
+                {activeCountByLocation[item.location] != null && (
+                  <p className="text-xs font-semibold text-foreground mt-2 flex items-center gap-1">
+                    <Users className="w-3.5 h-3.5" />
+                    {activeCountByLocation[item.location]} active members
+                  </p>
+                )}
               </div>
             ))}
           </div>
