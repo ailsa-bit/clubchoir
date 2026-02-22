@@ -15,6 +15,7 @@ import TryASession from "./pages/TryASession";
 import BringAFriend from "./pages/BringAFriend";
 import NotFound from "./pages/NotFound";
 import LocationSchedule from "./pages/LocationSchedule";
+import Resources from "./pages/Resources";
 import SendEmail from "./pages/SendEmail";
 import LocationChat from "./pages/LocationChat";
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/schedule/:locationSlug" element={<LocationSchedule />} />
             <Route path="/community" element={<Community />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/resources" element={<Resources />} />
             <Route path="/corporate" element={<Corporate />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />

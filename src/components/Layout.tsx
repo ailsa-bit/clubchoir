@@ -8,6 +8,7 @@ const navItems = [
   { label: "This Week at Choir", path: "/this-week" },
   { label: "Choir Community", path: "/community" },
   { label: "Chat", path: "/chat" },
+  { label: "Song Resources", path: "/resources" },
   { label: "Club Choir Events", path: "/events" },
   { label: "Corporate Events", path: "/corporate" },
 ];

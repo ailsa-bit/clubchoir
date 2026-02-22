@@ -95,6 +95,39 @@ export type Database = {
         }
         Relationships: []
       }
+      song_resources: {
+        Row: {
+          created_at: string
+          file_name: string
+          id: string
+          location: string
+          resource_type: string
+          song_name: string
+          storage_path: string
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          id?: string
+          location: string
+          resource_type: string
+          song_name: string
+          storage_path: string
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          id?: string
+          location?: string
+          resource_type?: string
+          song_name?: string
+          storage_path?: string
+          uploaded_by?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
