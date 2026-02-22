@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      location_sessions: {
+        Row: {
+          activity: string
+          artist: string | null
+          created_at: string
+          id: string
+          location: string
+          session_date: string
+          week: string
+        }
+        Insert: {
+          activity: string
+          artist?: string | null
+          created_at?: string
+          id?: string
+          location: string
+          session_date: string
+          week: string
+        }
+        Update: {
+          activity?: string
+          artist?: string | null
+          created_at?: string
+          id?: string
+          location?: string
+          session_date?: string
+          week?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
