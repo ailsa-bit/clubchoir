@@ -71,6 +71,51 @@ export type Database = {
         }
         Relationships: []
       }
+      members: {
+        Row: {
+          created_at: string
+          email: string | null
+          first_name: string
+          id: string
+          joined: string | null
+          last_name: string
+          last_session: string | null
+          location: string
+          notes: string
+          payment_status: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          first_name: string
+          id?: string
+          joined?: string | null
+          last_name: string
+          last_session?: string | null
+          location?: string
+          notes?: string
+          payment_status?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          first_name?: string
+          id?: string
+          joined?: string | null
+          last_name?: string
+          last_session?: string | null
+          location?: string
+          notes?: string
+          payment_status?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

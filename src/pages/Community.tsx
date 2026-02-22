@@ -1,10 +1,12 @@
-import { useState, useMemo } from "react";
-import { Users, MapPin, Search, Filter, DollarSign } from "lucide-react";
-import { useMembers, Member } from "@/hooks/use-members";
+import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { Users, MapPin, Search, DollarSign, Settings } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { useProfile } from "@/hooks/use-profile";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -12,6 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+interface MemberRow {
+  id: string;
+  first_name: string;
+  last_name: string;
+  location: string;
+  status: string;
+  joined: string | null;
+  payment_status: string;
+}
 
 const statusColors: Record<string, string> = {
   ACTIVE: "bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30",
@@ -21,36 +33,50 @@ const statusColors: Record<string, string> = {
 };
 
 const Community = () => {
-  const { members, loading } = useMembers();
   const { isAdmin, loading: adminLoading, user } = useAdmin();
   const { location: userLocation } = useProfile();
+  const [members, setMembers] = useState<MemberRow[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [locationFilter, setLocationFilter] = useState<string>("ALL");
   const [paymentFilter, setPaymentFilter] = useState<string>("ALL");
 
-  // Non-admin logged-in users only see active members at their location
+  useEffect(() => {
+    const fetchMembers = async () => {
+      let query = supabase
+        .from("members")
+        .select("id, first_name, last_name, location, status, joined, payment_status")
+        .order("last_name", { ascending: true });
+
+      // Non-admins only see active members (enforced by RLS too)
+      if (!isAdmin) {
+        query = query.eq("status", "ACTIVE");
+      }
+
+      const { data } = await query;
+      setMembers((data as MemberRow[]) || []);
+      setLoading(false);
+    };
+
+    if (!adminLoading) fetchMembers();
+  }, [isAdmin, adminLoading]);
+
   const baseMembers = useMemo(() => {
     if (isAdmin) return members;
-    if (user) {
-      // Logged-in non-admin: show active members, filtered by location if set
-      return members.filter((m) => {
-        if (m.status !== "ACTIVE") return false;
-        if (userLocation) return m.location === userLocation;
-        return true;
-      });
+    if (user && userLocation) {
+      return members.filter((m) => m.location === userLocation);
     }
-    // Not logged in: show all active members (public view)
-    return members.filter((m) => m.status === "ACTIVE");
+    return members;
   }, [members, isAdmin, user, userLocation]);
 
   const locations = useMemo(
-    () => [...new Set(baseMembers.map((m) => m.location))].sort(),
+    () => [...new Set(baseMembers.map((m) => m.location).filter(Boolean))].sort(),
     [baseMembers]
   );
 
   const paymentStatuses = useMemo(
-    () => [...new Set(baseMembers.map((m) => m.paymentStatus).filter(Boolean))].sort(),
+    () => [...new Set(baseMembers.map((m) => m.payment_status).filter(Boolean))].sort(),
     [baseMembers]
   );
 
@@ -58,10 +84,10 @@ const Community = () => {
     return baseMembers.filter((m) => {
       const matchesSearch =
         !search ||
-        `${m.firstName} ${m.lastName}`.toLowerCase().includes(search.toLowerCase());
+        `${m.first_name} ${m.last_name}`.toLowerCase().includes(search.toLowerCase());
       const matchesStatus = statusFilter === "ALL" || m.status === statusFilter;
       const matchesLocation = locationFilter === "ALL" || m.location === locationFilter;
-      const matchesPayment = paymentFilter === "ALL" || m.paymentStatus === paymentFilter;
+      const matchesPayment = paymentFilter === "ALL" || m.payment_status === paymentFilter;
       return matchesSearch && matchesStatus && matchesLocation && matchesPayment;
     });
   }, [baseMembers, search, statusFilter, locationFilter, paymentFilter]);
@@ -80,8 +106,15 @@ const Community = () => {
             Our Members
           </h1>
           <p className="text-muted-foreground">
-            {members.length} voices strong across {locations.length} locations
+            {baseMembers.length} voices strong across {locations.length} locations
           </p>
+          {isAdmin && (
+            <Link to="/manage-members">
+              <Button variant="outline" size="sm" className="mt-3">
+                <Settings className="w-4 h-4 mr-1" /> Manage Members
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Stats */}
@@ -105,18 +138,20 @@ const Community = () => {
               className="pl-9"
             />
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-[160px]">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="ALL">All statuses</SelectItem>
-              <SelectItem value="ACTIVE">Active</SelectItem>
-              <SelectItem value="INACTIVE">Inactive</SelectItem>
-              <SelectItem value="PROSPECT">Prospect</SelectItem>
-              <SelectItem value="TRIAL">Trial</SelectItem>
-            </SelectContent>
-          </Select>
+          {isAdmin && (
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-full sm:w-[160px]">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ALL">All statuses</SelectItem>
+                <SelectItem value="ACTIVE">Active</SelectItem>
+                <SelectItem value="INACTIVE">Inactive</SelectItem>
+                <SelectItem value="PROSPECT">Prospect</SelectItem>
+                <SelectItem value="TRIAL">Trial</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
           <Select value={locationFilter} onValueChange={setLocationFilter}>
             <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Location" />
@@ -152,33 +187,35 @@ const Community = () => {
           <div className="text-center py-12 text-muted-foreground">Loading members...</div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filtered.map((m, i) => (
+            {filtered.map((m) => (
               <div
-                key={`${m.firstName}-${m.lastName}-${i}`}
+                key={m.id}
                 className="rounded-2xl border border-border bg-card p-4 flex items-start gap-3"
               >
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <span className="text-sm font-bold text-primary">
-                    {m.firstName[0]}{m.lastName[0]}
+                    {m.first_name[0]}{m.last_name[0]}
                   </span>
                 </div>
                 <div className="min-w-0">
                   <p className="font-semibold text-foreground text-sm truncate">
-                    {m.firstName} {m.lastName}
+                    {m.first_name} {m.last_name}
                   </p>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                    <MapPin className="w-3 h-3" />
-                    {m.location}
-                  </div>
+                  {m.location && (
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                      <MapPin className="w-3 h-3" />
+                      {m.location}
+                    </div>
+                  )}
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
                     <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>
                       {m.status}
                     </Badge>
-                    <span className="text-[10px] text-muted-foreground">Joined {m.joined}</span>
-                    {isAdmin && m.paymentStatus && (
+                    {m.joined && <span className="text-[10px] text-muted-foreground">Joined {m.joined}</span>}
+                    {isAdmin && m.payment_status && (
                       <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30">
                         <DollarSign className="w-2.5 h-2.5 mr-0.5" />
-                        {m.paymentStatus}
+                        {m.payment_status}
                       </Badge>
                     )}
                   </div>
