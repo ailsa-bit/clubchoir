@@ -35,7 +35,7 @@ const Index = () => {
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all"
             >
               <Sparkles className="w-5 h-5" />
-              Try a Session / Get More Info
+              Try a Session or Get in Touch
             </Link>
             <Link
               to="/bring-a-friend"
@@ -56,7 +56,7 @@ const Index = () => {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { location: "Montreal", venue: "Kensington Room", color: "bg-pink-light border-pink/20", day: "Monday", time: "7:00–8:30 PM", dot: "bg-pink" },
+              { location: "Montreal", venue: "Kensington Presbyterian Church", color: "bg-pink-light border-pink/20", day: "Monday", time: "7:00–8:30 PM", dot: "bg-pink" },
               { location: "Arundel", venue: "Centre Arundel Centre", color: "bg-aqua-light border-aqua/20", day: "Tuesday", time: "6:30–8:00 PM", dot: "bg-aqua" },
               { location: "Saint-Hubert", venue: "St-Gabriel Catholic Church", color: "bg-secondary border-secondary/20", day: "Wednesday", time: "7:00–8:30 PM", dot: "bg-foreground" },
               { location: "Pointe-Claire", venue: "Valois United Church", color: "bg-purple-light border-purple/20", day: "Thursday", time: "7:00–8:30 PM", dot: "bg-purple" },
