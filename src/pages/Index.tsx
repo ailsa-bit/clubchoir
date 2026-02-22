@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink, MessageCircle } from "lucide-react";
+import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Facebook } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const testimonials = [
@@ -35,7 +35,7 @@ const Index = () => {
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all"
             >
               <Sparkles className="w-5 h-5" />
-              Try a Session
+              Try a Session / Get More Info
             </Link>
             <Link
               to="/bring-a-friend"
@@ -43,13 +43,6 @@ const Index = () => {
             >
               <UserPlus className="w-5 h-5" />
               Bring a Friend
-            </Link>
-            <Link
-              to="/try"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-border bg-card text-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-105 transition-all"
-            >
-              <MessageCircle className="w-5 h-5" />
-              Contact Us
             </Link>
           </div>
         </div>
@@ -63,10 +56,10 @@ const Index = () => {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { location: "Montreal", color: "bg-pink-light border-pink/20", day: "Monday", time: "7:00–8:30 PM", dot: "bg-pink" },
-              { location: "Arundel", color: "bg-aqua-light border-aqua/20", day: "Tuesday", time: "6:30–8:00 PM", dot: "bg-aqua" },
-              { location: "Saint-Hubert", color: "bg-secondary border-secondary/20", day: "Wednesday", time: "7:00–8:30 PM", dot: "bg-foreground" },
-              { location: "Pointe-Claire", color: "bg-purple-light border-purple/20", day: "Thursday", time: "7:00–8:30 PM", dot: "bg-purple" },
+              { location: "Montreal", venue: "Kensington Room", color: "bg-pink-light border-pink/20", day: "Monday", time: "7:00–8:30 PM", dot: "bg-pink" },
+              { location: "Arundel", venue: "Centre Arundel Centre", color: "bg-aqua-light border-aqua/20", day: "Tuesday", time: "6:30–8:00 PM", dot: "bg-aqua" },
+              { location: "Saint-Hubert", venue: "St-Gabriel Catholic Church", color: "bg-secondary border-secondary/20", day: "Wednesday", time: "7:00–8:30 PM", dot: "bg-foreground" },
+              { location: "Pointe-Claire", venue: "Valois United Church", color: "bg-purple-light border-purple/20", day: "Thursday", time: "7:00–8:30 PM", dot: "bg-purple" },
             ].map((item) => (
               <div
                 key={item.location}
@@ -76,9 +69,10 @@ const Index = () => {
                   <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
                   <span className="font-heading font-bold text-foreground">{item.location}</span>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-1">
                   {item.day} · {item.time}
                 </p>
+                <p className="text-xs text-muted-foreground">{item.venue}</p>
               </div>
             ))}
           </div>
