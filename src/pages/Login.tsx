@@ -38,18 +38,24 @@ const Login = () => {
         setLoading(false);
         return;
       }
-      const { error } = await supabase.auth.signUp({
+      const { data: signUpData, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: window.location.origin,
-          data: { location },
+          data: { location, display_name: email.split("@")[0] },
         },
       });
       if (error) {
         setError(error.message);
       } else {
         setMessage(t("login.confirmEmail"));
+        // Notify admin of new signup (fire-and-forget)
+        try {
+          await supabase.functions.invoke("notify-new-signup", {
+            body: { email, display_name: email.split("@")[0], location, status: "inactive" },
+          });
+        } catch {}
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -70,10 +76,10 @@ const Login = () => {
             {isSignUp ? <UserPlus className="w-7 h-7 text-primary" /> : <LogIn className="w-7 h-7 text-primary" />}
           </div>
           <h1 className="font-heading font-bold text-2xl text-foreground mb-1">
-            {isSignUp ? t("login.createAccount") : t("login.adminLogin")}
+            {isSignUp ? t("login.createAccount") : "Sign In"}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {isSignUp ? t("login.signUpDesc") : t("login.signInDesc")}
+            {isSignUp ? "Create your Club Choir account" : "Sign in to your Club Choir account"}
           </p>
         </div>
 
