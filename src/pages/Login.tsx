@@ -50,11 +50,24 @@ const Login = () => {
         setError(error.message);
       } else {
         setMessage(t("login.confirmEmail"));
-        // Notify admin of new signup (fire-and-forget)
+        // Notify admin only if the user ends up inactive (not auto-approved)
+        // We need to wait briefly for the trigger to create the profile, then check status
         try {
-          await supabase.functions.invoke("notify-new-signup", {
-            body: { email, display_name: email.split("@")[0], location, status: "inactive" },
-          });
+          // Small delay to let the handle_new_user trigger run
+          setTimeout(async () => {
+            try {
+              const { data: profile } = await supabase
+                .from("profiles")
+                .select("status")
+                .eq("user_id", signUpData.user?.id ?? "")
+                .maybeSingle();
+              if (profile?.status === "inactive") {
+                await supabase.functions.invoke("notify-new-signup", {
+                  body: { email, display_name: email.split("@")[0], location, status: "inactive" },
+                });
+              }
+            } catch {}
+          }, 2000);
         } catch {}
       }
     } else {
