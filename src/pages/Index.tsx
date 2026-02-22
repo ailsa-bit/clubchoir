@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink, MessageCircle } from "lucide-react";
-import { useMembers } from "@/hooks/use-members";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const testimonials = [
@@ -16,14 +15,6 @@ const testimonials = [
 ];
 
 const Index = () => {
-  const { members } = useMembers();
-
-  const activeCountByLocation = members
-    .filter((m) => m.status === "ACTIVE")
-    .reduce<Record<string, number>>((acc, m) => {
-      acc[m.location] = (acc[m.location] || 0) + 1;
-      return acc;
-    }, {});
   return (
     <div>
       {/* Hero */}
@@ -54,7 +45,7 @@ const Index = () => {
               Bring a Friend
             </Link>
             <Link
-              to="/contact"
+              to="/try"
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-border bg-card text-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-105 transition-all"
             >
               <MessageCircle className="w-5 h-5" />
@@ -64,18 +55,18 @@ const Index = () => {
         </div>
       </section>
 
-      {/* This Week Preview */}
+      {/* Sessions Overview */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8 text-center">
-            This Week at Club Choir
+            Where & When We Sing
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-              { location: "Montreal", color: "bg-pink-light border-pink/20", day: "Monday", time: "7:00–8:30 PM", dates: "Feb 2 – May 4", dot: "bg-pink" },
-              { location: "Arundel", color: "bg-aqua-light border-aqua/20", day: "Tuesday", time: "6:30–8:00 PM", dates: "Feb 17 – May 26", dot: "bg-aqua" },
-              { location: "Saint-Hubert", color: "bg-secondary border-secondary/20", day: "Wednesday", time: "7:00–8:30 PM", dates: "Feb 4 – May 13", dot: "bg-foreground" },
-              { location: "Pointe-Claire", color: "bg-purple-light border-purple/20", day: "Thursday", time: "7:00–8:30 PM", dates: "Feb 5 – May 7", dot: "bg-purple" },
+            {[
+              { location: "Montreal", color: "bg-pink-light border-pink/20", day: "Monday", time: "7:00–8:30 PM", dot: "bg-pink" },
+              { location: "Arundel", color: "bg-aqua-light border-aqua/20", day: "Tuesday", time: "6:30–8:00 PM", dot: "bg-aqua" },
+              { location: "Saint-Hubert", color: "bg-secondary border-secondary/20", day: "Wednesday", time: "7:00–8:30 PM", dot: "bg-foreground" },
+              { location: "Pointe-Claire", color: "bg-purple-light border-purple/20", day: "Thursday", time: "7:00–8:30 PM", dot: "bg-purple" },
             ].map((item) => (
               <div
                 key={item.location}
@@ -88,23 +79,58 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground">
                   {item.day} · {item.time}
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {item.dates}
-                </p>
-                {activeCountByLocation[item.location] != null && (
-                  <p className="text-xs font-semibold text-foreground mt-2 flex items-center gap-1">
-                    <Users className="w-3.5 h-3.5" />
-                    {activeCountByLocation[item.location]} active members
-                  </p>
-                )}
               </div>
             ))}
+          </div>
+          <p className="text-center text-sm text-muted-foreground mt-6">
+            <span className="font-semibold text-foreground">$280</span> per 14-week session · Winter session starting February · Fall session starting September
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-16 px-4 bg-muted/50">
+        <div className="container mx-auto max-w-3xl">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-center text-muted-foreground mb-10">Everything you need to know before your first session</p>
+          <Accordion type="single" collapsible className="space-y-3">
+            {[
+              { q: "How much does it cost?", a: "Each 14-week session is $280. We run a Winter session starting in February and a Fall session starting in September." },
+              { q: "Do I need to know how to read music?", a: "Not at all! Most of us learn by ear. Sheet music is there if you want it, but you can absolutely just show up and sing your heart out." },
+              { q: "I'm shy — can I still join?", a: "One hundred percent! Club Choir is all about encouragement, laughter, and zero pressure. Sing quietly, sing loudly, or just hum along until you're ready to belt it out." },
+              { q: "What if I can't make it every week?", a: "No stress — life happens! If you miss a session, we have resources to help you catch up, and our members are always happy to get you back in the groove." },
+              { q: "Do I need to audition?", a: "No auditions and no experience needed. If you can sing in the shower, you're more than qualified." },
+              { q: "What kind of music do you sing?", a: "Everything from pop classics to hidden gems. If it's fun to sing, it's on our list." },
+              { q: "What should I bring to a session?", a: "Just yourself, your voice, and your sense of humour. We provide the good vibes." },
+              { q: "What if I'm not a good singer?", a: "Club Choir is about progress, not perfection. If you love to sing, you belong here — it's that simple." },
+            ].map((item) => (
+              <AccordionItem key={item.q} value={item.q} className="rounded-2xl border border-border bg-card px-5">
+                <AccordionTrigger className="font-heading font-bold text-foreground text-left hover:no-underline py-4">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground pb-4">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+          <div className="text-center mt-10">
+            <p className="text-muted-foreground mb-4">Still have questions?</p>
+            <Link
+              to="/try"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Get in Touch
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 px-4 bg-muted/50">
+      <section className="py-16 px-4">
         <div className="container mx-auto max-w-5xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             What Our Members Say
@@ -136,46 +162,6 @@ const Index = () => {
               <ExternalLink className="w-4 h-4" />
               Leave Us a Review on Google
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-3xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-center text-muted-foreground mb-10">Everything you need to know before your first session</p>
-          <Accordion type="single" collapsible className="space-y-3">
-            {[
-              { q: "Do I need to know how to read music?", a: "Not at all! Most of us learn by ear. Sheet music is there if you want it, but you can absolutely just show up and sing your heart out." },
-              { q: "I'm shy — can I still join?", a: "One hundred percent! Club Choir is all about encouragement, laughter, and zero pressure. Sing quietly, sing loudly, or just hum along until you're ready to belt it out." },
-              { q: "What if I can't make it every week?", a: "No stress — life happens! If you miss a session, we have resources to help you catch up, and our members are always happy to get you back in the groove." },
-              { q: "Do I need to audition?", a: "No auditions and no experience needed. If you can sing in the shower, you're more than qualified." },
-              { q: "What kind of music do you sing?", a: "Everything from pop classics to hidden gems. If it's fun to sing, it's on our list." },
-              { q: "What should I bring to a session?", a: "Just yourself, your voice, and your sense of humour. We provide the good vibes." },
-              { q: "What if I'm not a good singer?", a: "Club Choir is about progress, not perfection. If you love to sing, you belong here — it's that simple." },
-            ].map((item) => (
-              <AccordionItem key={item.q} value={item.q} className="rounded-2xl border border-border bg-card px-5">
-                <AccordionTrigger className="font-heading font-bold text-foreground text-left hover:no-underline py-4">
-                  {item.q}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-4">
-                  {item.a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-          <div className="text-center mt-10">
-            <p className="text-muted-foreground mb-4">Still have questions?</p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
-            >
-              <MessageCircle className="w-4 h-4" />
-              Get in Touch
-            </Link>
           </div>
         </div>
       </section>

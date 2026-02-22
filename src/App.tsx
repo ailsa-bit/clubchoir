@@ -19,7 +19,6 @@ import Resources from "./pages/Resources";
 import SendEmail from "./pages/SendEmail";
 import LocationChat from "./pages/LocationChat";
 import ManageMembers from "./pages/ManageMembers";
-import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -45,7 +44,7 @@ const App = () => (
             <Route path="/send-email" element={<SendEmail />} />
             <Route path="/chat" element={<LocationChat />} />
             <Route path="/manage-members" element={<ManageMembers />} />
-            <Route path="/contact" element={<Contact />} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
