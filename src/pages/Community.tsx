@@ -161,10 +161,10 @@ const Community = () => {
             {filtered.map((m) => (
               <div key={m.id} className="rounded-2xl border border-border bg-card p-4 flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <span className="text-sm font-bold text-primary">{m.first_name[0]}{m.last_name[0]}</span>
+                  <span className="text-sm font-bold text-primary">{m.first_name[0]}{isAdmin ? m.last_name[0] : ''}</span>
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-foreground text-sm truncate">{m.first_name} {m.last_name}</p>
+                  <p className="font-semibold text-foreground text-sm truncate">{isAdmin ? `${m.first_name} ${m.last_name}` : m.first_name}</p>
                   {m.location && (
                     <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
                       <MapPin className="w-3 h-3" />{m.location}
@@ -172,7 +172,7 @@ const Community = () => {
                   )}
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
                     <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>{m.status}</Badge>
-                    {m.joined && <span className="text-[10px] text-muted-foreground">Joined {m.joined}</span>}
+                    {isAdmin && m.joined && <span className="text-[10px] text-muted-foreground">Joined {m.joined}</span>}
                     {isAdmin && m.payment_status && (
                       <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30">
                         <DollarSign className="w-2.5 h-2.5 mr-0.5" />{m.payment_status}
