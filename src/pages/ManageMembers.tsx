@@ -312,6 +312,7 @@ const ManageMembers = () => {
                   <th className="p-3 text-left font-medium text-muted-foreground hidden md:table-cell">Email</th>
                   <th className="p-3 text-left font-medium text-muted-foreground hidden sm:table-cell">Location</th>
                   <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+                  <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">Joined</th>
                   <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">Payment</th>
                   <th className="p-3 text-right font-medium text-muted-foreground">Actions</th>
                 </tr>
@@ -337,6 +338,7 @@ const ManageMembers = () => {
                         {m.status}
                       </Badge>
                     </td>
+                    <td className="p-3 text-muted-foreground hidden lg:table-cell">{m.joined || "—"}</td>
                     <td className="p-3 text-muted-foreground hidden lg:table-cell">{m.payment_status || "—"}</td>
                     <td className="p-3 text-right">
                       <div className="flex items-center justify-end gap-1">
