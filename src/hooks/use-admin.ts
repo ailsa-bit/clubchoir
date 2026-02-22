@@ -1,72 +1,62 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export function useAdmin() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const loadingSetRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
 
-    const checkAdmin = async (userId: string) => {
+    const setLoadingFalse = () => {
+      if (isMounted && !loadingSetRef.current) {
+        loadingSetRef.current = true;
+        setLoading(false);
+      }
+    };
+
+    const checkAdmin = async (userId: string): Promise<boolean> => {
       try {
-        const { data, error } = await supabase
+        const queryPromise = supabase
           .from("user_roles")
           .select("role")
           .eq("user_id", userId)
           .eq("role", "admin")
           .maybeSingle();
-        if (isMounted) {
-          setIsAdmin(!error && !!data);
-        }
+        const timeoutPromise = new Promise<{ data: null; error: { message: string } }>((resolve) =>
+          setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 3000)
+        );
+        const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
+        return !error && !!data;
       } catch {
-        if (isMounted) {
-          setIsAdmin(false);
-        }
+        return false;
       }
     };
 
-    const init = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!isMounted) return;
-        const currentUser = session?.user ?? null;
-        setUser(currentUser);
-        if (currentUser) {
-          await checkAdmin(currentUser.id);
-        }
-      } catch {
-        if (isMounted) {
-          setUser(null);
-          setIsAdmin(false);
-        }
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    // Set up listener BEFORE init (per Supabase best practices)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      async (_event, session) => {
         if (!isMounted) return;
         const currentUser = session?.user ?? null;
         setUser(currentUser);
         if (currentUser) {
-          setTimeout(() => {
-            if (isMounted) checkAdmin(currentUser.id);
-          }, 0);
+          const admin = await checkAdmin(currentUser.id);
+          if (isMounted) setIsAdmin(admin);
         } else {
           setIsAdmin(false);
         }
+        setLoadingFalse();
       }
     );
 
-    init();
+    // Safety timeout - always resolve loading
+    const timeout = setTimeout(setLoadingFalse, 5000);
 
     return () => {
       isMounted = false;
       subscription.unsubscribe();
+      clearTimeout(timeout);
     };
   }, []);
 
