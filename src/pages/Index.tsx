@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
-import { Users, UserPlus, Calendar, Sparkles } from "lucide-react";
+import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink } from "lucide-react";
 import { useMembers } from "@/hooks/use-members";
+
+const testimonials = [
+  { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
+  { name: "Sonia Klebanskyj", stars: 5, text: "ClubChoir is so much fun! Ailsa Pehi is a wonderful choir director for a novice choir singer or for people who want to rediscover the joy of singing. Join and you won't be disappointed!" },
+  { name: "Claude Aimée Villeneuve", stars: 5, text: "I love the way Ailsa has an interesting way of teaching the songs so that anyone who just loves singing can enjoy themselves right away, no need to know how to read music or have previous choir experience. It's fun, the vibes are upbeat!" },
+  { name: "Claudine Turnbull", stars: 5, text: "I'm so thankful to my friend for encouraging me to join Club Choir! Ailsa instantly makes you feel comfortable and brings amazing energy every week. It's truly become my weekly happiness boost!" },
+  { name: "Martin Leclerc", stars: 5, text: "Great, contagious energy from Ailsa, leading the choir through fun singing! Very happy with the repertoire, the people, the arrangement and the simple enjoyment of it all." },
+  { name: "Lori Cook", stars: 5, text: "Ailsa has made my first choir experience a very positive one. I have met some great people and have gained confidence in my singing abilities." },
+  { name: "Lydia Woronchak", stars: 5, text: "You don't have to be a great singer to be in Club Choir and you don't even have to audition. All you have to do is love to sing! You're guaranteed to have fun, meet new people and leave feeling joyful!" },
+];
 
 const Index = () => {
   const { members } = useMembers();
@@ -80,8 +90,45 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Quick Links */}
+      {/* Testimonials */}
       <section className="py-16 px-4 bg-muted/50">
+        <div className="container mx-auto max-w-5xl">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
+            What Our Members Say
+          </h2>
+          <p className="text-center text-muted-foreground mb-10">All 5-star reviews from Google</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {testimonials.map((t) => (
+              <div
+                key={t.name}
+                className="rounded-2xl border border-border bg-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow"
+              >
+                <div className="flex gap-0.5">
+                  {Array.from({ length: t.stars }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">{t.text}</p>
+                <p className="mt-auto font-heading font-bold text-sm text-foreground">{t.name}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <a
+              href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
+            >
+              <ExternalLink className="w-4 h-4" />
+              Leave Us a Review on Google
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Links */}
+      <section className="py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8 text-center">
             Club Choir Community
