@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export function useProfile() {
   const [location, setLocation] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -11,10 +12,11 @@ export function useProfile() {
       if (session?.user) {
         const { data } = await supabase
           .from("profiles")
-          .select("location")
+          .select("location, status")
           .eq("user_id", session.user.id)
           .maybeSingle();
         setLocation(data?.location ?? null);
+        setStatus(data?.status ?? null);
       }
       setLoading(false);
     };
@@ -26,12 +28,14 @@ export function useProfile() {
         if (session?.user) {
           const { data } = await supabase
             .from("profiles")
-            .select("location")
+            .select("location, status")
             .eq("user_id", session.user.id)
             .maybeSingle();
           setLocation(data?.location ?? null);
+          setStatus(data?.status ?? null);
         } else {
           setLocation(null);
+          setStatus(null);
         }
       }
     );
@@ -39,5 +43,5 @@ export function useProfile() {
     return () => subscription.unsubscribe();
   }, []);
 
-  return { location, loading };
+  return { location, status, loading, isActive: status === "active" };
 }

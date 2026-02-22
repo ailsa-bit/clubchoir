@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Layout from "./components/Layout";
+import ActiveMemberGate from "./components/ActiveMemberGate";
 import Index from "./pages/Index";
 import ThisWeek from "./pages/ThisWeek";
 import Community from "./pages/Community";
@@ -35,16 +36,16 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/this-week" element={<ThisWeek />} />
             <Route path="/schedule/:locationSlug" element={<LocationSchedule />} />
-            <Route path="/community" element={<Community />} />
+            <Route path="/community" element={<ActiveMemberGate><Community /></ActiveMemberGate>} />
             <Route path="/events" element={<Events />} />
-            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources" element={<ActiveMemberGate><Resources /></ActiveMemberGate>} />
             <Route path="/corporate" element={<Corporate />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/try" element={<TryASession />} />
             <Route path="/bring-a-friend" element={<BringAFriend />} />
             <Route path="/send-email" element={<SendEmail />} />
-            <Route path="/chat" element={<LocationChat />} />
+            <Route path="/chat" element={<ActiveMemberGate><LocationChat /></ActiveMemberGate>} />
             <Route path="/manage-members" element={<ManageMembers />} />
             
             <Route path="*" element={<NotFound />} />

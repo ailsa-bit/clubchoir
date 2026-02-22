@@ -57,6 +57,11 @@ const Profile = () => {
               <Button variant="outline" className="w-full mt-4" onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" /> {t("profile.signOut")}
               </Button>
+              {isAdmin && (
+                <Button variant="ghost" size="sm" className="w-full mt-2 text-muted-foreground" onClick={() => navigate("/manage-members")}>
+                  Admin Dashboard
+                </Button>
+              )}
             </>
           ) : (
             <>
@@ -73,7 +78,7 @@ const Profile = () => {
                 </button>
               ))}
               <Button variant="outline" className="w-full mt-4" onClick={() => navigate("/login")}>
-                <LogIn className="w-4 h-4 mr-2" /> {t("profile.adminLogin")}
+                <LogIn className="w-4 h-4 mr-2" /> Sign In / Sign Up
               </Button>
             </>
           )}

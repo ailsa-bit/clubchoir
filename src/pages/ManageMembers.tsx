@@ -65,6 +65,15 @@ const emptyForm = {
   notes: "",
 };
 
+interface PendingSignup {
+  id: string;
+  user_id: string;
+  display_name: string | null;
+  location: string | null;
+  status: string;
+  created_at: string;
+}
+
 const ManageMembers = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
@@ -75,6 +84,8 @@ const ManageMembers = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [pendingSignups, setPendingSignups] = useState<PendingSignup[]>([]);
+  const [pendingLoading, setPendingLoading] = useState(true);
 
   // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -96,12 +107,39 @@ const ManageMembers = () => {
     setLoading(false);
   };
 
+  const fetchPending = async () => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("status", "inactive")
+      .order("created_at", { ascending: false });
+    setPendingSignups((data as PendingSignup[]) || []);
+    setPendingLoading(false);
+  };
+
+  const handleApprove = async (signup: PendingSignup) => {
+    // Update profile status to active
+    const { error } = await supabase
+      .from("profiles")
+      .update({ status: "active" })
+      .eq("id", signup.id);
+    if (error) {
+      toast({ title: "Error approving", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Member approved!", description: `${signup.display_name || "User"} now has full access.` });
+    fetchPending();
+  };
+
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
       navigate("/community");
       return;
     }
-    if (isAdmin) fetchMembers();
+    if (isAdmin) {
+      fetchMembers();
+      fetchPending();
+    }
   }, [isAdmin, adminLoading]);
 
   const filtered = useMemo(() => {
@@ -261,6 +299,31 @@ const ManageMembers = () => {
             </div>
           ))}
         </div>
+
+        {/* Pending Signups */}
+        {pendingSignups.length > 0 && (
+          <div className="mb-8 rounded-2xl border-2 border-amber-500/30 bg-amber-500/5 p-5">
+            <h2 className="font-heading font-bold text-lg text-foreground mb-3 flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-500" />
+              Pending Signups ({pendingSignups.length})
+            </h2>
+            <div className="space-y-3">
+              {pendingSignups.map((signup) => (
+                <div key={signup.id} className="flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-4">
+                  <div>
+                    <p className="font-semibold text-foreground text-sm">{signup.display_name || "Unknown"}</p>
+                    <p className="text-xs text-muted-foreground">{signup.location || "No location"} · Signed up {new Date(signup.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button size="sm" onClick={() => handleApprove(signup)}>
+                      <CheckSquare className="w-4 h-4 mr-1" /> Approve
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
