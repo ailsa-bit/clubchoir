@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink } from "lucide-react";
+import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink, MessageCircle } from "lucide-react";
 import { useMembers } from "@/hooks/use-members";
 
 const testimonials = [
@@ -48,6 +48,13 @@ const Index = () => {
             >
               <UserPlus className="w-5 h-5" />
               Bring a Friend
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-border bg-card text-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-105 transition-all"
+            >
+              <MessageCircle className="w-5 h-5" />
+              Contact Us
             </Link>
           </div>
         </div>
