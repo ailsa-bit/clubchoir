@@ -11,14 +11,14 @@ export function useAdmin() {
 
     const checkAdmin = async (userId: string) => {
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("user_roles")
           .select("role")
           .eq("user_id", userId)
           .eq("role", "admin")
           .maybeSingle();
         if (isMounted) {
-          setIsAdmin(!!data);
+          setIsAdmin(!error && !!data);
           setLoading(false);
         }
       } catch {
@@ -29,12 +29,38 @@ export function useAdmin() {
       }
     };
 
+    const init = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!isMounted) return;
+        const currentUser = session?.user ?? null;
+        setUser(currentUser);
+        if (currentUser) {
+          await checkAdmin(currentUser.id);
+        } else {
+          setLoading(false);
+        }
+      } catch {
+        if (isMounted) {
+          setUser(null);
+          setIsAdmin(false);
+          setLoading(false);
+        }
+      }
+    };
+
+    init();
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (!isMounted) return;
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          setTimeout(() => checkAdmin(session.user.id), 0);
+        const currentUser = session?.user ?? null;
+        setUser(currentUser);
+        if (currentUser) {
+          // Use setTimeout to avoid Supabase deadlock
+          setTimeout(() => {
+            if (isMounted) checkAdmin(currentUser.id);
+          }, 0);
         } else {
           setIsAdmin(false);
           setLoading(false);
@@ -42,22 +68,17 @@ export function useAdmin() {
       }
     );
 
-    const init = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!isMounted) return;
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await checkAdmin(session.user.id);
-      } else {
-        if (isMounted) setLoading(false);
+    // Safety timeout - never stay loading forever
+    const timeout = setTimeout(() => {
+      if (isMounted && loading) {
+        setLoading(false);
       }
-    };
-
-    init();
+    }, 5000);
 
     return () => {
       isMounted = false;
       subscription.unsubscribe();
+      clearTimeout(timeout);
     };
   }, []);
 
