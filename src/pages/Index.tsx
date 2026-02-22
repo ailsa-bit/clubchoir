@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink, MessageCircle } from "lucide-react";
 import { useMembers } from "@/hooks/use-members";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
@@ -139,8 +140,48 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Quick Links */}
+      {/* FAQ */}
       <section className="py-16 px-4">
+        <div className="container mx-auto max-w-3xl">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-center text-muted-foreground mb-10">Everything you need to know before your first session</p>
+          <Accordion type="single" collapsible className="space-y-3">
+            {[
+              { q: "Do I need to know how to read music?", a: "Not at all! Most of us learn by ear. Sheet music is there if you want it, but you can absolutely just show up and sing your heart out." },
+              { q: "I'm shy — can I still join?", a: "One hundred percent! Club Choir is all about encouragement, laughter, and zero pressure. Sing quietly, sing loudly, or just hum along until you're ready to belt it out." },
+              { q: "What if I can't make it every week?", a: "No stress — life happens! If you miss a session, we have resources to help you catch up, and our members are always happy to get you back in the groove." },
+              { q: "Do I need to audition?", a: "No auditions and no experience needed. If you can sing in the shower, you're more than qualified." },
+              { q: "What kind of music do you sing?", a: "Everything from pop classics to hidden gems. If it's fun to sing, it's on our list." },
+              { q: "What should I bring to a session?", a: "Just yourself, your voice, and your sense of humour. We provide the good vibes." },
+              { q: "What if I'm not a good singer?", a: "Club Choir is about progress, not perfection. If you love to sing, you belong here — it's that simple." },
+            ].map((item) => (
+              <AccordionItem key={item.q} value={item.q} className="rounded-2xl border border-border bg-card px-5">
+                <AccordionTrigger className="font-heading font-bold text-foreground text-left hover:no-underline py-4">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground pb-4">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+          <div className="text-center mt-10">
+            <p className="text-muted-foreground mb-4">Still have questions?</p>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Get in Touch
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Links */}
+      <section className="py-16 px-4 bg-muted/50">
         <div className="container mx-auto max-w-4xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8 text-center">
             Club Choir Community
