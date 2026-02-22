@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import TryASession from "./pages/TryASession";
 import BringAFriend from "./pages/BringAFriend";
 import NotFound from "./pages/NotFound";
+import LocationSchedule from "./pages/LocationSchedule";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/this-week" element={<ThisWeek />} />
+            <Route path="/schedule/:locationSlug" element={<LocationSchedule />} />
             <Route path="/community" element={<Community />} />
             <Route path="/events" element={<Events />} />
             <Route path="/corporate" element={<Corporate />} />
