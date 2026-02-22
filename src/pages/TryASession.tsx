@@ -23,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const LOCATIONS = [
   { value: "Montreal – Monday", label: "Montreal – Monday" },
@@ -48,6 +49,7 @@ const TryASession = () => {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const form = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
@@ -80,21 +82,20 @@ const TryASession = () => {
         <div className="text-center mb-10">
           <Music className="w-10 h-10 text-primary mx-auto mb-3" />
           <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
-            Try a Session
+            {t("try.title")}
           </h1>
           <p className="text-muted-foreground">
-            Curious about Club Choir? Drop us a message and we'll get you
-            singing in no time.
+            {t("try.subtitle")}
           </p>
         </div>
 
         {sent ? (
           <div className="rounded-2xl border border-border bg-card p-8 text-center">
             <h2 className="font-heading font-bold text-xl text-foreground mb-2">
-              Thanks for reaching out!
+              {t("try.thanks.title")}
             </h2>
             <p className="text-muted-foreground">
-              We've received your message and will get back to you shortly.
+              {t("try.thanks.desc")}
             </p>
           </div>
         ) : (
@@ -109,7 +110,7 @@ const TryASession = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Your name</FormLabel>
+                      <FormLabel>{t("try.name")}</FormLabel>
                       <FormControl>
                         <Input placeholder="Jane Doe" {...field} />
                       </FormControl>
@@ -122,7 +123,7 @@ const TryASession = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t("try.email")}</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
@@ -139,11 +140,11 @@ const TryASession = () => {
                   name="location"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Preferred location</FormLabel>
+                      <FormLabel>{t("try.location")}</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Choose a location…" />
+                            <SelectValue placeholder={t("try.locationPlaceholder")} />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -163,10 +164,10 @@ const TryASession = () => {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Message</FormLabel>
+                      <FormLabel>{t("try.message")}</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Tell us a bit about yourself and which location interests you…"
+                          placeholder={t("try.messagePlaceholder")}
                           rows={4}
                           {...field}
                         />
@@ -180,9 +181,9 @@ const TryASession = () => {
                   disabled={sending}
                   className="w-full rounded-full bg-gradient-warm text-primary-foreground"
                 >
-                  {sending ? "Sending…" : (
+                  {sending ? t("try.sending") : (
                     <>
-                      <Send className="w-4 h-4 mr-2" /> Send Message
+                      <Send className="w-4 h-4 mr-2" /> {t("try.send")}
                     </>
                   )}
                 </Button>
