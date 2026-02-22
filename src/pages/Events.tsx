@@ -2,12 +2,12 @@ import { Calendar, MapPin, Share2 } from "lucide-react";
 
 const events = [
   {
-    title: "PorchFest Montreal",
-    date: "March 15, 2026",
-    location: "Montreal",
+    title: "NDG PorchFest",
+    date: "May 17–18, 2026",
+    location: "Montreal (NDG)",
     color: "border-pink/30 bg-pink-light",
     dot: "bg-pink",
-    description: "Bring your voice to the streets! Join us for an outdoor singalong as part of Montreal's beloved PorchFest.",
+    description: "All Club Choir members are invited to take part in NDG PorchFest! Exact time and meeting details to be confirmed — stay tuned.",
   },
   {
     title: "80s Night Choir",
@@ -18,20 +18,36 @@ const events = [
     description: "Neon optional, enthusiasm required. A themed evening of classic 80s hits sung together.",
   },
   {
-    title: "Spring Pop-Up Singalong",
-    date: "April 5, 2026",
+    title: "Seasonal Showcase — Montreal",
+    date: "Monday, May 4, 2026 · 7:00 PM",
+    location: "Montreal",
+    color: "border-pink/30 bg-pink-light",
+    dot: "bg-pink",
+    description: "Join us for our end-of-season showcase! Friends and family are welcome to come enjoy the songs we've been working on all season.",
+  },
+  {
+    title: "Seasonal Showcase — Pointe-Claire",
+    date: "Thursday, May 7, 2026 · 7:00 PM",
+    location: "Pointe-Claire",
+    color: "border-purple/30 bg-purple-light",
+    dot: "bg-purple",
+    description: "Our seasonal celebration of song — come cheer on your favourite choir members. Friends and family welcome!",
+  },
+  {
+    title: "Seasonal Showcase — Saint-Hubert",
+    date: "Wednesday, May 13, 2026 · 7:00 PM",
+    location: "Saint-Hubert",
+    color: "border-lime/20 bg-lime-light",
+    dot: "bg-lime",
+    description: "A special evening showcasing what we've been rehearsing all season. Bring your friends and family along!",
+  },
+  {
+    title: "Seasonal Showcase — Arundel",
+    date: "Tuesday, May 26, 2026 · 6:30 PM",
     location: "Arundel",
     color: "border-aqua/30 bg-aqua-light",
     dot: "bg-aqua",
-    description: "A casual outdoor singalong to welcome the warmer weather. Open to everyone!",
-  },
-  {
-    title: "Seasonal Showcase",
-    date: "April 18, 2026",
-    location: "St-Hubert",
-    color: "border-lime/20 bg-lime-light",
-    dot: "bg-lime",
-    description: "Our seasonal show celebrating what we've been working on. Friends and family welcome.",
+    description: "Our Arundel crew wraps up the season with a showcase for friends and family. Everyone is welcome!",
   },
 ];
 
