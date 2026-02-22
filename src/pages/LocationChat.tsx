@@ -50,6 +50,13 @@ const LocationChat = () => {
     }
   }, [userLocation]);
 
+  // Non-admin members can only access their own location
+  useEffect(() => {
+    if (!adminLoading && !isAdmin && userLocation && LOCATIONS.includes(userLocation)) {
+      setActiveLocation(userLocation);
+    }
+  }, [isAdmin, adminLoading, userLocation, activeLocation]);
+
   useEffect(() => {
     if (!user) return;
     supabase
@@ -223,13 +230,19 @@ const LocationChat = () => {
         </div>
 
         <Tabs value={activeLocation} onValueChange={setActiveLocation}>
-          <TabsList className="w-full grid grid-cols-4 mb-4">
-            {LOCATIONS.map((loc) => (
-              <TabsTrigger key={loc} value={loc} className="text-xs sm:text-sm">
-                {loc === "Saint-Hubert" ? "St-Hubert" : loc === "Pointe-Claire" ? "Pte-Claire" : loc}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          {isAdmin ? (
+            <TabsList className="w-full grid grid-cols-4 mb-4">
+              {LOCATIONS.map((loc) => (
+                <TabsTrigger key={loc} value={loc} className="text-xs sm:text-sm">
+                  {loc === "Saint-Hubert" ? "St-Hubert" : loc === "Pointe-Claire" ? "Pte-Claire" : loc}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          ) : (
+            <div className="mb-4 text-sm text-muted-foreground text-center">
+              📍 {activeLocation}
+            </div>
+          )}
 
           {LOCATIONS.map((loc) => (
             <TabsContent key={loc} value={loc}>
