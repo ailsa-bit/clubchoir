@@ -1,10 +1,11 @@
-import { Music, MapPin, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Music, MapPin, Clock, Calendar } from "lucide-react";
 
 const sessions = [
-  { location: "Montreal", venue: "Kensington – Kensington Room", day: "Monday", time: "7:00–8:30 PM", address: "6225 Av. Godfrey", dot: "bg-pink", bg: "bg-pink-light border-pink/20" },
-  { location: "Arundel", venue: "Centre Arundel Centre", day: "Tuesday", time: "6:30–8:00 PM", address: "17 rue du Village, Arundel", dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20" },
-  { location: "Saint-Hubert", venue: "St-Gabriel Catholic Church", day: "Wednesday", time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20" },
-  { location: "Pointe-Claire", venue: "Valois United Church", day: "Thursday", time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire", dot: "bg-purple", bg: "bg-purple-light border-purple/20" },
+  { location: "Montreal", slug: "montreal", venue: "Kensington – Kensington Room", day: "Monday", time: "7:00–8:30 PM", address: "6225 Av. Godfrey", dot: "bg-pink", bg: "bg-pink-light border-pink/20" },
+  { location: "Arundel", slug: "arundel", venue: "Centre Arundel Centre", day: "Tuesday", time: "6:30–8:00 PM", address: "17 rue du Village, Arundel", dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20" },
+  { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church", day: "Wednesday", time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20" },
+  { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church", day: "Thursday", time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire", dot: "bg-purple", bg: "bg-purple-light border-purple/20" },
 ];
 
 const ThisWeek = () => {
@@ -30,6 +31,12 @@ const ThisWeek = () => {
                 <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{s.day} · {s.time}</span>
                 <span className="flex items-center gap-1"><MapPin className="w-4 h-4" />{s.address}</span>
               </div>
+              <Link
+                to={`/schedule/${s.slug}`}
+                className="inline-flex items-center gap-1.5 mt-3 text-sm font-semibold text-primary hover:underline"
+              >
+                <Calendar className="w-4 h-4" /> View Season Schedule
+              </Link>
             </div>
           ))}
         </div>
