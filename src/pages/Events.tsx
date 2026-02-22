@@ -1,5 +1,9 @@
 import { Calendar, MapPin, Share2, Clock } from "lucide-react";
+import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const locationCards = [
   {
@@ -102,8 +106,34 @@ const events = [
 const getText = (val: string | { en: string; fr: string }, lang: "en" | "fr") =>
   typeof val === "string" ? val : val[lang];
 
+const SESSION_PRICE_ID = "price_1T3jagCDjLBT3uD040OaBrMB";
+
 const Events = () => {
   const { t, language } = useLanguage();
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+    setLoading(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error(language === "fr" ? "Veuillez vous connecter pour vous inscrire." : "Please log in to register.");
+        setLoading(false);
+        return;
+      }
+      const { data, error } = await supabase.functions.invoke("create-checkout", {
+        body: { priceId: SESSION_PRICE_ID },
+      });
+      if (error) throw error;
+      if (data?.url) {
+        window.open(data.url, "_blank");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleShare = (title: string) => {
     if (navigator.share) {
@@ -125,6 +155,11 @@ const Events = () => {
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
           {language === "fr" ? "Sessions hebdomadaires — Hiver 2026" : "Weekly Sessions — Winter 2026"}
         </h2>
+        <div className="flex justify-center mb-8">
+          <Button onClick={handleRegister} disabled={loading} size="lg">
+            {loading ? t("events.registering") : t("events.register")}
+          </Button>
+        </div>
         <div className="grid sm:grid-cols-2 gap-5 mb-14">
           {locationCards.map((loc) => (
             <div

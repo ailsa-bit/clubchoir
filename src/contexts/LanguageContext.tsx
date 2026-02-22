@@ -87,6 +87,13 @@ const translations: Record<string, Record<Language, string>> = {
   "events.title": { en: "Club Choir Events", fr: "Événements Club Choir" },
   "events.subtitle": { en: "Special events beyond our weekly rehearsals — come sing, connect, and celebrate together.", fr: "Des événements spéciaux au-delà de nos répétitions hebdomadaires — venez chanter, socialiser et célébrer ensemble." },
   "events.share": { en: "Share", fr: "Partager" },
+  "events.register": { en: "Register for This Session", fr: "S'inscrire à cette session" },
+  "events.registering": { en: "Redirecting…", fr: "Redirection…" },
+
+  // Payment
+  "payment.success.title": { en: "Payment Successful!", fr: "Paiement réussi !" },
+  "payment.success.desc": { en: "Thank you for registering! You're all set for the upcoming session.", fr: "Merci pour votre inscription ! Vous êtes prêt pour la prochaine session." },
+  "payment.success.back": { en: "Back to Events", fr: "Retour aux événements" },
 
   // Corporate
   "corporate.title": { en: "Corporate & Private Events", fr: "Événements corporatifs et privés" },

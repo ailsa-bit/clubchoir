@@ -21,6 +21,7 @@ import Resources from "./pages/Resources";
 import SendEmail from "./pages/SendEmail";
 import LocationChat from "./pages/LocationChat";
 import ManageMembers from "./pages/ManageMembers";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/send-email" element={<SendEmail />} />
             <Route path="/chat" element={<ActiveMemberGate><LocationChat /></ActiveMemberGate>} />
             <Route path="/manage-members" element={<ManageMembers />} />
+            <Route path="/payment-success" element={<PaymentSuccess />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
