@@ -19,12 +19,10 @@ export function useAdmin() {
           .maybeSingle();
         if (isMounted) {
           setIsAdmin(!error && !!data);
-          setLoading(false);
         }
       } catch {
         if (isMounted) {
           setIsAdmin(false);
-          setLoading(false);
         }
       }
     };
@@ -37,48 +35,38 @@ export function useAdmin() {
         setUser(currentUser);
         if (currentUser) {
           await checkAdmin(currentUser.id);
-        } else {
-          setLoading(false);
         }
       } catch {
         if (isMounted) {
           setUser(null);
           setIsAdmin(false);
-          setLoading(false);
         }
+      } finally {
+        if (isMounted) setLoading(false);
       }
     };
 
-    init();
-
+    // Set up listener BEFORE init (per Supabase best practices)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (!isMounted) return;
         const currentUser = session?.user ?? null;
         setUser(currentUser);
         if (currentUser) {
-          // Use setTimeout to avoid Supabase deadlock
           setTimeout(() => {
             if (isMounted) checkAdmin(currentUser.id);
           }, 0);
         } else {
           setIsAdmin(false);
-          setLoading(false);
         }
       }
     );
 
-    // Safety timeout - never stay loading forever
-    const timeout = setTimeout(() => {
-      if (isMounted && loading) {
-        setLoading(false);
-      }
-    }, 5000);
+    init();
 
     return () => {
       isMounted = false;
       subscription.unsubscribe();
-      clearTimeout(timeout);
     };
   }, []);
 
