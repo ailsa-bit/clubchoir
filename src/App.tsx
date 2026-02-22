@@ -22,6 +22,7 @@ import SendEmail from "./pages/SendEmail";
 import LocationChat from "./pages/LocationChat";
 import ManageMembers from "./pages/ManageMembers";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/chat" element={<ActiveMemberGate><LocationChat /></ActiveMemberGate>} />
             <Route path="/manage-members" element={<ManageMembers />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

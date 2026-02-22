@@ -197,6 +197,17 @@ const translations: Record<string, Record<Language, string>> = {
   "login.alreadyAccount": { en: "Already have an account?", fr: "Vous avez déjà un compte ?" },
   "login.noAccount": { en: "Don't have an account?", fr: "Vous n'avez pas de compte ?" },
   "login.confirmEmail": { en: "Check your email for a confirmation link, then come back and sign in.", fr: "Vérifiez votre courriel pour un lien de confirmation, puis revenez et connectez-vous." },
+  "login.forgotPassword": { en: "Forgot password?", fr: "Mot de passe oublié ?" },
+  "login.forgotSubtitle": { en: "Enter your email and we'll send you a reset link.", fr: "Entrez votre courriel et nous vous enverrons un lien de réinitialisation." },
+  "login.sendResetLink": { en: "Send Reset Link", fr: "Envoyer le lien" },
+  "login.resetEmailSent": { en: "Check your email for a password reset link.", fr: "Vérifiez votre courriel pour un lien de réinitialisation." },
+  "login.backToSignIn": { en: "Back to Sign In", fr: "Retour à la connexion" },
+  "login.newPassword": { en: "New Password", fr: "Nouveau mot de passe" },
+  "login.confirmPassword": { en: "Confirm Password", fr: "Confirmer le mot de passe" },
+  "login.resetPassword": { en: "Reset Password", fr: "Réinitialiser le mot de passe" },
+  "login.resetSubtitle": { en: "Enter your new password below.", fr: "Entrez votre nouveau mot de passe ci-dessous." },
+  "login.passwordsMismatch": { en: "Passwords do not match.", fr: "Les mots de passe ne correspondent pas." },
+  "login.passwordUpdated": { en: "Password updated! You can now sign in.", fr: "Mot de passe mis à jour ! Vous pouvez maintenant vous connecter." },
 
   // 404
   "notFound.title": { en: "404", fr: "404" },
