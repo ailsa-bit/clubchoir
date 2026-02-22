@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Send, Users, Music, Sparkles } from "lucide-react";
+import { Send, Users, Music, Sparkles, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 
@@ -24,8 +25,9 @@ const Corporate = () => {
   const { toast } = useToast();
   const [form, setForm] = useState({ name: "", company: "", email: "", eventType: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [sending, setSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = inquirySchema.safeParse(form);
     if (!result.success) {
@@ -37,8 +39,25 @@ const Corporate = () => {
       return;
     }
     setErrors({});
-    toast({ title: "Inquiry sent!", description: "We'll be in touch soon." });
-    setForm({ name: "", company: "", email: "", eventType: "", message: "" });
+    setSending(true);
+    try {
+      const { error } = await supabase.functions.invoke("send-contact-email", {
+        body: {
+          name: form.name,
+          email: form.email,
+          location: form.company,
+          message: `Event Type: ${form.eventType}\n\n${form.message || "No additional message."}`,
+          subject: `Corporate Inquiry from ${form.company}`,
+        },
+      });
+      if (error) throw error;
+      toast({ title: "Inquiry sent!", description: "We'll be in touch soon." });
+      setForm({ name: "", company: "", email: "", eventType: "", message: "" });
+    } catch (err: any) {
+      toast({ title: "Failed to send", description: "Please try again or email us directly.", variant: "destructive" });
+    } finally {
+      setSending(false);
+    }
   };
 
   const update = (field: string, value: string) => {
@@ -125,10 +144,11 @@ const Corporate = () => {
 
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold shadow hover:shadow-lg hover:scale-[1.02] transition-all"
+              disabled={sending}
+              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold shadow hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-60 disabled:pointer-events-none"
             >
-              <Send className="w-4 h-4" />
-              Send Inquiry
+              {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              {sending ? "Sending…" : "Send Inquiry"}
             </button>
           </form>
         </div>
