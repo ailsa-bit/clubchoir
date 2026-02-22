@@ -18,6 +18,7 @@ import LocationSchedule from "./pages/LocationSchedule";
 import Resources from "./pages/Resources";
 import SendEmail from "./pages/SendEmail";
 import LocationChat from "./pages/LocationChat";
+import ManageMembers from "./pages/ManageMembers";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/bring-a-friend" element={<BringAFriend />} />
             <Route path="/send-email" element={<SendEmail />} />
             <Route path="/chat" element={<LocationChat />} />
+            <Route path="/manage-members" element={<ManageMembers />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
