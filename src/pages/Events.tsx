@@ -1,5 +1,52 @@
-import { Calendar, MapPin, Share2 } from "lucide-react";
+import { Calendar, MapPin, Share2, Clock } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+
+const locationCards = [
+  {
+    location: "Montreal",
+    venue: "Kensington Presbyterian Church",
+    address: "6225 Av. Godfrey, Montreal",
+    day: { en: "Mondays", fr: "Lundis" },
+    time: "7:00–8:30 PM",
+    season: { en: "Winter 2026", fr: "Hiver 2026" },
+    dates: { en: "January 12 – April 27, 2026", fr: "12 janvier – 27 avril 2026" },
+    color: "border-pink/30 bg-pink-light",
+    dot: "bg-pink",
+  },
+  {
+    location: "Arundel",
+    venue: "Centre Arundel Centre",
+    address: "17 rue du Village, Arundel",
+    day: { en: "Tuesdays", fr: "Mardis" },
+    time: "6:30–8:00 PM",
+    season: { en: "Winter 2026", fr: "Hiver 2026" },
+    dates: { en: "January 13 – April 28, 2026", fr: "13 janvier – 28 avril 2026" },
+    color: "border-aqua/30 bg-aqua-light",
+    dot: "bg-aqua",
+  },
+  {
+    location: "Saint-Hubert",
+    venue: "St-Gabriel Catholic Church",
+    address: "5070 Rue Gilbert, Saint-Hubert",
+    day: { en: "Wednesdays", fr: "Mercredis" },
+    time: "7:00–8:30 PM",
+    season: { en: "Winter 2026", fr: "Hiver 2026" },
+    dates: { en: "January 14 – April 29, 2026", fr: "14 janvier – 29 avril 2026" },
+    color: "border-lime/20 bg-lime-light",
+    dot: "bg-lime",
+  },
+  {
+    location: "Pointe-Claire",
+    venue: "Valois United Church",
+    address: "70 Belmont Ave, Pointe-Claire",
+    day: { en: "Thursdays", fr: "Jeudis" },
+    time: "7:00–8:30 PM",
+    season: { en: "Winter 2026", fr: "Hiver 2026" },
+    dates: { en: "January 15 – April 30, 2026", fr: "15 janvier – 30 avril 2026" },
+    color: "border-purple/30 bg-purple-light",
+    dot: "bg-purple",
+  },
+];
 
 const events = [
   {
@@ -74,6 +121,43 @@ const Events = () => {
           {t("events.subtitle")}
         </p>
 
+        {/* Location Cards - Winter 2026 */}
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
+          {language === "fr" ? "Sessions hebdomadaires — Hiver 2026" : "Weekly Sessions — Winter 2026"}
+        </h2>
+        <div className="grid sm:grid-cols-2 gap-5 mb-14">
+          {locationCards.map((loc) => (
+            <div
+              key={loc.location}
+              className={`rounded-2xl border p-6 ${loc.color} transition-shadow hover:shadow-md`}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span className={`w-2.5 h-2.5 rounded-full ${loc.dot}`} />
+                <span className="font-heading font-bold text-lg text-foreground">{loc.location}</span>
+              </div>
+              <p className="text-sm font-semibold text-foreground/80 mb-1">{loc.venue}</p>
+              <div className="space-y-1 text-sm text-muted-foreground mb-2">
+                <span className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5" />
+                  {getText(loc.day, language)} · {loc.time}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5" />
+                  {loc.address}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5" />
+                  {getText(loc.dates, language)}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Community Events */}
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
+          {language === "fr" ? "Événements communautaires" : "Community Events"}
+        </h2>
         <div className="grid sm:grid-cols-2 gap-5">
           {events.map((event, i) => {
             const title = getText(event.title, language);

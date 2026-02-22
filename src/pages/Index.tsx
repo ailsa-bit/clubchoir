@@ -77,9 +77,10 @@ const Index = () => {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => (
-              <div
+              <Link
                 key={item.location}
-                className={`rounded-2xl border p-5 ${item.color} transition-shadow hover:shadow-md`}
+                to="/events"
+                className={`rounded-2xl border p-5 ${item.color} transition-shadow hover:shadow-md block`}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
@@ -89,7 +90,7 @@ const Index = () => {
                   {item.day} · {item.time}
                 </p>
                 <p className="text-xs text-muted-foreground">{item.venue}</p>
-              </div>
+              </Link>
             ))}
           </div>
           <p className="text-center text-sm text-muted-foreground mt-6">
