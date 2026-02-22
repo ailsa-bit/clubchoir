@@ -1,21 +1,40 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
-import { Menu, X, User } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, X, User, Mail } from "lucide-react";
 import clubChoirLogo from "@/assets/club-choir-logo.png";
+import { supabase } from "@/integrations/supabase/client";
 
-const navItems = [
-  { label: "Your Club Choir Space", path: "/" },
+const publicNavItems = [
+  { label: "Home", path: "/" },
   { label: "This Week at Choir", path: "/this-week" },
+  { label: "Club Choir Events", path: "/events" },
+  { label: "Corporate Events", path: "/corporate" },
+];
+
+const memberNavItems = [
   { label: "Choir Community", path: "/community" },
   { label: "Chat", path: "/chat" },
   { label: "Song Resources", path: "/resources" },
-  { label: "Club Choir Events", path: "/events" },
-  { label: "Corporate Events", path: "/corporate" },
 ];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsLoggedIn(!!session);
+    };
+    checkAuth();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const navItems = isLoggedIn ? [...publicNavItems, ...memberNavItems] : publicNavItems;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -97,8 +116,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
       <footer className="border-t border-border bg-card py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p className="font-heading font-semibold text-foreground mb-1">Club Choir</p>
-          <p>Warm voices, real community. © {new Date().getFullYear()}</p>
+          <p className="font-heading font-semibold text-foreground mb-2">Club Choir</p>
+          <p className="mb-3">Warm voices, real community. © {new Date().getFullYear()}</p>
+          <a
+            href="mailto:ailsa@clubchoir.ca"
+            className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Mail className="w-4 h-4" />
+            ailsa@clubchoir.ca
+          </a>
         </div>
       </footer>
     </div>
