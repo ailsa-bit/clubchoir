@@ -17,9 +17,15 @@ export function useAdmin() {
           .eq("user_id", userId)
           .eq("role", "admin")
           .maybeSingle();
-        if (isMounted) setIsAdmin(!!data);
+        if (isMounted) {
+          setIsAdmin(!!data);
+          setLoading(false);
+        }
       } catch {
-        if (isMounted) setIsAdmin(false);
+        if (isMounted) {
+          setIsAdmin(false);
+          setLoading(false);
+        }
       }
     };
 
@@ -28,7 +34,6 @@ export function useAdmin() {
         if (!isMounted) return;
         setUser(session?.user ?? null);
         if (session?.user) {
-          // Defer to avoid deadlock
           setTimeout(() => checkAdmin(session.user.id), 0);
         } else {
           setIsAdmin(false);
@@ -37,15 +42,15 @@ export function useAdmin() {
       }
     );
 
-    // Initial load
     const init = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!isMounted) return;
       setUser(session?.user ?? null);
       if (session?.user) {
         await checkAdmin(session.user.id);
+      } else {
+        if (isMounted) setLoading(false);
       }
-      if (isMounted) setLoading(false);
     };
 
     init();

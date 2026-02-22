@@ -1,22 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { MessageCircle, Send, Trash2 } from "lucide-react";
+import { MessageCircle, Send, Trash2, Megaphone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { useProfile } from "@/hooks/use-profile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
 const LOCATIONS = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire"];
-
-const locationColors: Record<string, string> = {
-  Montreal: "data-[state=active]:bg-[hsl(var(--pink))]/15 data-[state=active]:text-[hsl(var(--pink))]",
-  Arundel: "data-[state=active]:bg-[hsl(var(--aqua))]/15 data-[state=active]:text-[hsl(var(--aqua))]",
-  "Saint-Hubert": "data-[state=active]:bg-[hsl(var(--lime))]/15 data-[state=active]:text-[hsl(var(--lime-foreground))]",
-  "Pointe-Claire": "data-[state=active]:bg-[hsl(var(--purple))]/15 data-[state=active]:text-[hsl(var(--purple))]",
-};
 
 interface ChatMessage {
   id: string;
@@ -38,16 +39,17 @@ const LocationChat = () => {
   const [newMessage, setNewMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [displayName, setDisplayName] = useState("");
+  const [broadcastMsg, setBroadcastMsg] = useState("");
+  const [broadcastOpen, setBroadcastOpen] = useState(false);
+  const [broadcasting, setBroadcasting] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Set default tab to user's location
   useEffect(() => {
     if (userLocation && LOCATIONS.includes(userLocation)) {
       setActiveLocation(userLocation);
     }
   }, [userLocation]);
 
-  // Fetch display name
   useEffect(() => {
     if (!user) return;
     supabase
@@ -60,7 +62,6 @@ const LocationChat = () => {
       });
   }, [user]);
 
-  // Fetch messages and subscribe to realtime
   useEffect(() => {
     const fetchMessages = async () => {
       const { data } = await supabase
@@ -99,7 +100,6 @@ const LocationChat = () => {
     };
   }, [activeLocation]);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -125,6 +125,28 @@ const LocationChat = () => {
     await supabase.from("chat_messages").delete().eq("id", id);
   };
 
+  const handleBroadcast = async () => {
+    if (!broadcastMsg.trim() || !user) return;
+    setBroadcasting(true);
+    try {
+      const inserts = LOCATIONS.map((loc) => ({
+        user_id: user.id,
+        location: loc,
+        message: `📢 ${broadcastMsg.trim()}`,
+        display_name: displayName,
+      }));
+      const { error } = await supabase.from("chat_messages").insert(inserts);
+      if (error) throw error;
+      toast({ title: "Broadcast sent!", description: "Message posted to all 4 locations." });
+      setBroadcastMsg("");
+      setBroadcastOpen(false);
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    } finally {
+      setBroadcasting(false);
+    }
+  };
+
   if (adminLoading) {
     return <div className="py-20 text-center text-muted-foreground">Loading...</div>;
   }
@@ -143,9 +165,7 @@ const LocationChat = () => {
   const formatTime = (iso: string) => {
     const d = new Date(iso);
     const now = new Date();
-    const diffMs = now.getTime() - d.getTime();
-    const diffDays = Math.floor(diffMs / 86400000);
-
+    const diffDays = Math.floor((now.getTime() - d.getTime()) / 86400000);
     const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     if (diffDays === 0) return `Today ${time}`;
     if (diffDays === 1) return `Yesterday ${time}`;
@@ -163,16 +183,49 @@ const LocationChat = () => {
           <p className="text-muted-foreground">
             Connect with members at your location
           </p>
+          {isAdmin && (
+            <Dialog open={broadcastOpen} onOpenChange={setBroadcastOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="mt-3">
+                  <Megaphone className="w-4 h-4 mr-2" />
+                  Broadcast to All
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Broadcast to All Locations</DialogTitle>
+                </DialogHeader>
+                <p className="text-sm text-muted-foreground">
+                  This message will be posted to all 4 location chats.
+                </p>
+                <Textarea
+                  placeholder="Write your announcement…"
+                  value={broadcastMsg}
+                  onChange={(e) => setBroadcastMsg(e.target.value)}
+                  rows={4}
+                  maxLength={1000}
+                />
+                <Button
+                  onClick={handleBroadcast}
+                  disabled={broadcasting || !broadcastMsg.trim()}
+                  className="w-full rounded-full bg-gradient-warm text-primary-foreground"
+                >
+                  {broadcasting ? "Sending…" : (
+                    <>
+                      <Megaphone className="w-4 h-4 mr-2" />
+                      Send to All Locations
+                    </>
+                  )}
+                </Button>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
 
         <Tabs value={activeLocation} onValueChange={setActiveLocation}>
           <TabsList className="w-full grid grid-cols-4 mb-4">
             {LOCATIONS.map((loc) => (
-              <TabsTrigger
-                key={loc}
-                value={loc}
-                className={`text-xs sm:text-sm ${locationColors[loc] || ""}`}
-              >
+              <TabsTrigger key={loc} value={loc} className="text-xs sm:text-sm">
                 {loc === "Saint-Hubert" ? "St-Hubert" : loc === "Pointe-Claire" ? "Pte-Claire" : loc}
               </TabsTrigger>
             ))}
@@ -181,7 +234,6 @@ const LocationChat = () => {
           {LOCATIONS.map((loc) => (
             <TabsContent key={loc} value={loc}>
               <div className="rounded-2xl border border-border bg-card flex flex-col" style={{ height: "60vh" }}>
-                {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {messages.length === 0 && (
                     <p className="text-center text-muted-foreground text-sm py-8">
@@ -191,10 +243,7 @@ const LocationChat = () => {
                   {messages.map((msg) => {
                     const isOwn = msg.user_id === user?.id;
                     return (
-                      <div
-                        key={msg.id}
-                        className={`flex ${isOwn ? "justify-end" : "justify-start"}`}
-                      >
+                      <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
                         <div
                           className={`max-w-[80%] rounded-2xl px-4 py-2 ${
                             isOwn
@@ -228,7 +277,6 @@ const LocationChat = () => {
                   <div ref={bottomRef} />
                 </div>
 
-                {/* Input */}
                 <div className="border-t border-border p-3 flex gap-2">
                   <Input
                     placeholder="Type a message…"
