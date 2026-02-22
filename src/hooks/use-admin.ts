@@ -5,53 +5,62 @@ export function useAdmin() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
-  const loadingSetRef = useRef(false);
+  const initializedRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
 
-    const setLoadingFalse = () => {
-      if (isMounted && !loadingSetRef.current) {
-        loadingSetRef.current = true;
-        setLoading(false);
-      }
-    };
-
     const checkAdmin = async (userId: string): Promise<boolean> => {
       try {
-        const queryPromise = supabase
+        const { data, error } = await supabase
           .from("user_roles")
           .select("role")
           .eq("user_id", userId)
           .eq("role", "admin")
           .maybeSingle();
-        const timeoutPromise = new Promise<{ data: null; error: { message: string } }>((resolve) =>
-          setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 3000)
-        );
-        const { data, error } = await Promise.race([queryPromise, timeoutPromise]);
         return !error && !!data;
       } catch {
         return false;
       }
     };
 
+    const handleUser = async (currentUser: any) => {
+      if (!isMounted) return;
+      setUser(currentUser);
+      if (currentUser) {
+        const admin = await checkAdmin(currentUser.id);
+        if (isMounted) setIsAdmin(admin);
+      } else {
+        setIsAdmin(false);
+      }
+      if (isMounted) setLoading(false);
+    };
+
+    // 1. Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!isMounted || initializedRef.current) return;
+      initializedRef.current = true;
+      handleUser(session?.user ?? null);
+    });
+
+    // 2. Listen for auth changes (login/logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         if (!isMounted) return;
-        const currentUser = session?.user ?? null;
-        setUser(currentUser);
-        if (currentUser) {
-          const admin = await checkAdmin(currentUser.id);
-          if (isMounted) setIsAdmin(admin);
-        } else {
-          setIsAdmin(false);
+        if (!initializedRef.current) {
+          initializedRef.current = true;
         }
-        setLoadingFalse();
+        handleUser(session?.user ?? null);
       }
     );
 
-    // Safety timeout - always resolve loading
-    const timeout = setTimeout(setLoadingFalse, 5000);
+    // 3. Safety timeout
+    const timeout = setTimeout(() => {
+      if (isMounted && !initializedRef.current) {
+        initializedRef.current = true;
+        setLoading(false);
+      }
+    }, 5000);
 
     return () => {
       isMounted = false;
