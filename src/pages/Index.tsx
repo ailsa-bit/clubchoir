@@ -115,7 +115,7 @@ const Index = () => {
           </div>
           <div className="text-center mt-8">
             <a
-              href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review"
+              href="https://g.page/r/CU1hiLJTYmtXEAE/review"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
