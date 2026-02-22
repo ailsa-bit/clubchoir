@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
-import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Lock } from "lucide-react";
+import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Lock, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface SongResource {
@@ -36,6 +36,7 @@ const Resources = () => {
   const [uploadSong, setUploadSong] = useState("");
   const [uploadType, setUploadType] = useState<string>("audio");
   const [showUpload, setShowUpload] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchResources = async () => {
     const { data } = await supabase
@@ -130,9 +131,15 @@ const Resources = () => {
     );
   }
 
-  // Group resources by song
+  const filtered = searchQuery.trim()
+    ? resources.filter(r =>
+        r.song_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        r.file_name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : resources;
+
   const grouped: Record<string, SongResource[]> = {};
-  resources.forEach((r) => {
+  filtered.forEach((r) => {
     if (!grouped[r.song_name]) grouped[r.song_name] = [];
     grouped[r.song_name].push(r);
   });
@@ -146,6 +153,18 @@ const Resources = () => {
         <p className="text-center text-muted-foreground mb-8 max-w-lg mx-auto">
           Recordings, lyrics, and sheet music for the songs we're learning.
         </p>
+
+        {/* Search bar */}
+        <div className="relative max-w-md mx-auto mb-8">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search songs or files…"
+            className="w-full rounded-xl border border-input bg-background pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+        </div>
 
 
         {/* Admin upload */}
