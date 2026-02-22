@@ -12,6 +12,7 @@ import Corporate from "./pages/Corporate";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import TryASession from "./pages/TryASession";
+import BringAFriend from "./pages/BringAFriend";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/try" element={<TryASession />} />
+            <Route path="/bring-a-friend" element={<BringAFriend />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
