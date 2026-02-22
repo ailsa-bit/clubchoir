@@ -10,6 +10,14 @@ const events = [
     description: "All Club Choir members are invited to take part in NDG PorchFest! Exact time and meeting details to be confirmed — stay tuned.",
   },
   {
+    title: "Summer Pop-Up Choirs",
+    date: "Summer 2026",
+    location: "In & Around Montreal",
+    color: "border-aqua/30 bg-aqua-light",
+    dot: "bg-aqua",
+    description: "Pop-up singalongs popping up all summer long! Stay tuned for locations and various themes — all are welcome.",
+  },
+  {
     title: "Seasonal Showcase — Montreal",
     date: "Monday, May 4, 2026 · 7:00 PM",
     location: "Montreal",
