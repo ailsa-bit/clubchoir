@@ -30,6 +30,7 @@ import {
   AlertTriangle,
   Loader2,
   CheckSquare,
+  UserCheck,
 } from "lucide-react";
 
 interface MemberRow {
@@ -74,6 +75,16 @@ interface PendingSignup {
   created_at: string;
 }
 
+interface SignedUpUser {
+  id: string;
+  email: string;
+  created_at: string;
+  email_confirmed_at: string | null;
+  display_name: string | null;
+  location: string | null;
+  profile_status: string;
+}
+
 const ManageMembers = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
@@ -86,6 +97,8 @@ const ManageMembers = () => {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [pendingSignups, setPendingSignups] = useState<PendingSignup[]>([]);
   const [pendingLoading, setPendingLoading] = useState(true);
+  const [signedUpUsers, setSignedUpUsers] = useState<SignedUpUser[]>([]);
+  const [signupsLoading, setSignupsLoading] = useState(true);
 
   // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -117,6 +130,17 @@ const ManageMembers = () => {
     setPendingLoading(false);
   };
 
+  const fetchSignups = async () => {
+    setSignupsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("list-signups");
+      if (!error && data) {
+        setSignedUpUsers(data);
+      }
+    } catch {}
+    setSignupsLoading(false);
+  };
+
   const handleApprove = async (signup: PendingSignup) => {
     // Update profile status to active
     const { error } = await supabase
@@ -139,6 +163,7 @@ const ManageMembers = () => {
     if (isAdmin) {
       fetchMembers();
       fetchPending();
+      fetchSignups();
     }
   }, [isAdmin, adminLoading]);
 
@@ -324,6 +349,60 @@ const ManageMembers = () => {
             </div>
           </div>
         )}
+
+        {/* Signed Up Users */}
+        <div className="mb-8 rounded-2xl border border-border bg-card p-5">
+          <h2 className="font-heading font-bold text-lg text-foreground mb-3 flex items-center gap-2">
+            <UserCheck className="w-5 h-5 text-primary" />
+            Signed Up Users ({signedUpUsers.length})
+          </h2>
+          {signupsLoading ? (
+            <div className="text-center py-4 text-muted-foreground">
+              <Loader2 className="w-4 h-4 animate-spin inline mr-2" />Loading...
+            </div>
+          ) : signedUpUsers.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No signed up users yet.</p>
+          ) : (
+            <div className="rounded-xl border border-border overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-muted/50 border-b border-border">
+                      <th className="p-3 text-left font-medium text-muted-foreground">Email</th>
+                      <th className="p-3 text-left font-medium text-muted-foreground hidden sm:table-cell">Display Name</th>
+                      <th className="p-3 text-left font-medium text-muted-foreground hidden md:table-cell">Location</th>
+                      <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+                      <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">Signed Up</th>
+                      <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">Verified</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {signedUpUsers.map((u) => (
+                      <tr key={u.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
+                        <td className="p-3 text-foreground">{u.email}</td>
+                        <td className="p-3 text-muted-foreground hidden sm:table-cell">{u.display_name || "—"}</td>
+                        <td className="p-3 text-muted-foreground hidden md:table-cell">{u.location || "—"}</td>
+                        <td className="p-3">
+                          <Badge variant="outline" className={`text-[10px] ${u.profile_status === "active" ? "bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30" : "bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30"}`}>
+                            {u.profile_status}
+                          </Badge>
+                        </td>
+                        <td className="p-3 text-muted-foreground hidden lg:table-cell">{new Date(u.created_at).toLocaleDateString()}</td>
+                        <td className="p-3 hidden lg:table-cell">
+                          {u.email_confirmed_at ? (
+                            <Badge variant="outline" className="text-[10px] bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30">Yes</Badge>
+                          ) : (
+                            <Badge variant="outline" className="text-[10px] bg-muted text-muted-foreground border-border">No</Badge>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
