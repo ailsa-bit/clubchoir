@@ -31,8 +31,11 @@ const Index = () => {
           <h1 className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-4 animate-fade-in">
             Your Club Choir Space
           </h1>
-          <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            Warm voices, real connections. Whether you're a seasoned singer or just curious — there's a spot for you.
+          <p className="text-lg text-muted-foreground mb-2 max-w-xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            Ever thought about joining a choir, but worried you "can't sing" or wouldn't fit in? That's exactly why Club Choir exists.
+          </p>
+          <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto animate-fade-in" style={{ animationDelay: "0.15s" }}>
+            Our weekly sessions are for everyone — no auditions, no pressure, and no experience required. Sing together, laugh together, learn together.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
             <Link
