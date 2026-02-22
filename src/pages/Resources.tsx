@@ -41,9 +41,19 @@ const Resources = () => {
   };
 
   const fetchResources = async () => {
-    const { data } = await supabase.from("song_resources").select("*").order("song_name", { ascending: true });
-    setResources((data as SongResource[]) || []);
-    setLoading(false);
+    try {
+      const { data, error } = await supabase.from("song_resources").select("*").order("song_name", { ascending: true });
+      if (error) {
+        console.error("Fetch error:", error);
+        toast({ title: t("resources.error") || "Error", description: error.message, variant: "destructive" });
+      }
+      setResources((data as SongResource[]) || []);
+    } catch (err) {
+      console.error("Unexpected fetch error:", err);
+      toast({ title: "Error", description: "Failed to load resources.", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -67,8 +77,18 @@ const Resources = () => {
   };
 
   const handleDownload = async (resource: SongResource) => {
-    const { data } = await supabase.storage.from("song-resources").createSignedUrl(resource.storage_path, 3600);
-    if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+    try {
+      const { data, error } = await supabase.storage.from("song-resources").createSignedUrl(resource.storage_path, 3600);
+      if (error) {
+        console.error("Download error:", error);
+        toast({ title: "Download failed", description: error.message, variant: "destructive" });
+        return;
+      }
+      if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+    } catch (err) {
+      console.error("Unexpected download error:", err);
+      toast({ title: "Download failed", description: "Could not generate download link.", variant: "destructive" });
+    }
   };
 
   const handleDelete = async (resource: SongResource) => {
