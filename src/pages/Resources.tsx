@@ -27,25 +27,14 @@ const typeIcon: Record<string, React.ReactNode> = {
   sheet_music: <BookOpen className="w-4 h-4" />,
 };
 
-const locationColors: Record<string, { dot: string; bg: string }> = {
-  Montreal: { dot: "bg-pink", bg: "bg-pink-light border-pink/20" },
-  Arundel: { dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20" },
-  "Saint-Hubert": { dot: "bg-lime", bg: "bg-lime-light border-lime/20" },
-  "Pointe-Claire": { dot: "bg-purple", bg: "bg-purple-light border-purple/20" },
-};
-
-const locations = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire"];
-
 const Resources = () => {
   const { isAdmin, loading: adminLoading, user } = useAdmin();
   const { toast } = useToast();
   const [resources, setResources] = useState<SongResource[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedLocation, setSelectedLocation] = useState<string>("all");
   const [uploading, setUploading] = useState(false);
   const [uploadSong, setUploadSong] = useState("");
   const [uploadType, setUploadType] = useState<string>("audio");
-  const [uploadLocation, setUploadLocation] = useState(locations[0]);
   const [showUpload, setShowUpload] = useState(false);
 
   const fetchResources = async () => {
@@ -71,7 +60,7 @@ const Resources = () => {
 
     setUploading(true);
     const ext = file.name.split(".").pop();
-    const path = `${uploadLocation}/${uploadSong.trim().replace(/\s+/g, "-").toLowerCase()}/${uploadType}-${Date.now()}.${ext}`;
+    const path = `songs/${uploadSong.trim().replace(/\s+/g, "-").toLowerCase()}/${uploadType}-${Date.now()}.${ext}`;
 
     const { error: storageError } = await supabase.storage
       .from("song-resources")
@@ -88,7 +77,7 @@ const Resources = () => {
       resource_type: uploadType,
       file_name: file.name,
       storage_path: path,
-      location: uploadLocation,
+      location: "all",
       uploaded_by: user.id,
     });
 
@@ -142,11 +131,10 @@ const Resources = () => {
   }
 
   // Group resources by song
-  const filtered = selectedLocation === "all" ? resources : resources.filter(r => r.location === selectedLocation);
-  const grouped: Record<string, { location: string; resources: SongResource[] }> = {};
-  filtered.forEach((r) => {
-    if (!grouped[r.song_name]) grouped[r.song_name] = { location: r.location, resources: [] };
-    grouped[r.song_name].resources.push(r);
+  const grouped: Record<string, SongResource[]> = {};
+  resources.forEach((r) => {
+    if (!grouped[r.song_name]) grouped[r.song_name] = [];
+    grouped[r.song_name].push(r);
   });
 
   return (
@@ -159,28 +147,6 @@ const Resources = () => {
           Recordings, lyrics, and sheet music for the songs we're learning.
         </p>
 
-        {/* Location filter */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          <button
-            onClick={() => setSelectedLocation("all")}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              selectedLocation === "all" ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            All Locations
-          </button>
-          {locations.map((loc) => (
-            <button
-              key={loc}
-              onClick={() => setSelectedLocation(loc)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                selectedLocation === loc ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {loc}
-            </button>
-          ))}
-        </div>
 
         {/* Admin upload */}
         {isAdmin && (
@@ -203,31 +169,17 @@ const Resources = () => {
                     className="w-full rounded-xl border border-input bg-background px-4 py-2 text-sm text-foreground"
                   />
                 </div>
-                <div className="flex gap-3">
-                  <div className="flex-1">
-                    <label className="block text-sm font-medium text-foreground mb-1">Type</label>
-                    <select
-                      value={uploadType}
-                      onChange={(e) => setUploadType(e.target.value)}
-                      className="w-full rounded-xl border border-input bg-background px-4 py-2 text-sm text-foreground"
-                    >
-                      <option value="audio">Recording</option>
-                      <option value="lyrics">Lyrics</option>
-                      <option value="sheet_music">Sheet Music</option>
-                    </select>
-                  </div>
-                  <div className="flex-1">
-                    <label className="block text-sm font-medium text-foreground mb-1">Location</label>
-                    <select
-                      value={uploadLocation}
-                      onChange={(e) => setUploadLocation(e.target.value)}
-                      className="w-full rounded-xl border border-input bg-background px-4 py-2 text-sm text-foreground"
-                    >
-                      {locations.map((l) => (
-                        <option key={l} value={l}>{l}</option>
-                      ))}
-                    </select>
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1">Type</label>
+                  <select
+                    value={uploadType}
+                    onChange={(e) => setUploadType(e.target.value)}
+                    className="w-full rounded-xl border border-input bg-background px-4 py-2 text-sm text-foreground"
+                  >
+                    <option value="audio">Recording</option>
+                    <option value="lyrics">Lyrics</option>
+                    <option value="sheet_music">Sheet Music</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">File</label>
@@ -252,14 +204,12 @@ const Resources = () => {
           <p className="text-muted-foreground text-sm text-center">No resources uploaded yet.</p>
         ) : (
           <div className="space-y-4">
-            {Object.entries(grouped).map(([songName, { location, resources: songResources }]) => {
-              const colors = locationColors[location] || { dot: "bg-muted", bg: "bg-muted/30 border-border" };
+            {Object.entries(grouped).map(([songName, songResources]) => {
               return (
-                <div key={songName} className={`rounded-2xl border p-5 ${colors.bg}`}>
+                <div key={songName} className="rounded-2xl border border-border bg-card p-5">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className={`w-2.5 h-2.5 rounded-full ${colors.dot}`} />
+                    <Music className="w-4 h-4 text-primary" />
                     <h3 className="font-heading font-bold text-foreground">{songName}</h3>
-                    <span className="text-xs text-muted-foreground">· {location}</span>
                   </div>
                   <div className="space-y-2">
                     {songResources.map((r) => (
