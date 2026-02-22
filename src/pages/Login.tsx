@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus } from "lucide-react";
+import { LogIn, UserPlus, KeyRound } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -24,6 +24,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [location, setLocation] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,6 +32,19 @@ const Login = () => {
     setError("");
     setMessage("");
     setLoading(true);
+
+    if (isForgotPassword) {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) {
+        setError(error.message);
+      } else {
+        setMessage(t("login.resetEmailSent"));
+      }
+      setLoading(false);
+      return;
+    }
 
     if (isSignUp) {
       if (!location) {
@@ -50,10 +64,7 @@ const Login = () => {
         setError(error.message);
       } else {
         setMessage(t("login.confirmEmail"));
-        // Notify admin only if the user ends up inactive (not auto-approved)
-        // We need to wait briefly for the trigger to create the profile, then check status
         try {
-          // Small delay to let the handle_new_user trigger run
           setTimeout(async () => {
             try {
               const { data: profile } = await supabase
@@ -81,18 +92,36 @@ const Login = () => {
     setLoading(false);
   };
 
+  const getTitle = () => {
+    if (isForgotPassword) return t("login.forgotPassword");
+    if (isSignUp) return t("login.createAccount");
+    return "Sign In";
+  };
+
+  const getSubtitle = () => {
+    if (isForgotPassword) return t("login.forgotSubtitle");
+    if (isSignUp) return "Create your Club Choir account";
+    return "Sign in to your Club Choir account";
+  };
+
+  const getIcon = () => {
+    if (isForgotPassword) return <KeyRound className="w-7 h-7 text-primary" />;
+    if (isSignUp) return <UserPlus className="w-7 h-7 text-primary" />;
+    return <LogIn className="w-7 h-7 text-primary" />;
+  };
+
   return (
     <div className="py-16 px-4">
       <div className="container mx-auto max-w-sm">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
-            {isSignUp ? <UserPlus className="w-7 h-7 text-primary" /> : <LogIn className="w-7 h-7 text-primary" />}
+            {getIcon()}
           </div>
           <h1 className="font-heading font-bold text-2xl text-foreground mb-1">
-            {isSignUp ? t("login.createAccount") : "Sign In"}
+            {getTitle()}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {isSignUp ? "Create your Club Choir account" : "Sign in to your Club Choir account"}
+            {getSubtitle()}
           </p>
         </div>
 
@@ -104,15 +133,17 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <Input
-            type="password"
-            placeholder={t("login.password")}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-          />
-          {isSignUp && (
+          {!isForgotPassword && (
+            <Input
+              type="password"
+              placeholder={t("login.password")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+            />
+          )}
+          {isSignUp && !isForgotPassword && (
             <Select value={location} onValueChange={setLocation}>
               <SelectTrigger>
                 <SelectValue placeholder={t("login.selectLocation")} />
@@ -127,19 +158,49 @@ const Login = () => {
           {error && <p className="text-sm text-destructive">{error}</p>}
           {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? t("login.wait") : isSignUp ? t("login.signUp") : t("login.signIn")}
+            {loading
+              ? t("login.wait")
+              : isForgotPassword
+              ? t("login.sendResetLink")
+              : isSignUp
+              ? t("login.signUp")
+              : t("login.signIn")}
           </Button>
         </form>
 
-        <p className="text-center text-sm text-muted-foreground mt-6">
-          {isSignUp ? t("login.alreadyAccount") : t("login.noAccount")}{" "}
-          <button
-            type="button"
-            className="text-primary hover:underline font-medium"
-            onClick={() => { setIsSignUp(!isSignUp); setError(""); setMessage(""); }}
-          >
-            {isSignUp ? t("login.signIn") : t("login.signUp")}
-          </button>
+        {!isSignUp && !isForgotPassword && (
+          <p className="text-center text-sm text-muted-foreground mt-3">
+            <button
+              type="button"
+              className="text-primary hover:underline font-medium"
+              onClick={() => { setIsForgotPassword(true); setError(""); setMessage(""); }}
+            >
+              {t("login.forgotPassword")}
+            </button>
+          </p>
+        )}
+
+        <p className="text-center text-sm text-muted-foreground mt-4">
+          {isForgotPassword ? (
+            <button
+              type="button"
+              className="text-primary hover:underline font-medium"
+              onClick={() => { setIsForgotPassword(false); setError(""); setMessage(""); }}
+            >
+              {t("login.backToSignIn")}
+            </button>
+          ) : (
+            <>
+              {isSignUp ? t("login.alreadyAccount") : t("login.noAccount")}{" "}
+              <button
+                type="button"
+                className="text-primary hover:underline font-medium"
+                onClick={() => { setIsSignUp(!isSignUp); setError(""); setMessage(""); }}
+              >
+                {isSignUp ? t("login.signIn") : t("login.signUp")}
+              </button>
+            </>
+          )}
         </p>
       </div>
     </div>
