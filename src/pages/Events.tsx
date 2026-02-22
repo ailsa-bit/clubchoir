@@ -10,14 +10,6 @@ const events = [
     description: "All Club Choir members are invited to take part in NDG PorchFest! Exact time and meeting details to be confirmed — stay tuned.",
   },
   {
-    title: "80s Night Choir",
-    date: "March 22, 2026",
-    location: "Pointe-Claire",
-    color: "border-purple/30 bg-purple-light",
-    dot: "bg-purple",
-    description: "Neon optional, enthusiasm required. A themed evening of classic 80s hits sung together.",
-  },
-  {
     title: "Seasonal Showcase — Montreal",
     date: "Monday, May 4, 2026 · 7:00 PM",
     location: "Montreal",
