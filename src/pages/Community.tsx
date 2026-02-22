@@ -32,11 +32,16 @@ const Community = () => {
   // Non-admin logged-in users only see active members at their location
   const baseMembers = useMemo(() => {
     if (isAdmin) return members;
-    if (user && userLocation) {
-      return members.filter((m) => m.status === "ACTIVE" && m.location === userLocation);
+    if (user) {
+      // Logged-in non-admin: show active members, filtered by location if set
+      return members.filter((m) => {
+        if (m.status !== "ACTIVE") return false;
+        if (userLocation) return m.location === userLocation;
+        return true;
+      });
     }
-    // Not logged in: show all (public view)
-    return members;
+    // Not logged in: show all active members (public view)
+    return members.filter((m) => m.status === "ACTIVE");
   }, [members, isAdmin, user, userLocation]);
 
   const locations = useMemo(
