@@ -15,6 +15,7 @@ import TryASession from "./pages/TryASession";
 import BringAFriend from "./pages/BringAFriend";
 import NotFound from "./pages/NotFound";
 import LocationSchedule from "./pages/LocationSchedule";
+import SendEmail from "./pages/SendEmail";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/try" element={<TryASession />} />
             <Route path="/bring-a-friend" element={<BringAFriend />} />
+            <Route path="/send-email" element={<SendEmail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
