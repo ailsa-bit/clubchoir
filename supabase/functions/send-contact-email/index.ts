@@ -12,7 +12,7 @@ interface ContactRequest {
   email: string;
   location: string;
   message: string;
-  message: string;
+  subject?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -27,7 +27,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const resend = new Resend(resendKey);
-    const { name, email, location, message }: ContactRequest = await req.json();
+    const { name, email, location, message, subject }: ContactRequest = await req.json();
 
     if (!name || !email || !location || !message) {
       throw new Error("Missing required fields: name, email, location, message");
@@ -36,7 +36,7 @@ const handler = async (req: Request): Promise<Response> => {
     const emailResponse = await resend.emails.send({
       from: "Club Choir <noreply@clubchoir.ca>",
       to: ["ailsa@clubchoir.ca"],
-      subject: "Try a Session",
+      subject: subject || "Try a Session",
       replyTo: email,
       html: `
         <h2>Try a Session Request</h2>

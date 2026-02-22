@@ -126,6 +126,7 @@ const BringAFriend = () => {
           name: data.memberName,
           email: data.friendEmail,
           location: data.location,
+          subject: "Bring a Friend Request",
           message: `BRING A FRIEND REQUEST\n\nMember: ${data.memberName}\nFriend's Name: ${data.friendName}\nFriend's Email: ${data.friendEmail}\nPreferred Location: ${data.location}\n\n${data.message || "(No additional message)"}`,
         },
       });
