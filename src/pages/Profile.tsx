@@ -1,4 +1,4 @@
-import { User, Settings, Music, LogIn, LogOut, Shield } from "lucide-react";
+import { User, LogIn, LogOut, Shield } from "lucide-react";
 import { useAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -15,11 +15,6 @@ const Profile = () => {
     navigate("/");
   };
 
-  const menuItems = [
-    { icon: Music, label: t("profile.sessions"), desc: t("profile.sessionsDesc") },
-    { icon: User, label: t("profile.account"), desc: t("profile.accountDesc") },
-    { icon: Settings, label: t("profile.preferences"), desc: t("profile.preferencesDesc") },
-  ];
 
   return (
     <div className="py-16 px-4">
@@ -42,18 +37,6 @@ const Profile = () => {
                   </div>
                 </div>
               )}
-              {menuItems.map((item) => (
-                <button
-                  key={item.label}
-                  className="w-full flex items-center gap-4 rounded-2xl border border-border bg-card p-4 hover:shadow-sm transition-shadow text-left"
-                >
-                  <item.icon className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-semibold text-foreground text-sm">{item.label}</p>
-                    <p className="text-xs text-muted-foreground">{item.desc}</p>
-                  </div>
-                </button>
-              ))}
               <Button variant="outline" className="w-full mt-4" onClick={handleLogout}>
                 <LogOut className="w-4 h-4 mr-2" /> {t("profile.signOut")}
               </Button>
@@ -65,18 +48,6 @@ const Profile = () => {
             </>
           ) : (
             <>
-              {menuItems.map((item) => (
-                <button
-                  key={item.label}
-                  className="w-full flex items-center gap-4 rounded-2xl border border-border bg-card p-4 hover:shadow-sm transition-shadow text-left"
-                >
-                  <item.icon className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="font-semibold text-foreground text-sm">{item.label}</p>
-                    <p className="text-xs text-muted-foreground">{item.desc}</p>
-                  </div>
-                </button>
-              ))}
               <Button variant="outline" className="w-full mt-4" onClick={() => navigate("/login")}>
                 <LogIn className="w-4 h-4 mr-2" /> Sign In / Sign Up
               </Button>
