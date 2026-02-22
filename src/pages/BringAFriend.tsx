@@ -26,6 +26,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const LOCATIONS = [
   { value: "Montreal – Monday", label: "Montreal – Monday" },
@@ -56,6 +57,7 @@ const BringAFriend = () => {
   const { members, loading: membersLoading } = useMembers();
   const { isAdmin, loading: adminLoading } = useAdmin();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const check = async () => {
@@ -64,45 +66,26 @@ const BringAFriend = () => {
         setAuthState("logged-out");
         return;
       }
-
-      // Get profile display name
       const { data: profile } = await supabase
         .from("profiles")
         .select("display_name")
         .eq("user_id", session.user.id)
         .maybeSingle();
-
       setUserDisplayName(profile?.display_name || session.user.email?.split("@")[0] || "");
-
-      // Wait for data to load
       if (membersLoading || adminLoading) return;
-
-      // Admins always have access
-      if (isAdmin) {
-        setAuthState("active");
-        return;
-      }
-
-      // Check by matching user email against CSV emails, or display_name against names
+      if (isAdmin) { setAuthState("active"); return; }
       const email = session.user.email?.toLowerCase() || "";
       const displayName = profile?.display_name?.toLowerCase() || "";
-
       const isActive = members.some(
         (m) =>
           m.status === "ACTIVE" &&
           (`${m.firstName} ${m.lastName}`.toLowerCase() === displayName ||
            `${m.firstName} ${m.lastName}`.toLowerCase() === email)
       );
-
       setAuthState(isActive ? "active" : "not-active");
     };
-
     check();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      check();
-    });
-
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => { check(); });
     return () => subscription.unsubscribe();
   }, [members, membersLoading, isAdmin, adminLoading]);
 
@@ -111,7 +94,6 @@ const BringAFriend = () => {
     defaultValues: { memberName: userDisplayName, friendName: "", friendEmail: "", location: "", message: "" },
   });
 
-  // Update memberName default when displayName loads
   useEffect(() => {
     if (userDisplayName && !form.getValues("memberName")) {
       form.setValue("memberName", userDisplayName);
@@ -134,11 +116,7 @@ const BringAFriend = () => {
       setSent(true);
       toast({ title: "Request sent!", description: "We'll be in touch with your friend soon." });
     } catch (err: any) {
-      toast({
-        title: "Something went wrong",
-        description: err.message || "Please try again later.",
-        variant: "destructive",
-      });
+      toast({ title: "Something went wrong", description: err.message || "Please try again later.", variant: "destructive" });
     } finally {
       setSending(false);
     }
@@ -147,7 +125,7 @@ const BringAFriend = () => {
   if (authState === "loading") {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <p className="text-muted-foreground">Loading…</p>
+        <p className="text-muted-foreground">{t("common.loading")}</p>
       </div>
     );
   }
@@ -157,15 +135,11 @@ const BringAFriend = () => {
       <div className="min-h-[60vh] py-16 px-4">
         <div className="container mx-auto max-w-lg text-center">
           <UserPlus className="w-10 h-10 text-primary mx-auto mb-3" />
-          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
-            Bring a Friend
-          </h1>
-          <p className="text-muted-foreground mb-6">
-            This feature is available to active Club Choir members. Please log in to continue.
-          </p>
+          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">{t("friend.title")}</h1>
+          <p className="text-muted-foreground mb-6">{t("friend.loginRequired")}</p>
           <Link to="/login">
             <Button className="rounded-full bg-gradient-warm text-primary-foreground">
-              <LogIn className="w-4 h-4 mr-2" /> Log In
+              <LogIn className="w-4 h-4 mr-2" /> {t("common.logIn")}
             </Button>
           </Link>
         </div>
@@ -178,12 +152,8 @@ const BringAFriend = () => {
       <div className="min-h-[60vh] py-16 px-4">
         <div className="container mx-auto max-w-lg text-center">
           <UserPlus className="w-10 h-10 text-primary mx-auto mb-3" />
-          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
-            Bring a Friend
-          </h1>
-          <p className="text-muted-foreground">
-            This feature is available to active Club Choir members only. If you believe this is an error, please contact us.
-          </p>
+          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">{t("friend.title")}</h1>
+          <p className="text-muted-foreground">{t("friend.notActive")}</p>
         </div>
       </div>
     );
@@ -194,117 +164,65 @@ const BringAFriend = () => {
       <div className="container mx-auto max-w-lg">
         <div className="text-center mb-10">
           <UserPlus className="w-10 h-10 text-primary mx-auto mb-3" />
-          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
-            Bring a Friend
-          </h1>
-          <p className="text-muted-foreground">
-            Know someone who'd love to sing? Invite them to try a session with you!
-          </p>
+          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">{t("friend.title")}</h1>
+          <p className="text-muted-foreground">{t("friend.subtitle")}</p>
         </div>
 
         {sent ? (
           <div className="rounded-2xl border border-border bg-card p-8 text-center">
-            <h2 className="font-heading font-bold text-xl text-foreground mb-2">
-              Invitation sent!
-            </h2>
-            <p className="text-muted-foreground">
-              We'll reach out to your friend and get them set up for a session.
-            </p>
+            <h2 className="font-heading font-bold text-xl text-foreground mb-2">{t("friend.sent.title")}</h2>
+            <p className="text-muted-foreground">{t("friend.sent.desc")}</p>
           </div>
         ) : (
           <div className="rounded-2xl border border-border bg-card p-8">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                <FormField
-                  control={form.control}
-                  name="memberName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Your name</FormLabel>
+                <FormField control={form.control} name="memberName" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("friend.yourName")}</FormLabel>
+                    <FormControl><Input placeholder={t("friend.yourName")} {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField control={form.control} name="friendName" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("friend.friendName")}</FormLabel>
+                    <FormControl><Input placeholder={t("friend.friendName")} {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField control={form.control} name="friendEmail" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("friend.friendEmail")}</FormLabel>
+                    <FormControl><Input type="email" placeholder="friend@example.com" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField control={form.control} name="location" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("friend.location")}</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <Input placeholder="Your name" {...field} />
+                        <SelectTrigger><SelectValue placeholder={t("try.locationPlaceholder")} /></SelectTrigger>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="friendName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Friend's name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Their name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="friendEmail"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Friend's email</FormLabel>
-                      <FormControl>
-                        <Input type="email" placeholder="friend@example.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Preferred location</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Choose a location…" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {LOCATIONS.map((loc) => (
-                            <SelectItem key={loc.value} value={loc.value}>
-                              {loc.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Message (optional)</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Anything else we should know…"
-                          rows={3}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  type="submit"
-                  disabled={sending}
-                  className="w-full rounded-full bg-gradient-warm text-primary-foreground"
-                >
-                  {sending ? "Sending…" : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" /> Send Invitation
-                    </>
-                  )}
+                      <SelectContent>
+                        {LOCATIONS.map((loc) => (
+                          <SelectItem key={loc.value} value={loc.value}>{loc.label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <FormField control={form.control} name="message" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("friend.messageOpt")}</FormLabel>
+                    <FormControl><Textarea placeholder="…" rows={3} {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
+                <Button type="submit" disabled={sending} className="w-full rounded-full bg-gradient-warm text-primary-foreground">
+                  {sending ? t("friend.sending") : (<><Send className="w-4 h-4 mr-2" /> {t("friend.send")}</>)}
                 </Button>
               </form>
             </Form>

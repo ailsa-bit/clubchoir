@@ -3,24 +3,13 @@ import { useState, useEffect } from "react";
 import { Menu, X, User, Mail, Facebook } from "lucide-react";
 import clubChoirLogo from "@/assets/club-choir-logo.png";
 import { supabase } from "@/integrations/supabase/client";
-
-const publicNavItems = [
-  { label: "Home", path: "/" },
-  { label: "This Week at Choir", path: "/this-week" },
-  { label: "Club Choir Events", path: "/events" },
-  { label: "Corporate Events", path: "/corporate" },
-];
-
-const memberNavItems = [
-  { label: "Choir Community", path: "/community" },
-  { label: "Chat", path: "/chat" },
-  { label: "Song Resources", path: "/resources" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -33,6 +22,19 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  const publicNavItems = [
+    { label: t("nav.home"), path: "/" },
+    { label: t("nav.thisWeek"), path: "/this-week" },
+    { label: t("nav.events"), path: "/events" },
+    { label: t("nav.corporate"), path: "/corporate" },
+  ];
+
+  const memberNavItems = [
+    { label: t("nav.community"), path: "/community" },
+    { label: t("nav.chat"), path: "/chat" },
+    { label: t("nav.resources"), path: "/resources" },
+  ];
 
   const navItems = isLoggedIn ? [...publicNavItems, ...memberNavItems] : publicNavItems;
 
@@ -59,9 +61,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 {item.label}
               </Link>
             ))}
+            <button
+              onClick={() => setLanguage(language === "en" ? "fr" : "en")}
+              className="ml-2 px-2.5 py-1.5 rounded-lg text-xs font-bold border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              {language === "en" ? "FR" : "EN"}
+            </button>
             <Link
               to="/profile"
-              className={`ml-2 p-2 rounded-full transition-colors ${
+              className={`ml-1 p-2 rounded-full transition-colors ${
                 location.pathname === "/profile"
                   ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -72,12 +80,20 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </nav>
 
           {/* Mobile toggle */}
-          <button
-            className="lg:hidden p-2 text-foreground"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="lg:hidden flex items-center gap-2">
+            <button
+              onClick={() => setLanguage(language === "en" ? "fr" : "en")}
+              className="px-2.5 py-1.5 rounded-lg text-xs font-bold border border-border text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {language === "en" ? "FR" : "EN"}
+            </button>
+            <button
+              className="p-2 text-foreground"
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile nav */}
@@ -106,7 +122,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
-              Profile
+              {t("nav.profile")}
             </Link>
           </nav>
         )}
@@ -117,7 +133,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <footer className="border-t border-border bg-card py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p className="font-heading font-semibold text-foreground mb-2">Club Choir</p>
-          <p className="mb-3">Warm voices, real community. © {new Date().getFullYear()}</p>
+          <p className="mb-3">{t("footer.tagline")} © {new Date().getFullYear()}</p>
           <div className="flex items-center justify-center gap-4">
             <a
               href="mailto:ailsa@clubchoir.ca"
@@ -133,7 +149,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Facebook className="w-4 h-4" />
-              Facebook
+              {t("footer.facebook")}
             </a>
           </div>
         </div>

@@ -11,11 +11,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const LOCATIONS = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire"] as const;
 
 const Login = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -47,7 +49,7 @@ const Login = () => {
       if (error) {
         setError(error.message);
       } else {
-        setMessage("Check your email for a confirmation link, then come back and sign in.");
+        setMessage(t("login.confirmEmail"));
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -68,24 +70,24 @@ const Login = () => {
             {isSignUp ? <UserPlus className="w-7 h-7 text-primary" /> : <LogIn className="w-7 h-7 text-primary" />}
           </div>
           <h1 className="font-heading font-bold text-2xl text-foreground mb-1">
-            {isSignUp ? "Create Account" : "Admin Login"}
+            {isSignUp ? t("login.createAccount") : t("login.adminLogin")}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {isSignUp ? "Sign up to get started" : "Sign in to access admin features"}
+            {isSignUp ? t("login.signUpDesc") : t("login.signInDesc")}
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             type="email"
-            placeholder="Email"
+            placeholder={t("login.email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Input
             type="password"
-            placeholder="Password"
+            placeholder={t("login.password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -94,7 +96,7 @@ const Login = () => {
           {isSignUp && (
             <Select value={location} onValueChange={setLocation}>
               <SelectTrigger>
-                <SelectValue placeholder="Select your location" />
+                <SelectValue placeholder={t("login.selectLocation")} />
               </SelectTrigger>
               <SelectContent>
                 {LOCATIONS.map((loc) => (
@@ -106,18 +108,18 @@ const Login = () => {
           {error && <p className="text-sm text-destructive">{error}</p>}
           {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
           <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Please wait..." : isSignUp ? "Sign Up" : "Sign In"}
+            {loading ? t("login.wait") : isSignUp ? t("login.signUp") : t("login.signIn")}
           </Button>
         </form>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
-          {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+          {isSignUp ? t("login.alreadyAccount") : t("login.noAccount")}{" "}
           <button
             type="button"
             className="text-primary hover:underline font-medium"
             onClick={() => { setIsSignUp(!isSignUp); setError(""); setMessage(""); }}
           >
-            {isSignUp ? "Sign In" : "Sign Up"}
+            {isSignUp ? t("login.signIn") : t("login.signUp")}
           </button>
         </p>
       </div>

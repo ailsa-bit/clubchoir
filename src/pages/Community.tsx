@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MemberRow {
   id: string;
@@ -35,6 +36,7 @@ const statusColors: Record<string, string> = {
 const Community = () => {
   const { isAdmin, loading: adminLoading, user } = useAdmin();
   const { location: userLocation } = useProfile();
+  const { t } = useLanguage();
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -48,43 +50,28 @@ const Community = () => {
         .from("members")
         .select("id, first_name, last_name, location, status, joined, payment_status")
         .order("last_name", { ascending: true });
-
-      // Non-admins only see active members (enforced by RLS too)
       if (!isAdmin) {
         query = query.eq("status", "ACTIVE");
       }
-
       const { data } = await query;
       setMembers((data as MemberRow[]) || []);
       setLoading(false);
     };
-
     if (!adminLoading) fetchMembers();
   }, [isAdmin, adminLoading]);
 
   const baseMembers = useMemo(() => {
     if (isAdmin) return members;
-    if (user && userLocation) {
-      return members.filter((m) => m.location === userLocation);
-    }
+    if (user && userLocation) return members.filter((m) => m.location === userLocation);
     return members;
   }, [members, isAdmin, user, userLocation]);
 
-  const locations = useMemo(
-    () => [...new Set(baseMembers.map((m) => m.location).filter(Boolean))].sort(),
-    [baseMembers]
-  );
-
-  const paymentStatuses = useMemo(
-    () => [...new Set(baseMembers.map((m) => m.payment_status).filter(Boolean))].sort(),
-    [baseMembers]
-  );
+  const locations = useMemo(() => [...new Set(baseMembers.map((m) => m.location).filter(Boolean))].sort(), [baseMembers]);
+  const paymentStatuses = useMemo(() => [...new Set(baseMembers.map((m) => m.payment_status).filter(Boolean))].sort(), [baseMembers]);
 
   const filtered = useMemo(() => {
     return baseMembers.filter((m) => {
-      const matchesSearch =
-        !search ||
-        `${m.first_name} ${m.last_name}`.toLowerCase().includes(search.toLowerCase());
+      const matchesSearch = !search || `${m.first_name} ${m.last_name}`.toLowerCase().includes(search.toLowerCase());
       const matchesStatus = statusFilter === "ALL" || m.status === statusFilter;
       const matchesLocation = locationFilter === "ALL" || m.location === locationFilter;
       const matchesPayment = paymentFilter === "ALL" || m.payment_status === paymentFilter;
@@ -103,15 +90,15 @@ const Community = () => {
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-8">
           <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
-            Our Members
+            {t("community.title")}
           </h1>
           <p className="text-muted-foreground">
-            {baseMembers.length} voices strong across {locations.length} locations
+            {baseMembers.length} {baseMembers.length === 1 ? t("community.member") : t("community.members")} · {locations.length} locations
           </p>
           {isAdmin && (
             <Link to="/manage-members">
               <Button variant="outline" size="sm" className="mt-3">
-                <Settings className="w-4 h-4 mr-1" /> Manage Members
+                <Settings className="w-4 h-4 mr-1" /> {t("community.manage")}
               </Button>
             </Link>
           )}
@@ -131,20 +118,13 @@ const Community = () => {
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder="Search members..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
-            />
+            <Input placeholder={t("community.search")} value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
           </div>
           {isAdmin && (
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-[160px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
+              <SelectTrigger className="w-full sm:w-[160px]"><SelectValue placeholder="Status" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="ALL">All statuses</SelectItem>
+                <SelectItem value="ALL">{t("community.allStatuses")}</SelectItem>
                 <SelectItem value="ACTIVE">Active</SelectItem>
                 <SelectItem value="INACTIVE">Inactive</SelectItem>
                 <SelectItem value="PROSPECT">Prospect</SelectItem>
@@ -153,69 +133,49 @@ const Community = () => {
             </Select>
           )}
           <Select value={locationFilter} onValueChange={setLocationFilter}>
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Location" />
-            </SelectTrigger>
+            <SelectTrigger className="w-full sm:w-[180px]"><SelectValue placeholder="Location" /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="ALL">All locations</SelectItem>
-              {locations.map((loc) => (
-                <SelectItem key={loc} value={loc}>{loc}</SelectItem>
-              ))}
+              <SelectItem value="ALL">{t("community.allLocations")}</SelectItem>
+              {locations.map((loc) => (<SelectItem key={loc} value={loc}>{loc}</SelectItem>))}
             </SelectContent>
           </Select>
           {isAdmin && (
             <Select value={paymentFilter} onValueChange={setPaymentFilter}>
-              <SelectTrigger className="w-full sm:w-[160px]">
-                <SelectValue placeholder="Payment" />
-              </SelectTrigger>
+              <SelectTrigger className="w-full sm:w-[160px]"><SelectValue placeholder="Payment" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="ALL">All payments</SelectItem>
-                {paymentStatuses.map((ps) => (
-                  <SelectItem key={ps} value={ps}>{ps}</SelectItem>
-                ))}
+                <SelectItem value="ALL">{t("community.allPayments")}</SelectItem>
+                {paymentStatuses.map((ps) => (<SelectItem key={ps} value={ps}>{ps}</SelectItem>))}
               </SelectContent>
             </Select>
           )}
         </div>
 
         <p className="text-sm text-muted-foreground mb-3">
-          Showing {filtered.length} member{filtered.length !== 1 ? "s" : ""}
+          {t("community.showing")} {filtered.length} {filtered.length !== 1 ? t("community.members") : t("community.member")}
         </p>
 
-        {/* Members grid */}
         {loading || adminLoading ? (
-          <div className="text-center py-12 text-muted-foreground">Loading members...</div>
+          <div className="text-center py-12 text-muted-foreground">{t("community.loading")}</div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {filtered.map((m) => (
-              <div
-                key={m.id}
-                className="rounded-2xl border border-border bg-card p-4 flex items-start gap-3"
-              >
+              <div key={m.id} className="rounded-2xl border border-border bg-card p-4 flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <span className="text-sm font-bold text-primary">
-                    {m.first_name[0]}{m.last_name[0]}
-                  </span>
+                  <span className="text-sm font-bold text-primary">{m.first_name[0]}{m.last_name[0]}</span>
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-foreground text-sm truncate">
-                    {m.first_name} {m.last_name}
-                  </p>
+                  <p className="font-semibold text-foreground text-sm truncate">{m.first_name} {m.last_name}</p>
                   {m.location && (
                     <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                      <MapPin className="w-3 h-3" />
-                      {m.location}
+                      <MapPin className="w-3 h-3" />{m.location}
                     </div>
                   )}
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
-                    <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>
-                      {m.status}
-                    </Badge>
+                    <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>{m.status}</Badge>
                     {m.joined && <span className="text-[10px] text-muted-foreground">Joined {m.joined}</span>}
                     {isAdmin && m.payment_status && (
                       <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30">
-                        <DollarSign className="w-2.5 h-2.5 mr-0.5" />
-                        {m.payment_status}
+                        <DollarSign className="w-2.5 h-2.5 mr-0.5" />{m.payment_status}
                       </Badge>
                     )}
                   </div>
