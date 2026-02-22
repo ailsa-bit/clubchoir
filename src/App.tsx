@@ -16,6 +16,7 @@ import BringAFriend from "./pages/BringAFriend";
 import NotFound from "./pages/NotFound";
 import LocationSchedule from "./pages/LocationSchedule";
 import SendEmail from "./pages/SendEmail";
+import LocationChat from "./pages/LocationChat";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/try" element={<TryASession />} />
             <Route path="/bring-a-friend" element={<BringAFriend />} />
             <Route path="/send-email" element={<SendEmail />} />
+            <Route path="/chat" element={<LocationChat />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
