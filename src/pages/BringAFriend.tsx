@@ -5,7 +5,8 @@ import { z } from "zod";
 import { UserPlus, Send, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { useMembers, Member } from "@/hooks/use-members";
+import { useMembers } from "@/hooks/use-members";
+import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -53,6 +54,7 @@ const BringAFriend = () => {
   const [authState, setAuthState] = useState<"loading" | "logged-out" | "not-active" | "active">("loading");
   const [userDisplayName, setUserDisplayName] = useState("");
   const { members, loading: membersLoading } = useMembers();
+  const { isAdmin, loading: adminLoading } = useAdmin();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -72,19 +74,25 @@ const BringAFriend = () => {
 
       setUserDisplayName(profile?.display_name || session.user.email?.split("@")[0] || "");
 
-      // Check if user email matches an active member in the CSV
-      const email = session.user.email?.toLowerCase();
+      // Wait for data to load
+      if (membersLoading || adminLoading) return;
+
+      // Admins always have access
+      if (isAdmin) {
+        setAuthState("active");
+        return;
+      }
+
+      // Check by matching user email against CSV emails, or display_name against names
+      const email = session.user.email?.toLowerCase() || "";
       const displayName = profile?.display_name?.toLowerCase() || "";
 
-      // We check by matching display_name against firstName + lastName in the CSV
       const isActive = members.some(
         (m) =>
           m.status === "ACTIVE" &&
-          `${m.firstName} ${m.lastName}`.toLowerCase() === displayName
+          (`${m.firstName} ${m.lastName}`.toLowerCase() === displayName ||
+           `${m.firstName} ${m.lastName}`.toLowerCase() === email)
       );
-
-      // If members haven't loaded yet, wait
-      if (membersLoading) return;
 
       setAuthState(isActive ? "active" : "not-active");
     };
@@ -96,7 +104,7 @@ const BringAFriend = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [members, membersLoading]);
+  }, [members, membersLoading, isAdmin, adminLoading]);
 
   const form = useForm<BringAFriendForm>({
     resolver: zodResolver(formSchema),
