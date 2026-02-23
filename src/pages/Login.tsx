@@ -26,6 +26,7 @@ const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [location, setLocation] = useState("");
+  const [displayName, setDisplayName] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,12 +53,18 @@ const Login = () => {
         setLoading(false);
         return;
       }
+      if (!displayName.trim()) {
+        setError("Please enter a display name.");
+        setLoading(false);
+        return;
+      }
+      const trimmedName = displayName.trim();
       const { data: signUpData, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: window.location.origin,
-          data: { location, display_name: email.split("@")[0] },
+          data: { location, display_name: trimmedName },
         },
       });
       if (error) {
@@ -74,7 +81,7 @@ const Login = () => {
                 .maybeSingle();
               if (profile?.status === "inactive") {
                 await supabase.functions.invoke("notify-new-signup", {
-                  body: { email, display_name: email.split("@")[0], location, status: "inactive" },
+                  body: { email, display_name: trimmedName, location, status: "inactive" },
                 });
               }
             } catch {}
@@ -141,6 +148,16 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
+            />
+          )}
+          {isSignUp && !isForgotPassword && (
+            <Input
+              type="text"
+              placeholder="Display name (visible to other members)"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              required
+              maxLength={50}
             />
           )}
           {isSignUp && !isForgotPassword && (
