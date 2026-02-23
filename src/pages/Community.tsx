@@ -48,7 +48,7 @@ const Community = () => {
       let query = supabase
         .from("members")
         .select("id, first_name, last_name, location, status, joined, payment_status")
-        .order("last_name", { ascending: true });
+        .order("first_name", { ascending: true });
       if (!isAdmin) {
         query = query.eq("status", "ACTIVE");
       }
