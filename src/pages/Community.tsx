@@ -32,6 +32,12 @@ const statusColors: Record<string, string> = {
   TRIAL: "bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30",
 };
 
+const paymentColors: Record<string, string> = {
+  PAID: "bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30",
+  OWES: "bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/30",
+  NA: "bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30",
+};
+
 const Community = () => {
   const { isAdmin, loading: adminLoading, user } = useAdmin();
   const { location: userLocation } = useProfile();
@@ -192,7 +198,7 @@ const Community = () => {
                     {isAdmin && (
                       <TableCell className="hidden md:table-cell">
                         {m.payment_status ? (
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30">
+                          <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${paymentColors[m.payment_status] || ""}`}>
                             <DollarSign className="w-2.5 h-2.5 mr-0.5" />{m.payment_status}
                           </Badge>
                         ) : "—"}
