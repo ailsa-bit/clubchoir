@@ -256,7 +256,12 @@ const LocationChat = () => {
                   {messages.map((msg) => {
                     const isOwn = msg.user_id === user?.id;
                     return (
-                      <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
+                      <div key={msg.id} className={`flex flex-col ${isOwn ? "items-end" : "items-start"}`}>
+                        {!isOwn && (
+                          <p className="text-xs font-semibold text-muted-foreground mb-1 ml-2">
+                            {msg.display_name}
+                          </p>
+                        )}
                         <div
                           className={`max-w-[80%] rounded-2xl px-4 py-2 ${
                             isOwn
@@ -264,11 +269,6 @@ const LocationChat = () => {
                               : "bg-muted text-foreground"
                           }`}
                         >
-                          {!isOwn && (
-                            <p className="text-xs font-semibold mb-0.5 opacity-80">
-                              {msg.display_name}
-                            </p>
-                          )}
                           <p className="text-sm break-words">{msg.message}</p>
                           <div className="flex items-center gap-2 mt-1">
                             <span className={`text-[10px] ${isOwn ? "opacity-70" : "text-muted-foreground"}`}>
