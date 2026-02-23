@@ -53,14 +53,14 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
             <Link
               to="/try"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-sm hover:bg-primary/90 hover:shadow-md transition-all"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all"
             >
               <Sparkles className="w-5 h-5" />
               {t("home.hero.try")}
             </Link>
             <Link
               to="/bring-a-friend"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-border bg-card text-foreground font-semibold text-base shadow-sm hover:bg-muted transition-all"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-105 transition-all"
             >
               <UserPlus className="w-5 h-5" />
               {t("home.hero.friend")}
@@ -122,7 +122,7 @@ const Index = () => {
             <p className="text-muted-foreground mb-4">{t("home.faq.still")}</p>
             <Link
               to="/try"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow-sm hover:bg-primary/90 hover:shadow-md transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
             >
               <MessageCircle className="w-4 h-4" />
               {t("home.faq.touch")}
@@ -159,7 +159,7 @@ const Index = () => {
               href="https://g.page/r/CU1hiLJTYmtXEAE/review"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow-sm hover:bg-primary/90 hover:shadow-md transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
             >
               <ExternalLink className="w-4 h-4" />
               {t("home.testimonials.review")}
