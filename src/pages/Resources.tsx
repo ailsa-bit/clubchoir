@@ -5,6 +5,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Lock, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 
 interface SongResource {
   id: string;
@@ -120,12 +121,9 @@ const Resources = () => {
     ? resources.filter(r => r.song_name.toLowerCase().includes(searchQuery.toLowerCase()) || r.file_name.toLowerCase().includes(searchQuery.toLowerCase()))
     : resources;
 
-  const grouped: Record<string, SongResource[]> = {};
-  filtered.forEach((r) => { if (!grouped[r.song_name]) grouped[r.song_name] = []; grouped[r.song_name].push(r); });
-
   return (
     <div className="py-12 px-4">
-      <div className="container mx-auto max-w-4xl">
+      <div className="container mx-auto max-w-5xl">
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">{t("resources.title")}</h1>
         <p className="text-center text-muted-foreground mb-8 max-w-lg mx-auto">{t("resources.subtitle")}</p>
 
@@ -169,37 +167,53 @@ const Resources = () => {
 
         {loading ? (
           <p className="text-muted-foreground text-sm text-center">{t("resources.loading")}</p>
-        ) : Object.keys(grouped).length === 0 ? (
+        ) : filtered.length === 0 ? (
           <p className="text-muted-foreground text-sm text-center">{t("resources.empty")}</p>
         ) : (
-          <div className="space-y-4">
-            {Object.entries(grouped).map(([songName, songResources]) => (
-              <div key={songName} className="rounded-2xl border border-border bg-card p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <Music className="w-4 h-4 text-primary" />
-                  <h3 className="font-heading font-bold text-foreground">{songName}</h3>
-                </div>
-                <div className="space-y-2">
-                  {songResources.map((r) => (
-                    <div key={r.id} className="flex items-center gap-3 bg-background/60 rounded-xl px-4 py-2.5">
-                      <span className="text-muted-foreground">{typeIcon[r.resource_type]}</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate">{r.file_name}</p>
-                        <p className="text-xs text-muted-foreground">{typeLabel[r.resource_type]}</p>
+          <div className="rounded-2xl border border-border bg-card overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("resources.song")}</TableHead>
+                  <TableHead>{t("resources.type")}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t("resources.fileName")}</TableHead>
+                  <TableHead className="text-right">{t("resources.actions")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((r) => (
+                  <TableRow key={r.id}>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        <Music className="w-4 h-4 text-primary shrink-0" />
+                        <span className="truncate">{r.song_name}</span>
                       </div>
-                      <button onClick={() => handleDownload(r)} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Download">
-                        <Download className="w-4 h-4" />
-                      </button>
-                      {isAdmin && (
-                        <button onClick={() => handleDelete(r)} className="p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors" title="Delete">
-                          <Trash2 className="w-4 h-4" />
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1.5 text-muted-foreground">
+                        {typeIcon[r.resource_type]}
+                        <span className="text-sm">{typeLabel[r.resource_type]}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <span className="text-sm text-muted-foreground truncate block max-w-[200px]">{r.file_name}</span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        <button onClick={() => handleDownload(r)} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Download">
+                          <Download className="w-4 h-4" />
                         </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+                        {isAdmin && (
+                          <button onClick={() => handleDelete(r)} className="p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors" title="Delete">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         )}
       </div>

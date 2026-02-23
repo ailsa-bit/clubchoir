@@ -170,6 +170,10 @@ const translations: Record<string, Record<Language, string>> = {
   "resources.file": { en: "File", fr: "Fichier" },
   "resources.loading": { en: "Loading resources…", fr: "Chargement des ressources…" },
   "resources.empty": { en: "No resources uploaded yet.", fr: "Aucune ressource téléversée pour l'instant." },
+  "resources.error": { en: "Error", fr: "Erreur" },
+  "resources.song": { en: "Song", fr: "Chanson" },
+  "resources.fileName": { en: "File Name", fr: "Nom du fichier" },
+  "resources.actions": { en: "Actions", fr: "Actions" },
 
   // Profile
   "profile.title": { en: "Your Profile", fr: "Votre profil" },
