@@ -70,12 +70,13 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             {isLoggedIn ? (
               <Link
                 to="/profile"
-                className={`ml-1 p-2 rounded-full transition-colors ${
+                className={`ml-1 px-3 py-1.5 rounded-lg text-sm font-medium inline-flex items-center gap-1.5 transition-colors ${
                 location.pathname === "/profile" ?
                 "bg-primary/10 text-primary" :
                 "text-muted-foreground hover:text-foreground hover:bg-muted"}`
                 }>
-                <User className="w-5 h-5" />
+                <User className="w-4 h-4" />
+                {t("nav.profile")}
               </Link>
             ) : (
               <Link
