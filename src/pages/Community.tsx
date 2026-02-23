@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Users, MapPin, Search, DollarSign, Settings } from "lucide-react";
+import { MapPin, Search, DollarSign, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { useProfile } from "@/hooks/use-profile";
@@ -8,11 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -157,31 +156,52 @@ const Community = () => {
         {loading || adminLoading ? (
           <div className="text-center py-12 text-muted-foreground">{t("community.loading")}</div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filtered.map((m) => (
-              <div key={m.id} className="rounded-2xl border border-border bg-card p-4 flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  <span className="text-sm font-bold text-primary">{m.first_name[0]}{isAdmin ? m.last_name[0] : ''}</span>
-                </div>
-                <div className="min-w-0">
-                  <p className="font-semibold text-foreground text-sm truncate">{isAdmin ? `${m.first_name} ${m.last_name}` : m.first_name}</p>
-                  {m.location && (
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
-                      <MapPin className="w-3 h-3" />{m.location}
-                    </div>
-                  )}
-                  <div className="flex items-center gap-2 mt-2 flex-wrap">
-                    <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>{m.status}</Badge>
-                    {isAdmin && m.joined && <span className="text-[10px] text-muted-foreground">Joined {m.joined}</span>}
-                    {isAdmin && m.payment_status && (
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30">
-                        <DollarSign className="w-2.5 h-2.5 mr-0.5" />{m.payment_status}
-                      </Badge>
+          <div className="rounded-2xl border border-border bg-card overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("community.member")}</TableHead>
+                  <TableHead className="hidden sm:table-cell">
+                    <div className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> Location</div>
+                  </TableHead>
+                  <TableHead>Status</TableHead>
+                  {isAdmin && <TableHead className="hidden md:table-cell">Joined</TableHead>}
+                  {isAdmin && <TableHead className="hidden md:table-cell">Payment</TableHead>}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filtered.map((m) => (
+                  <TableRow key={m.id}>
+                    <TableCell>
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                          <span className="text-xs font-bold text-primary">{m.first_name[0]}{isAdmin ? m.last_name[0] : ""}</span>
+                        </div>
+                        <span className="font-medium text-foreground text-sm">
+                          {isAdmin ? `${m.first_name} ${m.last_name}` : m.first_name}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell text-muted-foreground text-sm">{m.location}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>{m.status}</Badge>
+                    </TableCell>
+                    {isAdmin && (
+                      <TableCell className="hidden md:table-cell text-muted-foreground text-sm">{m.joined || "—"}</TableCell>
                     )}
-                  </div>
-                </div>
-              </div>
-            ))}
+                    {isAdmin && (
+                      <TableCell className="hidden md:table-cell">
+                        {m.payment_status ? (
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/30">
+                            <DollarSign className="w-2.5 h-2.5 mr-0.5" />{m.payment_status}
+                          </Badge>
+                        ) : "—"}
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         )}
       </div>
