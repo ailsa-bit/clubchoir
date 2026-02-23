@@ -397,6 +397,7 @@ const ManageMembers = () => {
                   <thead>
                     <tr className="bg-muted/50 border-b border-border">
                       <th className="p-3 text-left font-medium text-muted-foreground">Email</th>
+                      <th className="p-3 text-left font-medium text-muted-foreground">Name</th>
                       <th className="p-3 text-left font-medium text-muted-foreground hidden sm:table-cell">Display Name</th>
                       <th className="p-3 text-left font-medium text-muted-foreground hidden md:table-cell">Location</th>
                       <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
@@ -405,9 +406,12 @@ const ManageMembers = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {signedUpUsers.map((u) => (
+                    {signedUpUsers.map((u) => {
+                      const matchedMember = members.find((m) => m.email && m.email.toLowerCase() === u.email.toLowerCase());
+                      return (
                       <tr key={u.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
                         <td className="p-3 text-foreground">{u.email}</td>
+                        <td className="p-3 text-foreground font-medium">{matchedMember ? `${matchedMember.first_name} ${matchedMember.last_name}` : "—"}</td>
                         <td className="p-3 text-muted-foreground hidden sm:table-cell">{u.display_name || "—"}</td>
                         <td className="p-3 text-muted-foreground hidden md:table-cell">{u.location || "—"}</td>
                         <td className="p-3">
@@ -424,7 +428,8 @@ const ManageMembers = () => {
                           )}
                         </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
