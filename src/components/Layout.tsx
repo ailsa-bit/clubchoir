@@ -67,16 +67,23 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
 
               {language === "en" ? "FR" : "EN"}
             </button>
-            <Link
-              to="/profile"
-              className={`ml-1 p-2 rounded-full transition-colors ${
-              location.pathname === "/profile" ?
-              "bg-primary/10 text-primary" :
-              "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-              }>
-
-              <User className="w-5 h-5" />
-            </Link>
+            {isLoggedIn ? (
+              <Link
+                to="/profile"
+                className={`ml-1 p-2 rounded-full transition-colors ${
+                location.pathname === "/profile" ?
+                "bg-primary/10 text-primary" :
+                "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                }>
+                <User className="w-5 h-5" />
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="ml-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+                {t("login.signIn")}
+              </Link>
+            )}
           </nav>
 
           {/* Mobile toggle */}
@@ -113,17 +120,25 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                 {item.label}
               </Link>
           )}
-            <Link
-            to="/profile"
-            onClick={() => setMobileOpen(false)}
-            className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-            location.pathname === "/profile" ?
-            "bg-primary/10 text-primary" :
-            "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-            }>
-
-              {t("nav.profile")}
-            </Link>
+            {isLoggedIn ? (
+              <Link
+                to="/profile"
+                onClick={() => setMobileOpen(false)}
+                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                location.pathname === "/profile" ?
+                "bg-primary/10 text-primary" :
+                "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                }>
+                {t("nav.profile")}
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileOpen(false)}
+                className="block px-3 py-2.5 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-colors">
+                {t("login.signIn")}
+              </Link>
+            )}
           </nav>
         }
       </header>
