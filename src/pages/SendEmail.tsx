@@ -74,7 +74,7 @@ const SendEmail = () => {
       if (!m.email || !m.email.includes("@")) return false;
       const statusMatch = includeInactive
         ? true
-        : m.status.toUpperCase() === "ACTIVE";
+        : (m.status || "").toUpperCase() === "ACTIVE";
       const locationMatch = locationFilter === "ALL" || m.location === locationFilter;
       return statusMatch && locationMatch;
     });
