@@ -111,6 +111,11 @@ const ManageMembers = () => {
   const [bulkStatus, setBulkStatus] = useState<string>("INACTIVE");
   const [bulkSaving, setBulkSaving] = useState(false);
 
+  // Delete confirmation state
+  const [deleteTarget, setDeleteTarget] = useState<MemberRow | null>(null);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+
   const fetchMembers = async () => {
     const { data } = await supabase
       .from("members")
@@ -241,19 +246,42 @@ const ManageMembers = () => {
     fetchMembers();
   };
 
-  const handleDelete = async (id: string) => {
-    const { error } = await supabase.from("members").delete().eq("id", id);
+  const openDeleteConfirm = (m: MemberRow) => {
+    setDeleteTarget(m);
+    setDeleteConfirmText("");
+  };
+
+  const handleDeactivate = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    const { error } = await supabase.from("members").update({ status: "INACTIVE" }).eq("id", deleteTarget.id);
+    if (error) {
+      toast({ title: "Error deactivating member", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Member deactivated", description: `${deleteTarget.first_name} ${deleteTarget.last_name} set to INACTIVE.` });
+    }
+    setDeleting(false);
+    setDeleteTarget(null);
+    fetchMembers();
+  };
+
+  const handleHardDelete = async () => {
+    if (!deleteTarget || deleteConfirmText !== "DELETE") return;
+    setDeleting(true);
+    const { error } = await supabase.from("members").delete().eq("id", deleteTarget.id);
     if (error) {
       toast({ title: "Error deleting member", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "Member removed" });
+      toast({ title: "Member permanently removed" });
       setSelected((prev) => {
         const next = new Set(prev);
-        next.delete(id);
+        next.delete(deleteTarget.id);
         return next;
       });
-      fetchMembers();
     }
+    setDeleting(false);
+    setDeleteTarget(null);
+    fetchMembers();
   };
 
   const toggleSelect = (id: string) => {
@@ -491,7 +519,7 @@ const ManageMembers = () => {
                           size="icon"
                           variant="ghost"
                           className="h-8 w-8 text-destructive hover:text-destructive"
-                          onClick={() => handleDelete(m.id)}
+                          onClick={() => openDeleteConfirm(m)}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </Button>
@@ -603,6 +631,55 @@ const ManageMembers = () => {
               Apply to {selected.size} Member(s)
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete confirmation dialog */}
+      <Dialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
+              Remove Member
+            </DialogTitle>
+          </DialogHeader>
+          {deleteTarget && (
+            <div className="space-y-4 py-2">
+              <p className="text-sm text-foreground">
+                You are about to remove <span className="font-semibold">{deleteTarget.first_name} {deleteTarget.last_name}</span>
+                {deleteTarget.email ? <> ({deleteTarget.email})</> : null}.
+              </p>
+
+              <div className="rounded-xl border border-border bg-muted/50 p-4 space-y-3">
+                <p className="text-sm font-medium text-foreground">Recommended: Deactivate instead</p>
+                <p className="text-xs text-muted-foreground">Sets member status to INACTIVE. Their data is preserved and can be reactivated later.</p>
+                <Button onClick={handleDeactivate} disabled={deleting} variant="outline" className="w-full">
+                  {deleting ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : null}
+                  Deactivate Member
+                </Button>
+              </div>
+
+              <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 space-y-3">
+                <p className="text-sm font-medium text-destructive">Permanent Delete</p>
+                <p className="text-xs text-muted-foreground">This cannot be undone. Type <span className="font-mono font-bold">DELETE</span> to confirm.</p>
+                <Input
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder='Type "DELETE" to confirm'
+                  className="font-mono"
+                />
+                <Button
+                  onClick={handleHardDelete}
+                  disabled={deleting || deleteConfirmText !== "DELETE"}
+                  variant="destructive"
+                  className="w-full"
+                >
+                  {deleting ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : null}
+                  Permanently Delete
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>
