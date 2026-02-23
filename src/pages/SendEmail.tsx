@@ -1,13 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mail, Send, Users, Filter, ChevronDown } from "lucide-react";
+import { Mail, Send, Users, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -22,25 +22,13 @@ import {
 } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
 
-interface MemberWithEmail {
-  firstName: string;
-  lastName: string;
-  email: string;
+interface MemberRow {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string | null;
   location: string;
   status: string;
-}
-
-function parseCSVLine(line: string): string[] {
-  const result: string[] = [];
-  let current = "";
-  let inQuotes = false;
-  for (const char of line) {
-    if (char === '"') inQuotes = !inQuotes;
-    else if (char === "," && !inQuotes) { result.push(current); current = ""; }
-    else current += char;
-  }
-  result.push(current);
-  return result;
 }
 
 const SendEmail = () => {
@@ -48,55 +36,56 @@ const SendEmail = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const [members, setMembers] = useState<MemberWithEmail[]>([]);
+  const [members, setMembers] = useState<MemberRow[]>([]);
   const [loadingMembers, setLoadingMembers] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [sending, setSending] = useState(false);
-  const [statusFilter, setStatusFilter] = useState("ACTIVE");
+  const [includeInactive, setIncludeInactive] = useState(false);
   const [locationFilter, setLocationFilter] = useState("ALL");
   const [selectedEmails, setSelectedEmails] = useState<Set<string>>(new Set());
   const [recipientListOpen, setRecipientListOpen] = useState(false);
 
   useEffect(() => {
-    fetch("/data/members.csv")
-      .then((res) => res.text())
-      .then((text) => {
-        const lines = text.trim().split("\n");
-        const parsed: MemberWithEmail[] = [];
-        for (let i = 1; i < lines.length; i++) {
-          const cols = parseCSVLine(lines[i]);
-          if (cols.length < 5) continue;
-          const email = cols[2].trim();
-          if (!email || !email.includes("@")) continue;
-          parsed.push({
-            firstName: cols[0].trim(),
-            lastName: cols[1].trim(),
-            email,
-            location: cols[3].trim(),
-            status: cols[4].trim(),
-          });
-        }
-        setMembers(parsed);
+    const fetchMembers = async () => {
+      setLoadingMembers(true);
+      setFetchError(null);
+      try {
+        const { data, error } = await supabase
+          .from("members")
+          .select("id, first_name, last_name, email, location, status")
+          .order("last_name");
+
+        if (error) throw error;
+        setMembers((data as MemberRow[]) || []);
+      } catch (err: any) {
+        setFetchError(err.message || "Failed to load members.");
+        toast({ title: "Error loading members", description: err.message, variant: "destructive" });
+      } finally {
         setLoadingMembers(false);
-      });
+      }
+    };
+    fetchMembers();
   }, []);
 
   const filtered = useMemo(() => {
     return members.filter((m) => {
-      const matchesStatus = statusFilter === "ALL" || m.status === statusFilter;
-      const matchesLocation = locationFilter === "ALL" || m.location === locationFilter;
-      return matchesStatus && matchesLocation;
+      if (!m.email || !m.email.includes("@")) return false;
+      const statusMatch = includeInactive
+        ? true
+        : m.status.toUpperCase() === "ACTIVE";
+      const locationMatch = locationFilter === "ALL" || m.location === locationFilter;
+      return statusMatch && locationMatch;
     });
-  }, [members, statusFilter, locationFilter]);
+  }, [members, includeInactive, locationFilter]);
 
-  // Auto-select all filtered members
   useEffect(() => {
-    setSelectedEmails(new Set(filtered.map((m) => m.email)));
+    setSelectedEmails(new Set(filtered.map((m) => m.email!)));
   }, [filtered]);
 
   const locations = useMemo(
-    () => [...new Set(members.map((m) => m.location))].sort(),
+    () => [...new Set(members.map((m) => m.location).filter(Boolean))].sort(),
     [members]
   );
 
@@ -110,13 +99,9 @@ const SendEmail = () => {
   };
 
   const toggleAll = () => {
-    const allFilteredEmails = filtered.map((m) => m.email);
-    const allSelected = allFilteredEmails.every((e) => selectedEmails.has(e));
-    if (allSelected) {
-      setSelectedEmails(new Set());
-    } else {
-      setSelectedEmails(new Set(allFilteredEmails));
-    }
+    const allEmails = filtered.map((m) => m.email!);
+    const allSelected = allEmails.every((e) => selectedEmails.has(e));
+    setSelectedEmails(allSelected ? new Set() : new Set(allEmails));
   };
 
   const uniqueSelected = [...new Set(selectedEmails)];
@@ -150,7 +135,7 @@ const SendEmail = () => {
       const failCount = data?.failed?.length || 0;
 
       toast({
-        title: `Emails sent!`,
+        title: "Emails sent!",
         description: `${successCount} delivered${failCount ? `, ${failCount} failed` : ""}`,
       });
 
@@ -159,11 +144,7 @@ const SendEmail = () => {
         setBody("");
       }
     } catch (err: any) {
-      toast({
-        title: "Failed to send",
-        description: err.message || "Please try again.",
-        variant: "destructive",
-      });
+      toast({ title: "Failed to send", description: err.message || "Please try again.", variant: "destructive" });
     } finally {
       setSending(false);
     }
@@ -183,38 +164,33 @@ const SendEmail = () => {
     );
   }
 
+  if (fetchError) {
+    return (
+      <div className="py-20 text-center">
+        <h1 className="font-heading font-bold text-2xl text-destructive mb-2">Failed to load members</h1>
+        <p className="text-muted-foreground mb-4">{fetchError}</p>
+        <Button variant="outline" onClick={() => window.location.reload()}>Retry</Button>
+      </div>
+    );
+  }
+
   return (
     <div className="py-10 px-4">
       <div className="container mx-auto max-w-2xl">
         <div className="text-center mb-8">
           <Mail className="w-10 h-10 text-primary mx-auto mb-3" />
-          <h1 className="font-heading font-bold text-3xl text-foreground mb-2">
-            Send Email
-          </h1>
-          <p className="text-muted-foreground">
-            Compose and send emails to your members
-          </p>
+          <h1 className="font-heading font-bold text-3xl text-foreground mb-2">Send Email</h1>
+          <p className="text-muted-foreground">Compose and send emails to your members</p>
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-6 space-y-6">
           {/* Filters */}
           <div className="space-y-3">
             <label className="text-sm font-medium text-foreground">Recipients</label>
-            <div className="flex gap-3">
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="flex-1">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ALL">All statuses</SelectItem>
-                  <SelectItem value="ACTIVE">Active</SelectItem>
-                  <SelectItem value="INACTIVE">Inactive</SelectItem>
-                  <SelectItem value="PROSPECT">Prospect</SelectItem>
-                  <SelectItem value="TRIAL">Trial</SelectItem>
-                </SelectContent>
-              </Select>
+
+            <div className="flex items-center justify-between">
               <Select value={locationFilter} onValueChange={setLocationFilter}>
-                <SelectTrigger className="flex-1">
+                <SelectTrigger className="flex-1 mr-4">
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
                 <SelectContent>
@@ -224,6 +200,11 @@ const SendEmail = () => {
                   ))}
                 </SelectContent>
               </Select>
+
+              <label className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap cursor-pointer">
+                <Switch checked={includeInactive} onCheckedChange={setIncludeInactive} />
+                Include inactive
+              </label>
             </div>
 
             <Collapsible open={recipientListOpen} onOpenChange={setRecipientListOpen}>
@@ -241,7 +222,7 @@ const SendEmail = () => {
                   <div className="p-2 border-b border-border">
                     <label className="flex items-center gap-2 cursor-pointer text-sm">
                       <Checkbox
-                        checked={filtered.length > 0 && filtered.every((m) => selectedEmails.has(m.email))}
+                        checked={filtered.length > 0 && filtered.every((m) => selectedEmails.has(m.email!))}
                         onCheckedChange={toggleAll}
                       />
                       <span className="font-medium text-foreground">Select all</span>
@@ -249,17 +230,20 @@ const SendEmail = () => {
                   </div>
                   {filtered.map((m) => (
                     <label
-                      key={`${m.email}-${m.firstName}`}
+                      key={m.id}
                       className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted/50 cursor-pointer text-sm"
                     >
                       <Checkbox
-                        checked={selectedEmails.has(m.email)}
-                        onCheckedChange={() => toggleEmail(m.email)}
+                        checked={selectedEmails.has(m.email!)}
+                        onCheckedChange={() => toggleEmail(m.email!)}
                       />
-                      <span className="text-foreground">{m.firstName} {m.lastName}</span>
+                      <span className="text-foreground">{m.first_name} {m.last_name}</span>
                       <span className="text-muted-foreground text-xs ml-auto">{m.location}</span>
                     </label>
                   ))}
+                  {filtered.length === 0 && (
+                    <p className="p-3 text-sm text-muted-foreground text-center">No members match filters.</p>
+                  )}
                 </div>
               </CollapsibleContent>
             </Collapsible>
@@ -286,9 +270,7 @@ const SendEmail = () => {
               rows={8}
               maxLength={5000}
             />
-            <p className="text-xs text-muted-foreground">
-              {body.length}/5000 characters
-            </p>
+            <p className="text-xs text-muted-foreground">{body.length}/5000 characters</p>
           </div>
 
           {/* Send */}
