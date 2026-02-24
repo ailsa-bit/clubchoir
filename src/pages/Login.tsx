@@ -59,6 +59,11 @@ const Login = () => {
         setLoading(false);
         return;
       }
+      if (password.length < 8 || !/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+        setError("Password must be at least 8 characters with uppercase, lowercase and a number.");
+        setLoading(false);
+        return;
+      }
       const trimmedName = displayName.trim();
       const { data: signUpData, error } = await supabase.auth.signUp({
         email,
@@ -149,7 +154,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={6}
+                minLength={8}
                 className="pr-10"
               />
               <button
@@ -164,7 +169,7 @@ const Login = () => {
            )}
           {isSignUp && !isForgotPassword && (
             <p className="text-xs text-muted-foreground -mt-2">
-              Password must be at least 6 characters long.
+              Minimum 8 characters, including uppercase, lowercase and a number.
             </p>
           )}
           {isSignUp && !isForgotPassword && (
