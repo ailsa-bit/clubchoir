@@ -161,6 +161,11 @@ const Login = () => {
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
+           )}
+          {isSignUp && !isForgotPassword && (
+            <p className="text-xs text-muted-foreground -mt-2">
+              Password must be at least 6 characters long.
+            </p>
           )}
           {isSignUp && !isForgotPassword && (
             <Input
