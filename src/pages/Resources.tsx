@@ -79,13 +79,21 @@ const Resources = () => {
 
   const handleDownload = async (resource: SongResource) => {
     try {
-      const { data, error } = await supabase.storage.from("song-resources").createSignedUrl(resource.storage_path, 3600);
+      const { data, error } = await supabase.storage.from("song-resources").createSignedUrl(resource.storage_path, 3600, { download: resource.file_name });
       if (error) {
         console.error("Download error:", error);
         toast({ title: "Download failed", description: error.message, variant: "destructive" });
         return;
       }
-      if (data?.signedUrl) window.open(data.signedUrl, "_blank");
+      if (data?.signedUrl) {
+        const a = document.createElement("a");
+        a.href = data.signedUrl;
+        a.download = resource.file_name;
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
     } catch (err) {
       console.error("Unexpected download error:", err);
       toast({ title: "Download failed", description: "Could not generate download link.", variant: "destructive" });
