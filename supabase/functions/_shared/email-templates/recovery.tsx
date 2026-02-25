@@ -4,13 +4,14 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
   Html,
   Img,
+  Link,
   Preview,
+  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -38,9 +39,17 @@ export const RecoveryEmail = ({
         <Text style={text}>
           We received a request to reset your Club Choir password. Click the button below to choose a new one.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Reset Password
-        </Button>
+        <Section style={{ marginBottom: '28px' }}>
+          <Link href={confirmationUrl} style={button}>
+            Reset Password
+          </Link>
+        </Section>
+        <Text style={smallText}>
+          If the button above doesn't work, copy and paste this link into your browser:{' '}
+          <Link href={confirmationUrl} style={link}>
+            {confirmationUrl}
+          </Link>
+        </Text>
         <Text style={footer}>
           If you didn't request this, you can safely ignore this email. Your password won't be changed.
         </Text>
@@ -66,7 +75,16 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 28px',
 }
+const smallText = {
+  fontSize: '12px',
+  color: 'hsl(240, 5%, 46%)',
+  lineHeight: '1.6',
+  margin: '0 0 16px',
+  wordBreak: 'break-all' as const,
+}
+const link = { color: 'hsl(340, 75%, 60%)', textDecoration: 'underline' }
 const button = {
+  display: 'inline-block' as const,
   backgroundColor: 'hsl(340, 75%, 60%)',
   color: '#ffffff',
   fontSize: '15px',
