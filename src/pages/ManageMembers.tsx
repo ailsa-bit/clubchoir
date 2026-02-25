@@ -28,6 +28,8 @@ import {
   Trash2,
   Users,
   AlertTriangle,
+  Mail,
+  ShieldCheck,
   Loader2,
   CheckSquare,
   UserCheck,
@@ -115,6 +117,7 @@ const ManageMembers = () => {
   const [deleteTarget, setDeleteTarget] = useState<MemberRow | null>(null);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [confirmingUserId, setConfirmingUserId] = useState<string | null>(null);
 
   const fetchMembers = async () => {
     const { data } = await supabase
@@ -158,6 +161,24 @@ const ManageMembers = () => {
     }
     toast({ title: "Member approved!", description: `${signup.display_name || "User"} now has full access.` });
     fetchPending();
+  };
+
+  const handleConfirmEmail = async (userId: string, action: "confirm" | "resend") => {
+    setConfirmingUserId(userId);
+    try {
+      const { error } = await supabase.functions.invoke("confirm-user-email", {
+        body: { user_id: userId, action },
+      });
+      if (error) {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+      } else {
+        toast({ title: action === "confirm" ? "Email confirmed!" : "Confirmation email resent!" });
+        fetchSignups();
+      }
+    } catch {
+      toast({ title: "Error", description: "Something went wrong", variant: "destructive" });
+    }
+    setConfirmingUserId(null);
   };
 
   useEffect(() => {
@@ -424,7 +445,28 @@ const ManageMembers = () => {
                           {u.email_confirmed_at ? (
                             <Badge variant="outline" className="text-[10px] bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30">Yes</Badge>
                           ) : (
-                            <Badge variant="outline" className="text-[10px] bg-muted text-muted-foreground border-border">No</Badge>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-6 text-[10px] px-2"
+                                disabled={confirmingUserId === u.id}
+                                onClick={() => handleConfirmEmail(u.id, "confirm")}
+                              >
+                                <ShieldCheck className="w-3 h-3 mr-1" />
+                                {confirmingUserId === u.id ? "..." : "Confirm"}
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="h-6 text-[10px] px-2"
+                                disabled={confirmingUserId === u.id}
+                                onClick={() => handleConfirmEmail(u.id, "resend")}
+                              >
+                                <Mail className="w-3 h-3 mr-1" />
+                                Resend
+                              </Button>
+                            </div>
                           )}
                         </td>
                       </tr>
