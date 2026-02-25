@@ -113,19 +113,6 @@ const Resources = () => {
     return <div className="py-16 px-4 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-muted-foreground" /></div>;
   }
 
-  if (!user) {
-    return (
-      <div className="py-16 px-4 text-center">
-        <Lock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("resources.membersOnly")}</h1>
-        <p className="text-muted-foreground mb-6">{t("resources.signIn")}</p>
-        <Link to="/profile" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity">
-          {t("common.signIn")}
-        </Link>
-      </div>
-    );
-  }
-
   const filtered = searchQuery.trim()
     ? resources.filter(r => r.song_name.toLowerCase().includes(searchQuery.toLowerCase()) || r.file_name.toLowerCase().includes(searchQuery.toLowerCase()))
     : resources;
