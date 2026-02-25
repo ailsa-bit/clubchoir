@@ -51,7 +51,24 @@ serve(async (req) => {
       });
     }
 
-    const { user_id, action } = await req.json();
+    const { user_id, action, email } = await req.json();
+
+    if (action === "invite") {
+      if (!email) {
+        return new Response(JSON.stringify({ error: "email required for invite" }), {
+          status: 400,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+
+      const { error: inviteError } = await adminClient.auth.admin.inviteUserByEmail(email);
+      if (inviteError) throw inviteError;
+
+      return new Response(JSON.stringify({ success: true, message: "Invitation sent" }), {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
 
     if (!user_id) {
       return new Response(JSON.stringify({ error: "user_id required" }), {
@@ -70,15 +87,12 @@ serve(async (req) => {
         });
       }
 
-      // Resend confirmation using admin API - generate a new signup link
       const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
         type: "signup",
         email: targetUser.email!,
       });
 
-      if (linkError) {
-        throw linkError;
-      }
+      if (linkError) throw linkError;
 
       return new Response(JSON.stringify({ success: true, message: "Confirmation email resent" }), {
         status: 200,
