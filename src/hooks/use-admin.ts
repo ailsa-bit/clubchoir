@@ -54,9 +54,9 @@ export function useAdmin() {
       }
     );
 
-    // 3. Safety timeout
+    // 3. Safety timeout — don't stay on loading forever
     const timeout = setTimeout(() => {
-      if (isMounted && !initializedRef.current) {
+      if (isMounted) {
         initializedRef.current = true;
         setLoading(false);
       }
