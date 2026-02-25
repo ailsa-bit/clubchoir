@@ -4,13 +4,14 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
   Html,
   Img,
+  Link,
   Preview,
+  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -40,9 +41,17 @@ export const InviteEmail = ({
         <Text style={text}>
           You've been invited to join Club Choir. Click the button below to accept and create your account.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Accept Invitation
-        </Button>
+        <Section style={{ marginBottom: '28px' }}>
+          <Link href={confirmationUrl} style={button}>
+            Accept Invitation
+          </Link>
+        </Section>
+        <Text style={smallText}>
+          If the button above doesn't work, copy and paste this link into your browser:{' '}
+          <Link href={confirmationUrl} style={link}>
+            {confirmationUrl}
+          </Link>
+        </Text>
         <Text style={footer}>
           If you weren't expecting this invitation, you can safely ignore this email.
         </Text>
@@ -68,7 +77,16 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 28px',
 }
+const smallText = {
+  fontSize: '12px',
+  color: 'hsl(240, 5%, 46%)',
+  lineHeight: '1.6',
+  margin: '0 0 16px',
+  wordBreak: 'break-all' as const,
+}
+const link = { color: 'hsl(340, 75%, 60%)', textDecoration: 'underline' }
 const button = {
+  display: 'inline-block' as const,
   backgroundColor: 'hsl(340, 75%, 60%)',
   color: '#ffffff',
   fontSize: '15px',

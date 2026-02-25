@@ -4,13 +4,14 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
   Html,
   Img,
+  Link,
   Preview,
+  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -38,9 +39,17 @@ export const MagicLinkEmail = ({
         <Text style={text}>
           Click the button below to sign in to Club Choir. This link will expire shortly.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Sign In
-        </Button>
+        <Section style={{ marginBottom: '28px' }}>
+          <Link href={confirmationUrl} style={button}>
+            Sign In
+          </Link>
+        </Section>
+        <Text style={smallText}>
+          If the button above doesn't work, copy and paste this link into your browser:{' '}
+          <Link href={confirmationUrl} style={link}>
+            {confirmationUrl}
+          </Link>
+        </Text>
         <Text style={footer}>
           If you didn't request this link, you can safely ignore this email.
         </Text>
@@ -66,7 +75,16 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 28px',
 }
+const smallText = {
+  fontSize: '12px',
+  color: 'hsl(240, 5%, 46%)',
+  lineHeight: '1.6',
+  margin: '0 0 16px',
+  wordBreak: 'break-all' as const,
+}
+const link = { color: 'hsl(340, 75%, 60%)', textDecoration: 'underline' }
 const button = {
+  display: 'inline-block' as const,
   backgroundColor: 'hsl(340, 75%, 60%)',
   color: '#ffffff',
   fontSize: '15px',

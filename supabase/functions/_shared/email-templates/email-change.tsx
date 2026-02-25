@@ -4,7 +4,6 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
@@ -12,6 +11,7 @@ import {
   Img,
   Link,
   Preview,
+  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -51,9 +51,17 @@ export const EmailChangeEmail = ({
           </Link>
           .
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Confirm Email Change
-        </Button>
+        <Section style={{ marginBottom: '28px' }}>
+          <Link href={confirmationUrl} style={button}>
+            Confirm Email Change
+          </Link>
+        </Section>
+        <Text style={smallText}>
+          If the button above doesn't work, copy and paste this link into your browser:{' '}
+          <Link href={confirmationUrl} style={link}>
+            {confirmationUrl}
+          </Link>
+        </Text>
         <Text style={footer}>
           If you didn't request this change, please secure your account immediately.
         </Text>
@@ -79,8 +87,16 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 28px',
 }
+const smallText = {
+  fontSize: '12px',
+  color: 'hsl(240, 5%, 46%)',
+  lineHeight: '1.6',
+  margin: '0 0 16px',
+  wordBreak: 'break-all' as const,
+}
 const link = { color: 'hsl(340, 75%, 60%)', textDecoration: 'underline' }
 const button = {
+  display: 'inline-block' as const,
   backgroundColor: 'hsl(340, 75%, 60%)',
   color: '#ffffff',
   fontSize: '15px',
