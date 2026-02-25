@@ -137,7 +137,18 @@ const Index = () => {
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.testimonials.title")}
           </h2>
-          <p className="text-center text-muted-foreground mb-10">{t("home.testimonials.subtitle")}</p>
+          <p className="text-center text-muted-foreground mb-6">{t("home.testimonials.subtitle")}</p>
+          <div className="text-center mb-10">
+            <a
+              href="https://g.page/r/CU1hiLJTYmtXEAE/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
+            >
+              <ExternalLink className="w-4 h-4" />
+              {t("home.testimonials.review")}
+            </a>
+          </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {testimonials.map((tst) => (
               <div
@@ -153,17 +164,6 @@ const Index = () => {
                 <p className="mt-auto font-heading font-bold text-sm text-foreground">{tst.name}</p>
               </div>
             ))}
-          </div>
-          <div className="text-center mt-8">
-            <a
-              href="https://g.page/r/CU1hiLJTYmtXEAE/review"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
-            >
-              <ExternalLink className="w-4 h-4" />
-              {t("home.testimonials.review")}
-            </a>
           </div>
         </div>
       </section>
