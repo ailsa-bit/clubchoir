@@ -6,22 +6,30 @@ export function useAdmin() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const initializedRef = useRef(false);
+  const lastKnownAdminRef = useRef(false);
 
   useEffect(() => {
     let isMounted = true;
 
     const checkAdmin = async (userId: string): Promise<boolean> => {
-      try {
-        const { data, error } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", userId)
-          .eq("role", "admin")
-          .maybeSingle();
-        return !error && !!data;
-      } catch {
-        return false;
+      const maxRetries = 2;
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        try {
+          const { data, error } = await supabase
+            .from("user_roles")
+            .select("role")
+            .eq("user_id", userId)
+            .eq("role", "admin")
+            .maybeSingle();
+          if (!error) return !!data;
+          // On error, retry after a short delay
+          if (attempt < maxRetries) await new Promise(r => setTimeout(r, 500));
+        } catch {
+          if (attempt < maxRetries) await new Promise(r => setTimeout(r, 500));
+        }
       }
+      // All retries failed — preserve last known admin state to avoid flashing "pending"
+      return lastKnownAdminRef.current;
     };
 
     const handleUser = async (currentUser: any) => {
@@ -29,8 +37,12 @@ export function useAdmin() {
       setUser(currentUser);
       if (currentUser) {
         const admin = await checkAdmin(currentUser.id);
-        if (isMounted) setIsAdmin(admin);
+        if (isMounted) {
+          lastKnownAdminRef.current = admin;
+          setIsAdmin(admin);
+        }
       } else {
+        lastKnownAdminRef.current = false;
         setIsAdmin(false);
       }
       if (isMounted) setLoading(false);
@@ -43,7 +55,7 @@ export function useAdmin() {
       handleUser(session?.user ?? null);
     });
 
-    // 2. Listen for auth changes (login/logout)
+    // 2. Listen for auth changes (login/logout/token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         if (!isMounted) return;
@@ -54,7 +66,7 @@ export function useAdmin() {
       }
     );
 
-    // 3. Safety timeout — don't stay on loading forever
+    // 3. Safety timeout
     const timeout = setTimeout(() => {
       if (isMounted) {
         initializedRef.current = true;
