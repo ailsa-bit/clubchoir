@@ -79,22 +79,17 @@ const Resources = () => {
 
   const handleDownload = async (resource: SongResource) => {
     try {
-      const { data, error } = await supabase.storage.from("song-resources").download(resource.storage_path);
-      if (error) {
+      // Use signed URL approach — works reliably on tablets/iPads
+      const { data, error } = await supabase.storage
+        .from("song-resources")
+        .createSignedUrl(resource.storage_path, 300, { download: resource.file_name });
+      if (error || !data?.signedUrl) {
         console.error("Download error:", error);
-        toast({ title: "Download failed", description: error.message, variant: "destructive" });
+        toast({ title: "Download failed", description: error?.message || "Could not generate download link.", variant: "destructive" });
         return;
       }
-      if (data) {
-        const url = URL.createObjectURL(data);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = resource.file_name;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }
+      // Open signed URL directly — compatible with all browsers including tablet Safari
+      window.open(data.signedUrl, "_blank");
     } catch (err) {
       console.error("Unexpected download error:", err);
       toast({ title: "Download failed", description: "Could not download file.", variant: "destructive" });
