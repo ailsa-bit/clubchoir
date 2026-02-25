@@ -7,30 +7,40 @@ export function useProfile() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchProfile = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user) {
-        const { data } = await supabase
-          .from("profiles")
-          .select("location, status")
-          .eq("user_id", session.user.id)
-          .maybeSingle();
-        setLocation(data?.location ?? null);
-        setStatus(data?.status ?? null);
-      }
-      setLoading(false);
-    };
-
-    fetchProfile();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!isMounted) return;
         if (session?.user) {
           const { data } = await supabase
             .from("profiles")
             .select("location, status")
             .eq("user_id", session.user.id)
             .maybeSingle();
+          if (!isMounted) return;
+          setLocation(data?.location ?? null);
+          setStatus(data?.status ?? null);
+        }
+      } catch (err) {
+        console.error("Profile fetch error:", err);
+      }
+      if (isMounted) setLoading(false);
+    };
+
+    fetchProfile();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (!isMounted) return;
+        if (session?.user) {
+          const { data } = await supabase
+            .from("profiles")
+            .select("location, status")
+            .eq("user_id", session.user.id)
+            .maybeSingle();
+          if (!isMounted) return;
           setLocation(data?.location ?? null);
           setStatus(data?.status ?? null);
         } else {
@@ -40,7 +50,16 @@ export function useProfile() {
       }
     );
 
-    return () => subscription.unsubscribe();
+    // Safety timeout — don't stay on loading forever
+    const timeout = setTimeout(() => {
+      if (isMounted) setLoading(false);
+    }, 5000);
+
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []);
 
   return { location, status, loading, isActive: status === "active" };
