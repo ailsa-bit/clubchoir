@@ -14,23 +14,34 @@ const ResetPassword = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isRecovery, setIsRecovery] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     // Listen for the PASSWORD_RECOVERY event from the auth redirect
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setIsRecovery(true);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "PASSWORD_RECOVERY" || session) {
+        setReady(true);
       }
     });
 
-    // Also check if the URL hash contains type=recovery
+    // Also check if the URL hash contains type=recovery or access_token
     const hash = window.location.hash;
-    if (hash.includes("type=recovery")) {
-      setIsRecovery(true);
+    if (hash.includes("type=recovery") || hash.includes("access_token")) {
+      setReady(true);
     }
 
-    return () => subscription.unsubscribe();
+    // Fallback: check if there's already a session (user may have arrived with valid tokens)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setReady(true);
+    });
+
+    // Always show the form after a short delay as a final fallback
+    const timeout = setTimeout(() => setReady(true), 2000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,7 +57,11 @@ const ResetPassword = () => {
     setLoading(true);
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
-      setError(error.message);
+      if (error.message.includes("Auth session missing") || error.message.includes("not authenticated")) {
+        setError("Your reset link has expired. Please request a new one from the login page.");
+      } else {
+        setError(error.message);
+      }
     } else {
       setMessage(t("login.passwordUpdated"));
       setTimeout(() => navigate("/login"), 2000);
@@ -54,12 +69,12 @@ const ResetPassword = () => {
     setLoading(false);
   };
 
-  if (!isRecovery) {
+  if (!ready) {
     return (
       <div className="py-16 px-4 text-center">
-        <KeyRound className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+        <KeyRound className="w-12 h-12 text-muted-foreground mx-auto mb-4 animate-pulse" />
         <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("login.resetPassword")}</h1>
-        <p className="text-muted-foreground">{t("login.resetEmailSent")}</p>
+        <p className="text-muted-foreground">Loading...</p>
       </div>
     );
   }
