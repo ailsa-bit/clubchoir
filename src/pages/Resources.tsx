@@ -136,10 +136,11 @@ const Resources = () => {
     ? resources.filter(r => r.song_name.toLowerCase().includes(searchQuery.toLowerCase()) || r.file_name.toLowerCase().includes(searchQuery.toLowerCase()))
     : resources;
 
-  // Group by song name
-  const grouped = filtered.reduce<Record<string, SongResource[]>>((acc, r) => {
-    if (!acc[r.song_name]) acc[r.song_name] = [];
-    acc[r.song_name].push(r);
+  // Group by resource type (color)
+  const typeOrder: Array<"audio" | "lyrics" | "sheet_music"> = ["audio", "lyrics", "sheet_music"];
+  const grouped = typeOrder.reduce<Record<string, SongResource[]>>((acc, type) => {
+    const items = filtered.filter(r => r.resource_type === type);
+    if (items.length > 0) acc[type] = items;
     return acc;
   }, {});
 
@@ -193,25 +194,25 @@ const Resources = () => {
           <p className="text-muted-foreground text-sm text-center">{t("resources.empty")}</p>
         ) : (
           <div className="space-y-6">
-            {Object.entries(grouped).map(([songName, items]) => (
-              <div key={songName}>
-                <h2 className="font-heading font-semibold text-lg text-foreground mb-3 flex items-center gap-2">
-                  <Music className="w-5 h-5 text-primary" />
-                  {songName}
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {items.map((r) => {
-                    const config = typeConfig[r.resource_type] || typeConfig.audio;
-                    return (
+            {Object.entries(grouped).map(([type, items]) => {
+              const config = typeConfig[type] || typeConfig.audio;
+              return (
+                <div key={type}>
+                  <h2 className="font-heading font-semibold text-lg text-foreground mb-3 flex items-center gap-2">
+                    <span className={config.text}>{config.icon}</span>
+                    {typeLabel[type]}
+                  </h2>
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {items.map((r) => (
                       <div
                         key={r.id}
                         className={`rounded-2xl border ${config.border} ${config.bg} p-4 flex flex-col gap-3 transition-shadow hover:shadow-md`}
                       >
                         <div className="flex items-start justify-between gap-2">
-                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${config.badge}`}>
-                            {config.icon}
-                            {typeLabel[r.resource_type]}
-                          </span>
+                          <div className="flex items-center gap-2 min-w-0">
+                            <Music className="w-4 h-4 text-foreground/60 shrink-0" />
+                            <span className="font-medium text-sm text-foreground truncate">{r.song_name}</span>
+                          </div>
                           <div className="flex items-center gap-1 shrink-0">
                             <button
                               onClick={() => handleDownload(r)}
@@ -231,15 +232,15 @@ const Resources = () => {
                             )}
                           </div>
                         </div>
-                        <p className="text-sm text-foreground/80 truncate" title={r.file_name}>
+                        <p className="text-xs text-foreground/60 truncate" title={r.file_name}>
                           {r.file_name}
                         </p>
                       </div>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
