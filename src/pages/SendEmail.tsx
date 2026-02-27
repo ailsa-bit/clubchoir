@@ -278,26 +278,34 @@ const SendEmail = () => {
                   (m) => m.email && (
                     m.email.toLowerCase().includes(q) ||
                     `${m.first_name} ${m.last_name}`.toLowerCase().includes(q)
-                  ) && !selectedEmails.has(m.email)
-                ).slice(0, 6);
+                  )
+                ).slice(0, 8);
                 if (!suggestions.length) return null;
                 return (
                   <div className="absolute z-10 top-full left-0 right-12 mt-1 border border-border bg-popover rounded-xl shadow-lg max-h-48 overflow-y-auto">
-                    {suggestions.map((m) => (
-                      <button
-                        key={m.id}
-                        type="button"
-                        className="w-full text-left px-3 py-2 hover:bg-muted/60 flex items-center justify-between text-sm"
-                        onClick={() => {
-                          setSelectedEmails((prev) => new Set([...prev, m.email!]));
-                          setManualEmail("");
-                          toast({ title: "Added", description: `${m.first_name} ${m.last_name} (${m.email})` });
-                        }}
-                      >
-                        <span className="text-foreground">{m.first_name} {m.last_name}</span>
-                        <span className="text-muted-foreground text-xs">{m.email}</span>
-                      </button>
-                    ))}
+                    {suggestions.map((m) => {
+                      const alreadySelected = selectedEmails.has(m.email!);
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          className={`w-full text-left px-3 py-2 hover:bg-muted/60 flex items-center justify-between text-sm ${alreadySelected ? "opacity-50" : ""}`}
+                          onClick={() => {
+                            if (alreadySelected) {
+                              setSelectedEmails((prev) => { const next = new Set(prev); next.delete(m.email!); return next; });
+                              toast({ title: "Removed", description: `${m.first_name} ${m.last_name}` });
+                            } else {
+                              setSelectedEmails((prev) => new Set([...prev, m.email!]));
+                              toast({ title: "Added", description: `${m.first_name} ${m.last_name} (${m.email})` });
+                            }
+                            setManualEmail("");
+                          }}
+                        >
+                          <span className="text-foreground">{m.first_name} {m.last_name} {alreadySelected ? "✓" : ""}</span>
+                          <span className="text-muted-foreground text-xs">{m.email}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 );
               })()}
