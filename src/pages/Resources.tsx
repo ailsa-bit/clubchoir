@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
-import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Lock, Search } from "lucide-react";
+import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 
 interface SongResource {
   id: string;
@@ -17,10 +16,28 @@ interface SongResource {
   created_at: string;
 }
 
-const typeIcon: Record<string, React.ReactNode> = {
-  audio: <Music className="w-4 h-4" />,
-  lyrics: <FileText className="w-4 h-4" />,
-  sheet_music: <BookOpen className="w-4 h-4" />,
+const typeConfig: Record<string, { icon: React.ReactNode; bg: string; border: string; badge: string; text: string }> = {
+  audio: {
+    icon: <Music className="w-5 h-5" />,
+    bg: "bg-[hsl(var(--pink-light))]",
+    border: "border-[hsl(var(--pink)/.3)]",
+    badge: "bg-[hsl(var(--pink))] text-[hsl(var(--pink-foreground))]",
+    text: "text-[hsl(var(--pink))]",
+  },
+  lyrics: {
+    icon: <FileText className="w-5 h-5" />,
+    bg: "bg-[hsl(var(--aqua-light))]",
+    border: "border-[hsl(var(--aqua)/.3)]",
+    badge: "bg-[hsl(var(--aqua))] text-[hsl(var(--aqua-foreground))]",
+    text: "text-[hsl(var(--aqua))]",
+  },
+  sheet_music: {
+    icon: <BookOpen className="w-5 h-5" />,
+    bg: "bg-[hsl(var(--purple-light))]",
+    border: "border-[hsl(var(--purple)/.3)]",
+    badge: "bg-[hsl(var(--purple))] text-[hsl(var(--purple-foreground))]",
+    text: "text-[hsl(var(--purple))]",
+  },
 };
 
 const Resources = () => {
@@ -79,17 +96,24 @@ const Resources = () => {
 
   const handleDownload = async (resource: SongResource) => {
     try {
-      // Use signed URL approach — works reliably on tablets/iPads
       const { data, error } = await supabase.storage
         .from("song-resources")
-        .createSignedUrl(resource.storage_path, 300, { download: resource.file_name });
+        .createSignedUrl(resource.storage_path, 600);
       if (error || !data?.signedUrl) {
         console.error("Download error:", error);
         toast({ title: "Download failed", description: error?.message || "Could not generate download link.", variant: "destructive" });
         return;
       }
-      // Open signed URL directly — compatible with all browsers including tablet Safari
-      window.open(data.signedUrl, "_blank");
+      // Use an anchor element for maximum cross-device compatibility (iPhone Safari fix)
+      const a = document.createElement("a");
+      a.href = data.signedUrl;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      // Don't set download attribute — let the browser handle it natively
+      // This works better on iOS Safari which blocks programmatic downloads
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => document.body.removeChild(a), 100);
     } catch (err) {
       console.error("Unexpected download error:", err);
       toast({ title: "Download failed", description: "Could not download file.", variant: "destructive" });
@@ -111,6 +135,13 @@ const Resources = () => {
   const filtered = searchQuery.trim()
     ? resources.filter(r => r.song_name.toLowerCase().includes(searchQuery.toLowerCase()) || r.file_name.toLowerCase().includes(searchQuery.toLowerCase()))
     : resources;
+
+  // Group by song name
+  const grouped = filtered.reduce<Record<string, SongResource[]>>((acc, r) => {
+    if (!acc[r.song_name]) acc[r.song_name] = [];
+    acc[r.song_name].push(r);
+    return acc;
+  }, {});
 
   return (
     <div className="py-12 px-4">
@@ -161,50 +192,54 @@ const Resources = () => {
         ) : filtered.length === 0 ? (
           <p className="text-muted-foreground text-sm text-center">{t("resources.empty")}</p>
         ) : (
-          <div className="rounded-2xl border border-border bg-card overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t("resources.song")}</TableHead>
-                  <TableHead>{t("resources.type")}</TableHead>
-                  <TableHead className="hidden sm:table-cell">{t("resources.fileName")}</TableHead>
-                  <TableHead className="text-right">{t("resources.actions")}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filtered.map((r) => (
-                  <TableRow key={r.id}>
-                    <TableCell className="font-medium">
-                      <div className="flex items-center gap-2">
-                        <Music className="w-4 h-4 text-primary shrink-0" />
-                        <span className="truncate">{r.song_name}</span>
+          <div className="space-y-6">
+            {Object.entries(grouped).map(([songName, items]) => (
+              <div key={songName}>
+                <h2 className="font-heading font-semibold text-lg text-foreground mb-3 flex items-center gap-2">
+                  <Music className="w-5 h-5 text-primary" />
+                  {songName}
+                </h2>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {items.map((r) => {
+                    const config = typeConfig[r.resource_type] || typeConfig.audio;
+                    return (
+                      <div
+                        key={r.id}
+                        className={`rounded-2xl border ${config.border} ${config.bg} p-4 flex flex-col gap-3 transition-shadow hover:shadow-md`}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${config.badge}`}>
+                            {config.icon}
+                            {typeLabel[r.resource_type]}
+                          </span>
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              onClick={() => handleDownload(r)}
+                              className={`p-2 rounded-xl ${config.text} hover:bg-background/60 transition-colors`}
+                              title="Download"
+                            >
+                              <Download className="w-5 h-5" />
+                            </button>
+                            {isAdmin && (
+                              <button
+                                onClick={() => handleDelete(r)}
+                                className="p-2 rounded-xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-sm text-foreground/80 truncate" title={r.file_name}>
+                          {r.file_name}
+                        </p>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1.5 text-muted-foreground">
-                        {typeIcon[r.resource_type]}
-                        <span className="text-sm">{typeLabel[r.resource_type]}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      <span className="text-sm text-muted-foreground truncate block max-w-[200px]">{r.file_name}</span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-1">
-                        <button onClick={() => handleDownload(r)} className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors" title="Download">
-                          <Download className="w-4 h-4" />
-                        </button>
-                        {isAdmin && (
-                          <button onClick={() => handleDelete(r)} className="p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors" title="Delete">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
