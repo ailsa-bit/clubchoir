@@ -260,16 +260,47 @@ const SendEmail = () => {
               </CollapsibleContent>
             </Collapsible>
 
-            <div className="flex items-center gap-2 mt-2">
-              <Input
-                type="email"
-                placeholder="Add email manually…"
-                value={manualEmail}
-                onChange={(e) => setManualEmail(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addManualEmail(); } }}
-                className="flex-1"
-              />
-              <Button type="button" variant="outline" size="sm" onClick={addManualEmail}>Add</Button>
+            <div className="relative mt-2">
+              <div className="flex items-center gap-2">
+                <Input
+                  type="email"
+                  placeholder="Type to search members or add email…"
+                  value={manualEmail}
+                  onChange={(e) => setManualEmail(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addManualEmail(); } }}
+                  className="flex-1"
+                />
+                <Button type="button" variant="outline" size="sm" onClick={addManualEmail}>Add</Button>
+              </div>
+              {manualEmail.trim().length >= 2 && (() => {
+                const q = manualEmail.trim().toLowerCase();
+                const suggestions = members.filter(
+                  (m) => m.email && (
+                    m.email.toLowerCase().includes(q) ||
+                    `${m.first_name} ${m.last_name}`.toLowerCase().includes(q)
+                  ) && !selectedEmails.has(m.email)
+                ).slice(0, 6);
+                if (!suggestions.length) return null;
+                return (
+                  <div className="absolute z-10 top-full left-0 right-12 mt-1 border border-border bg-popover rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                    {suggestions.map((m) => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        className="w-full text-left px-3 py-2 hover:bg-muted/60 flex items-center justify-between text-sm"
+                        onClick={() => {
+                          setSelectedEmails((prev) => new Set([...prev, m.email!]));
+                          setManualEmail("");
+                          toast({ title: "Added", description: `${m.first_name} ${m.last_name} (${m.email})` });
+                        }}
+                      >
+                        <span className="text-foreground">{m.first_name} {m.last_name}</span>
+                        <span className="text-muted-foreground text-xs">{m.email}</span>
+                      </button>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
           </div>
 
