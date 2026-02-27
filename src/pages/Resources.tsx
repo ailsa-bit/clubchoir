@@ -84,7 +84,8 @@ const Resources = () => {
     if (!file || !uploadSong.trim() || !user) return;
     setUploading(true);
     const ext = file.name.split(".").pop();
-    const path = `songs/${uploadSong.trim().replace(/\s+/g, "-").toLowerCase()}/${uploadType}-${Date.now()}.${ext}`;
+    const safeSongName = uploadSong.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9\s-]/g, "").replace(/\s+/g, "-").toLowerCase();
+    const path = `songs/${safeSongName}/${uploadType}-${Date.now()}.${ext}`;
     const { error: storageError } = await supabase.storage.from("song-resources").upload(path, file);
     if (storageError) { toast({ title: "Upload failed", description: storageError.message, variant: "destructive" }); setUploading(false); return; }
     const { error: dbError } = await supabase.from("song_resources").insert({ song_name: uploadSong.trim(), resource_type: uploadType, file_name: file.name, storage_path: path, location: "all", uploaded_by: user.id });
