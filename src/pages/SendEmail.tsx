@@ -46,6 +46,7 @@ const SendEmail = () => {
   const [locationFilter, setLocationFilter] = useState("ALL");
   const [selectedEmails, setSelectedEmails] = useState<Set<string>>(new Set());
   const [recipientListOpen, setRecipientListOpen] = useState(false);
+  const [manualEmail, setManualEmail] = useState("");
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -105,6 +106,17 @@ const SendEmail = () => {
   };
 
   const uniqueSelected = [...new Set(selectedEmails)];
+
+  const addManualEmail = () => {
+    const email = manualEmail.trim().toLowerCase();
+    if (!email || !email.includes("@")) {
+      toast({ title: "Invalid email", description: "Please enter a valid email address.", variant: "destructive" });
+      return;
+    }
+    setSelectedEmails((prev) => new Set([...prev, email]));
+    setManualEmail("");
+    toast({ title: "Added", description: email });
+  };
 
   const handleSend = async () => {
     if (!uniqueSelected.length) {
@@ -247,6 +259,18 @@ const SendEmail = () => {
                 </div>
               </CollapsibleContent>
             </Collapsible>
+
+            <div className="flex items-center gap-2 mt-2">
+              <Input
+                type="email"
+                placeholder="Add email manually…"
+                value={manualEmail}
+                onChange={(e) => setManualEmail(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addManualEmail(); } }}
+                className="flex-1"
+              />
+              <Button type="button" variant="outline" size="sm" onClick={addManualEmail}>Add</Button>
+            </div>
           </div>
 
           {/* Subject */}
