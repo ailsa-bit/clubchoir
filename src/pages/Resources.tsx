@@ -38,6 +38,13 @@ const typeConfig: Record<string, { icon: React.ReactNode; bg: string; border: st
     badge: "bg-[hsl(var(--purple))] text-[hsl(var(--purple-foreground))]",
     text: "text-[hsl(var(--purple))]",
   },
+  slides: {
+    icon: <FileText className="w-5 h-5" />,
+    bg: "bg-amber-50 dark:bg-amber-950/30",
+    border: "border-amber-300/30",
+    badge: "bg-amber-500 text-white",
+    text: "text-amber-600 dark:text-amber-400",
+  },
 };
 
 const Resources = () => {
@@ -56,6 +63,7 @@ const Resources = () => {
     audio: t("resources.recording"),
     lyrics: t("resources.lyrics"),
     sheet_music: t("resources.sheetMusic"),
+    slides: "Slides",
   };
 
   const fetchResources = async () => {
@@ -138,7 +146,7 @@ const Resources = () => {
     : resources;
 
   // Group by resource type (color)
-  const typeOrder: Array<"audio" | "lyrics" | "sheet_music"> = ["audio", "lyrics", "sheet_music"];
+  const typeOrder: Array<"audio" | "lyrics" | "sheet_music" | "slides"> = ["audio", "lyrics", "sheet_music", "slides"];
   const grouped = typeOrder.reduce<Record<string, SongResource[]>>((acc, type) => {
     const items = filtered.filter(r => r.resource_type === type);
     if (items.length > 0) acc[type] = items;
@@ -176,11 +184,12 @@ const Resources = () => {
                     <option value="audio">{t("resources.recording")}</option>
                     <option value="lyrics">{t("resources.lyrics")}</option>
                     <option value="sheet_music">{t("resources.sheetMusic")}</option>
+                    <option value="slides">Slides</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t("resources.file")}</label>
-                  <input type="file" onChange={handleUpload} disabled={uploading || !uploadSong.trim()} accept=".mp3,.wav,.m4a,.pdf,.txt,.doc,.docx"
+                  <input type="file" onChange={handleUpload} disabled={uploading || !uploadSong.trim()} accept=".mp3,.wav,.m4a,.pdf,.txt,.doc,.docx,.pptx,.ppt,.key"
                     className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
                   {uploading && <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Uploading…</p>}
                 </div>
