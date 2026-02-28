@@ -104,27 +104,34 @@ const Resources = () => {
   };
 
   const handleDownload = async (resource: SongResource) => {
+    // Open a blank tab IMMEDIATELY (in the user gesture) to avoid iPad Safari popup blocker
+    const newTab = window.open("about:blank", "_blank");
     try {
       const { data, error } = await supabase.storage
         .from("song-resources")
         .createSignedUrl(resource.storage_path, 600);
       if (error || !data?.signedUrl) {
         console.error("Download error:", error);
+        if (newTab) newTab.close();
         toast({ title: "Download failed", description: error?.message || "Could not generate download link.", variant: "destructive" });
         return;
       }
-      // Use an anchor element for maximum cross-device compatibility (iPhone Safari fix)
-      const a = document.createElement("a");
-      a.href = data.signedUrl;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      // Don't set download attribute — let the browser handle it natively
-      // This works better on iOS Safari which blocks programmatic downloads
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => document.body.removeChild(a), 100);
+      if (newTab) {
+        // Redirect the already-opened tab to the signed URL
+        newTab.location.href = data.signedUrl;
+      } else {
+        // Fallback: if popup was blocked, use anchor click
+        const a = document.createElement("a");
+        a.href = data.signedUrl;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => document.body.removeChild(a), 100);
+      }
     } catch (err) {
       console.error("Unexpected download error:", err);
+      if (newTab) newTab.close();
       toast({ title: "Download failed", description: "Could not download file.", variant: "destructive" });
     }
   };
