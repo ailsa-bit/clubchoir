@@ -1,0 +1,2 @@
+ALTER TABLE public.song_resources DROP CONSTRAINT song_resources_resource_type_check;
+ALTER TABLE public.song_resources ADD CONSTRAINT song_resources_resource_type_check CHECK (resource_type IN ('audio', 'lyrics', 'sheet_music', 'slides'));
