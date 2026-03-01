@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
       type: "recovery",
       email,
       options: {
-        redirectTo: "https://clubchoir-vibe-update.lovable.app/reset-password",
+        redirectTo: "https://clubchoir.ca/reset-password",
       },
     });
 
