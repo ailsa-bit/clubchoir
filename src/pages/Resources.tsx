@@ -105,35 +105,41 @@ const Resources = () => {
 
   const handleDownload = async (resource: SongResource) => {
     try {
-      const { data, error } = await supabase.storage
-        .from("song-resources")
-        .createSignedUrl(resource.storage_path, 600);
-      if (error || !data?.signedUrl) {
-        console.error("Download error:", error);
-        toast({ title: "Download failed", description: error?.message || "Could not generate download link.", variant: "destructive" });
+      // Use edge function to generate signed URL server-side
+      // This avoids Safari/iPad popup-blocking issues
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData?.session?.access_token;
+      if (!token) {
+        toast({ title: "Download failed", description: "Please log in to download files.", variant: "destructive" });
         return;
       }
-      // Use window.location for same-tab navigation (most reliable on Safari/iOS)
-      // For audio files, open in new tab; for documents, use direct navigation
-      const isAudio = resource.resource_type === "audio";
-      if (isAudio) {
-        // Audio files: open in new tab so they can play inline
-        const newTab = window.open(data.signedUrl, "_blank");
-        if (!newTab) {
-          // Popup blocked — fallback to same-tab
-          window.location.href = data.signedUrl;
+
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-signed-url`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+          },
+          body: JSON.stringify({
+            storage_path: resource.storage_path,
+            file_name: resource.file_name,
+          }),
         }
-      } else {
-        // Documents (PDF, lyrics, slides): use anchor with download hint
-        const a = document.createElement("a");
-        a.href = data.signedUrl;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.setAttribute("download", resource.file_name);
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(() => document.body.removeChild(a), 200);
+      );
+
+      const result = await res.json();
+      if (!res.ok || !result.signedUrl) {
+        console.error("Signed URL error:", result);
+        toast({ title: "Download failed", description: result.error || "Could not generate download link.", variant: "destructive" });
+        return;
       }
+
+      // Direct navigation — most reliable on Safari/iPad/iOS
+      // The signed URL has download disposition set server-side
+      window.location.href = result.signedUrl;
     } catch (err) {
       console.error("Unexpected download error:", err);
       toast({ title: "Download failed", description: "Could not download file.", variant: "destructive" });
