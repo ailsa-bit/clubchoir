@@ -104,34 +104,38 @@ const Resources = () => {
   };
 
   const handleDownload = async (resource: SongResource) => {
-    // Open a blank tab IMMEDIATELY (in the user gesture) to avoid iPad Safari popup blocker
-    const newTab = window.open("about:blank", "_blank");
     try {
       const { data, error } = await supabase.storage
         .from("song-resources")
         .createSignedUrl(resource.storage_path, 600);
       if (error || !data?.signedUrl) {
         console.error("Download error:", error);
-        if (newTab) newTab.close();
         toast({ title: "Download failed", description: error?.message || "Could not generate download link.", variant: "destructive" });
         return;
       }
-      if (newTab) {
-        // Redirect the already-opened tab to the signed URL
-        newTab.location.href = data.signedUrl;
+      // Use window.location for same-tab navigation (most reliable on Safari/iOS)
+      // For audio files, open in new tab; for documents, use direct navigation
+      const isAudio = resource.resource_type === "audio";
+      if (isAudio) {
+        // Audio files: open in new tab so they can play inline
+        const newTab = window.open(data.signedUrl, "_blank");
+        if (!newTab) {
+          // Popup blocked — fallback to same-tab
+          window.location.href = data.signedUrl;
+        }
       } else {
-        // Fallback: if popup was blocked, use anchor click
+        // Documents (PDF, lyrics, slides): use anchor with download hint
         const a = document.createElement("a");
         a.href = data.signedUrl;
         a.target = "_blank";
         a.rel = "noopener noreferrer";
+        a.setAttribute("download", resource.file_name);
         document.body.appendChild(a);
         a.click();
-        setTimeout(() => document.body.removeChild(a), 100);
+        setTimeout(() => document.body.removeChild(a), 200);
       }
     } catch (err) {
       console.error("Unexpected download error:", err);
-      if (newTab) newTab.close();
       toast({ title: "Download failed", description: "Could not download file.", variant: "destructive" });
     }
   };
