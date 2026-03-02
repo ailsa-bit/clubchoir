@@ -35,7 +35,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "clubchoir-vibe-update"
+const SITE_NAME = "Club Choir"
 const SENDER_DOMAIN = "notify.clubchoir.ca"
 const ROOT_DOMAIN = "clubchoir.ca"
 const FROM_DOMAIN = "notify.clubchoir.ca" // Domain shown in From address (may be root or sender subdomain)
@@ -45,7 +45,7 @@ const FROM_DOMAIN = "notify.clubchoir.ca" // Domain shown in From address (may b
 // The sample email uses a fixed placeholder (RFC 6761 .test TLD) so the Go backend
 // can always find-and-replace it with the actual recipient when sending test emails,
 // even if the project's domain has changed since the template was scaffolded.
-const SAMPLE_PROJECT_URL = "https://clubchoir-vibe-update.lovable.app"
+const SAMPLE_PROJECT_URL = "https://clubchoir.ca"
 const SAMPLE_EMAIL = "user@example.test"
 const SAMPLE_DATA: Record<string, object> = {
   signup: {
