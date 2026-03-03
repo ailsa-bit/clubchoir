@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
-import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Search } from "lucide-react";
+import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Search, Play, Pause } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -58,6 +58,9 @@ const Resources = () => {
   const [uploadType, setUploadType] = useState<string>("audio");
   const [showUpload, setShowUpload] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const [audioRef, setAudioRef] = useState<HTMLAudioElement | null>(null);
+  const [audioLoading, setAudioLoading] = useState<string | null>(null);
 
   const typeLabel: Record<string, string> = {
     audio: t("resources.recording"),
@@ -103,46 +106,91 @@ const Resources = () => {
     e.target.value = "";
   };
 
+  const getSignedUrl = async (resource: SongResource): Promise<string | null> => {
+    const { data: sessionData } = await supabase.auth.getSession();
+    const token = sessionData?.session?.access_token;
+    if (!token) {
+      toast({ title: "Download failed", description: "Please log in to download files.", variant: "destructive" });
+      return null;
+    }
+    const res = await fetch(
+      `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-signed-url`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+        },
+        body: JSON.stringify({ storage_path: resource.storage_path, file_name: resource.file_name }),
+      }
+    );
+    const result = await res.json();
+    if (!res.ok || !result.signedUrl) {
+      toast({ title: "Download failed", description: result.error || "Could not generate download link.", variant: "destructive" });
+      return null;
+    }
+    return result.signedUrl;
+  };
+
   const handleDownload = async (resource: SongResource) => {
     try {
-      // Use edge function to generate signed URL server-side
-      // This avoids Safari/iPad popup-blocking issues
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData?.session?.access_token;
-      if (!token) {
-        toast({ title: "Download failed", description: "Please log in to download files.", variant: "destructive" });
-        return;
-      }
+      const signedUrl = await getSignedUrl(resource);
+      if (!signedUrl) return;
 
-      const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-signed-url`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-          },
-          body: JSON.stringify({
-            storage_path: resource.storage_path,
-            file_name: resource.file_name,
-          }),
-        }
-      );
-
-      const result = await res.json();
-      if (!res.ok || !result.signedUrl) {
-        console.error("Signed URL error:", result);
-        toast({ title: "Download failed", description: result.error || "Could not generate download link.", variant: "destructive" });
-        return;
-      }
-
-      // Direct navigation — most reliable on Safari/iPad/iOS
-      // The signed URL has download disposition set server-side
-      window.location.href = result.signedUrl;
+      // Use fetch + blob + anchor for reliable iOS download
+      const response = await fetch(signedUrl);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = resource.file_name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
     } catch (err) {
       console.error("Unexpected download error:", err);
       toast({ title: "Download failed", description: "Could not download file.", variant: "destructive" });
+    }
+  };
+
+  const handlePlay = async (resource: SongResource) => {
+    // If already playing this track, pause it
+    if (playingId === resource.id && audioRef) {
+      audioRef.pause();
+      setPlayingId(null);
+      return;
+    }
+
+    // Stop any currently playing audio
+    if (audioRef) {
+      audioRef.pause();
+      audioRef.src = "";
+    }
+
+    // Create audio element synchronously in user gesture context (iOS requirement)
+    const audio = new Audio();
+    audio.preload = "auto";
+    // Unlock for iOS Safari
+    await audio.play().catch(() => {});
+
+    setAudioLoading(resource.id);
+
+    try {
+      const signedUrl = await getSignedUrl(resource);
+      if (!signedUrl) { setAudioLoading(null); return; }
+
+      audio.src = signedUrl;
+      audio.onended = () => { setPlayingId(null); };
+      await audio.play();
+      setAudioRef(audio);
+      setPlayingId(resource.id);
+    } catch (err) {
+      console.error("Playback error:", err);
+      toast({ title: "Playback failed", description: "Could not play audio.", variant: "destructive" });
+    } finally {
+      setAudioLoading(null);
     }
   };
 
@@ -241,6 +289,22 @@ const Resources = () => {
                             <span className="font-medium text-sm text-foreground truncate">{r.song_name}</span>
                           </div>
                           <div className="flex items-center gap-1 shrink-0">
+                            {r.resource_type === "audio" && (
+                              <button
+                                onClick={() => handlePlay(r)}
+                                className={`p-2 rounded-xl ${config.text} hover:bg-background/60 transition-colors`}
+                                title={playingId === r.id ? "Pause" : "Play"}
+                                disabled={audioLoading === r.id}
+                              >
+                                {audioLoading === r.id ? (
+                                  <Loader2 className="w-5 h-5 animate-spin" />
+                                ) : playingId === r.id ? (
+                                  <Pause className="w-5 h-5" />
+                                ) : (
+                                  <Play className="w-5 h-5" />
+                                )}
+                              </button>
+                            )}
                             <button
                               onClick={() => handleDownload(r)}
                               className={`p-2 rounded-xl ${config.text} hover:bg-background/60 transition-colors`}
