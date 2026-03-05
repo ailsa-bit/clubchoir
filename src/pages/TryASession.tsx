@@ -79,6 +79,7 @@ const TryASession = () => {
 
   return (
     <div className="min-h-[60vh] py-16 px-4">
+      <PageMeta title="Try a Free Session – Club Choir" description="Try a free Club Choir session! No audition, no experience needed. Come sing with us at any of our 4 Quebec locations." path="/try" />
       <div className="container mx-auto max-w-lg">
         <div className="text-center mb-10">
           <Music className="w-10 h-10 text-primary mx-auto mb-3" />

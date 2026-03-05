@@ -82,6 +82,7 @@ const Corporate = () => {
 
   return (
     <div className="py-16 px-4">
+      <PageMeta title="Corporate Events – Club Choir" description="Book Club Choir for your corporate event, team building, or private function. Unique musical experiences for groups of all sizes." path="/corporate" />
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-12">
           <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-3">
