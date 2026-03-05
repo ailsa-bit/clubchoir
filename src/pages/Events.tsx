@@ -1,3 +1,4 @@
+import PageMeta from "@/components/PageMeta";
 import { Calendar, MapPin, Share2, Clock } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";

@@ -1,3 +1,4 @@
+import PageMeta from "@/components/PageMeta";
 import { useState } from "react";
 import { Send, Users, Music, Sparkles, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";

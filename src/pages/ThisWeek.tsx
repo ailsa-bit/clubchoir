@@ -1,3 +1,4 @@
+import PageMeta from "@/components/PageMeta";
 import { Link } from "react-router-dom";
 import { Music, MapPin, Clock, Calendar } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
