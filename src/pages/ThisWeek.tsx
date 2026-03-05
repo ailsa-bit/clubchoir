@@ -1,3 +1,4 @@
+import PageMeta from "@/components/PageMeta";
 import { Link } from "react-router-dom";
 import { Music, MapPin, Clock, Calendar } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -14,6 +15,7 @@ const ThisWeek = () => {
 
   return (
     <div className="py-16 px-4">
+      <PageMeta title="This Week at Club Choir" description="See what's happening this week at Club Choir. Weekly rehearsal times and locations for all 4 Quebec locations." path="/this-week" />
       <div className="container mx-auto max-w-3xl">
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
           {t("thisWeek.title")}

@@ -1,3 +1,4 @@
+import PageMeta from "@/components/PageMeta";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -161,6 +162,7 @@ const BringAFriend = () => {
 
   return (
     <div className="min-h-[60vh] py-16 px-4">
+      <PageMeta title="Bring a Friend – Club Choir" description="Invite a friend to try Club Choir for free! Share the joy of singing together." path="/bring-a-friend" />
       <div className="container mx-auto max-w-lg">
         <div className="text-center mb-10">
           <UserPlus className="w-10 h-10 text-primary mx-auto mb-3" />

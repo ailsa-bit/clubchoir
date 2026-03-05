@@ -1,3 +1,4 @@
+import PageMeta from "@/components/PageMeta";
 import { Calendar, MapPin, Share2, Clock } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -143,6 +144,7 @@ const Events = () => {
 
   return (
     <div className="py-16 px-4">
+      <PageMeta title="Events & Schedule – Club Choir" description="View upcoming Club Choir events, performances, and weekly rehearsal schedules across Montreal, Arundel, Saint-Hubert and Pointe-Claire." path="/events" />
       <div className="container mx-auto max-w-4xl">
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
           {t("events.title")}

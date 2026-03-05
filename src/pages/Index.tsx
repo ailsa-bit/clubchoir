@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Facebook } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useLanguage } from "@/contexts/LanguageContext";
+import PageMeta from "@/components/PageMeta";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
@@ -38,7 +39,7 @@ const Index = () => {
 
   return (
     <div>
-      {/* Hero */}
+      <PageMeta title="Club Choir – Community Choir in Montreal, Arundel, Saint-Hubert & Pointe-Claire" description="Join Club Choir – a fun, welcoming community choir. No audition required. Sing together at 4 locations across Quebec." path="/" />
       <section className="bg-gradient-hero py-20 px-4">
         <div className="container mx-auto max-w-3xl text-center">
           <h1 className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-4 animate-fade-in">
