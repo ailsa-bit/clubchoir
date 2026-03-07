@@ -34,7 +34,7 @@ const Index = () => {
     { location: "Montreal", venue: "Kensington Presbyterian Church", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink" },
     { location: "Arundel", venue: "Centre Arundel Centre", color: "bg-aqua-light border-aqua/20", day: t("day.tuesday"), time: "6:30–8:00 PM", dot: "bg-aqua" },
     { location: "Saint-Hubert", venue: "St-Gabriel Catholic Church", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime" },
-    { location: "Pointe-Claire", venue: "Valois United Church", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple" },
+    { location: "Pointe-Claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire, QC H9R 4H2", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple" },
   ];
 
   return (
