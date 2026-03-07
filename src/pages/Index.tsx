@@ -90,7 +90,7 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground mb-1">
                   {item.day} · {item.time}
                 </p>
-                <p className="text-xs text-muted-foreground">{item.venue}</p>
+                <p className="text-xs text-muted-foreground whitespace-pre-line">{item.venue}</p>
               </Link>
             ))}
           </div>
