@@ -101,6 +101,7 @@ const ManageMembers = () => {
   const [pendingLoading, setPendingLoading] = useState(true);
   const [signedUpUsers, setSignedUpUsers] = useState<SignedUpUser[]>([]);
   const [signupsLoading, setSignupsLoading] = useState(true);
+  const [signupSearch, setSignupSearch] = useState("");
 
   // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -401,10 +402,23 @@ const ManageMembers = () => {
 
         {/* Signed Up Users */}
         <div className="mb-8 rounded-2xl border border-border bg-card p-5">
-          <h2 className="font-heading font-bold text-lg text-foreground mb-3 flex items-center gap-2">
-            <UserCheck className="w-5 h-5 text-primary" />
-            Signed Up Users ({signedUpUsers.length})
-          </h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+            <h2 className="font-heading font-bold text-lg text-foreground flex items-center gap-2">
+              <UserCheck className="w-5 h-5 text-primary" />
+              Signed Up Users ({signedUpUsers.length})
+            </h2>
+            {!signupsLoading && signedUpUsers.length > 0 && (
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by name or email..."
+                  value={signupSearch}
+                  onChange={(e) => setSignupSearch(e.target.value)}
+                  className="pl-9 h-9 text-sm"
+                />
+              </div>
+            )}
+          </div>
           {signupsLoading ? (
             <div className="text-center py-4 text-muted-foreground">
               <Loader2 className="w-4 h-4 animate-spin inline mr-2" />Loading...
@@ -427,7 +441,13 @@ const ManageMembers = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {signedUpUsers.map((u) => {
+                    {signedUpUsers.filter((u) => {
+                      if (!signupSearch) return true;
+                      const q = signupSearch.toLowerCase();
+                      const matchedMember = members.find((m) => m.email && m.email.toLowerCase() === u.email.toLowerCase());
+                      const fullName = matchedMember ? `${matchedMember.first_name} ${matchedMember.last_name}` : "";
+                      return u.email.toLowerCase().includes(q) || (u.display_name || "").toLowerCase().includes(q) || fullName.toLowerCase().includes(q) || (u.location || "").toLowerCase().includes(q);
+                    }).map((u) => {
                       const matchedMember = members.find((m) => m.email && m.email.toLowerCase() === u.email.toLowerCase());
                       return (
                       <tr key={u.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
