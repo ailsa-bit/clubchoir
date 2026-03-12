@@ -441,7 +441,13 @@ const ManageMembers = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {signedUpUsers.map((u) => {
+                    {signedUpUsers.filter((u) => {
+                      if (!signupSearch) return true;
+                      const q = signupSearch.toLowerCase();
+                      const matchedMember = members.find((m) => m.email && m.email.toLowerCase() === u.email.toLowerCase());
+                      const fullName = matchedMember ? `${matchedMember.first_name} ${matchedMember.last_name}` : "";
+                      return u.email.toLowerCase().includes(q) || (u.display_name || "").toLowerCase().includes(q) || fullName.toLowerCase().includes(q) || (u.location || "").toLowerCase().includes(q);
+                    }).map((u) => {
                       const matchedMember = members.find((m) => m.email && m.email.toLowerCase() === u.email.toLowerCase());
                       return (
                       <tr key={u.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
