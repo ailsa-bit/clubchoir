@@ -101,6 +101,7 @@ const ManageMembers = () => {
   const [pendingLoading, setPendingLoading] = useState(true);
   const [signedUpUsers, setSignedUpUsers] = useState<SignedUpUser[]>([]);
   const [signupsLoading, setSignupsLoading] = useState(true);
+  const [signupSearch, setSignupSearch] = useState("");
 
   // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
