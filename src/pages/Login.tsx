@@ -138,6 +138,10 @@ const Login = () => {
           </p>
         </div>
 
+        <div className="bg-muted/60 border border-border rounded-lg px-4 py-3 mb-6 text-sm text-muted-foreground text-center">
+          Please note: access to member resources (chat, song files, community page) is only available to current Club Choir members.
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             type="email"
