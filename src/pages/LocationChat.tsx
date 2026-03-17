@@ -114,16 +114,21 @@ const LocationChat = () => {
   const handleSend = async () => {
     if (!newMessage.trim() || !user) return;
     setSending(true);
+    const trimmed = newMessage.trim();
     const { error } = await supabase.from("chat_messages").insert({
       user_id: user.id,
       location: activeLocation,
-      message: newMessage.trim(),
+      message: trimmed,
       display_name: displayName,
     });
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       setNewMessage("");
+      // Notify admin via edge function (fire-and-forget)
+      supabase.functions.invoke("notify-chat-message", {
+        body: { display_name: displayName, message: trimmed, location: activeLocation },
+      }).catch(() => {});
     }
     setSending(false);
   };
