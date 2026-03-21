@@ -25,7 +25,7 @@ const locationMeta: Record<string, { dot: string; bg: string; venue: string; day
 function getSessionType(activity: string): "song" | "review" | "show" | "off" {
   if (activity === "REVIEW WEEK") return "review";
   if (activity === "Show Night") return "show";
-  if (activity === "No Practice") return "off";
+  if (activity === "No Practice" || activity.startsWith("CANCELLED")) return "off";
   return "song";
 }
 
