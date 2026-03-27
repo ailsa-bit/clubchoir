@@ -566,7 +566,12 @@ const ManageMembers = () => {
                       />
                     </td>
                     <td className="p-3 font-medium text-foreground whitespace-nowrap">
-                      {m.first_name} {m.last_name}
+                      <button
+                        onClick={() => navigate(`/manage-members/${m.id}`)}
+                        className="hover:underline text-primary font-medium text-left"
+                      >
+                        {m.first_name} {m.last_name}
+                      </button>
                     </td>
                     <td className="p-3 text-muted-foreground hidden md:table-cell">{m.email || "—"}</td>
                     <td className="p-3 text-muted-foreground hidden sm:table-cell">{m.location || "—"}</td>
