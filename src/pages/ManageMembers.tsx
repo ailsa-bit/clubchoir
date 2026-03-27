@@ -119,6 +119,7 @@ const ManageMembers = () => {
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [confirmingUserId, setConfirmingUserId] = useState<string | null>(null);
+  const [memberSessionMap, setMemberSessionMap] = useState<Record<string, string[]>>({});
 
   const fetchMembers = async () => {
     const { data } = await supabase
@@ -127,6 +128,18 @@ const ManageMembers = () => {
       .order("last_name", { ascending: true });
     setMembers((data as MemberRow[]) || []);
     setLoading(false);
+  };
+
+  const fetchMemberSessions = async () => {
+    const { data } = await supabase
+      .from("member_sessions")
+      .select("member_id, session_name");
+    const map: Record<string, string[]> = {};
+    (data || []).forEach((row: { member_id: string; session_name: string }) => {
+      if (!map[row.member_id]) map[row.member_id] = [];
+      map[row.member_id].push(row.session_name);
+    });
+    setMemberSessionMap(map);
   };
 
   const fetchPending = async () => {
@@ -191,6 +204,7 @@ const ManageMembers = () => {
       fetchMembers();
       fetchPending();
       fetchSignups();
+      fetchMemberSessions();
     }
   }, [isAdmin, adminLoading]);
 
