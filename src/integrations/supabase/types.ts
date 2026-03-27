@@ -103,6 +103,35 @@ export type Database = {
           },
         ]
       }
+      member_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          member_id: string
+          session_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          member_id: string
+          session_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          member_id?: string
+          session_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_sessions_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       members: {
         Row: {
           created_at: string
