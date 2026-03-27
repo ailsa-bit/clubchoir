@@ -563,6 +563,7 @@ const ManageMembers = () => {
                   <th className="p-3 text-left font-medium text-muted-foreground hidden md:table-cell">Email</th>
                   <th className="p-3 text-left font-medium text-muted-foreground hidden sm:table-cell">Location</th>
                   <th className="p-3 text-left font-medium text-muted-foreground">Status</th>
+                  <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">Sessions</th>
                   <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">Joined</th>
                   <th className="p-3 text-left font-medium text-muted-foreground hidden lg:table-cell">Payment</th>
                   <th className="p-3 text-right font-medium text-muted-foreground">Actions</th>
@@ -590,9 +591,19 @@ const ManageMembers = () => {
                     <td className="p-3 text-muted-foreground hidden md:table-cell">{m.email || "—"}</td>
                     <td className="p-3 text-muted-foreground hidden sm:table-cell">{m.location || "—"}</td>
                     <td className="p-3">
-                      <Badge variant="outline" className={`text-[10px] ${statusColors[m.status] || ""}`}>
-                        {m.status}
-                      </Badge>
+                      <div className="flex items-center gap-1 flex-wrap">
+                        <Badge variant="outline" className={`text-[10px] ${statusColors[m.status] || ""}`}>
+                          {m.status}
+                        </Badge>
+                        {(memberSessionMap[m.id] || []).includes("Fall 2026") && (
+                          <Badge variant="outline" className="text-[10px] bg-primary/10 text-primary border-primary/30">
+                            F26 ✨
+                          </Badge>
+                        )}
+                      </div>
+                    </td>
+                    <td className="p-3 text-muted-foreground hidden lg:table-cell">
+                      {(memberSessionMap[m.id] || []).filter(s => s !== "Fall 2026").length} / 3
                     </td>
                     <td className="p-3 text-muted-foreground hidden lg:table-cell">{m.joined || "—"}</td>
                     <td className="p-3 text-muted-foreground hidden lg:table-cell">{m.payment_status || "—"}</td>
