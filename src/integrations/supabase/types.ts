@@ -71,6 +71,38 @@ export type Database = {
         }
         Relationships: []
       }
+      member_notes: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          member_id: string
+          note: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          member_id: string
+          note: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          member_id?: string
+          note?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_notes_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       members: {
         Row: {
           created_at: string
