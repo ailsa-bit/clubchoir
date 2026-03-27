@@ -21,6 +21,7 @@ import Resources from "./pages/Resources";
 import SendEmail from "./pages/SendEmail";
 import LocationChat from "./pages/LocationChat";
 import ManageMembers from "./pages/ManageMembers";
+import MemberDetail from "./pages/MemberDetail";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import ResetPassword from "./pages/ResetPassword";
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/send-email" element={<SendEmail />} />
             <Route path="/chat" element={<ActiveMemberGate><LocationChat /></ActiveMemberGate>} />
             <Route path="/manage-members" element={<ManageMembers />} />
+            <Route path="/manage-members/:memberId" element={<MemberDetail />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             
