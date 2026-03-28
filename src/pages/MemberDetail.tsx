@@ -19,6 +19,7 @@ import {
   Music,
   Sparkles,
 } from "lucide-react";
+import { MemberEditForm } from "@/components/MemberEditForm";
 
 interface MemberRow {
   id: string;
@@ -218,6 +219,7 @@ const MemberDetail = () => {
               )}
             </div>
           </div>
+          <MemberEditForm member={member} onSaved={fetchAll} />
         </div>
 
         {/* Info cards */}
