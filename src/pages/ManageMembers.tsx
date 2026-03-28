@@ -93,7 +93,7 @@ const ManageMembers = () => {
   const [deleteTarget, setDeleteTarget] = useState<MemberRow | null>(null);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [deleting, setDeleting] = useState(false);
-  const [confirmingUserId, setConfirmingUserId] = useState<string | null>(null);
+  
   const [memberSessionMap, setMemberSessionMap] = useState<Record<string, string[]>>({});
 
   const fetchMembers = async () => {
