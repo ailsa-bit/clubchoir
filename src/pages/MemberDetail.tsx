@@ -219,6 +219,7 @@ const MemberDetail = () => {
               )}
             </div>
           </div>
+          <MemberEditForm member={member} onSaved={fetchAll} />
         </div>
 
         {/* Info cards */}
