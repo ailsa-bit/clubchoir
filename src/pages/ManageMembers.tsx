@@ -100,7 +100,7 @@ const ManageMembers = () => {
     const { data } = await supabase
       .from("members")
       .select("*")
-      .order("last_name", { ascending: true });
+      .order("first_name", { ascending: true });
     setMembers((data as MemberRow[]) || []);
     setLoading(false);
   };
