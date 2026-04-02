@@ -57,7 +57,8 @@ const Resources = () => {
   const [uploadSong, setUploadSong] = useState("");
   const [uploadType, setUploadType] = useState<string>("audio");
   const [showUpload, setShowUpload] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [audioRef, setAudioRef] = useState<HTMLAudioElement | null>(null);
   const [audioLoading, setAudioLoading] = useState<string | null>(null);
