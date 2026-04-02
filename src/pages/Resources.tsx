@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Search, Play, Pause } from "lucide-react";
@@ -222,6 +223,14 @@ const Resources = () => {
   return (
     <div className="py-12 px-4">
       <div className="container mx-auto max-w-5xl">
+        {searchParams.get("search") && (
+          <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Schedule
+          </button>
+        )}
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">{t("resources.title")}</h1>
         <p className="text-center text-muted-foreground mb-8 max-w-lg mx-auto">{t("resources.subtitle")}</p>
 
