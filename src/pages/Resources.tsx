@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Search, Play, Pause } from "lucide-react";
@@ -57,7 +57,8 @@ const Resources = () => {
   const [uploadSong, setUploadSong] = useState("");
   const [uploadType, setUploadType] = useState<string>("audio");
   const [showUpload, setShowUpload] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [audioRef, setAudioRef] = useState<HTMLAudioElement | null>(null);
   const [audioLoading, setAudioLoading] = useState<string | null>(null);
