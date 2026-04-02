@@ -202,7 +202,17 @@ const LocationSchedule = () => {
                       )}
                     </div>
                     <p className="font-heading font-bold text-foreground text-sm mt-0.5">
-                      {type === "song" ? s.activity.replace(/^\d+-/, "") : s.activity}
+                      {type === "song" ? (
+                        <Link
+                          to={`/resources?search=${encodeURIComponent(s.activity.replace(/^\d+-/, "").trim())}`}
+                          className="hover:underline text-primary"
+                        >
+                          {s.activity.replace(/^\d+-/, "")}
+                          <Music className="w-3 h-3 inline ml-1 opacity-60" />
+                        </Link>
+                      ) : (
+                        s.activity
+                      )}
                     </p>
                     {s.artist && type !== "off" && (
                       <p className="text-xs text-muted-foreground mt-0.5">{s.artist}</p>
