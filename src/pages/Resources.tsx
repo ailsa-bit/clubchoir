@@ -208,8 +208,10 @@ const Resources = () => {
     return <div className="py-16 px-4 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-muted-foreground" /></div>;
   }
 
+  const normalize = (s: string) => s.toLowerCase().replace(/[-_]/g, " ").replace(/\s+/g, " ");
   const filtered = searchQuery.trim()
-    ? resources.filter(r => r.song_name.toLowerCase().includes(searchQuery.toLowerCase()) || r.file_name.toLowerCase().includes(searchQuery.toLowerCase()))
+    ? resources.filter(r => normalize(r.song_name).includes(normalize(searchQuery)) || normalize(r.file_name).includes(normalize(searchQuery)))
+    : resources;
     : resources;
 
   // Group by resource type (color)
