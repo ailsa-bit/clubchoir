@@ -212,7 +212,6 @@ const Resources = () => {
   const filtered = searchQuery.trim()
     ? resources.filter(r => normalize(r.song_name).includes(normalize(searchQuery)) || normalize(r.file_name).includes(normalize(searchQuery)))
     : resources;
-    : resources;
 
   // Group by resource type (color)
   const typeOrder: Array<"audio" | "lyrics" | "sheet_music" | "slides"> = ["audio", "lyrics", "sheet_music", "slides"];
