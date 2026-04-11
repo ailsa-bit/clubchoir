@@ -56,11 +56,11 @@ const locationCards = [
 const events = [
   {
     title: "NDG PorchFest",
-    date: "May 17–18, 2026",
+    date: { en: "Saturday, May 16, 2026 · 12:00 PM", fr: "Samedi 16 mai 2026 · 12 h" },
     location: "Montreal (NDG)",
     color: "border-pink/30 bg-pink-light",
     dot: "bg-pink",
-    description: { en: "All Club Choir members are invited to take part in NDG PorchFest! Exact time and meeting details to be confirmed — stay tuned.", fr: "Tous les membres de Club Choir sont invités à participer au PorchFest NDG ! L'heure exacte et les détails de rendez-vous seront confirmés — restez à l'écoute." },
+    description: { en: "All Club Choir members are invited to perform at NDG PorchFest! We'll be singing in front of Kensington Presbyterian Church, 6225 Av. Godfrey. Weather permitting.", fr: "Tous les membres de Club Choir sont invités à chanter au PorchFest NDG ! Nous chanterons devant l'église presbytérienne Kensington, 6225 Av. Godfrey. Si la météo le permet." },
   },
   {
     title: "Summer Pop-Up Choirs",
