@@ -157,11 +157,6 @@ const Events = () => {
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
           {language === "fr" ? "Sessions hebdomadaires — Hiver 2026" : "Weekly Sessions — Winter 2026"}
         </h2>
-        <div className="flex justify-center mb-8">
-          <Button onClick={handleRegister} disabled={loading} size="lg">
-            {loading ? t("events.registering") : t("events.register")}
-          </Button>
-        </div>
         <div className="grid sm:grid-cols-2 gap-5 mb-14">
           {locationCards.map((loc) => (
             <div
