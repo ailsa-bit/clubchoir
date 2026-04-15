@@ -27,7 +27,7 @@ const translations: Record<string, Record<Language, string>> = {
   "home.hero.title": { en: "Your Club Choir Space", fr: "Votre espace Club Choir" },
   "home.hero.subtitle": { en: "Ever thought about joining a choir, but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists.", fr: "Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe." },
   "home.hero.desc": { en: "Our weekly sessions are for everyone — no auditions, no pressure, and no experience required. Sing together, laugh together, learn together.", fr: "Nos sessions hebdomadaires sont pour tout le monde — pas d'auditions, pas de pression et aucune expérience requise. Chantez ensemble, riez ensemble, apprenez ensemble." },
-  "home.hero.try": { en: "Try a Session or Get in Touch", fr: "Essayer une session ou nous contacter" },
+  "home.hero.try": { en: "Get in Touch", fr: "Nous contacter" },
   "home.hero.friend": { en: "Bring a Friend", fr: "Inviter un ami" },
 
   // Home - Sessions
