@@ -208,9 +208,18 @@ const Resources = () => {
     return <div className="py-16 px-4 text-center"><Loader2 className="w-6 h-6 animate-spin mx-auto text-muted-foreground" /></div>;
   }
 
-  const normalize = (s: string) => s.toLowerCase().replace(/[-_]/g, " ").replace(/\s+/g, " ");
+  const normalize = (s: string) => s.toLowerCase().replace(/[-_'’.,!?]/g, " ").replace(/\s+/g, " ").trim();
+  const tokenize = (s: string) => normalize(s).split(" ").filter(Boolean);
+  const matches = (haystack: string, needle: string) => {
+    const n = normalize(needle);
+    const h = normalize(haystack);
+    if (h.includes(n)) return true;
+    // Token-based fallback: every search token must appear in haystack
+    const tokens = tokenize(needle);
+    return tokens.length > 0 && tokens.every(t => h.includes(t));
+  };
   const filtered = searchQuery.trim()
-    ? resources.filter(r => normalize(r.song_name).includes(normalize(searchQuery)) || normalize(r.file_name).includes(normalize(searchQuery)))
+    ? resources.filter(r => matches(r.song_name, searchQuery) || matches(r.file_name, searchQuery))
     : resources;
 
   // Group by resource type (color)

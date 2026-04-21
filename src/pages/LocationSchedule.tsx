@@ -203,13 +203,20 @@ const LocationSchedule = () => {
                     </div>
                     <p className="font-heading font-bold text-foreground text-sm mt-0.5">
                       {type === "song" ? (
-                        <Link
-                          to={`/resources?search=${encodeURIComponent(s.activity.replace(/^\d+-/, "").trim())}`}
-                          className="hover:underline text-primary"
-                        >
-                          {s.activity.replace(/^\d+-/, "")}
-                          <Music className="w-3 h-3 inline ml-1 opacity-60" />
-                        </Link>
+                        (() => {
+                          const cleanTitle = s.activity.replace(/^\d+-/, "").trim();
+                          // Use first 2 words as search query so variants (e.g. "O'Mine" vs "O' Mine") all match
+                          const searchTerm = cleanTitle.split(/[\s/]+/).slice(0, 2).join(" ");
+                          return (
+                            <Link
+                              to={`/resources?search=${encodeURIComponent(searchTerm)}`}
+                              className="hover:underline text-primary"
+                            >
+                              {cleanTitle}
+                              <Music className="w-3 h-3 inline ml-1 opacity-60" />
+                            </Link>
+                          );
+                        })()
                       ) : (
                         s.activity
                       )}
