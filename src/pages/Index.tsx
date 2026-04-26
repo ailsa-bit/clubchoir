@@ -67,6 +67,28 @@ const Index = () => {
               {t("home.hero.friend")}
             </Link>
           </div>
+
+          {/* Stay in the loop CTA */}
+          <div className="mt-10 max-w-2xl mx-auto">
+            <div className="rounded-2xl bg-card border border-border p-6 md:p-7 text-center shadow-sm">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-3">
+                <Mail className="w-6 h-6" />
+              </div>
+              <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-2">
+                {t("home.subscribe.title")}
+              </h2>
+              <p className="text-sm md:text-base text-muted-foreground mb-5 max-w-xl mx-auto">
+                {t("home.subscribe.desc")}
+              </p>
+              <Link
+                to="/subscribe"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+              >
+                <Mail className="w-4 h-4" />
+                {t("home.subscribe.cta")}
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -191,30 +213,6 @@ const Index = () => {
               <Users className="w-8 h-8 text-purple mb-3" />
               <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t("home.community.corporate")}</h3>
               <p className="text-sm text-muted-foreground">{t("home.community.corporateDesc")}</p>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Stay in the loop CTA */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-3xl">
-          <div className="rounded-2xl bg-gradient-hero border border-border p-8 md:p-10 text-center shadow-sm">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 text-primary mb-4">
-              <Mail className="w-7 h-7" />
-            </div>
-            <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-3">
-              {t("home.subscribe.title")}
-            </h2>
-            <p className="text-base text-muted-foreground mb-6 max-w-xl mx-auto">
-              {t("home.subscribe.desc")}
-            </p>
-            <Link
-              to="/subscribe"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
-            >
-              <Mail className="w-5 h-5" />
-              {t("home.subscribe.cta")}
             </Link>
           </div>
         </div>
