@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
-const LOCATIONS = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire"];
+const LOCATIONS = ["Montreal", "Hudson", "Arundel", "Saint-Hubert", "Pointe-Claire"];
 
 interface ChatMessage {
   id: string;

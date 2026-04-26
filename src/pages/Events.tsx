@@ -19,6 +19,17 @@ const locationCards = [
     dot: "bg-pink",
   },
   {
+    location: "Hudson",
+    venue: "King Fisher Pub",
+    address: "84 Cameron, Hudson, J0P 1H0",
+    day: { en: "Mondays", fr: "Lundis" },
+    time: "7:00–8:30 PM",
+    season: { en: "Summer 2026", fr: "Été 2026" },
+    dates: { en: "May 18 – August 17, 2026", fr: "18 mai – 17 août 2026" },
+    color: "border-orange/30 bg-orange-light",
+    dot: "bg-orange",
+  },
+  {
     location: "Arundel",
     venue: "Centre Arundel Centre",
     address: "17 rue du Village, Arundel",
