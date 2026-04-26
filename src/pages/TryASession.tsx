@@ -28,6 +28,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const LOCATIONS = [
   { value: "Montreal – Monday", label: "Montreal – Monday" },
+  { value: "Hudson – Monday", label: "Hudson – Monday" },
   { value: "Arundel – Tuesday", label: "Arundel – Tuesday" },
   { value: "Saint-Hubert – Wednesday", label: "Saint-Hubert – Wednesday" },
   { value: "Pointe-Claire – Thursday", label: "Pointe-Claire – Thursday" },

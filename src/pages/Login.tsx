@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const LOCATIONS = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire"] as const;
+const LOCATIONS = ["Montreal", "Hudson", "Arundel", "Saint-Hubert", "Pointe-Claire"] as const;
 
 const Login = () => {
   const navigate = useNavigate();

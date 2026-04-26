@@ -71,6 +71,11 @@ export default {
           foreground: "hsl(var(--purple-foreground))",
           light: "hsl(var(--purple-light))",
         },
+        orange: {
+          DEFAULT: "hsl(var(--orange))",
+          foreground: "hsl(var(--orange-foreground))",
+          light: "hsl(var(--orange-light))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

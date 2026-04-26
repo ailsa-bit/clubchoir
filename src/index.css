@@ -29,6 +29,11 @@
     --purple-foreground: 0 0% 100%;
     --purple-light: 270 50% 92%;
 
+    /* Hudson Orange */
+    --orange: 25 90% 55%;
+    --orange-foreground: 0 0% 100%;
+    --orange-light: 25 90% 92%;
+
     --background: 40 30% 98%;
     --foreground: 240 10% 16%;
 
