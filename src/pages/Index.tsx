@@ -217,30 +217,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* Stay in the loop CTA */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-3xl">
-          <div className="rounded-2xl bg-gradient-hero border border-border p-8 md:p-10 text-center shadow-sm">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 text-primary mb-4">
-              <Mail className="w-7 h-7" />
-            </div>
-            <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-3">
-              {t("home.subscribe.title")}
-            </h2>
-            <p className="text-base text-muted-foreground mb-6 max-w-xl mx-auto">
-              {t("home.subscribe.desc")}
-            </p>
-            <Link
-              to="/subscribe"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
-            >
-              <Mail className="w-5 h-5" />
-              {t("home.subscribe.cta")}
-            </Link>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
