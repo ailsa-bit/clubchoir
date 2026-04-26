@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, X, User, Mail, Facebook } from "lucide-react";
+import { Menu, X, User, Mail, Facebook, Bell } from "lucide-react";
 import clubChoirLogo from "@/assets/club-choir-logo.png";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -150,7 +150,14 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p className="font-heading font-semibold text-foreground mb-2">Club Choir</p>
           <p className="mb-3">{t("footer.tagline")} © {new Date().getFullYear()}</p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link
+              to="/subscribe"
+              className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+
+              <Bell className="w-4 h-4" />
+              {t("footer.subscribe")}
+            </Link>
             <a
               href="mailto:ailsa@clubchoir.ca"
               className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">

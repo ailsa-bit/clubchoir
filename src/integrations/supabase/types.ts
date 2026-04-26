@@ -204,6 +204,42 @@ export type Database = {
         }
         Relationships: []
       }
+      prospects: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string | null
+          locations: string[]
+          notes: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name?: string | null
+          locations?: string[]
+          notes?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string | null
+          locations?: string[]
+          notes?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       song_resources: {
         Row: {
           created_at: string
