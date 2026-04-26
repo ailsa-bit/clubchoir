@@ -67,6 +67,28 @@ const Index = () => {
               {t("home.hero.friend")}
             </Link>
           </div>
+
+          {/* Stay in the loop CTA */}
+          <div className="mt-10 max-w-2xl mx-auto">
+            <div className="rounded-2xl bg-card border border-border p-6 md:p-7 text-center shadow-sm">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-3">
+                <Mail className="w-6 h-6" />
+              </div>
+              <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-2">
+                {t("home.subscribe.title")}
+              </h2>
+              <p className="text-sm md:text-base text-muted-foreground mb-5 max-w-xl mx-auto">
+                {t("home.subscribe.desc")}
+              </p>
+              <Link
+                to="/subscribe"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+              >
+                <Mail className="w-4 h-4" />
+                {t("home.subscribe.cta")}
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
