@@ -22,6 +22,15 @@ const translations: Record<string, Record<Language, string>> = {
   // Footer
   "footer.tagline": { en: "Warm voices, real community.", fr: "Des voix chaleureuses, une vraie communauté." },
   "footer.facebook": { en: "Facebook", fr: "Facebook" },
+  "footer.subscribe": { en: "Stay in the loop", fr: "Restez informé" },
+
+  // Home - Subscribe CTA
+  "home.subscribe.title": { en: "Stay in the loop", fr: "Restez informé" },
+  "home.subscribe.desc": {
+    en: "Not ready to join yet? Sign up for our mailing list to get the latest on Club Choir events, early registration for new sessions, and invites to summer pop-up choirs and open houses.",
+    fr: "Pas encore prêt à vous joindre ? Inscrivez-vous à notre liste pour recevoir les nouvelles des événements Club Choir, les inscriptions anticipées aux nouvelles sessions et les invitations aux chorales pop-up estivales et journées portes ouvertes."
+  },
+  "home.subscribe.cta": { en: "Join the mailing list", fr: "S'inscrire à la liste" },
 
   // Home - Hero
   "home.hero.title": { en: "Your Club Choir Space", fr: "Votre espace Club Choir" },
