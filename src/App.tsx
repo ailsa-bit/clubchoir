@@ -25,6 +25,7 @@ import MemberDetail from "./pages/MemberDetail";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import ResetPassword from "./pages/ResetPassword";
 import SignedUpUsers from "./pages/SignedUpUsers";
+import Subscribe from "./pages/Subscribe";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/signed-up-users" element={<SignedUpUsers />} />
+            <Route path="/subscribe" element={<Subscribe />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
