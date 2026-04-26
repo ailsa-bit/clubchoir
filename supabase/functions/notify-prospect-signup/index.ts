@@ -94,7 +94,7 @@ const handler = async (req: Request): Promise<Response> => {
             or visit <a href="https://clubchoir.ca" style="color: #e85d75;">clubchoir.ca</a> to learn more.
           </p>
           <p style="color: #333; font-size: 16px; line-height: 1.6; margin-top: 24px;">
-            Sing soon!<br/>
+            Tra-la-la!<br/>
             — Ailsa & the Club Choir team
           </p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
