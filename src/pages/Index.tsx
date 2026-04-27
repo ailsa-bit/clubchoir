@@ -41,36 +41,46 @@ const Index = () => {
   return (
     <div>
       <PageMeta title="Club Choir – Community Choir in Montreal, Arundel, Saint-Hubert & Pointe-Claire" description="Join Club Choir – a fun, welcoming community choir. No audition required. Sing together at 4 locations across Quebec." path="/" />
-      <section className="bg-gradient-hero py-20 px-4">
-        <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-4 animate-fade-in">
-            {t("home.hero.title")}
-          </h1>
-          <p className="text-lg text-muted-foreground mb-2 max-w-xl mx-auto animate-fade-in" style={{ animationDelay: "0.1s" }}>
-            {t("home.hero.subtitle")}
-          </p>
-          <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto animate-fade-in" style={{ animationDelay: "0.15s" }}>
-            {t("home.hero.desc")}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            <Link
-              to="/try"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
-            >
-              <Sparkles className="w-5 h-5" />
-              {t("home.hero.try")}
-            </Link>
-            <Link
-              to="/bring-a-friend"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-105 transition-all"
-            >
-              <UserPlus className="w-5 h-5" />
-              {t("home.hero.friend")}
-            </Link>
+      <section className="bg-gradient-hero py-16 lg:py-20 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-12 items-center">
+            {/* Left: copy + CTAs */}
+            <div className="text-center lg:text-left">
+              <h1 className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-4 animate-fade-in">
+                {t("home.hero.title")}
+              </h1>
+              <p className="text-lg text-muted-foreground mb-2 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+                {t("home.hero.subtitle")}
+              </p>
+              <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.15s" }}>
+                {t("home.hero.desc")}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
+                <Link
+                  to="/try"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+                >
+                  <Sparkles className="w-5 h-5" />
+                  {t("home.hero.try")}
+                </Link>
+                <Link
+                  to="/bring-a-friend"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-105 transition-all"
+                >
+                  <UserPlus className="w-5 h-5" />
+                  {t("home.hero.friend")}
+                </Link>
+              </div>
+            </div>
+
+            {/* Right (lg+) / below CTAs (mobile): hero video */}
+            <div className="animate-fade-in" style={{ animationDelay: "0.25s" }}>
+              <HeroVideo />
+            </div>
           </div>
 
           {/* Stay in the loop CTA */}
-          <div className="mt-10 max-w-2xl mx-auto">
+          <div className="mt-12 max-w-2xl mx-auto">
             <div className="rounded-2xl bg-card border border-border p-6 md:p-7 text-center shadow-sm">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-3">
                 <Mail className="w-6 h-6" />
