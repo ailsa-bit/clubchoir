@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Menu, X, User, Mail, Facebook, Bell } from "lucide-react";
 import clubChoirLogo from "@/assets/club-choir-logo.png";
-import clubChoirWordmark from "@/assets/club-choir-wordmark.png";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -44,7 +43,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
       <header className="sticky top-0 z-50 bg-card/90 backdrop-blur-md border-b border-border">
         <div className="container mx-auto flex items-center justify-between h-16 px-4">
           <Link to="/" className="flex items-center">
-            <img alt="Club Choir" className="h-14 w-auto" src="/lovable-uploads/9b9fec09-89e5-4f4b-9661-e5086cf87924.png" />
+            <img alt="Club Choir" className="h-10 w-auto" src={clubChoirLogo} />
           </Link>
 
           {/* Desktop nav */}
