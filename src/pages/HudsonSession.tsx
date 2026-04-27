@@ -4,10 +4,12 @@ import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, Mail, CheckCircle2
 import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import pagodaStarling from "@/assets/pagoda-starling.png";
 
 
 const HudsonSession = () => {
+  const { t } = useLanguage();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,7 +19,7 @@ const HudsonSession = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName.trim() || !lastName.trim() || !email.trim()) {
-      toast({ title: "Please fill in all fields", variant: "destructive" });
+      toast({ title: t("hudson.toast.fillFields"), variant: "destructive" });
       return;
     }
     setSubmitting(true);
@@ -30,8 +32,8 @@ const HudsonSession = () => {
     } catch (err: any) {
       console.error(err);
       toast({
-        title: "Something went wrong",
-        description: "Please try again or email ailsa@clubchoir.ca",
+        title: t("hudson.toast.errorTitle"),
+        description: t("hudson.toast.errorDesc"),
         variant: "destructive",
       });
     } finally {
@@ -48,20 +50,20 @@ const HudsonSession = () => {
       />
       <div className="container mx-auto max-w-3xl">
         <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back home
+          <ArrowLeft className="w-4 h-4" /> {t("hudson.backHome")}
         </Link>
 
         {/* Hero */}
         <div className="rounded-2xl border border-orange/20 bg-orange-light p-6 md:p-8 mb-8 overflow-hidden">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
-              <Sparkles className="w-3.5 h-3.5" /> Brand new · Starting soon
+              <Sparkles className="w-3.5 h-3.5" /> {t("hudson.brandNew")}
             </div>
             <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-3">
-              A new Club Choir session in Hudson
+              {t("hudson.title")}
             </h1>
             <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
-              Mondays, 7:00–8:30 PM · May 18 – August 17, 2026 · Kingfisher Pub
+              {t("hudson.heroDates")}
             </p>
           </div>
         </div>
@@ -75,18 +77,19 @@ const HudsonSession = () => {
           />
           <div className="p-6 md:p-8">
             <h2 className="font-heading font-bold text-2xl text-foreground mb-3">
-              Meet your directors: Briana Doyle & Seiji Gutierrez
+              {t("hudson.directorsTitle")}
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-3">
-              This session in Hudson will be led by choir director <strong className="text-foreground">Briana Doyle</strong>,
-              joined by accompanist <strong className="text-foreground">Seiji Gutierrez</strong> — the creative duo behind{" "}
-              <em>Pagoda Starling</em>. Known for their dreamy harmonies, intimate guitar work, and emotionally rich sound,
-              Briana and Seiji bring a unique musical connection shaped by years of performing together.
+              {t("hudson.directorsP1.before")}
+              <strong className="text-foreground">Briana Doyle</strong>
+              {t("hudson.directorsP1.middle")}
+              <strong className="text-foreground">Seiji Gutierrez</strong>
+              {t("hudson.directorsP1.after")}
+              <em>Pagoda Starling</em>
+              {t("hudson.directorsP1.end")}
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              With roots in folk, acoustic rock, and alternative influences from the 60s through the 90s, their style
-              is both nostalgic and fresh. As leaders, they create a warm, supportive atmosphere where singers of all
-              levels can relax, connect, and experience the joy of making music together.
+              {t("hudson.directorsP2")}
             </p>
           </div>
         </div>
@@ -95,30 +98,30 @@ const HudsonSession = () => {
         <div className="grid sm:grid-cols-3 gap-4 mb-8">
           <div className="rounded-2xl border border-border bg-card p-5">
             <MapPin className="w-5 h-5 text-orange mb-2" />
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Where</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">{t("hudson.where")}</p>
             <p className="text-sm font-medium text-foreground">Kingfisher Pub</p>
             <p className="text-xs text-muted-foreground">84 Cameron, Hudson, QC J0P 1H0</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
             <Clock className="w-5 h-5 text-orange mb-2" />
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">When</p>
-            <p className="text-sm font-medium text-foreground">Mondays</p>
-            <p className="text-xs text-muted-foreground">7:00 – 8:30 PM</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">{t("hudson.when")}</p>
+            <p className="text-sm font-medium text-foreground">{t("hudson.mondays")}</p>
+            <p className="text-xs text-muted-foreground">{t("hudson.timeRange")}</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
             <Calendar className="w-5 h-5 text-orange mb-2" />
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Dates</p>
-            <p className="text-sm font-medium text-foreground">May 18 – Aug 17, 2026</p>
-            <p className="text-xs text-muted-foreground">14-week session · $280</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">{t("hudson.dates")}</p>
+            <p className="text-sm font-medium text-foreground">{t("hudson.dateRange")}</p>
+            <p className="text-xs text-muted-foreground">{t("hudson.sessionLength")}</p>
           </div>
         </div>
 
         {/* Urgency banner */}
         <div className="rounded-2xl bg-gradient-warm text-primary-foreground p-6 mb-8 text-center shadow-md">
           <Music className="w-8 h-8 mx-auto mb-2 opacity-90" />
-          <h3 className="font-heading font-bold text-xl mb-1">Spots are filling up</h3>
+          <h3 className="font-heading font-bold text-xl mb-1">{t("hudson.urgencyTitle")}</h3>
           <p className="text-sm md:text-base opacity-95 max-w-md mx-auto">
-            We start in just a few weeks — reserve your place now so you don't miss a single rehearsal.
+            {t("hudson.urgencyDesc")}
           </p>
         </div>
 
@@ -129,13 +132,12 @@ const HudsonSession = () => {
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 text-green-600 mb-4">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">You're on the list! 🎉</h2>
+              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">{t("hudson.successTitle")}</h2>
               <p className="text-muted-foreground max-w-md mx-auto mb-4">
-                Check your inbox — we just sent you the e-transfer instructions to confirm your spot.
-                Your registration is finalized once payment is received.
+                {t("hudson.successDesc")}
               </p>
               <p className="text-sm text-muted-foreground">
-                Questions? Email{" "}
+                {t("hudson.questionsEmail")}{" "}
                 <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
                   ailsa@clubchoir.ca
                 </a>
@@ -143,15 +145,15 @@ const HudsonSession = () => {
             </div>
           ) : (
             <>
-              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">Reserve your spot</h2>
+              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">{t("hudson.formTitle")}</h2>
               <p className="text-sm text-muted-foreground mb-6">
-                Fill in your details and we'll email you the e-transfer instructions right away.
+                {t("hudson.formDesc")}
               </p>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="firstName">
-                      First name *
+                      {t("hudson.firstName")}
                     </label>
                     <input
                       id="firstName"
@@ -164,7 +166,7 @@ const HudsonSession = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="lastName">
-                      Last name *
+                      {t("hudson.lastName")}
                     </label>
                     <input
                       id="lastName"
@@ -178,7 +180,7 @@ const HudsonSession = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="email">
-                    Email address *
+                    {t("hudson.emailLabel")}
                   </label>
                   <input
                     id="email"
@@ -195,13 +197,12 @@ const HudsonSession = () => {
                   className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <Mail className="w-5 h-5" />
-                  {submitting ? "Sending..." : "Send me the registration details"}
+                  {submitting ? t("hudson.submitting") : t("hudson.submit")}
                 </button>
                 <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
                   <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                   <p>
-                    Your spot is officially reserved only once we receive your $280 e-transfer.
-                    Instructions will be in the confirmation email.
+                    {t("hudson.paymentNote")}
                   </p>
                 </div>
               </form>
@@ -210,7 +211,7 @@ const HudsonSession = () => {
         </div>
 
         <p className="text-center text-sm text-muted-foreground">
-          Have questions? Write to{" "}
+          {t("hudson.haveQuestions")}{" "}
           <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
             ailsa@clubchoir.ca
           </a>

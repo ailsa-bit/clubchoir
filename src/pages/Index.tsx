@@ -71,20 +71,20 @@ const Index = () => {
                   className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-orange/90 hover:scale-[1.02] transition-all"
                 >
                   <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-foreground text-background text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                    <Sparkles className="w-3 h-3" /> Starting soon
+                    <Sparkles className="w-3 h-3" /> {t("home.hero.startingSoon")}
                   </span>
                   <Sparkles className="w-5 h-5" />
-                  Reserve your Hudson spot
+                  {t("home.hero.reserveHudson")}
                 </Link>
                 <Link
                   to="/try"
                   className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
                 >
-                  Try a session
+                  {t("home.hero.trySession")}
                 </Link>
               </div>
               <p className="text-xs text-muted-foreground mt-3 lg:text-left text-center animate-fade-in" style={{ animationDelay: "0.22s" }}>
-                Hudson · Mondays 7:00–8:30 PM · Kingfisher Pub
+                {t("home.hero.hudsonCaption")}
               </p>
             </div>
 
