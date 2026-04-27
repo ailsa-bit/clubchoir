@@ -18,6 +18,8 @@ import p7Wide from "./p7-ptc-formation-wide.webp";
 import p7Tile from "./p7-ptc-formation-tile.webp";
 import p9Wide from "./p9-stage-performance-wide.webp";
 import p9Tile from "./p9-stage-performance-tile.webp";
+import p10Wide from "./p10-group-christmas-wide.webp";
+import p10Tile from "./p10-group-christmas-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
@@ -108,6 +110,16 @@ export const choirPhotos: ChoirPhoto[] = [
       fr: "Chorale en performance sur une scène communautaire avec la cheffe dirigeant depuis l'avant-plan",
     },
     tags: ["performance", "group"],
+  },
+  {
+    id: "group-christmas",
+    wide: p10Wide,
+    tile: p10Tile,
+    alt: {
+      en: "Full Club Choir group photo on stage flanked by two lit Christmas trees, hands raised in celebration",
+      fr: "Photo de groupe complète de Club Choir sur scène, encadrée par deux sapins de Noël illuminés, mains levées en signe de fête",
+    },
+    tags: ["performance", "group", "atmosphere"],
   },
 ];
 
