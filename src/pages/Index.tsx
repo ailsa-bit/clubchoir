@@ -4,6 +4,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
 import HeroVideo from "@/components/HeroVideo";
+import PhotoGallery from "@/components/PhotoGallery";
+import { choirPhotos } from "@/assets/photos";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },

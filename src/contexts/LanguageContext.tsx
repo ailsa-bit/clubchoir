@@ -49,6 +49,13 @@ const translations: Record<string, Record<Language, string>> = {
   "home.faq.still": { en: "Still have questions?", fr: "Vous avez encore des questions ?" },
   "home.faq.touch": { en: "Get in Touch", fr: "Contactez-nous" },
 
+  // Home - Moments / Photo gallery
+  "home.moments.title": { en: "Real moments, real voices", fr: "De vrais moments, de vraies voix" },
+  "home.moments.subtitle": {
+    en: "Snapshots from our weekly sessions and stage nights — no audition, no judgment, just the joy of singing together.",
+    fr: "Aperçus de nos sessions hebdomadaires et soirées sur scène — pas d'audition, pas de jugement, juste la joie de chanter ensemble.",
+  },
+
   "home.faq.q.cost": { en: "How much does it cost?", fr: "Combien ça coûte ?" },
   "home.faq.a.cost": { en: "Each 14-week session is $280. We run a Winter session starting in February and a Fall session starting in September.", fr: "Chaque session de 14 semaines coûte 280 $. Nous offrons une session d'hiver débutant en février et une session d'automne débutant en septembre." },
   "home.faq.q.music": { en: "Do I need to know how to read music?", fr: "Dois-je savoir lire la musique ?" },
