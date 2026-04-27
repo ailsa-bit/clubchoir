@@ -198,7 +198,43 @@ const Events = () => {
           ))}
         </div>
 
-        {/* Featured Event */}
+        {/* Featured Events */}
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
+          {language === "fr" ? "Événements à venir" : "Upcoming Events"}
+        </h2>
+
+        {/* NDG PorchFest */}
+        <Card className="mb-6 border-pink/30 bg-gradient-to-br from-pink-light to-transparent">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-pink mb-1">
+              <Music className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Performance en plein air" : "Outdoor Performance"}</span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              NDG PorchFest
+            </CardTitle>
+            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+              <Calendar className="w-4 h-4" />
+              <span>{language === "fr" ? "Samedi 16 mai 2026 · 12 h" : "Saturday, May 16, 2026 · 12:00 PM"}</span>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr" 
+                ? "Tous les membres de Club Choir sont invités à chanter au PorchFest NDG ! Nous chanterons devant l'église presbytérienne Kensington, 6225 Av. Godfrey. Si la météo le permet."
+                : "All Club Choir members are invited to perform at NDG PorchFest! We'll be singing in front of Kensington Presbyterian Church, 6225 Av. Godfrey. Weather permitting."}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-pink" />
+                <span className="font-medium">{language === "fr" ? "Église presbytérienne Kensington, 6225 Av. Godfrey" : "Kensington Presbyterian Church, 6225 Av. Godfrey"}</span>
+              </div>
+              <span className="text-muted-foreground">{language === "fr" ? "Montréal (NDG)" : "Montreal (NDG)"}</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Victoria Village Street Festival */}
         <Card className="mb-8 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-primary mb-1">
