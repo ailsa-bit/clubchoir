@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Menu, X, User, Mail, Facebook, Bell } from "lucide-react";
 import clubChoirLogo from "@/assets/club-choir-logo.png";
+import clubChoirWordmark from "@/assets/club-choir-wordmark.png";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -148,7 +149,12 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
 
       <footer className="border-t border-border bg-card py-8">
         <div className="container mx-auto px-4 text-center text-base text-muted-foreground">
-          <p className="font-heading font-semibold text-foreground mb-2">Club Choir</p>
+          <img
+            src={clubChoirWordmark}
+            alt="Club Choir"
+            className="h-12 sm:h-14 w-auto mx-auto mb-3"
+            loading="lazy"
+          />
           <p className="mb-3">{t("footer.tagline")} © {new Date().getFullYear()}</p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
