@@ -8,8 +8,6 @@ import p2Wide from "./p2-group-portrait-wide.webp";
 import p2Tile from "./p2-group-portrait-tile.webp";
 import p3Wide from "./p3-pub-singing-wide.webp";
 import p3Tile from "./p3-pub-singing-tile.webp";
-import p4Wide from "./p4-arundel-chapel-wide.webp";
-import p4Tile from "./p4-arundel-chapel-tile.webp";
 import p5Wide from "./p5-hudson-lyrics-wide.webp";
 import p5Tile from "./p5-hudson-lyrics-tile.webp";
 import p6Wide from "./p6-ptc-folders-wide.webp";
@@ -60,16 +58,6 @@ export const choirPhotos: ChoirPhoto[] = [
       fr: "Choristes chantant ensemble sous des guirlandes lumineuses chaleureuses au Kingfisher Pub",
     },
     tags: ["hudson", "atmosphere", "session"],
-  },
-  {
-    id: "arundel-chapel",
-    wide: p4Wide,
-    tile: p4Tile,
-    alt: {
-      en: "Club Choir gathered on stage at a small Arundel chapel with stained glass behind them, guitarist accompanying",
-      fr: "Club Choir rassemblé sur la scène d'une petite chapelle d'Arundel avec un vitrail derrière, accompagnés d'un guitariste",
-    },
-    tags: ["arundel", "performance", "atmosphere"],
   },
   {
     id: "hudson-lyrics",
