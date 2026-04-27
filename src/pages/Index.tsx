@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Facebook, Mail } from "lucide-react";
+import { Users, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Mail } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
