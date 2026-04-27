@@ -140,15 +140,8 @@ const Index = () => {
                 <Link
                   key={item.location}
                   to={to}
-                  className={`relative rounded-2xl border p-5 ${item.color} transition-shadow hover:shadow-md block ${
-                    isHudson ? "ring-2 ring-orange/40" : ""
-                  }`}
+                  className={`relative rounded-2xl border p-5 ${item.color} transition-shadow hover:shadow-md block`}
                 >
-                  {isHudson && (
-                    <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange text-orange-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                      <Sparkles className="w-3 h-3" /> New · Starting soon
-                    </span>
-                  )}
                   <div className="flex items-center gap-2 mb-2">
                     <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
                     <span className="font-heading font-bold text-foreground">{item.location}</span>
@@ -157,11 +150,6 @@ const Index = () => {
                     {item.day} · {item.time}
                   </p>
                   <p className="text-xs text-muted-foreground whitespace-pre-line">{item.venue}</p>
-                  {isHudson && (
-                    <p className="mt-3 text-xs font-semibold text-orange flex items-center gap-1">
-                      Reserve your spot →
-                    </p>
-                  )}
                 </Link>
               );
             })}
