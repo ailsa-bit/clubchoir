@@ -204,6 +204,19 @@ const HudsonSession = () => {
                     className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="message">
+                    {t("hudson.messageLabel")}
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={4}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder={t("hudson.messagePlaceholder")}
+                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40 resize-y"
+                  />
+                </div>
                 <button
                   type="submit"
                   disabled={submitting}
