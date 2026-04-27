@@ -250,7 +250,7 @@ const Events = () => {
             </CardTitle>
             <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
               <Calendar className="w-4 h-4" />
-              <span>{language === "fr" ? "13 juin à 12h" : "June 13 at 12 PM"}</span>
+              <span>{language === "fr" ? "13 juin à 13h" : "June 13 at 1 PM"}</span>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
