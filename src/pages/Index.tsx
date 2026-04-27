@@ -6,6 +6,7 @@ import PageMeta from "@/components/PageMeta";
 import HeroVideo from "@/components/HeroVideo";
 import PhotoGallery from "@/components/PhotoGallery";
 import { choirPhotos } from "@/assets/photos";
+import clubChoirWordmark from "@/assets/club-choir-wordmark.png";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
@@ -49,7 +50,13 @@ const Index = () => {
           <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-12 items-center">
             {/* Left: copy + CTAs */}
             <div className="text-center lg:text-left">
-              <h1 className="font-heading font-bold text-4xl md:text-5xl text-foreground mb-4 animate-fade-in">
+              <img
+                src={clubChoirWordmark}
+                alt="Club Choir"
+                className="w-full max-w-[280px] sm:max-w-[340px] mx-auto lg:mx-0 mb-6 animate-fade-in"
+                loading="eager"
+              />
+              <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4 animate-fade-in">
                 {t("home.hero.title")}
               </h1>
               <p className="text-lg text-muted-foreground mb-2 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
