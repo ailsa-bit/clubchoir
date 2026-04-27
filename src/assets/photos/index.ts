@@ -18,6 +18,8 @@ import p9Wide from "./p9-stage-performance-wide.webp";
 import p9Tile from "./p9-stage-performance-tile.webp";
 import p10Wide from "./p10-group-christmas-wide.webp";
 import p10Tile from "./p10-group-christmas-tile.webp";
+import p11Wide from "./p11-group-rehearsal-wide.webp";
+import p11Tile from "./p11-group-rehearsal-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
@@ -108,6 +110,16 @@ export const choirPhotos: ChoirPhoto[] = [
       fr: "Photo de groupe complète de Club Choir sur scène, encadrée par deux sapins de Noël illuminés, mains levées en signe de fête",
     },
     tags: ["performance", "group", "atmosphere"],
+  },
+  {
+    id: "group-rehearsal",
+    wide: p11Wide,
+    tile: p11Tile,
+    alt: {
+      en: "Large Club Choir group portrait at a community hall rehearsal, members smiling together in rows",
+      fr: "Grande photo de groupe de Club Choir lors d'une répétition en salle communautaire, membres souriant ensemble en rangées",
+    },
+    tags: ["pointe-claire", "group", "session"],
   },
 ];
 
