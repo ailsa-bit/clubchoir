@@ -184,6 +184,19 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Real moments — choir photo gallery */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
+            {t("home.moments.title")}
+          </h2>
+          <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
+            {t("home.moments.subtitle")}
+          </p>
+          <PhotoGallery photos={choirPhotos} columns={3} />
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-5xl">
