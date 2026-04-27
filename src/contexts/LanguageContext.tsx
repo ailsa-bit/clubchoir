@@ -170,6 +170,14 @@ const translations: Record<string, Record<Language, string>> = {
   "community.member": { en: "member", fr: "membre" },
   "community.manage": { en: "Manage Members", fr: "Gérer les membres" },
   "community.loading": { en: "Loading members...", fr: "Chargement des membres..." },
+  "community.event.title": { en: "Summer Pop-Up Choir", fr: "Chorale Pop-Up d'été" },
+  "community.event.festival": { en: "Victoria Village Street Festival", fr: "Festival de rue de Victoria Village" },
+  "community.event.date": { en: "June 13 at 12 PM", fr: "13 juin à 12h" },
+  "community.event.desc1": { en: "Join Club Choir for a fun, interactive outdoor singing experience in the heart of the festival. We'll start with a short performance, then invite everyone to take part in a live, all-levels sing-along—Club Choir style. No experience needed, just come ready to sing and enjoy the moment.", fr: "Joignez-vous à Club Choir pour une expérience de chant extérieure interactive et amusante au cœur du festival. Nous commencerons par une courte performance, puis inviterons tout le monde à participer à un chant spontané pour tous les niveaux, à la manière Club Choir. Aucune expérience requise, venez simplement prêt à chanter et à profiter du moment." },
+  "community.event.desc2": { en: "This is a relaxed, welcoming event designed for anyone who loves music and wants to be part of something uplifting and social.", fr: "C'est un événement décontracté et accueillant conçu pour tous ceux qui aiment la musique et veulent faire partie de quelque chose de joyeux et social." },
+  "community.event.accompanied": { en: "Accompanied by Gary White", fr: "Accompagné par Gary White" },
+  "community.event.location": { en: "Prince-Albert Square", fr: "Place Prince-Albert" },
+  "community.event.cta": { en: "Join us", fr: "Rejoignez-nous" },
 
   // Resources
   "resources.title": { en: "Song Resources", fr: "Ressources musicales" },
