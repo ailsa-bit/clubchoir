@@ -1,13 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Search, DollarSign, Settings, Calendar, Music } from "lucide-react";
+import { MapPin, Search, DollarSign, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { useProfile } from "@/hooks/use-profile";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
