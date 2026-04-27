@@ -21,6 +21,7 @@ const handler = async (req: Request): Promise<Response> => {
     const first_name = String(body.first_name || "").trim().slice(0, 100);
     const last_name = String(body.last_name || "").trim().slice(0, 100);
     const email = String(body.email || "").trim().toLowerCase().slice(0, 255);
+    const message = String(body.message || "").trim().slice(0, 2000);
 
     if (!first_name || !last_name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return new Response(JSON.stringify({ error: "Please fill in your first name, last name, and a valid email." }), {
