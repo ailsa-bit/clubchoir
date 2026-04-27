@@ -152,7 +152,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
           <img
             src={clubChoirWordmark}
             alt="Club Choir"
-            className="h-12 sm:h-14 w-auto mx-auto mb-3"
+            className="h-8 sm:h-9 w-auto mx-auto mb-3"
             loading="lazy"
           />
           <p className="mb-3">{t("footer.tagline")} © {new Date().getFullYear()}</p>
