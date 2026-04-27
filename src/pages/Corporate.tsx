@@ -5,6 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { photosByTag } from "@/assets/photos";
+
+const performancePhotos = photosByTag("performance").slice(0, 3);
 
 const inquirySchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),

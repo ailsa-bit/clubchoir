@@ -5,6 +5,9 @@ import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import pagodaStarling from "@/assets/pagoda-starling.png";
+import { photosByTag } from "@/assets/photos";
+
+const hudsonAtmospherePhoto = photosByTag("hudson")[0];
 
 const HudsonSession = () => {
   const [firstName, setFirstName] = useState("");
@@ -51,16 +54,29 @@ const HudsonSession = () => {
         </Link>
 
         {/* Hero */}
-        <div className="rounded-2xl border border-orange/20 bg-orange-light p-6 md:p-8 mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
-            <Sparkles className="w-3.5 h-3.5" /> Brand new · Starting soon
+        <div className="rounded-2xl border border-orange/20 bg-orange-light p-6 md:p-8 mb-8 overflow-hidden">
+          <div className="grid md:grid-cols-[1.1fr_1fr] gap-6 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
+                <Sparkles className="w-3.5 h-3.5" /> Brand new · Starting soon
+              </div>
+              <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-3">
+                A new Club Choir session in Hudson
+              </h1>
+              <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
+                Mondays, 7:00–8:30 PM · May 18 – August 17, 2026 · Kingfisher Pub
+              </p>
+            </div>
+            {hudsonAtmospherePhoto && (
+              <img
+                src={hudsonAtmospherePhoto.wide}
+                alt={hudsonAtmospherePhoto.alt.en}
+                loading="eager"
+                decoding="async"
+                className="rounded-xl shadow-md w-full h-48 md:h-56 object-cover"
+              />
+            )}
           </div>
-          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-3">
-            A new Club Choir session in Hudson
-          </h1>
-          <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
-            Mondays, 7:00–8:30 PM · May 18 – August 17, 2026 · Kingfisher Pub
-          </p>
         </div>
 
         {/* Directors */}
