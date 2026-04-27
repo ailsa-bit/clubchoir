@@ -56,9 +56,6 @@ const PhotoGallery = ({ photos, columns = 3 }: PhotoGalleryProps) => {
                 alt={photos[openIndex].alt[language]}
                 className="w-full h-auto max-h-[80vh] object-contain bg-muted"
               />
-              <figcaption className="px-5 py-3 text-sm text-muted-foreground border-t border-border">
-                {photos[openIndex].alt[language]}
-              </figcaption>
             </figure>
           )}
         </DialogContent>
