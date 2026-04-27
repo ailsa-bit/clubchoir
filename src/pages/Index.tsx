@@ -45,7 +45,7 @@ const Index = () => {
     <div>
       <PageMeta title="Club Choir – Community Choir in Montreal, Arundel, Saint-Hubert & Pointe-Claire" description="Join Club Choir – a fun, welcoming community choir. No audition required. Sing together at 4 locations across Quebec." path="/" />
       <section className="bg-gradient-hero py-16 lg:py-20 px-4">
-        <div className="container mx-auto max-w-6xl">
+        <div className="container mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-12 items-center">
             {/* Left: copy + CTAs */}
             <div className="text-center lg:text-left">
@@ -92,7 +92,7 @@ const Index = () => {
 
       {/* Sessions Overview */}
       <section className="py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
+        <div className="container mx-auto max-w-6xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8 text-center">
             {t("home.sessions.title")}
           </h2>
@@ -110,15 +110,15 @@ const Index = () => {
                     <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
                     <span className="font-heading font-bold text-foreground">{item.location}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-1">
+                  <p className="text-base text-muted-foreground mb-1">
                     {item.day} · {item.time}
                   </p>
-                  <p className="text-xs text-muted-foreground whitespace-pre-line">{item.venue}</p>
+                  <p className="text-sm text-muted-foreground whitespace-pre-line">{item.venue}</p>
                 </Link>
               );
             })}
           </div>
-          <p className="text-center text-sm text-muted-foreground mt-6">
+          <p className="text-center text-base text-muted-foreground mt-6">
             <span className="font-semibold text-foreground">$280</span> {t("home.sessions.pricing")}
           </p>
         </div>
@@ -158,7 +158,7 @@ const Index = () => {
 
       {/* Real moments — choir photo gallery */}
       <section className="py-16 px-4">
-        <div className="container mx-auto max-w-6xl">
+        <div className="container mx-auto max-w-7xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.moments.title")}
           </h2>
@@ -171,7 +171,7 @@ const Index = () => {
 
       {/* Testimonials */}
       <section className="py-16 px-4">
-        <div className="container mx-auto max-w-5xl">
+        <div className="container mx-auto max-w-7xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.testimonials.title")}
           </h2>
@@ -198,8 +198,8 @@ const Index = () => {
                     <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                   ))}
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4">{tst.text}</p>
-                <p className="mt-auto font-heading font-bold text-sm text-foreground">{tst.name}</p>
+                <p className="text-base text-muted-foreground leading-relaxed line-clamp-4">{tst.text}</p>
+                <p className="mt-auto font-heading font-bold text-base text-foreground">{tst.name}</p>
               </div>
             ))}
           </div>
@@ -208,7 +208,7 @@ const Index = () => {
 
       {/* Quick Links */}
       <section className="py-16 px-4 bg-muted/50">
-        <div className="container mx-auto max-w-4xl">
+        <div className="container mx-auto max-w-6xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8 text-center">
             {t("home.community.title")}
           </h2>
@@ -219,7 +219,7 @@ const Index = () => {
             >
               <Calendar className="w-8 h-8 text-aqua mb-3" />
               <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t("home.community.events")}</h3>
-              <p className="text-sm text-muted-foreground">{t("home.community.eventsDesc")}</p>
+              <p className="text-base text-muted-foreground">{t("home.community.eventsDesc")}</p>
             </Link>
             <Link
               to="/corporate"
@@ -227,7 +227,7 @@ const Index = () => {
             >
               <Users className="w-8 h-8 text-purple mb-3" />
               <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t("home.community.corporate")}</h3>
-              <p className="text-sm text-muted-foreground">{t("home.community.corporateDesc")}</p>
+              <p className="text-base text-muted-foreground">{t("home.community.corporateDesc")}</p>
             </Link>
           </div>
         </div>

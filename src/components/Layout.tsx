@@ -52,7 +52,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             <Link
               key={item.path}
               to={item.path}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`px-3 py-2 rounded-lg text-base font-medium transition-colors ${
               location.pathname === item.path ?
               "bg-primary/10 text-primary" :
               "text-muted-foreground hover:text-foreground hover:bg-muted"}`
@@ -70,7 +70,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             {isLoggedIn ? (
               <Link
                 to="/profile"
-                className={`ml-1 px-3 py-1.5 rounded-lg text-sm font-medium inline-flex items-center gap-1.5 transition-colors ${
+                className={`ml-1 px-3 py-1.5 rounded-lg text-base font-medium inline-flex items-center gap-1.5 transition-colors ${
                 location.pathname === "/profile" ?
                 "bg-primary/10 text-primary" :
                 "text-muted-foreground hover:text-foreground hover:bg-muted"}`
@@ -81,7 +81,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             ) : (
               <Link
                 to="/login"
-                className="ml-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+                className="ml-2 px-3 py-1.5 rounded-lg text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
                 {t("login.signIn")}
               </Link>
             )}
@@ -147,7 +147,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
       <main className="flex-1">{children}</main>
 
       <footer className="border-t border-border bg-card py-8">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+        <div className="container mx-auto px-4 text-center text-base text-muted-foreground">
           <p className="font-heading font-semibold text-foreground mb-2">Club Choir</p>
           <p className="mb-3">{t("footer.tagline")} © {new Date().getFullYear()}</p>
           <div className="flex flex-wrap items-center justify-center gap-4">
