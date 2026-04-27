@@ -11,3 +11,5 @@ project_id = "vbbfpzszmtwhydhpgtgj"
     verify_jwt = false
   [functions.send-member-email]
     verify_jwt = false
+  [functions.notify-hudson-signup]
+    verify_jwt = false

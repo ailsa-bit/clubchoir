@@ -41,6 +41,39 @@ export type Database = {
         }
         Relationships: []
       }
+      hudson_session_signups: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          notes: string | null
+          payment_received: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          notes?: string | null
+          payment_received?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          notes?: string | null
+          payment_received?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       location_sessions: {
         Row: {
           activity: string
