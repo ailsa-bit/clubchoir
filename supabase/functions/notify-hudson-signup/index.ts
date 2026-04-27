@@ -37,7 +37,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const { error: insertError } = await supabase
       .from("hudson_session_signups")
-      .insert({ first_name, last_name, email });
+      .insert({ first_name, last_name, email, notes: message || null });
 
     if (insertError) {
       console.error("Insert error:", insertError);
