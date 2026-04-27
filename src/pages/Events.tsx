@@ -1,9 +1,10 @@
 import PageMeta from "@/components/PageMeta";
-import { Calendar, MapPin, Share2, Clock } from "lucide-react";
+import { Calendar, MapPin, Share2, Clock, Music } from "lucide-react";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
 const locationCards = [
@@ -196,6 +197,42 @@ const Events = () => {
             </div>
           ))}
         </div>
+
+        {/* Featured Event */}
+        <Card className="mb-8 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-primary mb-1">
+              <Music className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Chorale Pop-Up d'été" : "Summer Pop-Up Choir"}</span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {language === "fr" ? "Festival de rue de Victoria Village" : "Victoria Village Street Festival"}
+            </CardTitle>
+            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+              <Calendar className="w-4 h-4" />
+              <span>{language === "fr" ? "13 juin à 12h" : "June 13 at 12 PM"}</span>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr" 
+                ? "Joignez-vous à Club Choir pour une expérience de chant extérieure interactive et amusante au cœur du festival. Nous commencerons par une courte performance, puis inviterons tout le monde à participer à un chant spontané pour tous les niveaux, à la manière Club Choir. Aucune expérience requise, venez simplement prêt à chanter et à profiter du moment."
+                : "Join Club Choir for a fun, interactive outdoor singing experience in the heart of the festival. We'll start with a short performance, then invite everyone to take part in a live, all-levels sing-along—Club Choir style. No experience needed, just come ready to sing and enjoy the moment."}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr" 
+                ? "C'est un événement décontracté et accueillant conçu pour tous ceux qui aiment la musique et veulent faire partie de quelque chose de joyeux et social."
+                : "This is a relaxed, welcoming event designed for anyone who loves music and wants to be part of something uplifting and social."}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-primary" />
+                <span className="font-medium">{language === "fr" ? "Place Prince-Albert" : "Prince-Albert Square"}</span>
+              </div>
+              <span className="text-muted-foreground">{language === "fr" ? "Accompagné par Gary White" : "Accompanied by Gary White"}</span>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Community Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">

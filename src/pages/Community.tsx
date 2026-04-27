@@ -1,13 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Search, DollarSign, Settings, Calendar, Music } from "lucide-react";
+import { MapPin, Search, DollarSign, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { useProfile } from "@/hooks/use-profile";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
@@ -110,39 +110,6 @@ const Community = () => {
           )}
         </div>
 
-        {/* Featured Event */}
-        <Card className="mb-8 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-primary mb-1">
-              <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{t("community.event.title")}</span>
-            </div>
-            <CardTitle className="text-xl font-heading">
-              {t("community.event.festival")}
-            </CardTitle>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
-              <Calendar className="w-4 h-4" />
-              <span>{t("community.event.date")}</span>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-muted-foreground leading-relaxed">
-              {t("community.event.desc1")}
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              {t("community.event.desc2")}
-            </p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-primary" />
-                <span className="font-medium">{t("community.event.location")}</span>
-              </div>
-              <span className="text-muted-foreground">{t("community.event.accompanied")}</span>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           {(["ACTIVE", "INACTIVE", "PROSPECT", "TRIAL"] as const).map((s) => (
             <div key={s} className="rounded-2xl border border-border bg-card p-4 text-center">
