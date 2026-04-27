@@ -58,7 +58,8 @@ const handler = async (req: Request): Promise<Response> => {
     await resend.emails.send({
       from: "Club Choir <noreply@clubchoir.ca>",
       to: ["ailsa@clubchoir.ca"],
-      subject: "🎶 New Hudson Session Interest",
+      replyTo: email,
+      subject: message ? "🎶 New Hudson Session Signup (with question)" : "🎶 New Hudson Session Interest",
       html: `
         <div style="font-family: 'Nunito', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px;">
           <h1 style="color: #333; font-size: 24px; margin-bottom: 16px;">New Hudson Session Signup</h1>
@@ -69,12 +70,19 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="margin: 4px 0;"><strong>Name:</strong> ${escapeHtml(fullName)}</p>
             <p style="margin: 4px 0;"><strong>Email:</strong> ${escapeHtml(email)}</p>
           </div>
+          ${message ? `
+          <div style="background: #fff5ec; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; margin: 16px 0;">
+            <p style="margin: 0 0 6px; font-size: 14px; font-weight: bold; color: #c2410c;">Their question:</p>
+            <p style="margin: 0; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(message)}</p>
+          </div>
+          ` : ""}
           <p style="color: #333; font-size: 14px; line-height: 1.6;">
-            They've been sent the e-transfer instructions. Once payment is received, mark them as registered.
+            They've been sent the e-transfer instructions. Once payment is received, mark them as registered.${message ? " Reply to this email to answer their question directly." : ""}
           </p>
         </div>
       `,
     });
+
 
     // 2) Confirmation email to the prospect with e-transfer instructions
     await resend.emails.send({
