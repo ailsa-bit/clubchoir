@@ -74,6 +74,26 @@ const Index = () => {
                   {t("home.hero.friend")}
                 </Link>
               </div>
+
+              {/* Hudson highlight card — directly under the CTA buttons */}
+              <Link
+                to="/hudson-session"
+                className="relative mt-5 block rounded-2xl border bg-orange-light border-orange/20 ring-2 ring-orange/40 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all animate-fade-in max-w-xl mx-auto lg:mx-0"
+                style={{ animationDelay: "0.22s" }}
+              >
+                <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange text-orange-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                  <Sparkles className="w-3 h-3" /> New · Starting soon
+                </span>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-orange" />
+                  <span className="font-heading font-bold text-foreground">Hudson</span>
+                  <span className="text-xs text-muted-foreground">· {t("day.monday")} · 7:00–8:30 PM</span>
+                </div>
+                <p className="text-xs text-muted-foreground">Kingfisher Pub, 84 Cameron, Hudson, QC</p>
+                <p className="mt-2 text-xs font-semibold text-orange flex items-center gap-1">
+                  Reserve your spot →
+                </p>
+              </Link>
             </div>
 
             {/* Right (lg+) / below CTAs (mobile): hero video */}
