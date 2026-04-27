@@ -236,6 +236,26 @@ const HudsonSession = () => {
           )}
         </div>
 
+        {/* FAQ */}
+        <section className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
+          <h2 className="font-heading font-bold text-2xl text-foreground mb-1 text-center">
+            {t("hudson.faqTitle")}
+          </h2>
+          <p className="text-center text-sm text-muted-foreground mb-6">{t("hudson.faqSubtitle")}</p>
+          <Accordion type="single" collapsible className="space-y-2">
+            {faqItems.map((item, i) => (
+              <AccordionItem key={i} value={`hudson-faq-${i}`} className="rounded-xl border border-border bg-background px-4">
+                <AccordionTrigger className="font-heading font-bold text-foreground text-left hover:no-underline py-3 text-sm md:text-base">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground pb-3 text-sm">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
+
         <p className="text-center text-sm text-muted-foreground">
           {t("hudson.haveQuestions")}{" "}
           <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
