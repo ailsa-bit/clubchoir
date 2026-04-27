@@ -208,28 +208,32 @@ const Events = () => {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-pink mb-1">
               <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Performance en plein air" : "Outdoor Performance"}</span>
+              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Performance communautaire" : "Community Performance"}</span>
             </div>
             <CardTitle className="text-xl font-heading">
-              NDG PorchFest
+              {language === "fr" ? "Club Choir au Porchfest NDG" : "Club Choir at NDG Porchfest"}
             </CardTitle>
             <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
               <Calendar className="w-4 h-4" />
-              <span>{language === "fr" ? "Samedi 16 mai 2026 · 12 h" : "Saturday, May 16, 2026 · 12:00 PM"}</span>
+              <span>{language === "fr" ? "16 mai à 12 h" : "May 16 at 12 PM"}</span>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed">
               {language === "fr" 
-                ? "Tous les membres de Club Choir sont invités à chanter au PorchFest NDG ! Nous chanterons devant l'église presbytérienne Kensington, 6225 Av. Godfrey. Si la météo le permet."
-                : "All Club Choir members are invited to perform at NDG PorchFest! We'll be singing in front of Kensington Presbyterian Church, 6225 Av. Godfrey. Weather permitting."}
+                ? "Les membres de Club Choir de tous les lieux se réuniront pour une performance communautaire spéciale dans le cadre du Porchfest NDG. Cet événement gratuit, géré par des bénévoles, transforme NDG en un circuit de musique live autoguidé, avec des performances sur les porches du quartier."
+                : "Club Choir members from all locations will come together for a special community performance as part of Porchfest NDG. This free, volunteer-run event transforms NDG into a self-guided walking tour of live music, with performances happening on porches throughout the neighbourhood."}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr" 
+                ? "Joignez-vous à nous alors que nos chanteurs se réunissent pour partager quelques chansons et célébrer la musique, la communauté et les liens dans l'une des traditions locales les plus vibrantes de Montréal."
+                : "Join us as our singers gather to share a few songs and celebrate music, community, and connection in one of Montreal's most vibrant local traditions."}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-pink" />
-                <span className="font-medium">{language === "fr" ? "Église presbytérienne Kensington, 6225 Av. Godfrey" : "Kensington Presbyterian Church, 6225 Av. Godfrey"}</span>
+                <span className="font-medium">{language === "fr" ? "Montréal (NDG)" : "Montreal (NDG)"}</span>
               </div>
-              <span className="text-muted-foreground">{language === "fr" ? "Montréal (NDG)" : "Montreal (NDG)"}</span>
             </div>
           </CardContent>
         </Card>
