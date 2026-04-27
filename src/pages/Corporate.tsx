@@ -96,6 +96,21 @@ const Corporate = () => {
           </p>
         </div>
 
+        {performancePhotos.length > 0 && (
+          <div className="grid sm:grid-cols-3 gap-3 mb-12">
+            {performancePhotos.map((p) => (
+              <img
+                key={p.id}
+                src={p.tile}
+                alt={p.alt.en}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-40 sm:h-48 object-cover rounded-2xl border border-border shadow-sm"
+              />
+            ))}
+          </div>
+        )}
+
         <div className="grid sm:grid-cols-3 gap-5 mb-14">
           {valueProps.map((item) => (
             <div key={item.title} className="rounded-2xl border border-border bg-card p-6 text-center">
