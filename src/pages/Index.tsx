@@ -53,7 +53,7 @@ const Index = () => {
               <img
                 src={clubChoirWordmark}
                 alt="Club Choir"
-                className="w-full max-w-[280px] sm:max-w-[340px] mx-auto lg:mx-0 mb-6 animate-fade-in"
+                className="w-full max-w-[180px] sm:max-w-[220px] mx-auto lg:mx-0 mb-4 animate-fade-in"
                 loading="eager"
               />
               <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4 animate-fade-in">
