@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Users, UserPlus, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Facebook, Mail } from "lucide-react";
+import { Users, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Mail } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
@@ -58,42 +58,27 @@ const Index = () => {
               <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.15s" }}>
                 {t("home.hero.desc")}
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
+                <Link
+                  to="/hudson-session"
+                  className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-orange/90 hover:scale-[1.02] transition-all"
+                >
+                  <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-foreground text-background text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                    <Sparkles className="w-3 h-3" /> Starting soon
+                  </span>
+                  <Sparkles className="w-5 h-5" />
+                  Reserve your Hudson spot
+                </Link>
                 <Link
                   to="/try"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
                 >
-                  <Sparkles className="w-5 h-5" />
-                  {t("home.hero.try")}
-                </Link>
-                <Link
-                  to="/bring-a-friend"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-105 transition-all"
-                >
-                  <UserPlus className="w-5 h-5" />
-                  {t("home.hero.friend")}
+                  Try a session
                 </Link>
               </div>
-
-              {/* Hudson highlight card — directly under the CTA buttons */}
-              <Link
-                to="/hudson-session"
-                className="relative mt-5 block rounded-2xl border bg-orange-light border-orange/20 ring-2 ring-orange/40 p-4 sm:p-5 shadow-sm hover:shadow-md transition-all animate-fade-in max-w-xl mx-auto lg:mx-0"
-                style={{ animationDelay: "0.22s" }}
-              >
-                <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange text-orange-foreground text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                  <Sparkles className="w-3 h-3" /> New · Starting soon
-                </span>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-orange" />
-                  <span className="font-heading font-bold text-foreground">Hudson</span>
-                  <span className="text-xs text-muted-foreground">· {t("day.monday")} · 7:00–8:30 PM</span>
-                </div>
-                <p className="text-xs text-muted-foreground">Kingfisher Pub, 84 Cameron, Hudson, QC</p>
-                <p className="mt-2 text-xs font-semibold text-orange flex items-center gap-1">
-                  Reserve your spot →
-                </p>
-              </Link>
+              <p className="text-xs text-muted-foreground mt-3 lg:text-left text-center animate-fade-in" style={{ animationDelay: "0.22s" }}>
+                Hudson · Mondays 7:00–8:30 PM · Kingfisher Pub
+              </p>
             </div>
 
             {/* Right (lg+) / below CTAs (mobile): hero video */}
@@ -102,27 +87,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Stay in the loop CTA */}
-          <div className="mt-12 max-w-2xl mx-auto">
-            <div className="rounded-2xl bg-card border border-border p-6 md:p-7 text-center shadow-sm">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-3">
-                <Mail className="w-6 h-6" />
-              </div>
-              <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-2">
-                {t("home.subscribe.title")}
-              </h2>
-              <p className="text-sm md:text-base text-muted-foreground mb-5 max-w-xl mx-auto">
-                {t("home.subscribe.desc")}
-              </p>
-              <Link
-                to="/subscribe"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
-              >
-                <Mail className="w-4 h-4" />
-                {t("home.subscribe.cta")}
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -264,6 +228,30 @@ const Index = () => {
               <Users className="w-8 h-8 text-purple mb-3" />
               <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t("home.community.corporate")}</h3>
               <p className="text-sm text-muted-foreground">{t("home.community.corporateDesc")}</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Stay in the loop — bottom band */}
+      <section className="py-14 px-4">
+        <div className="container mx-auto max-w-2xl">
+          <div className="rounded-2xl bg-card border border-border p-6 md:p-7 text-center shadow-sm">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-3">
+              <Mail className="w-6 h-6" />
+            </div>
+            <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-2">
+              {t("home.subscribe.title")}
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground mb-5 max-w-xl mx-auto">
+              {t("home.subscribe.desc")}
+            </p>
+            <Link
+              to="/subscribe"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+            >
+              <Mail className="w-4 h-4" />
+              {t("home.subscribe.cta")}
             </Link>
           </div>
         </div>
