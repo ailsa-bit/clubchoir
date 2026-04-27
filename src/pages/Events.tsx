@@ -20,7 +20,7 @@ const locationCards = [
   },
   {
     location: "Hudson",
-    venue: "King Fisher Pub",
+    venue: "Kingfisher Pub",
     address: "84 Cameron, Hudson, J0P 1H0",
     day: { en: "Mondays", fr: "Lundis" },
     time: "7:00–8:30 PM",

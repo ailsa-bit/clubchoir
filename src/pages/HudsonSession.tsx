@@ -59,7 +59,7 @@ const HudsonSession = () => {
             A new Club Choir session in Hudson
           </h1>
           <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
-            Mondays, 7:00–8:30 PM · May 18 – August 17, 2026 · King Fisher Pub
+            Mondays, 7:00–8:30 PM · May 18 – August 17, 2026 · Kingfisher Pub
           </p>
         </div>
 
@@ -93,7 +93,7 @@ const HudsonSession = () => {
           <div className="rounded-2xl border border-border bg-card p-5">
             <MapPin className="w-5 h-5 text-orange mb-2" />
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Where</p>
-            <p className="text-sm font-medium text-foreground">King Fisher Pub</p>
+            <p className="text-sm font-medium text-foreground">Kingfisher Pub</p>
             <p className="text-xs text-muted-foreground">84 Cameron, Hudson, QC J0P 1H0</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">

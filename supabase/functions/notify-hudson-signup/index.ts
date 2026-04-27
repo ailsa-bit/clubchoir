@@ -91,7 +91,7 @@ const handler = async (req: Request): Promise<Response> => {
 
           <div style="background: #fff5ec; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; margin: 24px 0;">
             <h2 style="margin: 0 0 8px; font-size: 18px; color: #c2410c;">Session details</h2>
-            <p style="margin: 4px 0; font-size: 15px;"><strong>Where:</strong> King Fisher Pub, 84 Cameron, Hudson, QC J0P 1H0</p>
+            <p style="margin: 4px 0; font-size: 15px;"><strong>Where:</strong> Kingfisher Pub, 84 Cameron, Hudson, QC J0P 1H0</p>
             <p style="margin: 4px 0; font-size: 15px;"><strong>When:</strong> Mondays, 7:00–8:30 PM</p>
             <p style="margin: 4px 0; font-size: 15px;"><strong>Dates:</strong> May 18 – August 17, 2026 (14 weeks)</p>
             <p style="margin: 4px 0; font-size: 15px;"><strong>Cost:</strong> $280 for the full 14-week session</p>
