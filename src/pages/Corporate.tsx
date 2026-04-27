@@ -5,6 +5,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { photosByTag } from "@/assets/photos";
+
+const performancePhotos = photosByTag("performance").slice(0, 3);
 
 const inquirySchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -92,6 +95,21 @@ const Corporate = () => {
             {t("corporate.subtitle")}
           </p>
         </div>
+
+        {performancePhotos.length > 0 && (
+          <div className="grid sm:grid-cols-3 gap-3 mb-12">
+            {performancePhotos.map((p) => (
+              <img
+                key={p.id}
+                src={p.tile}
+                alt={p.alt.en}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-40 sm:h-48 object-cover rounded-2xl border border-border shadow-sm"
+              />
+            ))}
+          </div>
+        )}
 
         <div className="grid sm:grid-cols-3 gap-5 mb-14">
           {valueProps.map((item) => (

@@ -4,6 +4,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
 import HeroVideo from "@/components/HeroVideo";
+import PhotoGallery from "@/components/PhotoGallery";
+import { choirPhotos } from "@/assets/photos";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
@@ -179,6 +181,19 @@ const Index = () => {
               {t("home.faq.touch")}
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Real moments — choir photo gallery */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
+            {t("home.moments.title")}
+          </h2>
+          <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
+            {t("home.moments.subtitle")}
+          </p>
+          <PhotoGallery photos={choirPhotos} columns={3} />
         </div>
       </section>
 

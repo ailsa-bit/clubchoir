@@ -1,0 +1,116 @@
+// Curated choir photo set. Each photo has a wide (1600px) and tile (900px) WebP variant,
+// pre-cropped, color-corrected, and brand-warmed.
+// Add new photos by dropping cleaned WebPs in this folder and appending to choirPhotos.
+
+import p1Wide from "./p1-pub-conducting-wide.webp";
+import p1Tile from "./p1-pub-conducting-tile.webp";
+import p2Wide from "./p2-group-portrait-wide.webp";
+import p2Tile from "./p2-group-portrait-tile.webp";
+import p3Wide from "./p3-pub-singing-wide.webp";
+import p3Tile from "./p3-pub-singing-tile.webp";
+import p4Wide from "./p4-arundel-chapel-wide.webp";
+import p4Tile from "./p4-arundel-chapel-tile.webp";
+import p5Wide from "./p5-hudson-lyrics-wide.webp";
+import p5Tile from "./p5-hudson-lyrics-tile.webp";
+import p6Wide from "./p6-ptc-folders-wide.webp";
+import p6Tile from "./p6-ptc-folders-tile.webp";
+import p7Wide from "./p7-ptc-formation-wide.webp";
+import p7Tile from "./p7-ptc-formation-tile.webp";
+import p9Wide from "./p9-stage-performance-wide.webp";
+import p9Tile from "./p9-stage-performance-tile.webp";
+
+export interface ChoirPhoto {
+  id: string;
+  wide: string;
+  tile: string;
+  alt: { en: string; fr: string };
+  /** Where this photo is most thematically appropriate. Used for filtering. */
+  tags: Array<"hudson" | "arundel" | "saint-hubert" | "pointe-claire" | "montreal" | "performance" | "session" | "group" | "atmosphere">;
+}
+
+export const choirPhotos: ChoirPhoto[] = [
+  {
+    id: "pub-conducting",
+    wide: p1Wide,
+    tile: p1Tile,
+    alt: {
+      en: "Ailsa conducting Club Choir on stage at the Kingfisher Pub in Hudson, surrounded by string lights and a disco ball",
+      fr: "Ailsa dirigeant Club Choir sur scène au Kingfisher Pub à Hudson, entourée de guirlandes lumineuses et d'une boule disco",
+    },
+    tags: ["hudson", "performance", "atmosphere"],
+  },
+  {
+    id: "group-portrait",
+    wide: p2Wide,
+    tile: p2Tile,
+    alt: {
+      en: "Smiling group portrait of Club Choir members with director Ailsa Pehi front and centre",
+      fr: "Portrait de groupe souriant des membres de Club Choir avec la directrice Ailsa Pehi au centre",
+    },
+    tags: ["saint-hubert", "group"],
+  },
+  {
+    id: "pub-singing",
+    wide: p3Wide,
+    tile: p3Tile,
+    alt: {
+      en: "Choir members singing together under warm string lights at the Kingfisher Pub",
+      fr: "Choristes chantant ensemble sous des guirlandes lumineuses chaleureuses au Kingfisher Pub",
+    },
+    tags: ["hudson", "atmosphere", "session"],
+  },
+  {
+    id: "arundel-chapel",
+    wide: p4Wide,
+    tile: p4Tile,
+    alt: {
+      en: "Club Choir gathered on stage at a small Arundel chapel with stained glass behind them, guitarist accompanying",
+      fr: "Club Choir rassemblé sur la scène d'une petite chapelle d'Arundel avec un vitrail derrière, accompagnés d'un guitariste",
+    },
+    tags: ["arundel", "performance", "atmosphere"],
+  },
+  {
+    id: "hudson-lyrics",
+    wide: p5Wide,
+    tile: p5Tile,
+    alt: {
+      en: "Choir members seated in a teal-walled venue singing along to lyrics on a projection screen",
+      fr: "Choristes assis dans une salle aux murs turquoise chantant les paroles projetées à l'écran",
+    },
+    tags: ["hudson", "session"],
+  },
+  {
+    id: "ptc-folders",
+    wide: p6Wide,
+    tile: p6Tile,
+    alt: {
+      en: "Wide group photo of the Pointe-Claire Club Choir holding their colourful song folders",
+      fr: "Photo de groupe panoramique de Club Choir Pointe-Claire tenant leurs cahiers de chansons colorés",
+    },
+    tags: ["pointe-claire", "group"],
+  },
+  {
+    id: "ptc-formation",
+    wide: p7Wide,
+    tile: p7Tile,
+    alt: {
+      en: "Pointe-Claire choir in performance formation under cathedral skylights, songbooks open",
+      fr: "Chorale de Pointe-Claire en formation de spectacle sous les puits de lumière de la cathédrale, cahiers ouverts",
+    },
+    tags: ["pointe-claire", "performance", "group"],
+  },
+  {
+    id: "stage-performance",
+    wide: p9Wide,
+    tile: p9Tile,
+    alt: {
+      en: "Choir performing on a community stage with conductor leading from the foreground",
+      fr: "Chorale en performance sur une scène communautaire avec la cheffe dirigeant depuis l'avant-plan",
+    },
+    tags: ["performance", "group"],
+  },
+];
+
+export function photosByTag(tag: ChoirPhoto["tags"][number]): ChoirPhoto[] {
+  return choirPhotos.filter((p) => p.tags.includes(tag));
+}

@@ -25,6 +25,9 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { choirPhotos } from "@/assets/photos";
+
+const previewPhoto = choirPhotos.find((p) => p.id === "hudson-lyrics") ?? choirPhotos[0];
 
 const LOCATIONS = [
   { value: "Montreal – Monday", label: "Montreal – Monday" },
@@ -82,7 +85,7 @@ const TryASession = () => {
     <div className="min-h-[60vh] py-16 px-4">
       <PageMeta title="Try a Free Session – Club Choir" description="Try a free Club Choir session! No audition, no experience needed. Come sing with us at any of our 4 Quebec locations." path="/try" />
       <div className="container mx-auto max-w-lg">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <Music className="w-10 h-10 text-primary mx-auto mb-3" />
           <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
             {t("try.title")}
@@ -91,6 +94,21 @@ const TryASession = () => {
             {t("try.subtitle")}
           </p>
         </div>
+
+        {previewPhoto && (
+          <figure className="mb-10 rounded-2xl overflow-hidden border border-border shadow-sm">
+            <img
+              src={previewPhoto.wide}
+              alt={previewPhoto.alt.en}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-48 md:h-56 object-cover"
+            />
+            <figcaption className="px-4 py-2.5 text-xs text-muted-foreground bg-muted/40 text-center">
+              A real Club Choir session in progress — that's exactly what you're walking into.
+            </figcaption>
+          </figure>
+        )}
 
         {sent ? (
           <div className="rounded-2xl border border-border bg-card p-8 text-center">

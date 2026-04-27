@@ -1,72 +1,75 @@
-## Add choir video to homepage hero
+## Goal
 
-A trimmed, web-optimized version of your choir video will appear as a **portrait "phone-shaped" panel beside the hero headline** on desktop, and **below the headline on mobile**. It will autoplay muted on loop, looking premium and intentional — not stretched or cropped.
+Make the site feel less sterile by placing your real choir photos throughout — but first, clean each photo so they look intentional and brand-consistent rather than like a random phone camera roll.
 
-### What you'll see
+## Phase 1 — Process the 9 photos (automated, no quality loss)
 
-**Desktop (≥1024px):**
-```text
-┌──────────────────────────────────────────────────┐
-│                                                  │
-│   Sing together.                  ┌─────────┐    │
-│   No audition required.           │ ▶ video │    │
-│                                   │ portrait│    │
-│   [Try a session]                 │ choir   │    │
-│   [Bring a friend]                │ loop    │    │
-│                                   │         │    │
-│                                   └─────────┘    │
-└──────────────────────────────────────────────────┘
-```
+For each photo I'll run an automated pipeline that does:
 
-**Mobile (<1024px):** Existing hero stays as-is at the top, video sits below the CTA buttons at full width — keeping the page fast and readable on phones.
+1. **Strip video UI** from the 3 screenshots (HDR badge top-left, play button center, scrubber bar bottom)
+2. **Smart crop** — re-frame each shot to its strongest area (faces, energy), removing dead floor space, cables, mic stands, and empty edges
+3. **Color & exposure correction** — auto-balance shadows/highlights, neutralize the heavy purple cast on the pub shots, gently warm up the dim ones, lift faces out of shadow
+4. **Light, consistent grade** — a subtle warm-film treatment (slightly lifted blacks, +3 warmth, +5 saturation) so all 9 photos feel like they belong to the same brand
+5. **Generate 3 sizes per photo**:
+   - Wide 16:9 for hero banners and full-width strips
+   - Square 1:1 for grid tiles
+   - Portrait 4:5 for mobile-friendly cards
+6. **Compress to WebP** (~150–250 KB each) for fast loading
 
-### Video preparation (done by me, no action needed from you)
+I'll preview the cleaned versions inline before placing them anywhere, so you can veto any photo I shouldn't use.
 
-1. **Trim** the dark intro (~0.5 sec) and dark outro (~1 sec) → final loop ~10–11 sec, so it loops cleanly without flashing to black.
-2. **Transcode** from HEVC/Dolby Vision (18 MB) to:
-   - **MP4 H.264** (universal browser support) — ~3 MB
-   - **WebM VP9** (smaller fallback for Chrome/Firefox) — ~2 MB
-3. **Generate a poster image** from the bright middle frame (the one with the city-name overlays) — shows instantly while the video loads.
-4. **Mute** the audio track (required for autoplay; the visuals + text overlays carry the story on their own).
-5. **Host** the optimized files in Lovable Cloud storage (not bundled with the site, so deploys stay fast).
+## Phase 2 — Categorize the photos by best use
 
-### Frontend changes
+Based on what each shot communicates:
 
-- **`src/pages/Index.tsx`** — Restructure the hero section into a 2-column grid on `lg:` and up (text left, video right). Keep current single-column layout below `lg`. Add the video below the CTAs on mobile.
-- **New component `src/components/HeroVideo.tsx`** — Portrait video player:
-  - Rounded corners, soft shadow, subtle border in your brand orange tone
-  - `<video>` with `autoPlay muted loop playsInline preload="metadata"`
-  - Poster image shown until video loads
-  - Sources: WebM first, MP4 fallback
-  - Aspect ratio locked to 9:16 so layout doesn't shift while loading
-  - Respects `prefers-reduced-motion` — falls back to the static poster image for users who've disabled animations
-- **`src/index.css`** — Small additions for the video container styling (already uses your existing tokens).
+| Photo | Best use |
+|---|---|
+| IMG_7785 (Saint-Hubert group portrait, you in front, smiles) | "About / who we are" hero, big and warm |
+| IMG_9045 (Pointe-Claire group with Club Choir folders) | Sessions overview accent, or community section |
+| IMG_1268, IMG_2839 (Kingfisher pub, stage lights, conducting) | Hudson session page hero — sells the *vibe* of that new location perfectly |
+| IMG_7909 (Arundel chapel, stained glass, intimate) | Arundel session card or events page |
+| IMG_8937 ("I can see clearly now" lyrics on screen, learning) | FAQ or "Try a Session" page — shows what a real session looks like |
+| Capture_d_écran_232224 + 232239 (big Pointe-Claire choir formation) | Community page hero, or testimonials background accent |
+| Capture_d_écran_232004 (stage performance with conductor) | Corporate/Events page — sells the "we perform" angle |
 
-### Storage
+## Phase 3 — Place them across the site
 
-A new public Lovable Cloud storage bucket `homepage-media` will hold:
-- `choir-hero.mp4`
-- `choir-hero.webm`
-- `choir-hero-poster.jpg`
+Concrete additions, ordered by impact:
 
-Public read access only (no auth needed to view), no write access from the client.
+1. **Homepage — new "Real moments from real sessions" strip** between the FAQ and Testimonials sections. A 3-up tile grid of 6 best photos, no text overlays, just the images breathing. Click any tile → opens it larger in a lightbox. This is the single biggest "less sterile" win.
 
-### Performance notes
+2. **Homepage — sessions cards get tiny photo accents** (each location card gets a small rounded thumbnail of that venue's actual room/people in the corner)
 
-- Total added page weight: ~3 MB (video) + ~80 KB (poster) — loads in the background after the page is interactive
-- `preload="metadata"` means only the first ~50 KB downloads on page load; the rest streams as it plays
-- Poster image guarantees the hero never looks empty, even on slow connections
-- No layout shift (aspect ratio reserved)
+3. **Hudson Session page hero** — replace or accent the current header with the Kingfisher pub atmosphere shot. That photo *is* the pitch for Hudson — instantly communicates "this is unlike any other choir."
 
-### Out of scope for this plan
+4. **Try a Session page** — add the IMG_8937 "lyrics on screen" photo to the "what to expect" area. Removes mystery, lowers the barrier.
 
-- Adding sound or a play button (it's a muted ambient loop)
-- Changing the hero copy or CTAs
-- Adding the video to other pages
+5. **Community / Choir Community page** — hero strip with the big group portraits at the top.
 
-### Technical details
+6. **Corporate / Events page** — accent with the performance shots to show "yes, we actually perform at events."
 
-- Video processing via `ffmpeg` (already in sandbox): trim with `-ss 0.5 -to 11.5`, transcode H.264 with `-c:v libx264 -crf 26 -preset slow -movflags +faststart -an`, WebM with `-c:v libvpx-vp9 -crf 32 -b:v 0 -an`, poster with `-ss 6 -frames:v 1 -q:v 4`
-- Files uploaded to Supabase Storage bucket via SQL migration creating the bucket + public read RLS policy
-- Component uses `<source type="video/webm">` then `<source type="video/mp4">` for browser preference ordering
-- Aspect ratio held with Tailwind `aspect-[9/16]` on a `max-w-[280px] lg:max-w-[320px]` container
+7. **About-the-director area** (wherever you appear) — use IMG_7785 for warmth.
+
+## Phase 4 — Make it feel curated, not cluttered
+
+- Every photo placement uses a **soft rounded frame** (matches your existing card style, `rounded-2xl`)
+- Subtle hover lift on tiles so they feel interactive
+- Lazy-loaded so they never slow the page down
+- Bilingual alt text (EN/FR) for accessibility and SEO
+- A consistent thin warm-tinted border so the photos feel branded together
+
+## What you'll see after approval
+
+I'll process all 9 photos first and show you the cleaned versions side-by-side with the originals. **You approve which ones to actually use** before I place anything on the site. If even 5 of the 9 survive, that's enough to transform the feel of the homepage.
+
+## Technical notes (for reference)
+
+- Photos copied to `src/assets/photos/` and imported as ES modules (Vite optimizes them automatically)
+- Image processing done with ImageMagick (sharp, crop, color correction, WebP encoding)
+- New `<PhotoGallery>` component with lightbox using existing shadcn `Dialog`
+- No new dependencies — uses what's already in the project
+- Reuses existing `rounded-2xl border border-border` card styling for consistency
+
+## What I need from you to start
+
+Just a yes. No more uploads needed — I'll work with the 9 you've sent. If after the cleanup pass you have a few more favorites you want to add, you can drop them in any time and I'll run them through the same pipeline.
