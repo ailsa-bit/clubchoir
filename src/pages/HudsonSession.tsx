@@ -14,8 +14,20 @@ const HudsonSession = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const faqItems = [
+    { q: t("home.faq.q.cost"), a: t("home.faq.a.cost") },
+    { q: t("home.faq.q.music"), a: t("home.faq.a.music") },
+    { q: t("home.faq.q.shy"), a: t("home.faq.a.shy") },
+    { q: t("home.faq.q.miss"), a: t("home.faq.a.miss") },
+    { q: t("home.faq.q.audition"), a: t("home.faq.a.audition") },
+    { q: t("home.faq.q.kind"), a: t("home.faq.a.kind") },
+    { q: t("home.faq.q.bring"), a: t("home.faq.a.bring") },
+    { q: t("home.faq.q.bad"), a: t("home.faq.a.bad") },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +38,7 @@ const HudsonSession = () => {
     setSubmitting(true);
     try {
       const { error } = await supabase.functions.invoke("notify-hudson-signup", {
-        body: { first_name: firstName.trim(), last_name: lastName.trim(), email: email.trim() },
+        body: { first_name: firstName.trim(), last_name: lastName.trim(), email: email.trim(), message: message.trim() },
       });
       if (error) throw error;
       setSubmitted(true);
