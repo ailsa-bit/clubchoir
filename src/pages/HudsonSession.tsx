@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, Mail, CheckCircle2, AlertCircle } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, Mail, CheckCircle2, AlertCircle, MessageCircle } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -13,8 +14,20 @@ const HudsonSession = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const faqItems = [
+    { q: t("home.faq.q.cost"), a: t("home.faq.a.cost") },
+    { q: t("home.faq.q.music"), a: t("home.faq.a.music") },
+    { q: t("home.faq.q.shy"), a: t("home.faq.a.shy") },
+    { q: t("home.faq.q.miss"), a: t("home.faq.a.miss") },
+    { q: t("home.faq.q.audition"), a: t("home.faq.a.audition") },
+    { q: t("home.faq.q.kind"), a: t("home.faq.a.kind") },
+    { q: t("home.faq.q.bring"), a: t("home.faq.a.bring") },
+    { q: t("home.faq.q.bad"), a: t("home.faq.a.bad") },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +38,7 @@ const HudsonSession = () => {
     setSubmitting(true);
     try {
       const { error } = await supabase.functions.invoke("notify-hudson-signup", {
-        body: { first_name: firstName.trim(), last_name: lastName.trim(), email: email.trim() },
+        body: { first_name: firstName.trim(), last_name: lastName.trim(), email: email.trim(), message: message.trim() },
       });
       if (error) throw error;
       setSubmitted(true);
@@ -191,6 +204,19 @@ const HudsonSession = () => {
                     className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="message">
+                    {t("hudson.messageLabel")}
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={4}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder={t("hudson.messagePlaceholder")}
+                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40 resize-y"
+                  />
+                </div>
                 <button
                   type="submit"
                   disabled={submitting}
@@ -209,6 +235,26 @@ const HudsonSession = () => {
             </>
           )}
         </div>
+
+        {/* FAQ */}
+        <section className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
+          <h2 className="font-heading font-bold text-2xl text-foreground mb-1 text-center">
+            {t("hudson.faqTitle")}
+          </h2>
+          <p className="text-center text-sm text-muted-foreground mb-6">{t("hudson.faqSubtitle")}</p>
+          <Accordion type="single" collapsible className="space-y-2">
+            {faqItems.map((item, i) => (
+              <AccordionItem key={i} value={`hudson-faq-${i}`} className="rounded-xl border border-border bg-background px-4">
+                <AccordionTrigger className="font-heading font-bold text-foreground text-left hover:no-underline py-3 text-sm md:text-base">
+                  {item.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground pb-3 text-sm">
+                  {item.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </section>
 
         <p className="text-center text-sm text-muted-foreground">
           {t("hudson.haveQuestions")}{" "}
