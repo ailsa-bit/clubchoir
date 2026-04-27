@@ -5,9 +5,7 @@ import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import pagodaStarling from "@/assets/pagoda-starling.png";
-import { photosByTag } from "@/assets/photos";
 
-const hudsonAtmospherePhoto = photosByTag("hudson")[0];
 
 const HudsonSession = () => {
   const [firstName, setFirstName] = useState("");
