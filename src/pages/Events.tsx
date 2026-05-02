@@ -1,6 +1,7 @@
 import PageMeta from "@/components/PageMeta";
-import { Calendar, MapPin, Share2, Clock, Music } from "lucide-react";
+import { Calendar, MapPin, Share2, Clock, Music, Ticket } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -202,6 +203,45 @@ const Events = () => {
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
           {language === "fr" ? "Événements à venir" : "Upcoming Events"}
         </h2>
+
+        {/* Studio 77 Pop-Up — bookable */}
+        <Card className="mb-6 border-orange/30 bg-gradient-to-br from-orange-light to-transparent">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-orange mb-1">
+              <Ticket className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Chorale Pop-Up · Billets en vente" : "Pop-Up Choir · Tickets on sale"}</span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {language === "fr" ? "Club Choir Pop-Up au Studio 77" : "Club Choir Pop-Up at Studio 77"}
+            </CardTitle>
+            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+              <Calendar className="w-4 h-4" />
+              <span>{language === "fr" ? "Dimanche 31 mai · 15 h – 17 h" : "Sunday, May 31 · 3:00 PM – 5:00 PM"}</span>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Une expérience de chorale pop-up de 2 heures pour quiconque aime chanter — aucune expérience requise. Nous apprendrons une chanson ensemble et chanterons en harmonie d'ici la fin."
+                : "A 2-hour pop-up choir experience for anyone who loves to sing — no experience needed. We'll learn a song together and be singing in harmony by the end."}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-orange" />
+                <span className="font-medium">Studio 77, Pointe-Claire</span>
+              </div>
+              <span className="text-muted-foreground">{language === "fr" ? "20 $ par personne · Places limitées" : "$20 per person · Spots limited"}</span>
+            </div>
+            <div className="pt-3">
+              <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
+                <Link to="/popup/studio-77">
+                  <Ticket className="w-4 h-4 mr-1.5" />
+                  {language === "fr" ? "Réserver votre place" : "Reserve your spot"}
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* NDG PorchFest */}
         <Card className="mb-6 border-pink/30 bg-gradient-to-br from-pink-light to-transparent">
