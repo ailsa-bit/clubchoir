@@ -43,7 +43,8 @@ const translations: Record<string, Record<Language, string>> = {
   "home.hero.friend": { en: "Bring a Friend", fr: "Inviter un ami" },
 
   // Home - Sessions
-  "home.sessions.title": { en: "Where & When We Sing", fr: "Où et quand nous chantons" },
+ "home.sessions.title": { en: "Where & When We Sing", fr: "Où et quand nous chantons" },
+ "home.sessions.fallSoon": { en: "Fall Session dates coming soon", fr: "Les dates de la session d'automne seront bientôt annoncées" },
   "home.sessions.pricing": { en: "per 14-week session · Winter session starting February · Fall session starting September", fr: "par session de 14 semaines · Session d'hiver débutant en février · Session d'automne débutant en septembre" },
 
   // Home - FAQ
