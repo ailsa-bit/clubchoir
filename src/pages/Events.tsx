@@ -8,63 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
-const locationCards = [
-  {
-    location: "Montreal",
-    venue: "Kensington Presbyterian Church",
-    address: "6225 Av. Godfrey, Montreal",
-    day: { en: "Mondays", fr: "Lundis" },
-    time: "7:00–8:30 PM",
-    season: { en: "Winter 2026", fr: "Hiver 2026" },
-    dates: { en: "February 2 – May 4, 2026", fr: "2 février – 4 mai 2026" },
-    color: "border-pink/30 bg-pink-light",
-    dot: "bg-pink",
-  },
-  {
-    location: "Hudson",
-    venue: "Kingfisher Pub",
-    address: "84 Cameron, Hudson, J0P 1H0",
-    day: { en: "Mondays", fr: "Lundis" },
-    time: "7:00–8:30 PM",
-    season: { en: "Summer 2026", fr: "Été 2026" },
-    dates: { en: "May 18 – August 17, 2026", fr: "18 mai – 17 août 2026" },
-    color: "border-orange/30 bg-orange-light",
-    dot: "bg-orange",
-  },
-  {
-    location: "Arundel",
-    venue: "Centre Arundel Centre",
-    address: "17 rue du Village, Arundel",
-    day: { en: "Tuesdays", fr: "Mardis" },
-    time: "6:30–8:00 PM",
-    season: { en: "Winter 2026", fr: "Hiver 2026" },
-    dates: { en: "February 17 – May 26, 2026", fr: "17 février – 26 mai 2026" },
-    color: "border-aqua/30 bg-aqua-light",
-    dot: "bg-aqua",
-  },
-  {
-    location: "Saint-Hubert",
-    venue: "St-Gabriel Catholic Church",
-    address: "5070 Rue Gilbert, Saint-Hubert",
-    day: { en: "Wednesdays", fr: "Mercredis" },
-    time: "7:00–8:30 PM",
-    season: { en: "Winter 2026", fr: "Hiver 2026" },
-    dates: { en: "February 4 – May 13, 2026", fr: "4 février – 13 mai 2026" },
-    color: "border-lime/20 bg-lime-light",
-    dot: "bg-lime",
-  },
-  {
-    location: "Pointe-Claire",
-    venue: "Valois United Church",
-    address: "70 Belmont Ave, Pointe-Claire",
-    day: { en: "Thursdays", fr: "Jeudis" },
-    time: "7:00–8:30 PM",
-    season: { en: "Winter 2026", fr: "Hiver 2026" },
-    dates: { en: "February 5 – May 7, 2026", fr: "5 février – 7 mai 2026" },
-    color: "border-purple/30 bg-purple-light",
-    dot: "bg-purple",
-  },
-];
+const hudsonSummer = {
+  location: "Hudson",
+  venue: "Kingfisher Pub",
+  address: "84 Cameron, Hudson, J0P 1H0",
+  day: { en: "Mondays", fr: "Lundis" },
+  time: "7:00–8:30 PM",
+  season: { en: "Summer 2026", fr: "Été 2026" },
+  dates: { en: "May 18 – August 17, 2026", fr: "18 mai – 17 août 2026" },
+};
 
 const events = [
   {
@@ -203,6 +155,48 @@ const Events = () => {
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
           {language === "fr" ? "Événements à venir" : "Upcoming Events"}
         </h2>
+
+        {/* Hudson Summer Choir — bookable */}
+        <Card className="mb-6 border-orange/30 bg-gradient-to-br from-orange-light to-transparent">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-orange mb-1">
+              <Music className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Chorale d'été · Inscriptions ouvertes" : "Summer Choir · Registration open"}
+              </span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {language === "fr" ? "Chorale d'été à Hudson" : "Hudson Summer Choir"}
+            </CardTitle>
+            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+              <Calendar className="w-4 h-4" />
+              <span>
+                {getText(hudsonSummer.dates, language)} · {getText(hudsonSummer.day, language)} · {hudsonSummer.time}
+              </span>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Joignez-vous à nous tous les lundis de l'été au Kingfisher Pub à Hudson pour chanter en groupe dans une ambiance détendue et accueillante. Aucune expérience requise."
+                : "Join us every Monday this summer at the Kingfisher Pub in Hudson for group singing in a relaxed, welcoming atmosphere. No experience needed."}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-orange" />
+                <span className="font-medium">{hudsonSummer.venue}, {hudsonSummer.address}</span>
+              </div>
+            </div>
+            <div className="pt-3">
+              <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
+                <Link to="/hudson-session">
+                  <Music className="w-4 h-4 mr-1.5" />
+                  {language === "fr" ? "Réserver votre place" : "Reserve your spot"}
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Studio 77 Pop-Up — bookable */}
         <Card className="mb-6 border-orange/30 bg-gradient-to-br from-orange-light to-transparent">
