@@ -56,9 +56,6 @@ const Index = () => {
                 className="w-full max-w-[180px] sm:max-w-[220px] mx-auto lg:mx-0 mb-4 animate-fade-in"
                 loading="eager"
               />
-              <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4 animate-fade-in">
-                {t("home.hero.title")}
-              </h1>
               <p className="text-base text-muted-foreground mb-2 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
                 {t("home.hero.subtitle")}
               </p>
