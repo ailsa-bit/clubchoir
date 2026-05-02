@@ -118,39 +118,6 @@ const Events = () => {
           {t("events.subtitle")}
         </p>
 
-        {/* Location Cards - Winter 2026 */}
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
-          {language === "fr" ? "Sessions hebdomadaires — Hiver 2026" : "Weekly Sessions — Winter 2026"}
-        </h2>
-        <div className="grid sm:grid-cols-2 gap-5 mb-14">
-          {locationCards.map((loc) => (
-            <div
-              key={loc.location}
-              className={`rounded-2xl border p-6 ${loc.color} transition-shadow hover:shadow-md`}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <span className={`w-2.5 h-2.5 rounded-full ${loc.dot}`} />
-                <span className="font-heading font-bold text-lg text-foreground">{loc.location}</span>
-              </div>
-              <p className="text-sm font-semibold text-foreground/80 mb-1">{loc.venue}</p>
-              <div className="space-y-1 text-sm text-muted-foreground mb-2">
-                <span className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5" />
-                  {getText(loc.day, language)} · {loc.time}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5" />
-                  {loc.address}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {getText(loc.dates, language)}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Featured Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
           {language === "fr" ? "Événements à venir" : "Upcoming Events"}
