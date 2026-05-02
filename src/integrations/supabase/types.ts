@@ -210,6 +210,45 @@ export type Database = {
         }
         Relationships: []
       }
+      popup_ticket_reservations: {
+        Row: {
+          created_at: string
+          email: string
+          event_slug: string
+          first_name: string
+          id: string
+          last_name: string
+          notes: string | null
+          payment_received: boolean
+          ticket_count: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          event_slug: string
+          first_name: string
+          id?: string
+          last_name: string
+          notes?: string | null
+          payment_received?: boolean
+          ticket_count: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          event_slug?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          notes?: string | null
+          payment_received?: boolean
+          ticket_count?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
