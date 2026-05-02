@@ -131,9 +131,6 @@ const Index = () => {
               );
             })}
           </div>
-          <p className="text-center text-base text-muted-foreground mt-6">
-            <span className="font-semibold text-foreground">$280</span> {t("home.sessions.pricing")}
-          </p>
         </div>
       </section>
 
