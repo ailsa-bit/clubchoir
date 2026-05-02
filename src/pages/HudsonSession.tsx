@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import pagodaStarling from "@/assets/pagoda-starling.png";
+import clubChoirLogo from "@/assets/club-choir-logo.png";
 
 
 const HudsonSession = () => {
@@ -81,28 +81,24 @@ const HudsonSession = () => {
           </div>
         </div>
 
-        {/* Directors */}
+        {/* About Club Choir */}
         <div className="rounded-2xl border border-border bg-card overflow-hidden mb-8">
-          <img
-            src={pagodaStarling}
-            alt="Briana Doyle and Seiji Gutierrez of Pagoda Starling, the choir director and accompanist for the Hudson session"
-            className="w-full h-auto object-cover"
-          />
+          <div className="flex items-center justify-center bg-muted/40 p-8">
+            <img
+              src={clubChoirLogo}
+              alt="Club Choir logo"
+              className="h-32 md:h-40 w-auto object-contain"
+            />
+          </div>
           <div className="p-6 md:p-8">
             <h2 className="font-heading font-bold text-2xl text-foreground mb-3">
-              {t("hudson.directorsTitle")}
+              {t("hudson.vibeTitle")}
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-3">
-              {t("hudson.directorsP1.before")}
-              <strong className="text-foreground">Briana Doyle</strong>
-              {t("hudson.directorsP1.middle")}
-              <strong className="text-foreground">Seiji Gutierrez</strong>
-              {t("hudson.directorsP1.after")}
-              <em>Pagoda Starling</em>
-              {t("hudson.directorsP1.end")}
+              {t("hudson.vibeP1")}
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              {t("hudson.directorsP2")}
+              {t("hudson.vibeP2")}
             </p>
           </div>
         </div>
