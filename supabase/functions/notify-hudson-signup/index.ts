@@ -93,8 +93,7 @@ const handler = async (req: Request): Promise<Response> => {
         <div style="font-family: 'Nunito', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; color: #333;">
           <h1 style="font-size: 24px; margin-bottom: 16px;">Welcome aboard, ${escapeHtml(first_name)}! 🎤</h1>
           <p style="font-size: 16px; line-height: 1.6;">
-            Thank you so much for your interest in joining the brand-new Hudson Club Choir session led by
-            <strong>Briana Doyle</strong> and <strong>Seiji Gutierrez</strong> of Pagoda Starling.
+            Thank you so much for your interest in joining the brand-new Hudson Club Choir session.
             We can't wait to sing with you!
           </p>
 
