@@ -103,9 +103,12 @@ const Index = () => {
       {/* Sessions Overview */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-8 text-center">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.sessions.title")}
           </h2>
+          <p className="text-base text-muted-foreground text-center mb-8">
+            {t("home.sessions.fallSoon")}
+          </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => {
               const isHudson = item.location === "Hudson";
