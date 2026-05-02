@@ -227,11 +227,11 @@ const Events = () => {
         </Card>
 
         {/* Victoria Village Street Festival */}
-        <Card className="mb-8 border-lime/30 bg-lime-light">
+        <Card className="mb-8 border-pink/30 bg-pink-light">
           <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-lime-foreground mb-1">
+            <div className="flex items-center gap-2 text-pink mb-1">
               <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Chorale Pop-Up d'été" : "Summer Pop-Up Choir"}</span>
+              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Performance communautaire" : "Community Performance"}</span>
             </div>
             <CardTitle className="text-xl font-heading">
               {language === "fr" ? "Club Choir au Festival de rue de Victoria Village" : "Club Choir at Victoria Village Street Festival"}
@@ -254,7 +254,7 @@ const Events = () => {
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-lime-foreground" />
+                <MapPin className="w-4 h-4 text-pink" />
                 <span className="font-medium">{language === "fr" ? "Place Prince-Albert" : "Prince-Albert Square"}</span>
               </div>
               <span className="text-muted-foreground">{language === "fr" ? "Accompagné par Gary White" : "Accompanied by Gary White"}</span>
