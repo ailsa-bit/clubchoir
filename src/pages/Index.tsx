@@ -62,7 +62,7 @@ const Index = () => {
               <p className="text-lg text-muted-foreground mb-2 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
                 {t("home.hero.subtitle")}
               </p>
-              <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.15s" }}>
+              <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
                 {t("home.hero.desc")}
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
