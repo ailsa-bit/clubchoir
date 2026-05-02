@@ -13,3 +13,5 @@ project_id = "vbbfpzszmtwhydhpgtgj"
     verify_jwt = false
   [functions.notify-hudson-signup]
     verify_jwt = false
+  [functions.notify-popup-reservation]
+    verify_jwt = false
