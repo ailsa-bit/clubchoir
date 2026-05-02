@@ -27,6 +27,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SignedUpUsers from "./pages/SignedUpUsers";
 import Subscribe from "./pages/Subscribe";
 import HudsonSession from "./pages/HudsonSession";
+import PopupStudio77 from "./pages/PopupStudio77";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
             <Route path="/signed-up-users" element={<SignedUpUsers />} />
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/hudson-session" element={<HudsonSession />} />
+            <Route path="/popup/studio-77" element={<PopupStudio77 />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
