@@ -234,7 +234,7 @@ const Events = () => {
               <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Chorale Pop-Up d'été" : "Summer Pop-Up Choir"}</span>
             </div>
             <CardTitle className="text-xl font-heading">
-              {language === "fr" ? "Festival de rue de Victoria Village" : "Victoria Village Street Festival"}
+              {language === "fr" ? "Club Choir au Festival de rue de Victoria Village" : "Club Choir at Victoria Village Street Festival"}
             </CardTitle>
             <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
               <Calendar className="w-4 h-4" />
