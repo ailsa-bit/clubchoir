@@ -20,14 +20,6 @@ const hudsonSummer = {
 
 const events = [
   {
-    title: "Summer Pop-Up Choirs",
-    date: { en: "Summer 2026", fr: "Été 2026" },
-    location: { en: "In & Around Montreal", fr: "À Montréal et environs" },
-    color: "border-aqua/30 bg-aqua-light",
-    dot: "bg-aqua",
-    description: { en: "Pop-up singalongs popping up all summer long! Stay tuned for locations and various themes — all are welcome.", fr: "Des chants impromptus tout au long de l'été ! Restez à l'écoute pour les lieux et thèmes variés — tous sont bienvenus." },
-  },
-  {
     title: { en: "Seasonal Showcase — Montreal", fr: "Spectacle saisonnier — Montréal" },
     date: { en: "Monday, May 4, 2026 · 7:00 PM", fr: "Lundi 4 mai 2026 · 19 h" },
     location: "Montreal",
