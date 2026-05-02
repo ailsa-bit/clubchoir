@@ -59,7 +59,7 @@ const Index = () => {
               <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4 animate-fade-in">
                 {t("home.hero.title")}
               </h1>
-              <p className="text-lg text-muted-foreground mb-2 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+              <p className="text-base text-muted-foreground mb-2 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
                 {t("home.hero.subtitle")}
               </p>
               <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
@@ -76,6 +76,11 @@ const Index = () => {
                   <Sparkles className="w-5 h-5" />
                   {t("home.hero.reserveHudson")}
                 </Link>
+              </div>
+              <p className="text-base text-muted-foreground mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
+                {t("home.hero.eventsSummary")}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-4 animate-fade-in" style={{ animationDelay: "0.23s" }}>
                 <Link
                   to="/events"
                   className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
@@ -84,10 +89,7 @@ const Index = () => {
                   {t("home.hero.upcomingEvents")}
                 </Link>
               </div>
-              <p className="text-sm text-muted-foreground mt-4 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
-                {t("home.hero.eventsSummary")}
-              </p>
-              <p className="text-xs text-muted-foreground mt-3 lg:text-left text-center animate-fade-in" style={{ animationDelay: "0.24s" }}>
+              <p className="text-base text-muted-foreground mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in lg:text-left text-center" style={{ animationDelay: "0.24s" }}>
                 {t("home.hero.hudsonCaption")}
               </p>
             </div>
