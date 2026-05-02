@@ -20,14 +20,6 @@ const hudsonSummer = {
 
 const events = [
   {
-    title: "NDG PorchFest",
-    date: { en: "Saturday, May 16, 2026 · 12:00 PM", fr: "Samedi 16 mai 2026 · 12 h" },
-    location: "Montreal (NDG)",
-    color: "border-pink/30 bg-pink-light",
-    dot: "bg-pink",
-    description: { en: "All Club Choir members are invited to perform at NDG PorchFest! We'll be singing in front of Kensington Presbyterian Church, 6225 Av. Godfrey. Weather permitting.", fr: "Tous les membres de Club Choir sont invités à chanter au PorchFest NDG ! Nous chanterons devant l'église presbytérienne Kensington, 6225 Av. Godfrey. Si la météo le permet." },
-  },
-  {
     title: "Summer Pop-Up Choirs",
     date: { en: "Summer 2026", fr: "Été 2026" },
     location: { en: "In & Around Montreal", fr: "À Montréal et environs" },
@@ -233,7 +225,7 @@ const Events = () => {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-pink" />
-                <span className="font-medium">{language === "fr" ? "Montréal (NDG)" : "Montreal (NDG)"}</span>
+                <span className="font-medium">Kensington Presbyterian Church, 6225 Av. Godfrey, {language === "fr" ? "Montréal (NDG)" : "Montreal (NDG)"}</span>
               </div>
             </div>
           </CardContent>
