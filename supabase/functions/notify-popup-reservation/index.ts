@@ -11,7 +11,7 @@ const corsHeaders = {
 const escapeHtml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-const PRICE_PER_TICKET = 20;
+const PRICE_PER_TICKET = 15;
 
 // Event metadata keyed by event_slug
 const EVENTS: Record<string, {
