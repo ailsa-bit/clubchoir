@@ -8,7 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const EVENT_SLUG = "studio-77-may-31";
-const PRICE_PER_TICKET = 20;
+const PRICE_PER_TICKET = 15;
 
 const PopupStudio77 = () => {
   const { language } = useLanguage();
@@ -26,7 +26,7 @@ const PopupStudio77 = () => {
         { q: "Ai-je besoin d'expérience en chant ?", a: "Non. C'est conçu pour les débutants et toute personne qui aime chanter." },
         { q: "Que ferons-nous pendant la session ?", a: "Nous apprendrons une chanson ensemble à l'oreille, en la divisant en parties simples et en harmonies, et nous la chanterons en groupe à la fin." },
         { q: "Combien de temps dure la session ?", a: "2 heures." },
-        { q: "Combien ça coûte ?", a: "20 $ par personne." },
+        { q: "Combien ça coûte ?", a: "15 $ par personne." },
         { q: "Combien de places sont disponibles ?", a: "Les places sont limitées — une fois la capacité atteinte, plus aucun billet ne sera vendu." },
         { q: "Que dois-je apporter ?", a: "Juste vous-même. Studio 77 propose une belle sélection de boissons et de plats si vous souhaitez profiter de quelque chose pendant la session — y compris des cafés glacés, des chai lattes glacés, et des options comme du chili ou de la quiche." },
         { q: "Où se trouve l'événement ?", a: "Studio 77, 271 Chem. du Bord-du-Lac-Lakeshore, Pointe-Claire, QC H9S 4L1." },
@@ -36,7 +36,7 @@ const PopupStudio77 = () => {
         { q: "Do I need singing experience?", a: "No. This is designed for beginners and anyone who simply enjoys singing." },
         { q: "What will we do during the session?", a: "We will learn a song together by ear, breaking it into simple parts and harmonies, and sing it as a group by the end." },
         { q: "How long is the session?", a: "2 hours." },
-        { q: "How much does it cost?", a: "$20 per person." },
+        { q: "How much does it cost?", a: "$15 per person." },
         { q: "How many spots are available?", a: "Spots are limited — once we reach capacity, no more tickets will be sold." },
         { q: "What should I bring?", a: "Just yourself. Studio 77 offers a great selection of drinks and food if you'd like to enjoy something during the session — including iced coffee, iced chai lattes, and options like chili or quiche." },
         { q: "Where is it located?", a: "Studio 77, 271 Chem. du Bord-du-Lac-Lakeshore, Pointe-Claire, QC H9S 4L1." },
@@ -85,7 +85,7 @@ const PopupStudio77 = () => {
     <div className="py-12 px-4">
       <PageMeta
         title="Pop-Up Choir at Studio 77 — Reserve Your Spot"
-        description="Join Club Choir for a 2-hour pop-up choir at Studio 77, Pointe-Claire, on Sunday May 31 at 3 PM. No experience needed. $20 per person, spots limited."
+        description="Join Club Choir and musician Gary White for a 2-hour pop-up choir at Studio 77, Pointe-Claire, on Sunday May 31 at 3 PM. No experience needed. $15 per person, spots limited."
         path="/popup/studio-77"
       />
       <div className="container mx-auto max-w-3xl">
@@ -103,8 +103,8 @@ const PopupStudio77 = () => {
           </h1>
           <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
             {isFr
-              ? "Joignez-vous à nous le dimanche 31 mai à 15 h pour une expérience de chorale pop-up spéciale de 2 heures."
-              : "Join us on Sunday, May 31 at 3:00 PM for a special 2-hour pop-up choir experience."}
+              ? "Joignez-vous à nous le dimanche 31 mai à 15 h pour une expérience de chorale pop-up spéciale de 2 heures, accompagnée par le musicien Gary White."
+              : "Join us on Sunday, May 31 at 3:00 PM for a special 2-hour pop-up choir experience, accompanied by musician Gary White."}
           </p>
         </div>
 
@@ -119,6 +119,29 @@ const PopupStudio77 = () => {
             {isFr
               ? "Nous apprendrons une chanson ensemble dans une ambiance détendue et accueillante, et à la fin, vous chanterez en harmonie avec le groupe."
               : "We'll learn a song together in a relaxed, welcoming space, and by the end, you'll be singing in harmony with the group."}
+          </p>
+        </div>
+
+        {/* Special guest: Gary White */}
+        <div className="rounded-2xl border border-orange/20 bg-card p-6 md:p-8 mb-8">
+          <div className="flex items-center gap-2 mb-3">
+            <Music className="w-5 h-5 text-orange" />
+            <p className="text-xs font-semibold uppercase tracking-wider text-orange">
+              {isFr ? "Invité spécial" : "Special guest"}
+            </p>
+          </div>
+          <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-3">
+            {isFr ? "Accompagnés par Gary White" : "Accompanied by Gary White"}
+          </h2>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            {isFr
+              ? "Le Club Choir sera accompagné par Gary White, un chanteur, multi-instrumentiste et compositeur vétéran de la scène musicale montréalaise, régulièrement à l'affiche du Studio 77."
+              : "Club Choir will be accompanied by Gary White, a singer, multi-instrumentalist and composer — a veteran of the Montreal music scene who is regularly featured at Studio 77."}
+          </p>
+          <p className="text-muted-foreground leading-relaxed">
+            {isFr
+              ? "Avec sa guitare acoustique, son harmonica et un répertoire d'incontournables des années 50 à aujourd'hui, Gary apporte une énergie unique et une vraie passion à chaque performance. Il a joué avec de nombreux groupes (Seven Sisters, The Puritans, Monkeywalk, The Choirboys) et a été directeur musical pour Just for Laughs."
+              : "With his acoustic guitar, harmonica and a repertoire of familiar hits from the 50s to today, Gary brings unique energy and passion to every performance. He has played with many bands (Seven Sisters, The Puritans, Monkeywalk, The Choirboys) and served as Musical Director for Just for Laughs."}
           </p>
         </div>
 
@@ -152,7 +175,7 @@ const PopupStudio77 = () => {
           </h3>
           <p className="text-sm md:text-base opacity-95 max-w-md mx-auto">
             {isFr
-              ? `20 $ par personne · Réservez votre place avant qu'il n'y ait plus de billets.`
+              ? `${PRICE_PER_TICKET} $ par personne · Réservez votre place avant qu'il n'y ait plus de billets.`
               : `$${PRICE_PER_TICKET} per person · Reserve your spot before tickets sell out.`}
           </p>
         </div>
