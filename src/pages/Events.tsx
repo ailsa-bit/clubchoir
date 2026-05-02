@@ -222,15 +222,15 @@ const Events = () => {
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed">
               {language === "fr"
-                ? "Une expérience de chorale pop-up de 2 heures pour quiconque aime chanter — aucune expérience requise. Nous apprendrons une chanson ensemble et chanterons en harmonie d'ici la fin."
-                : "A 2-hour pop-up choir experience for anyone who loves to sing — no experience needed. We'll learn a song together and be singing in harmony by the end."}
+                ? "Une expérience de chorale pop-up de 2 heures pour quiconque aime chanter — aucune expérience requise. Nous apprendrons une chanson ensemble et chanterons en harmonie d'ici la fin, accompagnés par le musicien Gary White."
+                : "A 2-hour pop-up choir experience for anyone who loves to sing — no experience needed. We'll learn a song together and be singing in harmony by the end, accompanied by musician Gary White."}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-orange" />
                 <span className="font-medium">Studio 77, Pointe-Claire</span>
               </div>
-              <span className="text-muted-foreground">{language === "fr" ? "20 $ par personne · Places limitées" : "$20 per person · Spots limited"}</span>
+              <span className="text-muted-foreground">{language === "fr" ? "15 $ par personne · Places limitées" : "$15 per person · Spots limited"}</span>
             </div>
             <div className="pt-3">
               <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
