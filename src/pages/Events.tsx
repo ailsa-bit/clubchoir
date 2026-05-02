@@ -225,7 +225,7 @@ const Events = () => {
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-pink" />
-                <span className="font-medium">{language === "fr" ? "Montréal (NDG)" : "Montreal (NDG)"}</span>
+                <span className="font-medium">Kensington Presbyterian Church, 6225 Av. Godfrey, {language === "fr" ? "Montréal (NDG)" : "Montreal (NDG)"}</span>
               </div>
             </div>
           </CardContent>
