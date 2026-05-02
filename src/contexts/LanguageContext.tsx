@@ -257,6 +257,11 @@ const translations: Record<string, Record<Language, string>> = {
   "home.hero.startingSoon": { en: "Starting soon", fr: "Bientôt" },
   "home.hero.reserveHudson": { en: "Reserve your Hudson spot", fr: "Réservez votre place à Hudson" },
   "home.hero.trySession": { en: "Try a session", fr: "Essayer une session" },
+  "home.hero.upcomingEvents": { en: "See upcoming events", fr: "Voir les événements à venir" },
+  "home.hero.eventsSummary": {
+    en: "This summer, join us for the Hudson Summer Choir at the Kingfisher Pub (Mondays from May 18), the Club Choir Pop-Up at Studio 77 in Pointe-Claire on May 31 with Gary White, the NDG Porchfest community performance on May 16, and the Victoria Village Street Festival on June 13.",
+    fr: "Cet été, rejoignez-nous pour la Chorale d'été à Hudson au Kingfisher Pub (lundis dès le 18 mai), le Club Choir Pop-Up au Studio 77 à Pointe-Claire le 31 mai avec Gary White, la performance communautaire au Porchfest NDG le 16 mai, et le Festival de rue de Victoria Village le 13 juin."
+  },
   "home.hero.hudsonCaption": { en: "Hudson · Mondays 7:00–8:30 PM · Kingfisher Pub", fr: "Hudson · Lundis 19h00–20h30 · Kingfisher Pub" },
 
   // Hudson Session page
