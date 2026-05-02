@@ -140,8 +140,8 @@ const PopupStudio77 = () => {
           </p>
           <p className="text-muted-foreground leading-relaxed">
             {isFr
-              ? "Avec sa guitare acoustique, son harmonica et un répertoire d'incontournables des années 50 à aujourd'hui, Gary apporte une énergie unique et une vraie passion à chaque performance. Il a joué avec de nombreux groupes (Seven Sisters, The Puritans, Monkeywalk, The Choirboys) et a été directeur musical pour Just for Laughs."
-              : "With his acoustic guitar, harmonica and a repertoire of familiar hits from the 50s to today, Gary brings unique energy and passion to every performance. He has played with many bands (Seven Sisters, The Puritans, Monkeywalk, The Choirboys) and served as Musical Director for Just for Laughs."}
+              ? "Avec sa guitare acoustique, son harmonica et un répertoire d'incontournables des années 50 à aujourd'hui, Gary apporte une énergie unique et une vraie passion à chaque performance."
+              : "With his acoustic guitar, harmonica and a repertoire of familiar hits from the 50s to today, Gary brings unique energy and passion to every performance."}
           </p>
         </div>
 
