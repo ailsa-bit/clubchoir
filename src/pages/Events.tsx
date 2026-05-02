@@ -111,7 +111,7 @@ const Events = () => {
         </h2>
 
         {/* Hudson Summer Choir — bookable */}
-        <Card className="mb-6 border-orange/30 bg-gradient-to-br from-orange-light to-transparent">
+        <Card className="mb-6 border-orange/30 bg-orange-light">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-orange mb-1">
               <Music className="w-5 h-5" />
@@ -153,9 +153,9 @@ const Events = () => {
         </Card>
 
         {/* Studio 77 Pop-Up — bookable */}
-        <Card className="mb-6 border-orange/30 bg-gradient-to-br from-orange-light to-transparent">
+        <Card className="mb-6 border-purple/30 bg-purple-light">
           <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-orange mb-1">
+            <div className="flex items-center gap-2 text-purple mb-1">
               <Ticket className="w-5 h-5" />
               <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Chorale Pop-Up · Billets en vente" : "Pop-Up Choir · Tickets on sale"}</span>
             </div>
@@ -175,13 +175,13 @@ const Events = () => {
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-orange" />
+                <MapPin className="w-4 h-4 text-purple" />
                 <span className="font-medium">Studio 77, Pointe-Claire</span>
               </div>
               <span className="text-muted-foreground">{language === "fr" ? "15 $ par personne · Places limitées" : "$15 per person · Spots limited"}</span>
             </div>
             <div className="pt-3">
-              <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
+              <Button asChild className="bg-purple text-purple-foreground hover:bg-purple/90 rounded-full font-semibold">
                 <Link to="/popup/studio-77">
                   <Ticket className="w-4 h-4 mr-1.5" />
                   {language === "fr" ? "Réserver votre place" : "Reserve your spot"}
@@ -192,7 +192,7 @@ const Events = () => {
         </Card>
 
         {/* NDG PorchFest */}
-        <Card className="mb-6 border-pink/30 bg-gradient-to-br from-pink-light to-transparent">
+        <Card className="mb-6 border-pink/30 bg-pink-light">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-pink mb-1">
               <Music className="w-5 h-5" />
@@ -227,9 +227,9 @@ const Events = () => {
         </Card>
 
         {/* Victoria Village Street Festival */}
-        <Card className="mb-8 border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+        <Card className="mb-8 border-lime/30 bg-lime-light">
           <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-primary mb-1">
+            <div className="flex items-center gap-2 text-lime-foreground mb-1">
               <Music className="w-5 h-5" />
               <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Chorale Pop-Up d'été" : "Summer Pop-Up Choir"}</span>
             </div>
@@ -254,7 +254,7 @@ const Events = () => {
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-primary" />
+                <MapPin className="w-4 h-4 text-lime-foreground" />
                 <span className="font-medium">{language === "fr" ? "Place Prince-Albert" : "Prince-Albert Square"}</span>
               </div>
               <span className="text-muted-foreground">{language === "fr" ? "Accompagné par Gary White" : "Accompanied by Gary White"}</span>
