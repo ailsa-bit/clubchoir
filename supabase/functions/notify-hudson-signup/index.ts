@@ -91,6 +91,9 @@ const handler = async (req: Request): Promise<Response> => {
       subject: "🎶 Your spot at Hudson Club Choir — next steps",
       html: `
         <div style="font-family: 'Nunito', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; color: #333;">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <img src="https://vbbfpzszmtwhydhpgtgj.supabase.co/storage/v1/object/public/email-assets/club-choir-logo.png?v=1" alt="Club Choir" width="120" style="display: inline-block;" />
+          </div>
           <h1 style="font-size: 24px; margin-bottom: 16px;">Welcome aboard, ${escapeHtml(first_name)}! 🎤</h1>
           <p style="font-size: 16px; line-height: 1.6;">
             Thank you so much for your interest in joining the brand-new Hudson Club Choir session.
