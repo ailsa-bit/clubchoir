@@ -82,25 +82,16 @@ const HudsonSession = () => {
         </div>
 
         {/* About Club Choir */}
-        <div className="rounded-2xl border border-border bg-card overflow-hidden mb-8">
-          <div className="flex items-center justify-center bg-muted/40 p-8">
-            <img
-              src={clubChoirLogo}
-              alt="Club Choir logo"
-              className="h-32 md:h-40 w-auto object-contain"
-            />
-          </div>
-          <div className="p-6 md:p-8">
-            <h2 className="font-heading font-bold text-2xl text-foreground mb-3">
-              {t("hudson.vibeTitle")}
-            </h2>
-            <p className="text-muted-foreground leading-relaxed mb-3">
-              {t("hudson.vibeP1")}
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              {t("hudson.vibeP2")}
-            </p>
-          </div>
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
+          <h2 className="font-heading font-bold text-2xl text-foreground mb-3">
+            {t("hudson.vibeTitle")}
+          </h2>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            {t("hudson.vibeP1")}
+          </p>
+          <p className="text-muted-foreground leading-relaxed">
+            {t("hudson.vibeP2")}
+          </p>
         </div>
 
         {/* Details */}
