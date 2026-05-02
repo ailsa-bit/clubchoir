@@ -35,7 +35,10 @@ const translations: Record<string, Record<Language, string>> = {
   // Home - Hero
   "home.hero.title": { en: "Your Club Choir Space", fr: "Votre espace Club Choir" },
   "home.hero.subtitle": { en: "Ever thought about joining a choir, but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists.", fr: "Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe." },
-  "home.hero.desc": { en: "Our weekly sessions are for everyone — no auditions, no pressure, and no experience required. Sing together, laugh together, learn together.", fr: "Nos sessions hebdomadaires sont pour tout le monde — pas d'auditions, pas de pression et aucune expérience requise. Chantez ensemble, riez ensemble, apprenez ensemble." },
+ "home.hero.desc": {
+  en: "Our winter session has now ended, and we are so grateful for an incredible season of singing, learning, laughing, and building community together.\n\nThis summer, Club Choir is still singing. A new Hudson Summer Choir begins on Monday, May 18 at the Kingfisher Pub, running weekly from 7:00–8:30 PM.",
+  fr: "Notre session d'hiver est maintenant terminée, et nous sommes tellement reconnaissants pour une saison incroyable de chant, d'apprentissage, de rires et de communauté.\n\nCet été, Club Choir continue de chanter. Une nouvelle Chorale d'été à Hudson débute le lundi 18 mai au Kingfisher Pub, chaque semaine de 19h00 à 20h30."
+ },
   "home.hero.try": { en: "Get in Touch", fr: "Nous contacter" },
   "home.hero.friend": { en: "Bring a Friend", fr: "Inviter un ami" },
 
@@ -259,10 +262,13 @@ const translations: Record<string, Record<Language, string>> = {
   "home.hero.trySession": { en: "Try a session", fr: "Essayer une session" },
   "home.hero.upcomingEvents": { en: "See upcoming events", fr: "Voir les événements à venir" },
   "home.hero.eventsSummary": {
-    en: "This summer, join us for the Hudson Summer Choir at the Kingfisher Pub (Mondays from May 18), the Club Choir Pop-Up at Studio 77 in Pointe-Claire on May 31 with Gary White, the NDG Porchfest community performance on May 16, and the Victoria Village Street Festival on June 13.",
-    fr: "Cet été, rejoignez-nous pour la Chorale d'été à Hudson au Kingfisher Pub (lundis dès le 18 mai), le Club Choir Pop-Up au Studio 77 à Pointe-Claire le 31 mai avec Gary White, la performance communautaire au Porchfest NDG le 16 mai, et le Festival de rue de Victoria Village le 13 juin."
+    en: "Visit our Events page to find out what Club Choir will be up to this summer, including pop-up choirs, community performances, and special events.",
+    fr: "Visitez notre page Événements pour découvrir ce que Club Choir prépare cet été : chorales pop-up, performances communautaires et événements spéciaux."
   },
-  "home.hero.hudsonCaption": { en: "Hudson · Mondays 7:00–8:30 PM · Kingfisher Pub", fr: "Hudson · Lundis 19h00–20h30 · Kingfisher Pub" },
+  "home.hero.hudsonCaption": {
+    en: "Looking ahead, our new fall session dates are coming soon. Check back for details and find the location that works best for you.",
+    fr: "À venir : les dates de notre nouvelle session d'automne seront bientôt annoncées. Revenez consulter les détails et trouvez l'emplacement qui vous convient le mieux."
+  },
 
   // Hudson Session page
   "hudson.backHome": { en: "Back home", fr: "Retour à l'accueil" },
