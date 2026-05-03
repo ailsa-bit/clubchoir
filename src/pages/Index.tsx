@@ -101,40 +101,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Sessions Overview */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
-            {t("home.sessions.title")}
-          </h2>
-          <p className="text-base text-muted-foreground text-center mb-8">
-            {t("home.sessions.fallSoon")}
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {locations.map((item) => {
-              const isHudson = item.location === "Hudson";
-              const to = isHudson ? "/hudson-session" : "/events";
-              return (
-                <Link
-                  key={item.location}
-                  to={to}
-                  className={`relative rounded-2xl border p-5 ${item.color} transition-shadow hover:shadow-md block`}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
-                    <span className="font-heading font-bold text-foreground">{item.location}</span>
-                  </div>
-                  <p className="text-base text-muted-foreground mb-1">
-                    {item.day} · {item.time}
-                  </p>
-                  <p className="text-sm text-muted-foreground whitespace-pre-line">{item.venue}</p>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Founder teaser */}
       <section className="py-14 px-4 bg-muted/30">
         <div className="container mx-auto max-w-5xl">
@@ -167,6 +133,40 @@ const Index = () => {
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sessions Overview */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
+            {t("home.sessions.title")}
+          </h2>
+          <p className="text-base text-muted-foreground text-center mb-8">
+            {t("home.sessions.fallSoon")}
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {locations.map((item) => {
+              const isHudson = item.location === "Hudson";
+              const to = isHudson ? "/hudson-session" : "/events";
+              return (
+                <Link
+                  key={item.location}
+                  to={to}
+                  className={`relative rounded-2xl border p-5 ${item.color} transition-shadow hover:shadow-md block`}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
+                    <span className="font-heading font-bold text-foreground">{item.location}</span>
+                  </div>
+                  <p className="text-base text-muted-foreground mb-1">
+                    {item.day} · {item.time}
+                  </p>
+                  <p className="text-sm text-muted-foreground whitespace-pre-line">{item.venue}</p>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
