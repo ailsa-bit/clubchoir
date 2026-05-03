@@ -28,6 +28,7 @@ import SignedUpUsers from "./pages/SignedUpUsers";
 import Subscribe from "./pages/Subscribe";
 import HudsonSession from "./pages/HudsonSession";
 import PopupStudio77 from "./pages/PopupStudio77";
+import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/hudson-session" element={<HudsonSession />} />
             <Route path="/popup/studio-77" element={<PopupStudio77 />} />
+            <Route path="/about" element={<About />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

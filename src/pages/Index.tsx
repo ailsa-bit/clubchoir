@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Users, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Mail } from "lucide-react";
+import { Users, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Mail, ArrowRight } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
@@ -7,6 +7,7 @@ import HeroVideo from "@/components/HeroVideo";
 import PhotoGallery from "@/components/PhotoGallery";
 import { choirPhotos } from "@/assets/photos";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.png";
+import founderPhoto from "@/assets/founder-ailsa.jpg";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
@@ -130,6 +131,42 @@ const Index = () => {
                 </Link>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Founder teaser */}
+      <section className="py-14 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-[1fr_1.2fr] gap-8 md:gap-10 items-center">
+            <div className="rounded-3xl overflow-hidden shadow-lg border border-border">
+              <Link to="/about">
+                <img
+                  src={founderPhoto}
+                  alt="Ailsa Pehi, founder of Club Choir"
+                  className="w-full h-auto object-cover hover:scale-[1.02] transition-transform"
+                  loading="lazy"
+                />
+              </Link>
+            </div>
+            <div>
+              <p className="text-sm font-bold uppercase tracking-wider text-primary mb-2">Our Story</p>
+              <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-3">
+                Sing together. Laugh together. Learn together.
+              </h2>
+              <p className="text-base text-muted-foreground leading-relaxed mb-5">
+                Club Choir began in 2021 with 21 voices and Māori roots. Today, founder Ailsa Pehi
+                leads 184 singers across five Quebec locations — with live musicians at every
+                rehearsal and a simple philosophy: progress over perfection.
+              </p>
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              >
+                Read our story
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

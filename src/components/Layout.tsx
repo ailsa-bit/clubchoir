@@ -28,7 +28,8 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   { label: t("nav.home"), path: "/" },
   { label: t("nav.thisWeek"), path: "/this-week" },
   { label: t("nav.events"), path: "/events" },
-  { label: t("nav.corporate"), path: "/corporate" }];
+  { label: t("nav.corporate"), path: "/corporate" },
+  { label: "About", path: "/about" }];
 
 
   const memberNavItems = [
