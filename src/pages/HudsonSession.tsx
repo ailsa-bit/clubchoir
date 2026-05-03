@@ -94,16 +94,16 @@ const HudsonSession = () => {
             Meet Briana &amp; Seiji
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            Briana and Seiji are the newest members of the Club Choir team, and Briana will be leading the new choir in Hudson with accompaniment by Seiji.
+            Briana Doyle and Seiji Gutierrez are the newest additions to the Club Choir team, with Briana leading the new Hudson choir and Seiji accompanying on guitar.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            Briana Doyle is a singer-songwriter and performer known for her warm, expressive voice and love of storytelling through music. Her work blends folk, acoustic rock, and alternative influences from the 60s through the 90s, creating songs that are both emotive and timeless.
+            Briana is a singer-songwriter and performer known for her warm, expressive voice and her passion for storytelling through music. Drawing on folk, acoustic rock, and alternative influences from the 60s through the 90s, her sound is both emotive and timeless.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            Her debut album <em>The Road is Long</em> (2025), featuring original music in both English and French, has been featured on CBC Radio and community stations across Canada. Briana performs regularly throughout Eastern Ontario and the Greater Montreal area and is joined by guitarist and collaborator Seiji Gutierrez, whose intuitive, layered playing brings depth and texture to their sound.
+            Her debut album <em>The Road is Long</em> (2025), featuring original songs in both English and French, has received airplay on CBC Radio and community stations across Canada. Briana performs regularly throughout Eastern Ontario and the Greater Montreal area, and is joined by Seiji, whose intuitive, layered guitar work adds depth and richness to their sound.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            Together, they create a rich musical experience rooted in connection, harmony, and authenticity.
+            Together, they bring a musical approach grounded in connection, harmony, and authenticity — and are a perfect addition to the Club Choir team.
           </p>
         </div>
 
