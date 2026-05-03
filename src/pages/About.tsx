@@ -14,7 +14,7 @@ const About = () => {
 
       {/* Hero */}
       <section className="bg-gradient-hero py-14 lg:py-20 px-4">
-        <div className="container mx-auto max-w-6xl">
+        <div className="container mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             <div className="text-center lg:text-left">
               <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">
@@ -88,7 +88,7 @@ const About = () => {
 
       {/* Stats strip */}
       <section className="py-12 px-4 bg-muted/50">
-        <div className="container mx-auto max-w-5xl">
+        <div className="container mx-auto max-w-7xl">
           <div className="grid sm:grid-cols-3 gap-6 text-center">
             <div className="rounded-2xl bg-card border border-border p-6">
               <p className="font-heading font-bold text-4xl text-primary mb-1">2024</p>
