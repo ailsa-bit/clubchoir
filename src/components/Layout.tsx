@@ -9,6 +9,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Layout = ({ children }: {children: React.ReactNode;}) => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
+  const toggleMenu = (path: string) =>
+    setExpandedMenus((prev) => ({ ...prev, [path]: !prev[path] }));
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
@@ -157,18 +160,31 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
         <nav className="lg:hidden border-t border-border bg-card px-4 pb-4 pt-2 space-y-1">
             {navItems.map((item) =>
           <div key={item.path}>
-            <Link
-              to={item.path}
-              onClick={() => setMobileOpen(false)}
-              className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-              location.pathname === item.path ?
-              "bg-primary/10 text-primary" :
-              "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-              }>
-
+            <div className="flex items-center gap-1">
+              <Link
+                to={item.path}
+                onClick={() => setMobileOpen(false)}
+                className={`flex-1 block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                location.pathname === item.path ?
+                "bg-primary/10 text-primary" :
+                "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                }>
                 {item.label}
               </Link>
-              {item.children?.map((c) => (
+              {item.children && (
+                <button
+                  type="button"
+                  aria-label={`Toggle ${item.label} submenu`}
+                  aria-expanded={!!expandedMenus[item.path]}
+                  onClick={() => toggleMenu(item.path)}
+                  className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform ${expandedMenus[item.path] ? "rotate-180" : ""}`}
+                  />
+                </button>
+              )}
+            </div>
+              {item.children && expandedMenus[item.path] && item.children.map((c) => (
                 <Link
                   key={c.path}
                   to={c.path}
