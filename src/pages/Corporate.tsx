@@ -1,13 +1,14 @@
 import PageMeta from "@/components/PageMeta";
 import { useState } from "react";
-import { Send, Users, Music, Sparkles, Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, Send, Users, Music, Sparkles, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { photosByTag } from "@/assets/photos";
+import { choirPhotos } from "@/assets/photos";
 
-const performancePhotos = photosByTag("performance").slice(0, 3);
+const nightClubPhoto = choirPhotos.find((p) => p.id === "pub-conducting");
 
 const inquirySchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -72,9 +73,9 @@ const Corporate = () => {
   };
 
   const valueProps = [
-    { icon: Users, title: t("corporate.teamBuilding"), desc: t("corporate.teamBuildingDesc"), color: "text-aqua" },
-    { icon: Music, title: t("corporate.noExperience"), desc: t("corporate.noExperienceDesc"), color: "text-pink" },
-    { icon: Sparkles, title: t("corporate.unforgettable"), desc: t("corporate.unforgettableDesc"), color: "text-purple" },
+    { icon: Users, title: t("corporate.teamBuilding"), desc: t("corporate.teamBuildingDesc") },
+    { icon: Music, title: t("corporate.noExperience"), desc: t("corporate.noExperienceDesc") },
+    { icon: Sparkles, title: t("corporate.unforgettable"), desc: t("corporate.unforgettableDesc") },
   ];
 
   const formFields = [
@@ -84,48 +85,69 @@ const Corporate = () => {
   ];
 
   return (
-    <div className="py-16 px-4">
+    <div className="py-12 px-4">
       <PageMeta title="Corporate Events – Club Choir" description="Book Club Choir for your corporate event, team building, or private function. Unique musical experiences for groups of all sizes." path="/corporate" />
-      <div className="container mx-auto max-w-5xl">
-        <div className="text-center mb-12">
-          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-3">
+      <div className="container mx-auto max-w-7xl">
+        <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back to home
+        </Link>
+
+        {/* Hero */}
+        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 md:p-8 mb-8 overflow-hidden">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider mb-3">
+            <Sparkles className="w-3.5 h-3.5" /> {t("corporate.title")}
+          </div>
+          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-3 leading-tight">
             {t("corporate.title")}
           </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-base md:text-lg text-foreground/80 leading-relaxed">
             {t("corporate.subtitle")}
           </p>
         </div>
 
-        {performancePhotos.length > 0 && (
-          <div className="grid sm:grid-cols-3 gap-3 mb-12">
-            {performancePhotos.map((p) => (
-              <img
-                key={p.id}
-                src={p.tile}
-                alt={p.alt.en}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-40 sm:h-48 object-cover rounded-2xl border border-border shadow-sm"
-              />
-            ))}
-          </div>
-        )}
+        {/* About + photo */}
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 overflow-hidden">
+          {nightClubPhoto && (
+            <img
+              src={nightClubPhoto.wide}
+              alt={nightClubPhoto.alt.en}
+              className="w-full h-auto rounded-xl mb-5 object-cover"
+              loading="lazy"
+            />
+          )}
+          <h2 className="font-heading font-bold text-2xl text-foreground mb-3">
+            Team-building through music
+          </h2>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            Bring your team together through the power of music. Club Choir offers a unique and engaging team-building experience where colleagues connect, collaborate, and create something meaningful together. No singing experience is required — just a willingness to participate and have fun.
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            In a single session, your group will learn a song in harmony, building confidence, communication, and a sense of shared accomplishment. It's an energizing, low-pressure environment that encourages creativity, laughter, and connection.
+          </p>
+          <p className="text-muted-foreground leading-relaxed">
+            Perfect for corporate events, retreats, or team celebrations, Club Choir transforms a group of individuals into a unified voice — because the best teams don't just work together, they listen, support, and grow together.
+          </p>
+        </div>
 
-        <div className="grid sm:grid-cols-3 gap-5 mb-14">
+        {/* Value props */}
+        <div className="grid sm:grid-cols-3 gap-4 mb-8">
           {valueProps.map((item) => (
-            <div key={item.title} className="rounded-2xl border border-border bg-card p-6 text-center">
-              <item.icon className={`w-8 h-8 ${item.color} mx-auto mb-3`} />
-              <h3 className="font-heading font-bold text-foreground mb-1">{item.title}</h3>
+            <div key={item.title} className="rounded-2xl border border-border bg-card p-5">
+              <item.icon className="w-5 h-5 text-primary mb-2" />
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                {item.title}
+              </p>
               <p className="text-sm text-muted-foreground">{item.desc}</p>
             </div>
           ))}
         </div>
 
-        <div className="max-w-lg mx-auto">
-          <h2 className="font-heading font-bold text-xl text-foreground mb-6 text-center">
+        {/* Form */}
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
+          <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
             {t("corporate.getInTouch")}
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
             {formFields.map(({ field, label, type }) => (
               <div key={field}>
                 <label className="block text-sm font-medium text-foreground mb-1.5">{label}</label>
@@ -176,6 +198,13 @@ const Corporate = () => {
             </button>
           </form>
         </div>
+
+        <p className="text-center text-sm text-muted-foreground">
+          Have questions?{" "}
+          <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
+            ailsa@clubchoir.ca
+          </a>
+        </p>
       </div>
     </div>
   );
