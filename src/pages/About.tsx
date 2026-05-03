@@ -117,11 +117,11 @@ const About = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
-              to="/try"
+              to="/subscribe"
               className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold shadow hover:shadow-lg hover:scale-[1.02] transition-all"
             >
               <Sparkles className="w-5 h-5" />
-              Try a session
+              Join the mailing list
             </Link>
             <Link
               to="/events"
