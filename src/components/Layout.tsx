@@ -36,8 +36,16 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   { label: t("nav.corporate"), path: "/corporate" }];
 
 
+  const thisWeekChildren = [
+    { label: "Montreal", path: "/schedule/montreal" },
+    { label: "Hudson", path: "/schedule/hudson" },
+    { label: "Arundel", path: "/schedule/arundel" },
+    { label: "Saint-Hubert", path: "/schedule/saint-hubert" },
+    { label: "Pointe-Claire", path: "/schedule/pointe-claire" },
+  ];
+
   const memberNavItems = [
-  { label: t("nav.thisWeek"), path: "/this-week" },
+  { label: t("nav.thisWeek"), path: "/this-week", children: thisWeekChildren },
   { label: t("nav.community"), path: "/community" },
   { label: t("nav.chat"), path: "/chat" },
   { label: t("nav.resources"), path: "/resources" }];
