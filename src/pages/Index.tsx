@@ -135,6 +135,42 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Founder teaser */}
+      <section className="py-14 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-[1fr_1.2fr] gap-8 md:gap-10 items-center">
+            <div className="rounded-3xl overflow-hidden shadow-lg border border-border">
+              <Link to="/about">
+                <img
+                  src={founderPhoto}
+                  alt="Ailsa Pehi, founder of Club Choir"
+                  className="w-full h-auto object-cover hover:scale-[1.02] transition-transform"
+                  loading="lazy"
+                />
+              </Link>
+            </div>
+            <div>
+              <p className="text-sm font-bold uppercase tracking-wider text-primary mb-2">Our Story</p>
+              <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-3">
+                Sing together. Laugh together. Learn together.
+              </h2>
+              <p className="text-base text-muted-foreground leading-relaxed mb-5">
+                Club Choir began in 2021 with 21 voices and Māori roots. Today, founder Ailsa Pehi
+                leads 184 singers across five Quebec locations — with live musicians at every
+                rehearsal and a simple philosophy: progress over perfection.
+              </p>
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              >
+                Read our story
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="py-16 px-4 bg-muted/50">
         <div className="container mx-auto max-w-3xl">
