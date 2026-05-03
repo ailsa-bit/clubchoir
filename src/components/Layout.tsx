@@ -24,10 +24,15 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const eventsChildren = [
+    { label: "Hudson Session", path: "/hudson-session" },
+    { label: "Studio 77 Pop-Up Choir", path: "/popup/studio-77" },
+  ];
+
   const publicNavItems = [
   { label: t("nav.home"), path: "/" },
   { label: "About", path: "/about" },
-  { label: t("nav.events"), path: "/events" },
+  { label: t("nav.events"), path: "/events", children: eventsChildren },
   { label: t("nav.corporate"), path: "/corporate" }];
 
 
@@ -38,7 +43,8 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   { label: t("nav.resources"), path: "/resources" }];
 
 
-  const navItems = isLoggedIn ? [...publicNavItems, ...memberNavItems] : publicNavItems;
+  const navItems: Array<{ label: string; path: string; children?: { label: string; path: string }[] }> =
+    isLoggedIn ? [...publicNavItems, ...memberNavItems] : publicNavItems;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
