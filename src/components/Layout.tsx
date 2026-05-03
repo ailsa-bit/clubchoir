@@ -9,6 +9,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Layout = ({ children }: {children: React.ReactNode;}) => {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
+  const toggleMenu = (path: string) =>
+    setExpandedMenus((prev) => ({ ...prev, [path]: !prev[path] }));
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
