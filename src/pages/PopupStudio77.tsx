@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import garyWhitePhoto from "@/assets/gary-white.jpg";
 
 const EVENT_SLUG = "studio-77-may-31";
 const PRICE_PER_TICKET = 15;
@@ -123,25 +124,27 @@ const PopupStudio77 = () => {
         </div>
 
         {/* Special guest: Gary White */}
-        <div className="rounded-2xl border border-orange/20 bg-card p-6 md:p-8 mb-8">
-          <div className="flex items-center gap-2 mb-3">
-            <Music className="w-5 h-5 text-orange" />
-            <p className="text-xs font-semibold uppercase tracking-wider text-orange">
-              {isFr ? "Invité spécial" : "Special guest"}
-            </p>
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 overflow-hidden">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
+            <Music className="w-3.5 h-3.5" /> {isFr ? "Invité spécial" : "Special guest"}
           </div>
-          <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-3">
-            {isFr ? "Accompagnés par Gary White" : "Accompanied by Gary White"}
+          <img
+            src={garyWhitePhoto}
+            alt="Gary White, singer and musician, in profile wearing a cap and glasses"
+            className="w-full h-auto rounded-xl mb-5 object-cover"
+            loading="lazy"
+          />
+          <h2 className="font-heading font-bold text-2xl text-foreground mb-3">
+            {isFr ? "Rencontrez Gary White" : "Meet Gary White"}
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            {isFr
-              ? "Le Club Choir sera accompagné par Gary White, un chanteur, multi-instrumentiste et compositeur vétéran de la scène musicale montréalaise, régulièrement à l'affiche du Studio 77."
-              : "Club Choir will be accompanied by Gary White, a singer, multi-instrumentalist and composer — a veteran of the Montreal music scene who is regularly featured at Studio 77."}
+            Gary White is an experienced singer, musician, and all-around performer who has spent years entertaining audiences around the world. With his acoustic guitar, harmonica, and an extensive repertoire spanning from the 1950s to today's hits, Gary brings energy, versatility, and a deep love of music to every performance.
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            He regularly plays pubs, restaurants, and private events, tailoring each set to the crowd — from Gen Z to Golden Agers — and is especially skilled at adapting to the unique dynamics of community groups, including those with special needs. Gary can also support events as a host or step in as a budget-friendly DJ.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            {isFr
-              ? "Avec sa guitare acoustique, son harmonica et un répertoire d'incontournables des années 50 à aujourd'hui, Gary apporte une énergie unique et une vraie passion à chaque performance."
-              : "With his acoustic guitar, harmonica and a repertoire of familiar hits from the 50s to today, Gary brings unique energy and passion to every performance."}
+            Gary and Ailsa first worked together in the summer of 2025, and he officially joined the Club Choir team in January 2026. Fun fact: Gary plays the guitar upside-down.
           </p>
         </div>
 
