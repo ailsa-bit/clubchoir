@@ -121,7 +121,7 @@ const Index = () => {
                 Sing together. Laugh together. Learn together.
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed mb-5">
-                Club Choir began in 2021 with 21 voices in Montreal. Today, founder Ailsa leads a
+                Club Choir began in 2024 with 21 voices in Montreal. Today, founder Ailsa leads a
                 regional family of 194 singers — with live musicians at every rehearsal and a
                 simple philosophy: progress over perfection.
               </p>
