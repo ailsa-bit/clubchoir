@@ -147,18 +147,32 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
         {mobileOpen &&
         <nav className="lg:hidden border-t border-border bg-card px-4 pb-4 pt-2 space-y-1">
             {navItems.map((item) =>
-          <Link
-            key={item.path}
-            to={item.path}
-            onClick={() => setMobileOpen(false)}
-            className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-            location.pathname === item.path ?
-            "bg-primary/10 text-primary" :
-            "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-            }>
+          <div key={item.path}>
+            <Link
+              to={item.path}
+              onClick={() => setMobileOpen(false)}
+              className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              location.pathname === item.path ?
+              "bg-primary/10 text-primary" :
+              "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+              }>
 
                 {item.label}
               </Link>
+              {item.children?.map((c) => (
+                <Link
+                  key={c.path}
+                  to={c.path}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block ml-4 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  location.pathname === c.path ?
+                  "bg-primary/10 text-primary" :
+                  "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                  }>
+                  ↳ {c.label}
+                </Link>
+              ))}
+            </div>
           )}
             {isLoggedIn ? (
               <Link
