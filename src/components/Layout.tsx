@@ -57,17 +57,48 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) =>
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`px-3 py-2 rounded-lg text-base font-medium transition-colors ${
-              location.pathname === item.path ?
-              "bg-primary/10 text-primary" :
-              "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-              }>
+              item.children ? (
+                <div key={item.path} className="relative group">
+                  <Link
+                    to={item.path}
+                    className={`px-3 py-2 rounded-lg text-base font-medium transition-colors inline-flex items-center gap-1 ${
+                    location.pathname === item.path ?
+                    "bg-primary/10 text-primary" :
+                    "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                    }>
+                    {item.label}
+                    <ChevronDown className="w-4 h-4" />
+                  </Link>
+                  <div className="absolute left-0 top-full pt-1 hidden group-hover:block z-50 min-w-[220px]">
+                    <div className="bg-card border border-border rounded-lg shadow-lg py-1">
+                      {item.children.map((c) => (
+                        <Link
+                          key={c.path}
+                          to={c.path}
+                          className={`block px-3 py-2 text-sm font-medium transition-colors ${
+                          location.pathname === c.path ?
+                          "bg-primary/10 text-primary" :
+                          "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                          }>
+                          {c.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`px-3 py-2 rounded-lg text-base font-medium transition-colors ${
+                  location.pathname === item.path ?
+                  "bg-primary/10 text-primary" :
+                  "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                  }>
 
-                {item.label}
-              </Link>
+                  {item.label}
+                </Link>
+              )
             )}
             <button
               onClick={() => setLanguage(language === "en" ? "fr" : "en")}
