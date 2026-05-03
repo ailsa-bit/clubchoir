@@ -24,11 +24,11 @@ const About = () => {
                 Sing together. Laugh together. Learn together.
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                A community choir built on Māori roots, lifelong music, and the simple belief that
-                everyone deserves to sing.
+                A community built on the simple joy of singing together — and the belonging that
+                comes with it.
               </p>
               <p className="font-heading text-xl text-foreground italic">
-                — Ailsa Pehi, Founder & Choir Director
+                — Ailsa, Founder & Choir Director
               </p>
             </div>
             <div className="rounded-3xl overflow-hidden shadow-xl border border-border">
@@ -47,16 +47,26 @@ const About = () => {
       <section className="py-14 px-4">
         <div className="container mx-auto max-w-3xl space-y-6 text-base md:text-lg text-foreground leading-relaxed">
           <p>
-            As the Founder and Choir Director of Club Choir, my roots in music run deep. I was born
-            in New Zealand into a Māori family where singing wasn't a hobby — it was the language
-            of celebration, grief, welcome, and prayer. From a young age I learned that voices
-            woven together can hold a room, and a community.
+            As the Founder and Choir Director of Club Choir, my roots in music run deep. I was
+            born in New Zealand into a Māori family where music wasn't just a hobby—it was our way
+            of life. My favorite memories are of our backyard filled with music: my dad on the
+            guitar while my mother and aunties wove together perfect harmonies. That natural,
+            joyful connection is what I've always carried with me.
           </p>
           <p>
-            That foundation carried me through years of performing, teaching, and directing. When I
-            settled in Quebec, I noticed how many people quietly believed they "couldn't sing" —
-            not because they lacked the voice, but because no one had ever invited them in. Club
-            Choir is that invitation.
+            Years later, while navigating a full-time career and raising three children, I
+            realized how difficult it was to find a creative outlet that fit a busy life. I missed
+            the community of a choir, but the rigid pressure of weekly rehearsals felt impossible.
+            I also recognized a growing, universal need: people are searching for a true sense of
+            community. We are all looking for ways to reconnect in person and rediscover the
+            simple joy of belonging.
+          </p>
+          <p>
+            I started Club Choir to bridge that gap, beginning with just 21 members in Montreal.
+            Today, we are a vibrant regional family of 194 voices, with a new location launching
+            in Hudson in Summer 2026. To bring a dynamic, live energy to our rehearsals, I am
+            joined by talented local musicians at each location, ensuring every session feels like
+            a shared performance.
           </p>
 
           <blockquote className="my-10 border-l-4 border-primary pl-6 py-2">
@@ -65,13 +75,6 @@ const About = () => {
             </p>
           </blockquote>
 
-          <p>
-            What began in 2021 with just 21 voices has grown into a community of 184 singers across
-            five locations — Montreal, Hudson, Arundel, Saint-Hubert and Pointe-Claire — with a
-            new Hudson chapter launching in summer 2026. To bring a dynamic, live energy to our
-            rehearsals, I'm joined by talented local musicians at each location, ensuring every
-            session feels like a shared performance.
-          </p>
           <p>
             Our approach focuses on making music accessible and low-pressure. We learn by ear and
             provide flexible resources for those weeks when life gets a little too loud. Above
