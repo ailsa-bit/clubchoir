@@ -94,6 +94,9 @@ const HudsonSession = () => {
             Meet Briana &amp; Seiji
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-3">
+            Briana and Seiji are the newest members of the Club Choir team, and Briana will be leading the new choir in Hudson with accompaniment by Seiji.
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
             Briana Doyle is a singer-songwriter and performer known for her warm, expressive voice and love of storytelling through music. Her work blends folk, acoustic rock, and alternative influences from the 60s through the 90s, creating songs that are both emotive and timeless.
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
