@@ -27,12 +27,12 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   const publicNavItems = [
   { label: t("nav.home"), path: "/" },
   { label: "About", path: "/about" },
-  { label: t("nav.thisWeek"), path: "/this-week" },
   { label: t("nav.events"), path: "/events" },
   { label: t("nav.corporate"), path: "/corporate" }];
 
 
   const memberNavItems = [
+  { label: t("nav.thisWeek"), path: "/this-week" },
   { label: t("nav.community"), path: "/community" },
   { label: t("nav.chat"), path: "/chat" },
   { label: t("nav.resources"), path: "/resources" }];
