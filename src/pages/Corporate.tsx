@@ -168,7 +168,43 @@ const Corporate = () => {
         },
       });
       if (error) throw error;
-      toast({ title: "Inquiry sent!", description: "We'll be in touch soon." });
+
+      // Send confirmation email to the inquirer (best-effort)
+      try {
+        await supabase.functions.invoke("send-corporate-confirmation", {
+          body: {
+            contactName: form.contactName,
+            email: form.email,
+            companyName: form.companyName,
+            answers: {
+              companyName: form.companyName,
+              contactName: form.contactName,
+              email: form.email,
+              phone: form.phone,
+              eventType: form.eventType,
+              preferredDates: form.preferredDates,
+              preferredTime: form.preferredTime,
+              cityArea: form.cityArea,
+              eventLocation: form.eventLocation,
+              groupSize: form.groupSize,
+              teamProfile: form.teamProfile,
+              goals: form.goals,
+              experience: form.experience,
+              musicPref: form.musicPref,
+              sessionLength: form.sessionLength,
+              specialConsiderations: form.specialConsiderations,
+              additionalInfo: form.additionalInfo,
+            },
+          },
+        });
+      } catch (confirmErr) {
+        console.error("Confirmation email failed:", confirmErr);
+      }
+
+      toast({
+        title: "Inquiry sent!",
+        description: "Check your inbox for a confirmation. We'll reach out within 48 hours.",
+      });
       setForm(initial);
     } catch (err: any) {
       toast({ title: "Failed to send", description: "Please try again or email us directly.", variant: "destructive" });
