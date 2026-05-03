@@ -62,7 +62,7 @@ const HudsonSession = () => {
         description="Join the brand-new Hudson Club Choir session led by Briana Doyle & Seiji Gutierrez of Pagoda Starling. Mondays starting May 18, 2026."
         path="/hudson-session"
       />
-      <div className="container mx-auto max-w-3xl">
+      <div className="container mx-auto max-w-7xl">
         <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> {t("hudson.backHome")}
         </Link>
