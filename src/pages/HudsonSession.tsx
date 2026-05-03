@@ -6,6 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import brianaSeijiPhoto from "@/assets/briana-seiji.jpg";
 
 
 
@@ -82,15 +83,24 @@ const HudsonSession = () => {
         </div>
 
         {/* About Club Choir */}
-        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 overflow-hidden">
+          <img
+            src={brianaSeijiPhoto}
+            alt="Briana Doyle and Seiji Gutierrez performing outdoors with guitar and mandolin by the water"
+            className="w-full h-auto rounded-xl mb-5 object-cover"
+            loading="lazy"
+          />
           <h2 className="font-heading font-bold text-2xl text-foreground mb-3">
-            {t("hudson.vibeTitle")}
+            Meet Briana &amp; Seiji
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            {t("hudson.vibeP1")}
+            Briana Doyle is a singer-songwriter and performer known for her warm, expressive voice and love of storytelling through music. Her work blends folk, acoustic rock, and alternative influences from the 60s through the 90s, creating songs that are both emotive and timeless.
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            Her debut album <em>The Road is Long</em> (2025), featuring original music in both English and French, has been featured on CBC Radio and community stations across Canada. Briana performs regularly throughout Eastern Ontario and the Greater Montreal area and is joined by guitarist and collaborator Seiji Gutierrez, whose intuitive, layered playing brings depth and texture to their sound.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            {t("hudson.vibeP2")}
+            Together, they create a rich musical experience rooted in connection, harmony, and authenticity.
           </p>
         </div>
 
