@@ -95,7 +95,7 @@ const About = () => {
               <p className="text-sm text-muted-foreground">Founded with 21 voices</p>
             </div>
             <div className="rounded-2xl bg-card border border-border p-6">
-              <p className="font-heading font-bold text-4xl text-primary mb-1">184</p>
+              <p className="font-heading font-bold text-4xl text-primary mb-1">194</p>
               <p className="text-sm text-muted-foreground">Singers and growing</p>
             </div>
             <div className="rounded-2xl bg-card border border-border p-6">
