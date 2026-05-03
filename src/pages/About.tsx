@@ -7,8 +7,8 @@ const About = () => {
   return (
     <div>
       <PageMeta
-        title="Our Story – Club Choir | Founder Ailsa Pehi"
-        description="Meet Ailsa Pehi, founder of Club Choir. From Māori roots in New Zealand to community choirs across Quebec — sing together, laugh together, learn together."
+        title="Our Story – Club Choir | Founder Ailsa"
+        description="Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to a regional family of 194 singers — sing together, laugh together, learn together."
         path="/about"
       />
 
