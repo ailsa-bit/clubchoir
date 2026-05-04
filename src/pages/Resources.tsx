@@ -112,7 +112,7 @@ const Resources = () => {
     const { data: sessionData } = await supabase.auth.getSession();
     const token = sessionData?.session?.access_token;
     if (!token) {
-      toast({ title: "Download failed", description: "Please log in to download files.", variant: "destructive" });
+      toast({ title: t("resources.toast.downloadFail"), description: t("resources.toast.loginToDownload"), variant: "destructive" });
       return null;
     }
     const res = await fetch(
