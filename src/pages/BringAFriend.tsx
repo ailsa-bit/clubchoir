@@ -37,16 +37,25 @@ const LOCATIONS = [
   { value: "Pointe-Claire – Thursday", label: "Pointe-Claire – Thursday" },
 ];
 
+const makeFormSchema = (t: (k: string) => string) =>
+  z.object({
+    memberName: z.string().trim().min(1, t("friend.validation.yourName")).max(100),
+    friendName: z.string().trim().min(1, t("friend.validation.friendName")).max(100),
+    friendEmail: z.string().trim().email(t("friend.validation.friendEmail")).max(255),
+    location: z.string().min(1, t("friend.validation.location")),
+    message: z
+      .string()
+      .trim()
+      .max(2000, t("friend.validation.messageMax"))
+      .optional(),
+  });
+
 const formSchema = z.object({
-  memberName: z.string().trim().min(1, "Your name is required").max(100),
-  friendName: z.string().trim().min(1, "Friend's name is required").max(100),
-  friendEmail: z.string().trim().email("Invalid email address").max(255),
-  location: z.string().min(1, "Please choose a location"),
-  message: z
-    .string()
-    .trim()
-    .max(2000, "Message must be under 2000 characters")
-    .optional(),
+  memberName: z.string(),
+  friendName: z.string(),
+  friendEmail: z.string(),
+  location: z.string(),
+  message: z.string().optional(),
 });
 
 type BringAFriendForm = z.infer<typeof formSchema>;
