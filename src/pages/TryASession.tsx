@@ -65,7 +65,7 @@ const TryASession = () => {
   const { t } = useLanguage();
 
   const form = useForm<ContactForm>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(makeContactSchema(t)),
     defaultValues: { name: "", email: "", location: "", message: "" },
   });
 
@@ -77,11 +77,11 @@ const TryASession = () => {
       });
       if (error) throw error;
       setSent(true);
-      toast({ title: "Message sent!", description: "We'll be in touch soon." });
+      toast({ title: t("try.toast.sent.title"), description: t("try.toast.sent.desc") });
     } catch (err: any) {
       toast({
-        title: "Something went wrong",
-        description: err.message || "Please try again later.",
+        title: t("common.something.wrong"),
+        description: err.message || t("common.try.again"),
         variant: "destructive",
       });
     } finally {
