@@ -110,15 +110,6 @@ const Community = () => {
           )}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-          {(["ACTIVE", "INACTIVE", "PROSPECT", "TRIAL"] as const).map((s) => (
-            <div key={s} className="rounded-2xl border border-border bg-card p-4 text-center">
-              <p className="text-2xl font-bold text-foreground">{counts[s] || 0}</p>
-              <p className="text-xs text-muted-foreground capitalize">{s.toLowerCase()}</p>
-            </div>
-          ))}
-        </div>
-
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <div className="relative flex-1">
