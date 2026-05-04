@@ -79,7 +79,7 @@ const Events = () => {
         window.open(data.url, "_blank");
       }
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || t("common.something.wrong"));
     } finally {
       setLoading(false);
     }
