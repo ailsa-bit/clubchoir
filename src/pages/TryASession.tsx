@@ -113,7 +113,7 @@ const TryASession = () => {
               className="w-full h-48 md:h-56 object-cover"
             />
             <figcaption className="px-4 py-2.5 text-xs text-muted-foreground bg-muted/40 text-center">
-              A real Club Choir session in progress — that's exactly what you're walking into.
+              {t("try.preview.caption")}
             </figcaption>
           </figure>
         )}
