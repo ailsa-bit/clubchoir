@@ -113,10 +113,12 @@ const Subscribe = () => {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-background">
       <PageMeta
-        title={isFR ? "S'inscrire à la liste – Club Choir" : "Join the mailing list – Club Choir"}
+        title={tr("subscribe.meta.title")}
         description={t.subtitle}
         path="/subscribe"
       />
+      {/* isFR retained but unused in markup now */}
+      {void isFR}
 
       <section className="bg-gradient-hero py-16 px-4">
         <div className="container mx-auto max-w-2xl text-center">
