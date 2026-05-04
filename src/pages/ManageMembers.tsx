@@ -307,16 +307,6 @@ const ManageMembers = () => {
           </div>
         </div>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-          {STATUSES.map((s) => (
-            <div key={s} className="rounded-2xl border border-border bg-card p-3 text-center">
-              <p className="text-xl font-bold text-foreground">{counts[s] || 0}</p>
-              <p className="text-xs text-muted-foreground capitalize">{s.toLowerCase()}</p>
-            </div>
-          ))}
-        </div>
-
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
