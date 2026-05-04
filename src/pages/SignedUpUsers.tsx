@@ -101,6 +101,30 @@ const SignedUpUsers = () => {
       console.error("Activation email failed:", e);
     }
     toast({ title: "Member approved!", description: `${signup.display_name || "User"} now has full access and has been emailed.` });
+
+    // Look up the matching member record by email so admin can complete profile/payment info
+    try {
+      const { data: authUser } = await supabase.functions.invoke("list-signups");
+      const matchedAuth = (authUser as SignedUpUser[] | null)?.find((u) => u.id === signup.user_id);
+      const email = matchedAuth?.email;
+      if (email) {
+        const { data: memberMatch } = await supabase
+          .from("members")
+          .select("id")
+          .ilike("email", email)
+          .maybeSingle();
+        if (memberMatch?.id) {
+          navigate(`/manage-members/${memberMatch.id}`);
+          return;
+        }
+        toast({
+          title: "No matching member record",
+          description: `Add a member with email ${email} in Manage Members to complete their profile.`,
+        });
+      }
+    } catch (e) {
+      console.error("Could not locate member record:", e);
+    }
     fetchPending();
   };
 
