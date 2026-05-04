@@ -230,7 +230,7 @@ const Login = () => {
           {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
           {isSignUp && !isForgotPassword && !passwordValid && password.length > 0 && (
             <p className="text-sm text-muted-foreground">
-              Please meet all password requirements above before continuing.
+              {t("login.passwordRulesHint")}
             </p>
           )}
           <Button
