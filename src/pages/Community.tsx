@@ -98,9 +98,11 @@ const Community = () => {
           <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
             {t("community.title")}
           </h1>
-          <p className="text-muted-foreground">
-            {baseMembers.length} {baseMembers.length === 1 ? t("community.member") : t("community.members")} · {locations.length} {t("community.locationsCount")}
-          </p>
+          {isAdmin && (
+            <p className="text-muted-foreground">
+              {baseMembers.length} {baseMembers.length === 1 ? t("community.member") : t("community.members")} · {locations.length} {t("community.locationsCount")}
+            </p>
+          )}
           {isAdmin && (
             <Link to="/manage-members">
               <Button variant="outline" size="sm" className="mt-3">
