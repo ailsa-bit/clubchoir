@@ -9,12 +9,13 @@ import PageMeta from "@/components/PageMeta";
 
 const LOCATIONS = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire", "Hudson"];
 
-const schema = z.object({
-  first_name: z.string().trim().min(1, "First name is required").max(100),
-  last_name: z.string().trim().max(100).optional(),
-  email: z.string().trim().email("Please enter a valid email").max(255),
-  locations: z.array(z.string()).min(1, "Please select at least one location").max(10),
-});
+const makeSchema = (tr: (k: string) => string) =>
+  z.object({
+    first_name: z.string().trim().min(1, tr("subscribe.firstNameRequired")).max(100),
+    last_name: z.string().trim().max(100).optional(),
+    email: z.string().trim().email(tr("subscribe.validEmail")).max(255),
+    locations: z.array(z.string()).min(1, tr("subscribe.selectLocation")).max(10),
+  });
 
 const Subscribe = () => {
   const { language } = useLanguage();
