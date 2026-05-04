@@ -129,7 +129,7 @@ const Resources = () => {
     );
     const result = await res.json();
     if (!res.ok || !result.signedUrl) {
-      toast({ title: "Download failed", description: result.error || "Could not generate download link.", variant: "destructive" });
+      toast({ title: t("resources.toast.downloadFail"), description: result.error || t("resources.toast.cantGenerate"), variant: "destructive" });
       return null;
     }
     return result.signedUrl;
