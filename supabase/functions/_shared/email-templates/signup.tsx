@@ -72,6 +72,29 @@ export const SignupEmail = ({
           </Text>
         </Section>
 
+        <Section style={exploreBox}>
+          <Text style={exploreHeading}>🎵 What you'll find on Club Choir</Text>
+          <Text style={noticeText}>
+            Once your account is approved, here's what you can explore on{' '}
+            <Link href={siteUrl} style={link}>{siteUrl}</Link>:
+          </Text>
+          <Text style={noticeText}>
+            • <strong>Choir Community</strong> — meet fellow members in our directory.<br />
+            • <strong>Locations & Calendars</strong> — find your session schedule and upcoming events.<br />
+            • <strong>Song Resources</strong> — listen to recordings, view lyrics, and download sheet music.<br />
+            • <strong>Location Chat</strong> — stay connected with your group between sessions.<br />
+            • <strong>Corporate Events</strong> — learn about our team-building experiences.
+          </Text>
+          <Text style={noticeText}>
+            Use the menu at the top of the site to navigate between sections — everything is just a tap away on your phone too.
+          </Text>
+        </Section>
+
+        <Text style={text}>
+          Have questions or need a hand getting started? We're always here for you — just reach out anytime at{' '}
+          <Link href="mailto:ailsa@clubchoir.ca" style={link}>ailsa@clubchoir.ca</Link>.
+        </Text>
+
         <Text style={text}>
           Can't wait to sing with you soon!
           <br />
