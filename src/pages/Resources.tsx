@@ -153,7 +153,7 @@ const Resources = () => {
       setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
     } catch (err) {
       console.error("Unexpected download error:", err);
-      toast({ title: "Download failed", description: "Could not download file.", variant: "destructive" });
+      toast({ title: t("resources.toast.downloadFail"), description: t("resources.toast.cantDownload"), variant: "destructive" });
     }
   };
 
