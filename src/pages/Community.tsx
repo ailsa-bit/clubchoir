@@ -185,7 +185,9 @@ const Community = () => {
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="hidden sm:table-cell text-muted-foreground text-sm">{m.location}</TableCell>
+                    {isAdmin && (
+                      <TableCell className="hidden sm:table-cell text-muted-foreground text-sm">{m.location}</TableCell>
+                    )}
                     <TableCell>
                       <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>{m.status}</Badge>
                     </TableCell>
