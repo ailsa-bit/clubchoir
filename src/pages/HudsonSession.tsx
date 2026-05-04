@@ -91,19 +91,19 @@ const HudsonSession = () => {
             loading="lazy"
           />
           <h2 className="font-heading font-bold text-2xl text-foreground mb-3">
-            Meet Briana &amp; Seiji
+            {t("hudson.brianaTitle")}
           </h2>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            Briana Doyle and Seiji Gutierrez are the newest additions to the Club Choir team, with Briana leading the new Hudson choir and Seiji accompanying on guitar.
+            {t("hudson.brianaP1")}
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            Briana is a singer-songwriter and performer known for her warm, expressive voice and her passion for storytelling through music. Drawing on folk, acoustic rock, and alternative influences from the 60s through the 90s, her sound is both emotive and timeless.
+            {t("hudson.brianaP2")}
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            Her debut album <em>The Road is Long</em> (2025), featuring original songs in both English and French, has received airplay on CBC Radio and community stations across Canada. Briana performs regularly throughout Eastern Ontario and the Greater Montreal area, and is joined by Seiji, whose intuitive, layered guitar work adds depth and richness to their sound.
+            {t("hudson.brianaP3")}
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            Together, they bring a musical approach grounded in connection, harmony, and authenticity — and are a perfect addition to the Club Choir team.
+            {t("hudson.brianaP4")}
           </p>
         </div>
 
