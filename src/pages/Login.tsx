@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, KeyRound, Eye, EyeOff } from "lucide-react";
+import { LogIn, UserPlus, KeyRound, Eye, EyeOff, Check, Circle } from "lucide-react";
 import {
   Select,
   SelectContent,
