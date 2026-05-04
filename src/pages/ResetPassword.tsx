@@ -58,7 +58,7 @@ const ResetPassword = () => {
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
       if (error.message.includes("Auth session missing") || error.message.includes("not authenticated")) {
-        setError("Your reset link has expired. Please request a new one from the login page.");
+        setError(t("reset.linkExpired"));
       } else {
         setError(error.message);
       }
