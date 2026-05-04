@@ -107,7 +107,7 @@ const Events = () => {
 
         {/* Featured Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
-          {language === "fr" ? "Événements à venir" : "Upcoming Events"}
+          {t("events.upcoming")}
         </h2>
 
         {/* Hudson Summer Choir — bookable */}
@@ -116,11 +116,11 @@ const Events = () => {
             <div className="flex items-center gap-2 text-orange mb-1">
               <Music className="w-5 h-5" />
               <span className="text-sm font-semibold uppercase tracking-wide">
-                {language === "fr" ? "Chorale d'été · Inscriptions ouvertes" : "Summer Choir · Registration open"}
+                {t("events.summerOpen")}
               </span>
             </div>
             <CardTitle className="text-xl font-heading">
-              {language === "fr" ? "Chorale d'été à Hudson" : "Hudson Summer Choir"}
+              {t("events.hudsonSummerTitle")}
             </CardTitle>
             <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
               <Calendar className="w-4 h-4" />
@@ -131,9 +131,7 @@ const Events = () => {
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed">
-              {language === "fr"
-                ? "Joignez-vous à nous tous les lundis de l'été au Kingfisher Pub à Hudson pour chanter en groupe dans une ambiance détendue et accueillante. Aucune expérience requise."
-                : "Join us every Monday this summer at the Kingfisher Pub in Hudson for group singing in a relaxed, welcoming atmosphere. No experience needed."}
+              {t("events.hudsonSummerDesc")}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
@@ -145,7 +143,7 @@ const Events = () => {
               <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
                 <Link to="/hudson-session">
                   <Music className="w-4 h-4 mr-1.5" />
-                  {language === "fr" ? "Réserver votre place" : "Reserve your spot"}
+                  {t("events.reserveSpot")}
                 </Link>
               </Button>
             </div>
@@ -157,34 +155,32 @@ const Events = () => {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-purple mb-1">
               <Ticket className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Chorale Pop-Up · Billets en vente" : "Pop-Up Choir · Tickets on sale"}</span>
+              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.popupTickets")}</span>
             </div>
             <CardTitle className="text-xl font-heading">
-              {language === "fr" ? "Club Choir Pop-Up au Studio 77" : "Club Choir Pop-Up at Studio 77"}
+              {t("events.popupTitle")}
             </CardTitle>
             <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
               <Calendar className="w-4 h-4" />
-              <span>{language === "fr" ? "Dimanche 31 mai · 15 h – 17 h" : "Sunday, May 31 · 3:00 PM – 5:00 PM"}</span>
+              <span>{t("events.popupDate")}</span>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed">
-              {language === "fr"
-                ? "Une expérience de chorale pop-up de 2 heures pour quiconque aime chanter — aucune expérience requise. Nous apprendrons une chanson ensemble et chanterons en harmonie d'ici la fin, accompagnés par le musicien Gary White."
-                : "A 2-hour pop-up choir experience for anyone who loves to sing — no experience needed. We'll learn a song together and be singing in harmony by the end, accompanied by musician Gary White."}
+              {t("events.popupDesc")}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-purple" />
                 <span className="font-medium">Studio 77, Pointe-Claire</span>
               </div>
-              <span className="text-muted-foreground">{language === "fr" ? "15 $ par personne · Places limitées" : "$15 per person · Spots limited"}</span>
+              <span className="text-muted-foreground">{t("events.popupPrice")}</span>
             </div>
             <div className="pt-3">
               <Button asChild className="bg-purple text-purple-foreground hover:bg-purple/90 rounded-full font-semibold">
                 <Link to="/popup/studio-77">
                   <Ticket className="w-4 h-4 mr-1.5" />
-                  {language === "fr" ? "Réserver votre place" : "Reserve your spot"}
+                  {t("events.reserveSpot")}
                 </Link>
               </Button>
             </div>
@@ -196,31 +192,27 @@ const Events = () => {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-pink mb-1">
               <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Performance communautaire" : "Community Performance"}</span>
+              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.communityPerf")}</span>
             </div>
             <CardTitle className="text-xl font-heading">
-              {language === "fr" ? "Club Choir au Porchfest NDG" : "Club Choir at NDG Porchfest"}
+              {t("events.porchfestTitle")}
             </CardTitle>
             <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
               <Calendar className="w-4 h-4" />
-              <span>{language === "fr" ? "16 mai à 12 h" : "May 16 at 12 PM"}</span>
+              <span>{t("events.porchfestDate")}</span>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed">
-              {language === "fr" 
-                ? "Les membres de Club Choir de tous les lieux se réuniront pour une performance communautaire spéciale dans le cadre du Porchfest NDG. Cet événement gratuit, géré par des bénévoles, transforme NDG en un circuit de musique live autoguidé, avec des performances sur les porches du quartier."
-                : "Club Choir members from all locations will come together for a special community performance as part of Porchfest NDG. This free, volunteer-run event transforms NDG into a self-guided walking tour of live music, with performances happening on porches throughout the neighbourhood."}
+              {t("events.porchfestDesc1")}
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              {language === "fr" 
-                ? "Joignez-vous à nous alors que nos chanteurs se réunissent pour partager quelques chansons et célébrer la musique, la communauté et les liens dans l'une des traditions locales les plus vibrantes de Montréal."
-                : "Join us as our singers gather to share a few songs and celebrate music, community, and connection in one of Montreal's most vibrant local traditions."}
+              {t("events.porchfestDesc2")}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-pink" />
-                <span className="font-medium">Kensington Presbyterian Church, 6225 Av. Godfrey, {language === "fr" ? "Montréal (NDG)" : "Montreal (NDG)"}</span>
+                <span className="font-medium">Kensington Presbyterian Church, 6225 Av. Godfrey, {t("events.porchfestVenue")}</span>
               </div>
             </div>
           </CardContent>
@@ -231,40 +223,36 @@ const Events = () => {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-pink mb-1">
               <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{language === "fr" ? "Performance communautaire" : "Community Performance"}</span>
+              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.communityPerf")}</span>
             </div>
             <CardTitle className="text-xl font-heading">
-              {language === "fr" ? "Club Choir au Festival de rue de Victoria Village" : "Club Choir at Victoria Village Street Festival"}
+              {t("events.victoriaTitle")}
             </CardTitle>
             <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
               <Calendar className="w-4 h-4" />
-              <span>{language === "fr" ? "13 juin à 13h" : "June 13 at 1 PM"}</span>
+              <span>{t("events.victoriaDate")}</span>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed">
-              {language === "fr" 
-                ? "Joignez-vous à Club Choir pour une expérience de chant extérieure interactive et amusante au cœur du festival. Nous commencerons par une courte performance, puis inviterons tout le monde à participer à un chant spontané pour tous les niveaux, à la manière Club Choir. Aucune expérience requise, venez simplement prêt à chanter et à profiter du moment."
-                : "Join Club Choir for a fun, interactive outdoor singing experience in the heart of the festival. We'll start with a short performance, then invite everyone to take part in a live, all-levels sing-along—Club Choir style. No experience needed, just come ready to sing and enjoy the moment."}
+              {t("events.victoriaDesc1")}
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              {language === "fr" 
-                ? "C'est un événement décontracté et accueillant conçu pour tous ceux qui aiment la musique et veulent faire partie de quelque chose de joyeux et social."
-                : "This is a relaxed, welcoming event designed for anyone who loves music and wants to be part of something uplifting and social."}
+              {t("events.victoriaDesc2")}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-pink" />
-                <span className="font-medium">{language === "fr" ? "Place Prince-Albert" : "Prince-Albert Square"}</span>
+                <span className="font-medium">{t("events.victoriaVenue")}</span>
               </div>
-              <span className="text-muted-foreground">{language === "fr" ? "Accompagné par Gary White" : "Accompanied by Gary White"}</span>
+              <span className="text-muted-foreground">{t("events.accompanied")}</span>
             </div>
           </CardContent>
         </Card>
 
         {/* Community Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
-          {language === "fr" ? "Événements communautaires" : "Community Events"}
+          {t("events.communityEvents")}
         </h2>
         <div className="grid sm:grid-cols-2 gap-5">
           {events.map((event, i) => {
