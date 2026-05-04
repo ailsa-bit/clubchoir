@@ -611,6 +611,32 @@ const translations: Record<string, Record<Language, string>> = {
   "schedule.uploadFailed": { en: "Upload failed", fr: "Échec du téléversement" },
   "schedule.uploadedDone": { en: "Uploaded {n} sessions for {locs}.", fr: "{n} sessions téléversées pour {locs}." },
   "schedule.noRows": { en: "No valid rows found in CSV", fr: "Aucune ligne valide trouvée dans le CSV" },
+
+  // Events page (was inline ternaries)
+  "events.upcoming": { en: "Upcoming Events", fr: "Événements à venir" },
+  "events.communityEvents": { en: "Community Events", fr: "Événements communautaires" },
+  "events.summerOpen": { en: "Summer Choir · Registration open", fr: "Chorale d'été · Inscriptions ouvertes" },
+  "events.hudsonSummerTitle": { en: "Hudson Summer Choir", fr: "Chorale d'été à Hudson" },
+  "events.hudsonSummerDesc": { en: "Join us every Monday this summer at the Kingfisher Pub in Hudson for group singing in a relaxed, welcoming atmosphere. No experience needed.", fr: "Joignez-vous à nous tous les lundis de l'été au Kingfisher Pub à Hudson pour chanter en groupe dans une ambiance détendue et accueillante. Aucune expérience requise." },
+  "events.reserveSpot": { en: "Reserve your spot", fr: "Réservez votre place" },
+  "events.popupTickets": { en: "Pop-Up Choir · Tickets on sale", fr: "Chorale Pop-Up · Billets en vente" },
+  "events.popupTitle": { en: "Club Choir Pop-Up at Studio 77", fr: "Club Choir Pop-Up au Studio 77" },
+  "events.popupDate": { en: "Sunday, May 31 · 3:00 PM – 5:00 PM", fr: "Dimanche 31 mai · 15 h – 17 h" },
+  "events.popupDesc": { en: "A 2-hour pop-up choir experience for anyone who loves to sing — no experience needed. We'll learn a song together and be singing in harmony by the end, accompanied by musician Gary White.", fr: "Une expérience de chorale pop-up de 2 heures pour quiconque aime chanter — aucune expérience requise. Nous apprendrons une chanson ensemble et chanterons en harmonie d'ici la fin, accompagnés par le musicien Gary White." },
+  "events.popupPrice": { en: "$15 per person · Spots limited", fr: "15 $ par personne · Places limitées" },
+  "events.communityPerf": { en: "Community Performance", fr: "Performance communautaire" },
+  "events.porchfestTitle": { en: "Club Choir at NDG Porchfest", fr: "Club Choir au Porchfest NDG" },
+  "events.porchfestDate": { en: "May 16 at 12 PM", fr: "16 mai à 12 h" },
+  "events.porchfestDesc1": { en: "Club Choir members from all locations will come together for a special community performance as part of Porchfest NDG. This free, volunteer-run event transforms NDG into a self-guided walking tour of live music, with performances happening on porches throughout the neighbourhood.", fr: "Les membres de Club Choir de tous les lieux se réuniront pour une performance communautaire spéciale dans le cadre du Porchfest NDG. Cet événement gratuit, géré par des bénévoles, transforme NDG en un circuit de musique live autoguidé, avec des performances sur les porches du quartier." },
+  "events.porchfestDesc2": { en: "Join us as our singers gather to share a few songs and celebrate music, community, and connection in one of Montreal's most vibrant local traditions.", fr: "Joignez-vous à nous alors que nos chanteurs se réunissent pour partager quelques chansons et célébrer la musique, la communauté et les liens dans l'une des traditions locales les plus vibrantes de Montréal." },
+  "events.porchfestVenue": { en: "Montreal (NDG)", fr: "Montréal (NDG)" },
+  "events.victoriaTitle": { en: "Club Choir at Victoria Village Street Festival", fr: "Club Choir au Festival de rue de Victoria Village" },
+  "events.victoriaDate": { en: "June 13 at 1 PM", fr: "13 juin à 13h" },
+  "events.victoriaDesc1": { en: "Join Club Choir for a fun, interactive outdoor singing experience in the heart of the festival. We'll start with a short performance, then invite everyone to take part in a live, all-levels sing-along—Club Choir style. No experience needed, just come ready to sing and enjoy the moment.", fr: "Joignez-vous à Club Choir pour une expérience de chant extérieure interactive et amusante au cœur du festival. Nous commencerons par une courte performance, puis inviterons tout le monde à participer à un chant spontané pour tous les niveaux, à la manière Club Choir. Aucune expérience requise, venez simplement prêt à chanter et à profiter du moment." },
+  "events.victoriaDesc2": { en: "This is a relaxed, welcoming event designed for anyone who loves music and wants to be part of something uplifting and social.", fr: "C'est un événement décontracté et accueillant conçu pour tous ceux qui aiment la musique et veulent faire partie de quelque chose de joyeux et social." },
+  "events.victoriaVenue": { en: "Prince-Albert Square", fr: "Place Prince-Albert" },
+  "events.accompanied": { en: "Accompanied by Gary White", fr: "Accompagné par Gary White" },
+  "events.loginRegister": { en: "Please log in to register.", fr: "Veuillez vous connecter pour vous inscrire." },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
