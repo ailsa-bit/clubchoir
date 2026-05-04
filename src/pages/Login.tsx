@@ -228,7 +228,16 @@ const Login = () => {
           )}
           {error && <p className="text-sm text-destructive">{error}</p>}
           {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
-          <Button type="submit" className="w-full" disabled={loading}>
+          {isSignUp && !isForgotPassword && !passwordValid && password.length > 0 && (
+            <p className="text-sm text-muted-foreground">
+              Please meet all password requirements above before continuing.
+            </p>
+          )}
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={loading || (isSignUp && !isForgotPassword && !passwordValid)}
+          >
             {loading
               ? t("login.wait")
               : isForgotPassword
