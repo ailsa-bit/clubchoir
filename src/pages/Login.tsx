@@ -114,13 +114,13 @@ const Login = () => {
   const getTitle = () => {
     if (isForgotPassword) return t("login.forgotPassword");
     if (isSignUp) return t("login.createAccount");
-    return "Sign In";
+    return t("login.signIn.title");
   };
 
   const getSubtitle = () => {
     if (isForgotPassword) return t("login.forgotSubtitle");
-    if (isSignUp) return "Create your Club Choir account";
-    return "Sign in to your Club Choir account";
+    if (isSignUp) return t("login.signUp.subtitle");
+    return t("login.signIn.subtitle");
   };
 
   const getIcon = () => {
