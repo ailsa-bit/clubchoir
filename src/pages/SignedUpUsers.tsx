@@ -92,7 +92,15 @@ const SignedUpUsers = () => {
       toast({ title: "Error approving", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: "Member approved!", description: `${signup.display_name || "User"} now has full access.` });
+    // Send activation confirmation email (non-blocking — don't fail the approval if email errors)
+    try {
+      await supabase.functions.invoke("notify-member-activated", {
+        body: { user_id: signup.user_id, display_name: signup.display_name },
+      });
+    } catch (e) {
+      console.error("Activation email failed:", e);
+    }
+    toast({ title: "Member approved!", description: `${signup.display_name || "User"} now has full access and has been emailed.` });
     fetchPending();
   };
 
