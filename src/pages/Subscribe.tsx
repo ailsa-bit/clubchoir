@@ -65,8 +65,8 @@ const Subscribe = () => {
 
     if (!result.success) {
       toast({
-        title: isFR ? "Vérifiez le formulaire" : "Please check the form",
-        description: result.error.issues[0]?.message || "Invalid input",
+        title: tr("subscribe.checkForm"),
+        description: result.error.issues[0]?.message || tr("subscribe.invalidInput"),
         variant: "destructive",
       });
       return;
