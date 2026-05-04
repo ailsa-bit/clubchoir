@@ -37,15 +37,23 @@ const LOCATIONS = [
   { value: "Pointe-Claire – Thursday", label: "Pointe-Claire – Thursday" },
 ];
 
+const makeContactSchema = (t: (k: string) => string) =>
+  z.object({
+    name: z.string().trim().min(1, t("try.validation.name")).max(100),
+    email: z.string().trim().email(t("try.validation.email")).max(255),
+    location: z.string().min(1, t("try.validation.location")),
+    message: z
+      .string()
+      .trim()
+      .min(1, t("try.validation.message"))
+      .max(2000, t("try.validation.messageMax")),
+  });
+
 const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100),
-  email: z.string().trim().email("Invalid email address").max(255),
-  location: z.string().min(1, "Please choose a location"),
-  message: z
-    .string()
-    .trim()
-    .min(1, "Message is required")
-    .max(2000, "Message must be under 2000 characters"),
+  name: z.string(),
+  email: z.string(),
+  location: z.string(),
+  message: z.string(),
 });
 
 type ContactForm = z.infer<typeof contactSchema>;
