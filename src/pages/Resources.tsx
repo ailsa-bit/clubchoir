@@ -259,7 +259,7 @@ const Resources = () => {
               <div className="mt-4 rounded-2xl border border-border bg-card p-5 space-y-3 max-w-md">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t("resources.songName")}</label>
-                  <input type="text" value={uploadSong} onChange={(e) => setUploadSong(e.target.value)} placeholder="e.g. Bohemian Rhapsody"
+                  <input type="text" value={uploadSong} onChange={(e) => setUploadSong(e.target.value)} placeholder={t("resources.songNamePlaceholder")}
                     className="w-full rounded-xl border border-input bg-background px-4 py-2 text-sm text-foreground" />
                 </div>
                 <div>
@@ -269,14 +269,14 @@ const Resources = () => {
                     <option value="audio">{t("resources.recording")}</option>
                     <option value="lyrics">{t("resources.lyrics")}</option>
                     <option value="sheet_music">{t("resources.sheetMusic")}</option>
-                    <option value="slides">Slides</option>
+                    <option value="slides">{t("resources.slides")}</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t("resources.file")}</label>
                   <input type="file" onChange={handleUpload} disabled={uploading || !uploadSong.trim()} accept=".mp3,.wav,.m4a,.pdf,.txt,.doc,.docx,.pptx,.ppt,.key"
                     className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
-                  {uploading && <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Uploading…</p>}
+                  {uploading && <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> {t("resources.uploading")}</p>}
                 </div>
               </div>
             )}
