@@ -179,10 +179,10 @@ const Login = () => {
            )}
           {isSignUp && !isForgotPassword && (() => {
             const rules = [
-              { label: "At least 8 characters", ok: password.length >= 8 },
-              { label: "One lowercase letter (a–z)", ok: /[a-z]/.test(password) },
-              { label: "One uppercase letter (A–Z)", ok: /[A-Z]/.test(password) },
-              { label: "One number (0–9)", ok: /[0-9]/.test(password) },
+              { label: t("login.rule.minLength"), ok: password.length >= 8 },
+              { label: t("login.rule.lowercase"), ok: /[a-z]/.test(password) },
+              { label: t("login.rule.uppercase"), ok: /[A-Z]/.test(password) },
+              { label: t("login.rule.number"), ok: /[0-9]/.test(password) },
             ];
             return (
               <ul className="-mt-2 space-y-1.5 text-xs" aria-label="Password requirements">
@@ -207,7 +207,7 @@ const Login = () => {
           {isSignUp && !isForgotPassword && (
             <Input
               type="text"
-              placeholder="Display name (visible to other members)"
+              placeholder={t("login.displayName.placeholder")}
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               required
