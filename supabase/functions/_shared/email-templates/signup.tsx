@@ -70,6 +70,10 @@ export const SignupEmail = ({
             usually within a day or two. After that, you'll have full access to
             song resources, your location's chat, and the member community.
           </Text>
+          <Text style={{ ...noticeText, fontStyle: 'italic', marginTop: '12px' }}>
+            <strong>Please note:</strong> only paid members will have active accounts
+            and be able to access all member resources.
+          </Text>
         </Section>
 
         <Section style={exploreBox}>
