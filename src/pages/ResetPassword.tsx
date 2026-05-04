@@ -74,7 +74,7 @@ const ResetPassword = () => {
       <div className="py-16 px-4 text-center">
         <KeyRound className="w-12 h-12 text-muted-foreground mx-auto mb-4 animate-pulse" />
         <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("login.resetPassword")}</h1>
-        <p className="text-muted-foreground">Loading...</p>
+        <p className="text-muted-foreground">{t("reset.loading")}</p>
       </div>
     );
   }
