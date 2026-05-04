@@ -125,9 +125,9 @@ const BringAFriend = () => {
       });
       if (error) throw error;
       setSent(true);
-      toast({ title: "Request sent!", description: "We'll be in touch with your friend soon." });
+      toast({ title: t("friend.toast.sent.title"), description: t("friend.toast.sent.desc") });
     } catch (err: any) {
-      toast({ title: "Something went wrong", description: err.message || "Please try again later.", variant: "destructive" });
+      toast({ title: t("common.something.wrong"), description: err.message || t("common.try.again"), variant: "destructive" });
     } finally {
       setSending(false);
     }
