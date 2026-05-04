@@ -190,17 +190,17 @@ const Resources = () => {
       setPlayingId(resource.id);
     } catch (err) {
       console.error("Playback error:", err);
-      toast({ title: "Playback failed", description: "Could not play audio.", variant: "destructive" });
+      toast({ title: t("resources.toast.playFail"), description: t("resources.toast.cantPlay"), variant: "destructive" });
     } finally {
       setAudioLoading(null);
     }
   };
 
   const handleDelete = async (resource: SongResource) => {
-    if (!confirm(`Delete ${resource.file_name}?`)) return;
+    if (!confirm(t("resources.deleteConfirm").replace("{name}", resource.file_name))) return;
     await supabase.storage.from("song-resources").remove([resource.storage_path]);
     await supabase.from("song_resources").delete().eq("id", resource.id);
-    toast({ title: "Deleted", description: resource.file_name });
+    toast({ title: t("resources.toast.deleted"), description: resource.file_name });
     fetchResources();
   };
 
