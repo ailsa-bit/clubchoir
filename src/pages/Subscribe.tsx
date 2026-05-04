@@ -101,8 +101,8 @@ const Subscribe = () => {
     } catch (err: any) {
       console.error("Subscribe error:", err);
       toast({
-        title: isFR ? "Une erreur est survenue" : "Something went wrong",
-        description: err.message || "Please try again.",
+        title: tr("common.something.wrong"),
+        description: err.message || tr("subscribe.tryAgain"),
         variant: "destructive",
       });
     } finally {
