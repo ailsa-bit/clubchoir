@@ -32,7 +32,7 @@ const Profile = () => {
                 <div className="flex items-center gap-4 rounded-2xl border border-primary/30 bg-primary/5 p-4">
                   <Shield className="w-5 h-5 text-primary" />
                   <div>
-                    <p className="font-semibold text-foreground text-sm">Admin</p>
+                    <p className="font-semibold text-foreground text-sm">{t("profile.admin")}</p>
                     <p className="text-xs text-muted-foreground">{user.email}</p>
                   </div>
                 </div>
@@ -42,14 +42,14 @@ const Profile = () => {
               </Button>
               {isAdmin && (
                 <Button variant="ghost" size="sm" className="w-full mt-2 text-muted-foreground" onClick={() => navigate("/manage-members")}>
-                  Admin Dashboard
+                  {t("profile.adminDashboard")}
                 </Button>
               )}
             </>
           ) : (
             <>
               <Button variant="outline" className="w-full mt-4" onClick={() => navigate("/login")}>
-                <LogIn className="w-4 h-4 mr-2" /> Sign In / Sign Up
+                <LogIn className="w-4 h-4 mr-2" /> {t("profile.signInUp")}
               </Button>
             </>
           )}
