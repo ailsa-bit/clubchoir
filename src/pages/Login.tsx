@@ -56,17 +56,17 @@ const Login = () => {
 
     if (isSignUp) {
       if (!location) {
-        setError("Please select your location.");
+        setError(t("login.requireLocation"));
         setLoading(false);
         return;
       }
       if (!displayName.trim()) {
-        setError("Please enter a display name.");
+        setError(t("login.requireDisplayName"));
         setLoading(false);
         return;
       }
       if (password.length < 8 || !/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-        setError("Password must be at least 8 characters with uppercase, lowercase and a number.");
+        setError(t("login.passwordRules"));
         setLoading(false);
         return;
       }
@@ -114,13 +114,13 @@ const Login = () => {
   const getTitle = () => {
     if (isForgotPassword) return t("login.forgotPassword");
     if (isSignUp) return t("login.createAccount");
-    return "Sign In";
+    return t("login.signIn.title");
   };
 
   const getSubtitle = () => {
     if (isForgotPassword) return t("login.forgotSubtitle");
-    if (isSignUp) return "Create your Club Choir account";
-    return "Sign in to your Club Choir account";
+    if (isSignUp) return t("login.signUp.subtitle");
+    return t("login.signIn.subtitle");
   };
 
   const getIcon = () => {
@@ -145,7 +145,7 @@ const Login = () => {
         </div>
 
         <div className="bg-muted/60 border border-border rounded-lg px-4 py-3 mb-6 text-sm text-muted-foreground text-center">
-          Please note: access to member resources (chat, song files, community page) is only available to current Club Choir members.
+          {t("login.notice")}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -179,10 +179,10 @@ const Login = () => {
            )}
           {isSignUp && !isForgotPassword && (() => {
             const rules = [
-              { label: "At least 8 characters", ok: password.length >= 8 },
-              { label: "One lowercase letter (a–z)", ok: /[a-z]/.test(password) },
-              { label: "One uppercase letter (A–Z)", ok: /[A-Z]/.test(password) },
-              { label: "One number (0–9)", ok: /[0-9]/.test(password) },
+              { label: t("login.rule.minLength"), ok: password.length >= 8 },
+              { label: t("login.rule.lowercase"), ok: /[a-z]/.test(password) },
+              { label: t("login.rule.uppercase"), ok: /[A-Z]/.test(password) },
+              { label: t("login.rule.number"), ok: /[0-9]/.test(password) },
             ];
             return (
               <ul className="-mt-2 space-y-1.5 text-xs" aria-label="Password requirements">
@@ -207,7 +207,7 @@ const Login = () => {
           {isSignUp && !isForgotPassword && (
             <Input
               type="text"
-              placeholder="Display name (visible to other members)"
+              placeholder={t("login.displayName.placeholder")}
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               required
@@ -230,7 +230,7 @@ const Login = () => {
           {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
           {isSignUp && !isForgotPassword && !passwordValid && password.length > 0 && (
             <p className="text-sm text-muted-foreground">
-              Please meet all password requirements above before continuing.
+              {t("login.passwordRulesHint")}
             </p>
           )}
           <Button

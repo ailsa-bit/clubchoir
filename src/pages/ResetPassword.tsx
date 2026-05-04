@@ -58,7 +58,7 @@ const ResetPassword = () => {
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
       if (error.message.includes("Auth session missing") || error.message.includes("not authenticated")) {
-        setError("Your reset link has expired. Please request a new one from the login page.");
+        setError(t("reset.linkExpired"));
       } else {
         setError(error.message);
       }
@@ -74,7 +74,7 @@ const ResetPassword = () => {
       <div className="py-16 px-4 text-center">
         <KeyRound className="w-12 h-12 text-muted-foreground mx-auto mb-4 animate-pulse" />
         <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("login.resetPassword")}</h1>
-        <p className="text-muted-foreground">Loading...</p>
+        <p className="text-muted-foreground">{t("reset.loading")}</p>
       </div>
     );
   }
