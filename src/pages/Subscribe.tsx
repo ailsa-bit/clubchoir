@@ -116,8 +116,7 @@ const Subscribe = () => {
         description={t.subtitle}
         path="/subscribe"
       />
-      {/* isFR retained but unused in markup now */}
-      {void isFR}
+
 
       <section className="bg-gradient-hero py-16 px-4">
         <div className="container mx-auto max-w-2xl text-center">
