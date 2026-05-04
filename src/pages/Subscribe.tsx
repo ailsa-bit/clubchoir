@@ -18,7 +18,7 @@ const makeSchema = (tr: (k: string) => string) =>
   });
 
 const Subscribe = () => {
-  const { t } = useLanguage();
+  const { t: tr, language } = useLanguage();
   const { toast } = useToast();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -27,26 +27,27 @@ const Subscribe = () => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
-  const schema = makeSchema(t);
+  const isFR = language === "fr";
+  const schema = makeSchema(tr);
 
-  const tr = {
-    title: t("subscribe.title"),
-    subtitle: t("subscribe.subtitle"),
-    whatYouGet: t("subscribe.whatYouGet"),
-    benefit1: t("subscribe.benefit1"),
-    benefit2: t("subscribe.benefit2"),
-    benefit3: t("subscribe.benefit3"),
-    firstName: t("subscribe.firstName"),
-    lastName: t("subscribe.lastName"),
-    emailLabel: t("subscribe.email"),
-    locationsLabel: t("subscribe.locations"),
-    locationsHelp: t("subscribe.locationsHelp"),
-    submit: t("subscribe.submit"),
-    submitting: t("subscribe.submitting"),
-    successTitle: t("subscribe.success.title"),
-    successDesc: t("subscribe.success.desc"),
-    backHome: t("subscribe.backHome"),
-    privacy: t("subscribe.privacy"),
+  const t = {
+    title: tr("subscribe.title"),
+    subtitle: tr("subscribe.subtitle"),
+    whatYouGet: tr("subscribe.whatYouGet"),
+    benefit1: tr("subscribe.benefit1"),
+    benefit2: tr("subscribe.benefit2"),
+    benefit3: tr("subscribe.benefit3"),
+    firstName: tr("subscribe.firstName"),
+    lastName: tr("subscribe.lastName"),
+    emailLabel: tr("subscribe.email"),
+    locationsLabel: tr("subscribe.locations"),
+    locationsHelp: tr("subscribe.locationsHelp"),
+    submit: tr("subscribe.submit"),
+    submitting: tr("subscribe.submitting"),
+    successTitle: tr("subscribe.success.title"),
+    successDesc: tr("subscribe.success.desc"),
+    backHome: tr("subscribe.backHome"),
+    privacy: tr("subscribe.privacy"),
   };
 
   const toggleLocation = (loc: string) => {
