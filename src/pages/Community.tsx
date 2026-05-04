@@ -148,9 +148,11 @@ const Community = () => {
           )}
         </div>
 
-        <p className="text-sm text-muted-foreground mb-3">
-          {t("community.showing")} {filtered.length} {filtered.length !== 1 ? t("community.members") : t("community.member")}
-        </p>
+        {isAdmin && (
+          <p className="text-sm text-muted-foreground mb-3">
+            {t("community.showing")} {filtered.length} {filtered.length !== 1 ? t("community.members") : t("community.member")}
+          </p>
+        )}
 
         {loading || adminLoading ? (
           <div className="text-center py-12 text-muted-foreground">{t("community.loading")}</div>
