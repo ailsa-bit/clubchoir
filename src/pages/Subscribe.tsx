@@ -18,7 +18,7 @@ const makeSchema = (tr: (k: string) => string) =>
   });
 
 const Subscribe = () => {
-  const { t: tr, language } = useLanguage();
+  const { t: tr } = useLanguage();
   const { toast } = useToast();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -27,7 +27,6 @@ const Subscribe = () => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
-  const isFR = language === "fr";
   const schema = makeSchema(tr);
 
   const t = {
