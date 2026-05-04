@@ -118,18 +118,18 @@ const Community = () => {
           </div>
           {isAdmin && (
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-[160px]"><SelectValue placeholder="Status" /></SelectTrigger>
+              <SelectTrigger className="w-full sm:w-[160px]"><SelectValue placeholder={t("community.filterStatus")} /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="ALL">{t("community.allStatuses")}</SelectItem>
-                <SelectItem value="ACTIVE">Active</SelectItem>
-                <SelectItem value="INACTIVE">Inactive</SelectItem>
-                <SelectItem value="PROSPECT">Prospect</SelectItem>
-                <SelectItem value="TRIAL">Trial</SelectItem>
+                <SelectItem value="ACTIVE">{t("community.status.active")}</SelectItem>
+                <SelectItem value="INACTIVE">{t("community.status.inactive")}</SelectItem>
+                <SelectItem value="PROSPECT">{t("community.status.prospect")}</SelectItem>
+                <SelectItem value="TRIAL">{t("community.status.trial")}</SelectItem>
               </SelectContent>
             </Select>
           )}
           <Select value={locationFilter} onValueChange={setLocationFilter}>
-            <SelectTrigger className="w-full sm:w-[180px]"><SelectValue placeholder="Location" /></SelectTrigger>
+            <SelectTrigger className="w-full sm:w-[180px]"><SelectValue placeholder={t("community.filterLocation")} /></SelectTrigger>
             <SelectContent>
               <SelectItem value="ALL">{t("community.allLocations")}</SelectItem>
               {locations.map((loc) => (<SelectItem key={loc} value={loc}>{loc}</SelectItem>))}
@@ -137,7 +137,7 @@ const Community = () => {
           </Select>
           {isAdmin && (
             <Select value={paymentFilter} onValueChange={setPaymentFilter}>
-              <SelectTrigger className="w-full sm:w-[160px]"><SelectValue placeholder="Payment" /></SelectTrigger>
+              <SelectTrigger className="w-full sm:w-[160px]"><SelectValue placeholder={t("community.filterPayment")} /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="ALL">{t("community.allPayments")}</SelectItem>
                 {paymentStatuses.map((ps) => (<SelectItem key={ps} value={ps}>{ps}</SelectItem>))}
