@@ -68,7 +68,7 @@ const Resources = () => {
     audio: t("resources.recording"),
     lyrics: t("resources.lyrics"),
     sheet_music: t("resources.sheetMusic"),
-    slides: "Slides",
+    slides: t("resources.slides"),
   };
 
   const fetchResources = async () => {
@@ -76,12 +76,12 @@ const Resources = () => {
       const { data, error } = await supabase.from("song_resources").select("*").order("song_name", { ascending: true });
       if (error) {
         console.error("Fetch error:", error);
-        toast({ title: t("resources.error") || "Error", description: error.message, variant: "destructive" });
+        toast({ title: t("resources.error"), description: error.message, variant: "destructive" });
       }
       setResources((data as SongResource[]) || []);
     } catch (err) {
       console.error("Unexpected fetch error:", err);
-      toast({ title: "Error", description: "Failed to load resources.", variant: "destructive" });
+      toast({ title: t("common.error"), description: t("resources.toast.loadFail"), variant: "destructive" });
     } finally {
       setLoading(false);
     }
