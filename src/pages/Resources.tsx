@@ -336,7 +336,7 @@ const Resources = () => {
                               <button
                                 onClick={() => handleDelete(r)}
                                 className="p-2 rounded-xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                                title="Delete"
+                                title={t("common.delete")}
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
