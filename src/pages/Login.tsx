@@ -56,17 +56,17 @@ const Login = () => {
 
     if (isSignUp) {
       if (!location) {
-        setError("Please select your location.");
+        setError(t("login.requireLocation"));
         setLoading(false);
         return;
       }
       if (!displayName.trim()) {
-        setError("Please enter a display name.");
+        setError(t("login.requireDisplayName"));
         setLoading(false);
         return;
       }
       if (password.length < 8 || !/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-        setError("Password must be at least 8 characters with uppercase, lowercase and a number.");
+        setError(t("login.passwordRules"));
         setLoading(false);
         return;
       }
