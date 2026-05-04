@@ -101,7 +101,7 @@ const BringAFriend = () => {
   }, [members, membersLoading, isAdmin, adminLoading]);
 
   const form = useForm<BringAFriendForm>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(makeFormSchema(t)),
     defaultValues: { memberName: userDisplayName, friendName: "", friendEmail: "", location: "", message: "" },
   });
 
