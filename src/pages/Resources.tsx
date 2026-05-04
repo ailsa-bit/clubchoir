@@ -238,7 +238,7 @@ const Resources = () => {
             onClick={() => window.history.back()}
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Schedule
+            <ArrowLeft className="w-4 h-4" /> {t("resources.backToSchedule")}
           </button>
         )}
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">{t("resources.title")}</h1>
