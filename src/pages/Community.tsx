@@ -99,7 +99,7 @@ const Community = () => {
             {t("community.title")}
           </h1>
           <p className="text-muted-foreground">
-            {baseMembers.length} {baseMembers.length === 1 ? t("community.member") : t("community.members")} · {locations.length} locations
+            {baseMembers.length} {baseMembers.length === 1 ? t("community.member") : t("community.members")} · {locations.length} {t("community.locationsCount")}
           </p>
           {isAdmin && (
             <Link to="/manage-members">
