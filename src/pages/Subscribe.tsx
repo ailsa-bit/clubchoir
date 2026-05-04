@@ -18,7 +18,7 @@ const makeSchema = (tr: (k: string) => string) =>
   });
 
 const Subscribe = () => {
-  const { language } = useLanguage();
+  const { t } = useLanguage();
   const { toast } = useToast();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -27,32 +27,26 @@ const Subscribe = () => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
-  const isFR = language === "fr";
+  const schema = makeSchema(t);
 
-  const t = {
-    title: isFR ? "Restez informé avec Club Choir" : "Stay in the loop with Club Choir",
-    subtitle: isFR
-      ? "Inscrivez-vous à notre liste pour recevoir les nouvelles, les événements et les inscriptions anticipées — aucune obligation."
-      : "Join our mailing list for news, events, and early registration — no commitment, no account required.",
-    whatYouGet: isFR ? "Ce que vous recevrez" : "What you'll get",
-    benefit1: isFR ? "Les dernières nouvelles sur les événements Club Choir" : "The latest information on Club Choir events",
-    benefit2: isFR ? "Inscriptions anticipées et aperçu des chansons de la prochaine session" : "Early registration emails so you can preview the songs in the new session",
-    benefit3: isFR ? "Invitations aux journées portes ouvertes et chorales pop-up estivales" : "Invitations to open houses and pop-up summer choir events",
-    firstName: isFR ? "Prénom" : "First name",
-    lastName: isFR ? "Nom (facultatif)" : "Last name (optional)",
-    emailLabel: isFR ? "Adresse courriel" : "Email address",
-    locationsLabel: isFR ? "Lieux qui vous intéressent" : "Locations you're interested in",
-    locationsHelp: isFR ? "Sélectionnez tous ceux qui s'appliquent" : "Select all that apply",
-    submit: isFR ? "M'inscrire à la liste" : "Add me to the list",
-    submitting: isFR ? "Envoi en cours..." : "Submitting...",
-    successTitle: isFR ? "Bienvenue à bord ! 🎉" : "You're on the list! 🎉",
-    successDesc: isFR
-      ? "Surveillez votre boîte de réception — un courriel de bienvenue est en route."
-      : "Check your inbox — a welcome email is on its way.",
-    backHome: isFR ? "Retour à l'accueil" : "Back to home",
-    privacy: isFR
-      ? "Nous n'utiliserons votre courriel que pour les nouvelles de Club Choir. Désinscription en tout temps."
-      : "We'll only use your email for Club Choir updates. Unsubscribe anytime.",
+  const tr = {
+    title: t("subscribe.title"),
+    subtitle: t("subscribe.subtitle"),
+    whatYouGet: t("subscribe.whatYouGet"),
+    benefit1: t("subscribe.benefit1"),
+    benefit2: t("subscribe.benefit2"),
+    benefit3: t("subscribe.benefit3"),
+    firstName: t("subscribe.firstName"),
+    lastName: t("subscribe.lastName"),
+    emailLabel: t("subscribe.email"),
+    locationsLabel: t("subscribe.locations"),
+    locationsHelp: t("subscribe.locationsHelp"),
+    submit: t("subscribe.submit"),
+    submitting: t("subscribe.submitting"),
+    successTitle: t("subscribe.success.title"),
+    successDesc: t("subscribe.success.desc"),
+    backHome: t("subscribe.backHome"),
+    privacy: t("subscribe.privacy"),
   };
 
   const toggleLocation = (loc: string) => {
