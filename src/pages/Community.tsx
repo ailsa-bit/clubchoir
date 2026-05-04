@@ -162,9 +162,11 @@ const Community = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t("community.member")}</TableHead>
-                  <TableHead className="hidden sm:table-cell">
-                    <div className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {t("community.tableLocation")}</div>
-                  </TableHead>
+                  {isAdmin && (
+                    <TableHead className="hidden sm:table-cell">
+                      <div className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {t("community.tableLocation")}</div>
+                    </TableHead>
+                  )}
                   <TableHead>{t("community.tableStatus")}</TableHead>
                   {isAdmin && <TableHead className="hidden md:table-cell">{t("community.tableJoined")}</TableHead>}
                   {isAdmin && <TableHead className="hidden md:table-cell">{t("community.tablePayment")}</TableHead>}
