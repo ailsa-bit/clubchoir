@@ -172,3 +172,17 @@ const noticeText = {
   margin: '0 0 10px',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '24px 0 0' }
+const exploreBox = {
+  backgroundColor: 'hsl(200, 50%, 97%)',
+  border: '1px solid hsl(200, 50%, 90%)',
+  borderRadius: '12px',
+  padding: '18px 20px',
+  margin: '8px 0 28px',
+}
+const exploreHeading = {
+  fontSize: '15px',
+  fontWeight: '700' as const,
+  color: 'hsl(200, 60%, 30%)',
+  fontFamily: "'Quicksand', Arial, sans-serif",
+  margin: '0 0 10px',
+}
