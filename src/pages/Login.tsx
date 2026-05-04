@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, KeyRound, Eye, EyeOff } from "lucide-react";
+import { LogIn, UserPlus, KeyRound, Eye, EyeOff, Check, Circle } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -171,11 +171,33 @@ const Login = () => {
               </button>
             </div>
            )}
-          {isSignUp && !isForgotPassword && (
-            <p className="text-xs text-muted-foreground -mt-2">
-              Minimum 8 characters, including uppercase, lowercase and a number.
-            </p>
-          )}
+          {isSignUp && !isForgotPassword && (() => {
+            const rules = [
+              { label: "At least 8 characters", ok: password.length >= 8 },
+              { label: "One lowercase letter (a–z)", ok: /[a-z]/.test(password) },
+              { label: "One uppercase letter (A–Z)", ok: /[A-Z]/.test(password) },
+              { label: "One number (0–9)", ok: /[0-9]/.test(password) },
+            ];
+            return (
+              <ul className="-mt-2 space-y-1.5 text-xs" aria-label="Password requirements">
+                {rules.map((r) => (
+                  <li
+                    key={r.label}
+                    className={`flex items-center gap-2 transition-colors ${
+                      r.ok ? "text-green-600 dark:text-green-400" : "text-muted-foreground"
+                    }`}
+                  >
+                    {r.ok ? (
+                      <Check className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                    ) : (
+                      <Circle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                    )}
+                    <span>{r.label}</span>
+                  </li>
+                ))}
+              </ul>
+            );
+          })()}
           {isSignUp && !isForgotPassword && (
             <Input
               type="text"
