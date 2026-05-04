@@ -328,7 +328,7 @@ const Resources = () => {
                             <button
                               onClick={() => handleDownload(r)}
                               className={`p-2 rounded-xl ${config.text} hover:bg-background/60 transition-colors`}
-                              title="Download"
+                              title={t("resources.download")}
                             >
                               <Download className="w-5 h-5" />
                             </button>
