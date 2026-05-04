@@ -9,15 +9,16 @@ import PageMeta from "@/components/PageMeta";
 
 const LOCATIONS = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire", "Hudson"];
 
-const schema = z.object({
-  first_name: z.string().trim().min(1, "First name is required").max(100),
-  last_name: z.string().trim().max(100).optional(),
-  email: z.string().trim().email("Please enter a valid email").max(255),
-  locations: z.array(z.string()).min(1, "Please select at least one location").max(10),
-});
+const makeSchema = (tr: (k: string) => string) =>
+  z.object({
+    first_name: z.string().trim().min(1, tr("subscribe.firstNameRequired")).max(100),
+    last_name: z.string().trim().max(100).optional(),
+    email: z.string().trim().email(tr("subscribe.validEmail")).max(255),
+    locations: z.array(z.string()).min(1, tr("subscribe.selectLocation")).max(10),
+  });
 
 const Subscribe = () => {
-  const { language } = useLanguage();
+  const { t: tr } = useLanguage();
   const { toast } = useToast();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -26,32 +27,26 @@ const Subscribe = () => {
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
-  const isFR = language === "fr";
+  const schema = makeSchema(tr);
 
   const t = {
-    title: isFR ? "Restez informé avec Club Choir" : "Stay in the loop with Club Choir",
-    subtitle: isFR
-      ? "Inscrivez-vous à notre liste pour recevoir les nouvelles, les événements et les inscriptions anticipées — aucune obligation."
-      : "Join our mailing list for news, events, and early registration — no commitment, no account required.",
-    whatYouGet: isFR ? "Ce que vous recevrez" : "What you'll get",
-    benefit1: isFR ? "Les dernières nouvelles sur les événements Club Choir" : "The latest information on Club Choir events",
-    benefit2: isFR ? "Inscriptions anticipées et aperçu des chansons de la prochaine session" : "Early registration emails so you can preview the songs in the new session",
-    benefit3: isFR ? "Invitations aux journées portes ouvertes et chorales pop-up estivales" : "Invitations to open houses and pop-up summer choir events",
-    firstName: isFR ? "Prénom" : "First name",
-    lastName: isFR ? "Nom (facultatif)" : "Last name (optional)",
-    emailLabel: isFR ? "Adresse courriel" : "Email address",
-    locationsLabel: isFR ? "Lieux qui vous intéressent" : "Locations you're interested in",
-    locationsHelp: isFR ? "Sélectionnez tous ceux qui s'appliquent" : "Select all that apply",
-    submit: isFR ? "M'inscrire à la liste" : "Add me to the list",
-    submitting: isFR ? "Envoi en cours..." : "Submitting...",
-    successTitle: isFR ? "Bienvenue à bord ! 🎉" : "You're on the list! 🎉",
-    successDesc: isFR
-      ? "Surveillez votre boîte de réception — un courriel de bienvenue est en route."
-      : "Check your inbox — a welcome email is on its way.",
-    backHome: isFR ? "Retour à l'accueil" : "Back to home",
-    privacy: isFR
-      ? "Nous n'utiliserons votre courriel que pour les nouvelles de Club Choir. Désinscription en tout temps."
-      : "We'll only use your email for Club Choir updates. Unsubscribe anytime.",
+    title: tr("subscribe.title"),
+    subtitle: tr("subscribe.subtitle"),
+    whatYouGet: tr("subscribe.whatYouGet"),
+    benefit1: tr("subscribe.benefit1"),
+    benefit2: tr("subscribe.benefit2"),
+    benefit3: tr("subscribe.benefit3"),
+    firstName: tr("subscribe.firstName"),
+    lastName: tr("subscribe.lastName"),
+    emailLabel: tr("subscribe.email"),
+    locationsLabel: tr("subscribe.locations"),
+    locationsHelp: tr("subscribe.locationsHelp"),
+    submit: tr("subscribe.submit"),
+    submitting: tr("subscribe.submitting"),
+    successTitle: tr("subscribe.success.title"),
+    successDesc: tr("subscribe.success.desc"),
+    backHome: tr("subscribe.backHome"),
+    privacy: tr("subscribe.privacy"),
   };
 
   const toggleLocation = (loc: string) => {
@@ -69,8 +64,8 @@ const Subscribe = () => {
 
     if (!result.success) {
       toast({
-        title: isFR ? "Vérifiez le formulaire" : "Please check the form",
-        description: result.error.issues[0]?.message || "Invalid input",
+        title: tr("subscribe.checkForm"),
+        description: result.error.issues[0]?.message || tr("subscribe.invalidInput"),
         variant: "destructive",
       });
       return;
@@ -105,8 +100,8 @@ const Subscribe = () => {
     } catch (err: any) {
       console.error("Subscribe error:", err);
       toast({
-        title: isFR ? "Une erreur est survenue" : "Something went wrong",
-        description: err.message || "Please try again.",
+        title: tr("common.something.wrong"),
+        description: err.message || tr("subscribe.tryAgain"),
         variant: "destructive",
       });
     } finally {
@@ -117,10 +112,11 @@ const Subscribe = () => {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-background">
       <PageMeta
-        title={isFR ? "S'inscrire à la liste – Club Choir" : "Join the mailing list – Club Choir"}
+        title={tr("subscribe.meta.title")}
         description={t.subtitle}
         path="/subscribe"
       />
+
 
       <section className="bg-gradient-hero py-16 px-4">
         <div className="container mx-auto max-w-2xl text-center">

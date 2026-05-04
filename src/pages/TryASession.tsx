@@ -37,15 +37,23 @@ const LOCATIONS = [
   { value: "Pointe-Claire – Thursday", label: "Pointe-Claire – Thursday" },
 ];
 
+const makeContactSchema = (t: (k: string) => string) =>
+  z.object({
+    name: z.string().trim().min(1, t("try.validation.name")).max(100),
+    email: z.string().trim().email(t("try.validation.email")).max(255),
+    location: z.string().min(1, t("try.validation.location")),
+    message: z
+      .string()
+      .trim()
+      .min(1, t("try.validation.message"))
+      .max(2000, t("try.validation.messageMax")),
+  });
+
 const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100),
-  email: z.string().trim().email("Invalid email address").max(255),
-  location: z.string().min(1, "Please choose a location"),
-  message: z
-    .string()
-    .trim()
-    .min(1, "Message is required")
-    .max(2000, "Message must be under 2000 characters"),
+  name: z.string(),
+  email: z.string(),
+  location: z.string(),
+  message: z.string(),
 });
 
 type ContactForm = z.infer<typeof contactSchema>;
@@ -57,7 +65,7 @@ const TryASession = () => {
   const { t } = useLanguage();
 
   const form = useForm<ContactForm>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(makeContactSchema(t)),
     defaultValues: { name: "", email: "", location: "", message: "" },
   });
 
@@ -69,11 +77,11 @@ const TryASession = () => {
       });
       if (error) throw error;
       setSent(true);
-      toast({ title: "Message sent!", description: "We'll be in touch soon." });
+      toast({ title: t("try.toast.sent.title"), description: t("try.toast.sent.desc") });
     } catch (err: any) {
       toast({
-        title: "Something went wrong",
-        description: err.message || "Please try again later.",
+        title: t("common.something.wrong"),
+        description: err.message || t("common.try.again"),
         variant: "destructive",
       });
     } finally {
@@ -105,7 +113,7 @@ const TryASession = () => {
               className="w-full h-48 md:h-56 object-cover"
             />
             <figcaption className="px-4 py-2.5 text-xs text-muted-foreground bg-muted/40 text-center">
-              A real Club Choir session in progress — that's exactly what you're walking into.
+              {t("try.preview.caption")}
             </figcaption>
           </figure>
         )}

@@ -37,16 +37,25 @@ const LOCATIONS = [
   { value: "Pointe-Claire – Thursday", label: "Pointe-Claire – Thursday" },
 ];
 
+const makeFormSchema = (t: (k: string) => string) =>
+  z.object({
+    memberName: z.string().trim().min(1, t("friend.validation.yourName")).max(100),
+    friendName: z.string().trim().min(1, t("friend.validation.friendName")).max(100),
+    friendEmail: z.string().trim().email(t("friend.validation.friendEmail")).max(255),
+    location: z.string().min(1, t("friend.validation.location")),
+    message: z
+      .string()
+      .trim()
+      .max(2000, t("friend.validation.messageMax"))
+      .optional(),
+  });
+
 const formSchema = z.object({
-  memberName: z.string().trim().min(1, "Your name is required").max(100),
-  friendName: z.string().trim().min(1, "Friend's name is required").max(100),
-  friendEmail: z.string().trim().email("Invalid email address").max(255),
-  location: z.string().min(1, "Please choose a location"),
-  message: z
-    .string()
-    .trim()
-    .max(2000, "Message must be under 2000 characters")
-    .optional(),
+  memberName: z.string(),
+  friendName: z.string(),
+  friendEmail: z.string(),
+  location: z.string(),
+  message: z.string().optional(),
 });
 
 type BringAFriendForm = z.infer<typeof formSchema>;
@@ -92,7 +101,7 @@ const BringAFriend = () => {
   }, [members, membersLoading, isAdmin, adminLoading]);
 
   const form = useForm<BringAFriendForm>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(makeFormSchema(t)),
     defaultValues: { memberName: userDisplayName, friendName: "", friendEmail: "", location: "", message: "" },
   });
 
@@ -116,9 +125,9 @@ const BringAFriend = () => {
       });
       if (error) throw error;
       setSent(true);
-      toast({ title: "Request sent!", description: "We'll be in touch with your friend soon." });
+      toast({ title: t("friend.toast.sent.title"), description: t("friend.toast.sent.desc") });
     } catch (err: any) {
-      toast({ title: "Something went wrong", description: err.message || "Please try again later.", variant: "destructive" });
+      toast({ title: t("common.something.wrong"), description: err.message || t("common.try.again"), variant: "destructive" });
     } finally {
       setSending(false);
     }

@@ -68,7 +68,7 @@ const Resources = () => {
     audio: t("resources.recording"),
     lyrics: t("resources.lyrics"),
     sheet_music: t("resources.sheetMusic"),
-    slides: "Slides",
+    slides: t("resources.slides"),
   };
 
   const fetchResources = async () => {
@@ -76,12 +76,12 @@ const Resources = () => {
       const { data, error } = await supabase.from("song_resources").select("*").order("song_name", { ascending: true });
       if (error) {
         console.error("Fetch error:", error);
-        toast({ title: t("resources.error") || "Error", description: error.message, variant: "destructive" });
+        toast({ title: t("resources.error"), description: error.message, variant: "destructive" });
       }
       setResources((data as SongResource[]) || []);
     } catch (err) {
       console.error("Unexpected fetch error:", err);
-      toast({ title: "Error", description: "Failed to load resources.", variant: "destructive" });
+      toast({ title: t("common.error"), description: t("resources.toast.loadFail"), variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -100,10 +100,10 @@ const Resources = () => {
     const safeSongName = uploadSong.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9\s-]/g, "").replace(/\s+/g, "-").toLowerCase();
     const path = `songs/${safeSongName}/${uploadType}-${Date.now()}.${ext}`;
     const { error: storageError } = await supabase.storage.from("song-resources").upload(path, file);
-    if (storageError) { toast({ title: "Upload failed", description: storageError.message, variant: "destructive" }); setUploading(false); return; }
+    if (storageError) { toast({ title: t("resources.toast.uploadFail"), description: storageError.message, variant: "destructive" }); setUploading(false); return; }
     const { error: dbError } = await supabase.from("song_resources").insert({ song_name: uploadSong.trim(), resource_type: uploadType, file_name: file.name, storage_path: path, location: "all", uploaded_by: user.id });
-    if (dbError) { toast({ title: "Save failed", description: dbError.message, variant: "destructive" }); }
-    else { toast({ title: "Uploaded!", description: `${file.name} added to ${uploadSong.trim()}` }); setUploadSong(""); fetchResources(); }
+    if (dbError) { toast({ title: t("resources.toast.saveFail"), description: dbError.message, variant: "destructive" }); }
+    else { toast({ title: t("resources.toast.uploaded"), description: `${file.name} → ${uploadSong.trim()}` }); setUploadSong(""); fetchResources(); }
     setUploading(false);
     e.target.value = "";
   };
@@ -112,7 +112,7 @@ const Resources = () => {
     const { data: sessionData } = await supabase.auth.getSession();
     const token = sessionData?.session?.access_token;
     if (!token) {
-      toast({ title: "Download failed", description: "Please log in to download files.", variant: "destructive" });
+      toast({ title: t("resources.toast.downloadFail"), description: t("resources.toast.loginToDownload"), variant: "destructive" });
       return null;
     }
     const res = await fetch(
@@ -129,7 +129,7 @@ const Resources = () => {
     );
     const result = await res.json();
     if (!res.ok || !result.signedUrl) {
-      toast({ title: "Download failed", description: result.error || "Could not generate download link.", variant: "destructive" });
+      toast({ title: t("resources.toast.downloadFail"), description: result.error || t("resources.toast.cantGenerate"), variant: "destructive" });
       return null;
     }
     return result.signedUrl;
@@ -153,7 +153,7 @@ const Resources = () => {
       setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
     } catch (err) {
       console.error("Unexpected download error:", err);
-      toast({ title: "Download failed", description: "Could not download file.", variant: "destructive" });
+      toast({ title: t("resources.toast.downloadFail"), description: t("resources.toast.cantDownload"), variant: "destructive" });
     }
   };
 
@@ -190,17 +190,17 @@ const Resources = () => {
       setPlayingId(resource.id);
     } catch (err) {
       console.error("Playback error:", err);
-      toast({ title: "Playback failed", description: "Could not play audio.", variant: "destructive" });
+      toast({ title: t("resources.toast.playFail"), description: t("resources.toast.cantPlay"), variant: "destructive" });
     } finally {
       setAudioLoading(null);
     }
   };
 
   const handleDelete = async (resource: SongResource) => {
-    if (!confirm(`Delete ${resource.file_name}?`)) return;
+    if (!confirm(t("resources.deleteConfirm").replace("{name}", resource.file_name))) return;
     await supabase.storage.from("song-resources").remove([resource.storage_path]);
     await supabase.from("song_resources").delete().eq("id", resource.id);
-    toast({ title: "Deleted", description: resource.file_name });
+    toast({ title: t("resources.toast.deleted"), description: resource.file_name });
     fetchResources();
   };
 
@@ -238,7 +238,7 @@ const Resources = () => {
             onClick={() => window.history.back()}
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Schedule
+            <ArrowLeft className="w-4 h-4" /> {t("resources.backToSchedule")}
           </button>
         )}
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">{t("resources.title")}</h1>
@@ -259,7 +259,7 @@ const Resources = () => {
               <div className="mt-4 rounded-2xl border border-border bg-card p-5 space-y-3 max-w-md">
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t("resources.songName")}</label>
-                  <input type="text" value={uploadSong} onChange={(e) => setUploadSong(e.target.value)} placeholder="e.g. Bohemian Rhapsody"
+                  <input type="text" value={uploadSong} onChange={(e) => setUploadSong(e.target.value)} placeholder={t("resources.songNamePlaceholder")}
                     className="w-full rounded-xl border border-input bg-background px-4 py-2 text-sm text-foreground" />
                 </div>
                 <div>
@@ -269,14 +269,14 @@ const Resources = () => {
                     <option value="audio">{t("resources.recording")}</option>
                     <option value="lyrics">{t("resources.lyrics")}</option>
                     <option value="sheet_music">{t("resources.sheetMusic")}</option>
-                    <option value="slides">Slides</option>
+                    <option value="slides">{t("resources.slides")}</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-1">{t("resources.file")}</label>
                   <input type="file" onChange={handleUpload} disabled={uploading || !uploadSong.trim()} accept=".mp3,.wav,.m4a,.pdf,.txt,.doc,.docx,.pptx,.ppt,.key"
                     className="w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
-                  {uploading && <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Uploading…</p>}
+                  {uploading && <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> {t("resources.uploading")}</p>}
                 </div>
               </div>
             )}
@@ -313,7 +313,7 @@ const Resources = () => {
                               <button
                                 onClick={() => handlePlay(r)}
                                 className={`p-2 rounded-xl ${config.text} hover:bg-background/60 transition-colors`}
-                                title={playingId === r.id ? "Pause" : "Play"}
+                                title={playingId === r.id ? t("resources.pause") : t("resources.play")}
                                 disabled={audioLoading === r.id}
                               >
                                 {audioLoading === r.id ? (
@@ -328,7 +328,7 @@ const Resources = () => {
                             <button
                               onClick={() => handleDownload(r)}
                               className={`p-2 rounded-xl ${config.text} hover:bg-background/60 transition-colors`}
-                              title="Download"
+                              title={t("resources.download")}
                             >
                               <Download className="w-5 h-5" />
                             </button>
@@ -336,7 +336,7 @@ const Resources = () => {
                               <button
                                 onClick={() => handleDelete(r)}
                                 className="p-2 rounded-xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-                                title="Delete"
+                                title={t("common.delete")}
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
