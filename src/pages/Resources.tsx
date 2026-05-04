@@ -313,7 +313,7 @@ const Resources = () => {
                               <button
                                 onClick={() => handlePlay(r)}
                                 className={`p-2 rounded-xl ${config.text} hover:bg-background/60 transition-colors`}
-                                title={playingId === r.id ? "Pause" : "Play"}
+                                title={playingId === r.id ? t("resources.pause") : t("resources.play")}
                                 disabled={audioLoading === r.id}
                               >
                                 {audioLoading === r.id ? (
