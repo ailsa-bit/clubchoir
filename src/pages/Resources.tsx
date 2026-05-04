@@ -100,10 +100,10 @@ const Resources = () => {
     const safeSongName = uploadSong.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9\s-]/g, "").replace(/\s+/g, "-").toLowerCase();
     const path = `songs/${safeSongName}/${uploadType}-${Date.now()}.${ext}`;
     const { error: storageError } = await supabase.storage.from("song-resources").upload(path, file);
-    if (storageError) { toast({ title: "Upload failed", description: storageError.message, variant: "destructive" }); setUploading(false); return; }
+    if (storageError) { toast({ title: t("resources.toast.uploadFail"), description: storageError.message, variant: "destructive" }); setUploading(false); return; }
     const { error: dbError } = await supabase.from("song_resources").insert({ song_name: uploadSong.trim(), resource_type: uploadType, file_name: file.name, storage_path: path, location: "all", uploaded_by: user.id });
-    if (dbError) { toast({ title: "Save failed", description: dbError.message, variant: "destructive" }); }
-    else { toast({ title: "Uploaded!", description: `${file.name} added to ${uploadSong.trim()}` }); setUploadSong(""); fetchResources(); }
+    if (dbError) { toast({ title: t("resources.toast.saveFail"), description: dbError.message, variant: "destructive" }); }
+    else { toast({ title: t("resources.toast.uploaded"), description: `${file.name} → ${uploadSong.trim()}` }); setUploadSong(""); fetchResources(); }
     setUploading(false);
     e.target.value = "";
   };
