@@ -98,9 +98,11 @@ const Community = () => {
           <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
             {t("community.title")}
           </h1>
-          <p className="text-muted-foreground">
-            {baseMembers.length} {baseMembers.length === 1 ? t("community.member") : t("community.members")} · {locations.length} {t("community.locationsCount")}
-          </p>
+          {isAdmin && (
+            <p className="text-muted-foreground">
+              {baseMembers.length} {baseMembers.length === 1 ? t("community.member") : t("community.members")} · {locations.length} {t("community.locationsCount")}
+            </p>
+          )}
           {isAdmin && (
             <Link to="/manage-members">
               <Button variant="outline" size="sm" className="mt-3">
@@ -146,9 +148,11 @@ const Community = () => {
           )}
         </div>
 
-        <p className="text-sm text-muted-foreground mb-3">
-          {t("community.showing")} {filtered.length} {filtered.length !== 1 ? t("community.members") : t("community.member")}
-        </p>
+        {isAdmin && (
+          <p className="text-sm text-muted-foreground mb-3">
+            {t("community.showing")} {filtered.length} {filtered.length !== 1 ? t("community.members") : t("community.member")}
+          </p>
+        )}
 
         {loading || adminLoading ? (
           <div className="text-center py-12 text-muted-foreground">{t("community.loading")}</div>
@@ -158,9 +162,11 @@ const Community = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t("community.member")}</TableHead>
-                  <TableHead className="hidden sm:table-cell">
-                    <div className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {t("community.tableLocation")}</div>
-                  </TableHead>
+                  {isAdmin && (
+                    <TableHead className="hidden sm:table-cell">
+                      <div className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {t("community.tableLocation")}</div>
+                    </TableHead>
+                  )}
                   <TableHead>{t("community.tableStatus")}</TableHead>
                   {isAdmin && <TableHead className="hidden md:table-cell">{t("community.tableJoined")}</TableHead>}
                   {isAdmin && <TableHead className="hidden md:table-cell">{t("community.tablePayment")}</TableHead>}
@@ -179,7 +185,9 @@ const Community = () => {
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="hidden sm:table-cell text-muted-foreground text-sm">{m.location}</TableCell>
+                    {isAdmin && (
+                      <TableCell className="hidden sm:table-cell text-muted-foreground text-sm">{m.location}</TableCell>
+                    )}
                     <TableCell>
                       <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColors[m.status] || ""}`}>{m.status}</Badge>
                     </TableCell>
