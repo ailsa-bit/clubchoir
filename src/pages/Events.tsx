@@ -67,7 +67,7 @@ const Events = () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
-        toast.error(language === "fr" ? "Veuillez vous connecter pour vous inscrire." : "Please log in to register.");
+        toast.error(t("events.loginRegister"));
         setLoading(false);
         return;
       }
