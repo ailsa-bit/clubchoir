@@ -109,6 +109,18 @@ const PopupReservations = () => {
     setBusyId(null);
   };
 
+  const deleteReservation = async (r: Reservation) => {
+    setBusyId(r.id);
+    const { error } = await supabase.from("popup_ticket_reservations").delete().eq("id", r.id);
+    if (error) {
+      toast({ title: "Error deleting", description: error.message, variant: "destructive" });
+    } else {
+      setRows((prev) => prev.filter((x) => x.id !== r.id));
+      toast({ title: "Reservation cancelled" });
+    }
+    setBusyId(null);
+  };
+
   if (adminLoading || loading) {
     return (
       <div className="flex items-center justify-center py-20">
