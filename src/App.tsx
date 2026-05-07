@@ -63,6 +63,7 @@ const App = () => (
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/hudson-session" element={<HudsonSession />} />
             <Route path="/popup/studio-77" element={<PopupStudio77 />} />
+            <Route path="/popup-reservations" element={<PopupReservations />} />
             <Route path="/about" element={<About />} />
             
             <Route path="*" element={<NotFound />} />
