@@ -86,7 +86,10 @@ serve(async (req) => {
       if (updErr) console.error("token update err", updErr);
     }
 
-    const checkinUrl = `${SITE_URL}/checkin/${ticketToken}`;
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    // Use a backend redirect URL so the QR keeps working even if the frontend
+    // hasn't been republished with the /checkin/:token route yet.
+    const checkinUrl = `${supabaseUrl}/functions/v1/popup-ticket-redirect/${ticketToken}`;
     const qrDataUrl = await QRCode.toDataURL(checkinUrl, { width: 400, margin: 2 });
 
     const resendKey = Deno.env.get("RESEND_API_KEY");

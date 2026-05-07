@@ -1,52 +1,27 @@
-# Paid confirmation email with QR code ticket
+I found that the ticket email QR code is currently hardcoded to `https://clubchoir.ca/checkin/<token>`. The live custom domain is returning the app’s 404 page for that route right now, while the current preview code does contain the `/checkin/:token` route. To make this robust immediately, I’ll update the QR/ticket flow so scanned links go through a backend redirect that is already live automatically, instead of relying on whether the public frontend has been updated yet.
 
-When an admin marks a pop-up reservation as paid on `/popup-reservations`, the attendee will automatically receive a thank-you email containing a QR code that can be scanned at the venue door to validate their ticket.
+Plan:
+1. Add a new backend function for ticket redirects
+   - Create a `popup-ticket-redirect` backend function.
+   - It will accept a ticket token from the URL query string.
+   - If the token exists in `popup_ticket_reservations`, it redirects to the app’s `/checkin/<token>` page.
+   - If the token is missing or invalid, it returns a clear “Ticket not found” message instead of a confusing blank/404 state.
 
-## How it will work
+2. Update QR code generation
+   - Change `notify-popup-paid` so future QR codes point to the redirect URL instead of directly to `clubchoir.ca/checkin/<token>`.
+   - Keep the visible fallback link in the email aligned with the QR code.
+   - This means newly resent ticket emails will scan correctly without depending on custom-domain route freshness.
 
-1. Admin clicks "Mark paid" on `/popup-reservations`.
-2. The app sets `payment_received = true` in the database.
-3. A new edge function `notify-popup-paid` fires, which:
-   - Generates a unique ticket token for the reservation (stored in DB so it can be re-validated later).
-   - Builds a QR code image encoding a check-in URL (e.g. `https://clubchoir.ca/checkin/<token>`).
-   - Sends a branded email via Resend to the attendee with the QR inline + event details.
-4. (Optional, included) A simple `/checkin/:token` page admins can open on their phone that looks up the reservation, shows attendee name + ticket count, and lets them mark as "checked in".
+3. Improve the admin check-in page error handling
+   - Keep the existing guard for placeholder tokens like `/checkin/:token`.
+   - Add friendlier wording for genuinely missing/deleted/cancelled tickets.
+   - Prevent a failed lookup from feeling like the app crashed.
 
-## Email contents
+4. Add a quick admin-facing direct link in reservations
+   - Add an “Open check-in” link/button beside paid reservations that already have a ticket token.
+   - This gives you a way to verify a ticket/check-in page from the reservations list without scanning the QR.
 
-- Friendly thank-you ("Thanks, Jane! Your spot at Studio 77 is locked in 🎶")
-- Event name, date, time, venue, address
-- Ticket count and amount paid
-- Large QR code (PNG embedded as base64)
-- Plain-text fallback link to the check-in URL
-- Reply-to: ailsa@clubchoir.ca
-
-## Database changes
-
-Add two columns to `popup_ticket_reservations`:
-- `ticket_token` (text, unique) — random secure token used by the QR
-- `checked_in_at` (timestamptz, nullable) — set when scanned at the door
-- `paid_email_sent_at` (timestamptz, nullable) — prevents duplicate sends
-
-Add an RLS policy so anyone with a valid token can read minimal reservation info via the check-in edge function (we'll do the lookup server-side using the service role to keep tokens safe — no broad public read policy needed).
-
-## Files to create / change
-
-**New:**
-- `supabase/functions/notify-popup-paid/index.ts` — generates token if missing, builds QR (using `qrcode` npm package), sends email via Resend, marks `paid_email_sent_at`.
-- `src/pages/CheckIn.tsx` — admin-only page that reads `:token` from URL, calls a new `popup-checkin-lookup` edge function, displays attendee details + "Mark checked in" button.
-- `supabase/functions/popup-checkin-lookup/index.ts` — admin-only function that takes a token, returns reservation info, and can flip `checked_in_at`.
-
-**Modified:**
-- `src/pages/PopupReservations.tsx` — when toggling to paid, invoke `notify-popup-paid`. Show small badge if `checked_in_at` is set. Show "Resend ticket email" button for already-paid rows.
-- `src/App.tsx` — register `/checkin/:token` route.
-
-## Technical notes
-
-- QR uses the `qrcode` npm library (`npm:qrcode@1.5.3`) inside the edge function to produce a base64 PNG data URL embedded in the email HTML via `<img src="data:image/png;base64,...">`. Resend supports inline images this way reliably.
-- Token = `crypto.randomUUID()` — sufficient entropy, URL-safe.
-- Email is idempotent: if `paid_email_sent_at` is already set, the function skips sending unless an explicit `resend: true` flag is passed (used by the "Resend ticket email" button).
-- Check-in page is gated by `useAdmin()`.
-- All event metadata (name, date, venue) reuses the existing `EVENTS` map from `notify-popup-reservation/index.ts` — extracted into a shared spot or duplicated in the new function (duplicated for simplicity, only one event right now).
-
-Approve to proceed.
+5. Verify after implementation
+   - Confirm the generated QR target no longer hardcodes only the broken direct route.
+   - Test the redirect function with an existing valid ticket token from the reservation data.
+   - Check that an invalid token gives a clear message instead of a 404 page.
