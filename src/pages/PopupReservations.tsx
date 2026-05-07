@@ -5,7 +5,18 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Ticket, CheckCircle2, Circle, Mail, UserCheck } from "lucide-react";
+import { Loader2, Ticket, CheckCircle2, Circle, Mail, UserCheck, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Reservation {
   id: string;
@@ -98,6 +109,18 @@ const PopupReservations = () => {
     setBusyId(null);
   };
 
+  const deleteReservation = async (r: Reservation) => {
+    setBusyId(r.id);
+    const { error } = await supabase.from("popup_ticket_reservations").delete().eq("id", r.id);
+    if (error) {
+      toast({ title: "Error deleting", description: error.message, variant: "destructive" });
+    } else {
+      setRows((prev) => prev.filter((x) => x.id !== r.id));
+      toast({ title: "Reservation cancelled" });
+    }
+    setBusyId(null);
+  };
+
   if (adminLoading || loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -137,6 +160,7 @@ const PopupReservations = () => {
                     <th className="p-3 text-left font-medium text-muted-foreground">Owed</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Payment</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Ticket / Check-in</th>
+                    <th className="p-3 text-right font-medium text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,6 +209,29 @@ const PopupReservations = () => {
                             </Button>
                           )}
                         </div>
+                      </td>
+                      <td className="p-3 text-right">
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="ghost" className="h-7 text-[11px] text-destructive hover:text-destructive" disabled={busyId === r.id}>
+                              <Trash2 className="w-3 h-3 mr-1" /> Cancel
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Cancel this reservation?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will permanently delete {r.first_name} {r.last_name}'s reservation ({r.ticket_count} ticket{r.ticket_count > 1 ? "s" : ""}). This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Keep it</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => deleteReservation(r)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                Delete reservation
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </td>
                     </tr>
                   ))}
