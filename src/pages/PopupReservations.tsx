@@ -210,6 +210,29 @@ const PopupReservations = () => {
                           )}
                         </div>
                       </td>
+                      <td className="p-3 text-right">
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="ghost" className="h-7 text-[11px] text-destructive hover:text-destructive" disabled={busyId === r.id}>
+                              <Trash2 className="w-3 h-3 mr-1" /> Cancel
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Cancel this reservation?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This will permanently delete {r.first_name} {r.last_name}'s reservation ({r.ticket_count} ticket{r.ticket_count > 1 ? "s" : ""}). This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Keep it</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => deleteReservation(r)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                Delete reservation
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
