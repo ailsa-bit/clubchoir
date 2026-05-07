@@ -160,6 +160,7 @@ const PopupReservations = () => {
                     <th className="p-3 text-left font-medium text-muted-foreground">Owed</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Payment</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Ticket / Check-in</th>
+                    <th className="p-3 text-right font-medium text-muted-foreground">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
