@@ -29,6 +29,7 @@ import Subscribe from "./pages/Subscribe";
 import HudsonSession from "./pages/HudsonSession";
 import PopupStudio77 from "./pages/PopupStudio77";
 import PopupReservations from "./pages/PopupReservations";
+import CheckIn from "./pages/CheckIn";
 import About from "./pages/About";
 
 const queryClient = new QueryClient();
@@ -64,6 +65,7 @@ const App = () => (
             <Route path="/hudson-session" element={<HudsonSession />} />
             <Route path="/popup/studio-77" element={<PopupStudio77 />} />
             <Route path="/popup-reservations" element={<PopupReservations />} />
+            <Route path="/checkin/:token" element={<CheckIn />} />
             <Route path="/about" element={<About />} />
             
             <Route path="*" element={<NotFound />} />

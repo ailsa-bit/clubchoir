@@ -1,69 +1,52 @@
-## Why text feels small & why the page doesn't fill the screen
+# Paid confirmation email with QR code ticket
 
-I looked at your homepage code and the global styles. Both issues are real and have clean fixes.
+When an admin marks a pop-up reservation as paid on `/popup-reservations`, the attendee will automatically receive a thank-you email containing a QR code that can be scanned at the venue door to validate their ticket.
 
-### 1. Why the fonts feel small
+## How it will work
 
-Most body copy on the homepage uses Tailwind's `text-sm` (14px) or `text-xs` (12px) — for example testimonials, FAQ answers, the session cards, the "$280" line, and the small CTA captions. That's noticeably below the 16–17px most modern sites use for body text. Headings are fine; it's the supporting copy that's the problem.
+1. Admin clicks "Mark paid" on `/popup-reservations`.
+2. The app sets `payment_received = true` in the database.
+3. A new edge function `notify-popup-paid` fires, which:
+   - Generates a unique ticket token for the reservation (stored in DB so it can be re-validated later).
+   - Builds a QR code image encoding a check-in URL (e.g. `https://clubchoir.ca/checkin/<token>`).
+   - Sends a branded email via Resend to the attendee with the QR inline + event details.
+4. (Optional, included) A simple `/checkin/:token` page admins can open on their phone that looks up the reservation, shows attendee name + ticket count, and lets them mark as "checked in".
 
-### 2. Why the desktop layout doesn't take the full width
+## Email contents
 
-Two reasons stack together:
+- Friendly thank-you ("Thanks, Jane! Your spot at Studio 77 is locked in 🎶")
+- Event name, date, time, venue, address
+- Ticket count and amount paid
+- Large QR code (PNG embedded as base64)
+- Plain-text fallback link to the check-in URL
+- Reply-to: ailsa@clubchoir.ca
 
-- Every section is wrapped in `container mx-auto max-w-6xl` (or `max-w-4xl`, `max-w-3xl`, `max-w-2xl`). `max-w-6xl` = 1152px. Tailwind's `container` is also capped at 1400px at the `2xl` breakpoint. So even on a big monitor, content stops well before the edges.
-- A leftover `src/App.css` exists with `#root { max-width: 1280px; padding: 2rem; text-align: center; }`. It is **not** currently imported (so it isn't actually constraining anything today), but it's misleading dead code I'll remove so it doesn't accidentally get pulled back in.
+## Database changes
 
-A little side margin on desktop is normal and good for readability — but right now the cap is conservative and the visual breathing room feels excessive on wider screens.
+Add two columns to `popup_ticket_reservations`:
+- `ticket_token` (text, unique) — random secure token used by the QR
+- `checked_in_at` (timestamptz, nullable) — set when scanned at the door
+- `paid_email_sent_at` (timestamptz, nullable) — prevents duplicate sends
 
----
+Add an RLS policy so anyone with a valid token can read minimal reservation info via the check-in edge function (we'll do the lookup server-side using the service role to keep tokens safe — no broad public read policy needed).
 
-## Proposed fixes
+## Files to create / change
 
-### A. Bump up readable text size globally
+**New:**
+- `supabase/functions/notify-popup-paid/index.ts` — generates token if missing, builds QR (using `qrcode` npm package), sends email via Resend, marks `paid_email_sent_at`.
+- `src/pages/CheckIn.tsx` — admin-only page that reads `:token` from URL, calls a new `popup-checkin-lookup` edge function, displays attendee details + "Mark checked in" button.
+- `supabase/functions/popup-checkin-lookup/index.ts` — admin-only function that takes a token, returns reservation info, and can flip `checked_in_at`.
 
-Set the `body` base size to ~17px in `src/index.css` so every `text-sm`, `text-base`, etc. scales up together. This is the single highest-impact change — you don't have to hunt through every page.
+**Modified:**
+- `src/pages/PopupReservations.tsx` — when toggling to paid, invoke `notify-popup-paid`. Show small badge if `checked_in_at` is set. Show "Resend ticket email" button for already-paid rows.
+- `src/App.tsx` — register `/checkin/:token` route.
 
-```css
-/* src/index.css — inside @layer base { body { ... } } */
-body {
-  @apply bg-background text-foreground;
-  font-family: var(--font-body);
-  font-size: 17px;       /* was browser default 16px */
-  line-height: 1.6;
-}
-```
+## Technical notes
 
-Then on the homepage I'll lift the smallest copy a notch where it matters most:
-- Testimonial body: `text-sm` → `text-base`
-- FAQ answers: keep `text-base` (currently inherits, will now be 17px)
-- Session card venue line: `text-xs` → `text-sm`
-- Pricing line ($280): `text-sm` → `text-base`
-- Footer + nav links in `Layout.tsx`: bump `text-sm` → `text-base` on desktop
+- QR uses the `qrcode` npm library (`npm:qrcode@1.5.3`) inside the edge function to produce a base64 PNG data URL embedded in the email HTML via `<img src="data:image/png;base64,...">`. Resend supports inline images this way reliably.
+- Token = `crypto.randomUUID()` — sufficient entropy, URL-safe.
+- Email is idempotent: if `paid_email_sent_at` is already set, the function skips sending unless an explicit `resend: true` flag is passed (used by the "Resend ticket email" button).
+- Check-in page is gated by `useAdmin()`.
+- All event metadata (name, date, venue) reuses the existing `EVENTS` map from `notify-popup-reservation/index.ts` — extracted into a shared spot or duplicated in the new function (duplicated for simplicity, only one event right now).
 
-### B. Widen the desktop layout
-
-Two-part change:
-1. Raise the Tailwind container cap from 1400px to 1600px in `tailwind.config.ts` so wide monitors get more usable space.
-2. On the homepage, change the main sections from `max-w-6xl` (1152px) → `max-w-7xl` (1280px). I'll leave the FAQ at `max-w-3xl` and the newsletter card at `max-w-2xl` because narrow text columns are easier to read — widening those would actually hurt readability.
-
-### C. Clean up dead CSS
-
-Delete `src/App.css` since it isn't imported and its rules (`max-width: 1280px`, `text-align: center`, `padding: 2rem`) would conflict with the layout if anyone re-added the import.
-
----
-
-## Files I'll touch
-
-- `src/index.css` — set body font-size to 17px and line-height 1.6
-- `tailwind.config.ts` — bump `2xl` container screen from 1400px to 1600px
-- `src/pages/Index.tsx` — widen sections to `max-w-7xl`, bump small text on testimonials/cards/pricing
-- `src/components/Layout.tsx` — slightly larger nav + footer text on desktop
-- `src/App.css` — delete (unused)
-
-## What I'll leave alone
-
-- Headings — already well-sized
-- FAQ text column and newsletter card — staying narrow on purpose for readability
-- Color, brand voice, and overall layout structure
-
-After this, body copy will feel comfortably readable (closer to what you'd expect on a polished site), and the homepage will use noticeably more of the screen on desktops without sprawling so wide it becomes hard to scan.
+Approve to proceed.

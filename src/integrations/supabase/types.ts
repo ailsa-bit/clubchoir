@@ -212,6 +212,7 @@ export type Database = {
       }
       popup_ticket_reservations: {
         Row: {
+          checked_in_at: string | null
           created_at: string
           email: string
           event_slug: string
@@ -219,11 +220,14 @@ export type Database = {
           id: string
           last_name: string
           notes: string | null
+          paid_email_sent_at: string | null
           payment_received: boolean
           ticket_count: number
+          ticket_token: string | null
           updated_at: string
         }
         Insert: {
+          checked_in_at?: string | null
           created_at?: string
           email: string
           event_slug: string
@@ -231,11 +235,14 @@ export type Database = {
           id?: string
           last_name: string
           notes?: string | null
+          paid_email_sent_at?: string | null
           payment_received?: boolean
           ticket_count: number
+          ticket_token?: string | null
           updated_at?: string
         }
         Update: {
+          checked_in_at?: string | null
           created_at?: string
           email?: string
           event_slug?: string
@@ -243,8 +250,10 @@ export type Database = {
           id?: string
           last_name?: string
           notes?: string | null
+          paid_email_sent_at?: string | null
           payment_received?: boolean
           ticket_count?: number
+          ticket_token?: string | null
           updated_at?: string
         }
         Relationships: []
