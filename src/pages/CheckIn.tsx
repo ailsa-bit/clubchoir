@@ -23,13 +23,19 @@ const CheckIn = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const hasUsableToken = Boolean(token && token.trim() && !token.startsWith(":"));
   const [loading, setLoading] = useState(true);
   const [reservation, setReservation] = useState<Reservation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [checking, setChecking] = useState(false);
 
   const lookup = async (action?: "check_in") => {
-    if (!token) return;
+    if (!hasUsableToken) {
+      setReservation(null);
+      setError("Open a ticket link from the QR code or resend the ticket from reservations.");
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError(null);
     const { data, error: invErr } = await supabase.functions.invoke("popup-checkin-lookup", {
@@ -80,6 +86,11 @@ const CheckIn = () => {
           <div className="rounded-xl border-2 border-destructive/30 bg-destructive/5 p-6 text-center">
             <XCircle className="w-12 h-12 text-destructive mx-auto mb-3" />
             <p className="font-semibold text-foreground">{error}</p>
+            {!hasUsableToken && (
+              <Button className="mt-4" variant="outline" onClick={() => navigate("/popup-reservations")}>
+                Open reservations
+              </Button>
+            )}
           </div>
         )}
 
