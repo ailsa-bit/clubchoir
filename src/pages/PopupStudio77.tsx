@@ -113,13 +113,38 @@ const PopupStudio77 = () => {
         <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
           <p className="text-muted-foreground leading-relaxed mb-3">
             {isFr
-              ? "Cet événement est pour quiconque aime chanter — aucune expérience requise."
-              : "This is for anyone who loves to sing — no experience needed."}
+              ? "Cet événement est pour quiconque aime chanter !"
+              : "This is for anyone who loves to sing!"}
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            {isFr
+              ? "Joignez-vous à Ailsa et Gary pour une expérience spéciale de Chorale Pop-Up de 2 heures où le public devient la chorale."
+              : "Join Ailsa and Gary for a special 2-hour Pop-Up Choir experience where the audience becomes the choir."}
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            {isFr
+              ? "En une seule soirée, nous vous apprendrons une chanson à partir de zéro dans une ambiance détendue, accueillante et vraiment amusante."
+              : "In just one evening, we'll teach you a song from scratch in a relaxed, welcoming, and genuinely fun atmosphere."}
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            {isFr
+              ? "Que vous ayez chanté dans une chorale il y a des années ou que vous chantiez seulement dans la voiture quand personne n'écoute, vous serez surpris de voir à quelle vitesse une salle pleine d'inconnus peut se transformer en quelque chose qui sonne plutôt incroyable."
+              : "Whether you sang in a choir years ago or only sing in the car when nobody's listening, you'll be surprised how quickly a room full of strangers can turn into something that sounds pretty incredible."}
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            {isFr
+              ? "Ailsa guidera le groupe étape par étape pendant que Gary White donnera vie à la musique, et avant même de vous en rendre compte, vous chanterez en harmonie comme une grande chorale."
+              : "Ailsa will guide the group step by step while Gary White brings the music to life, and before you know it, you'll be singing in harmony together as one big choir."}
+          </p>
+          <p className="text-muted-foreground leading-relaxed mb-3">
+            {isFr
+              ? "C'est joyeux, exaltant, un peu chaotique et très amusant."
+              : "It's joyful, uplifting, a little chaotic, and a lot of fun."}
           </p>
           <p className="text-muted-foreground leading-relaxed">
             {isFr
-              ? "Nous apprendrons une chanson ensemble dans une ambiance détendue et accueillante, et à la fin, vous chanterez en harmonie avec le groupe."
-              : "We'll learn a song together in a relaxed, welcoming space, and by the end, you'll be singing in harmony with the group."}
+              ? "Venez seul ou amenez un ami, tout le monde est bienvenu !"
+              : "Come by yourself or bring a friend, everyone is welcome!"}
           </p>
         </div>
 
