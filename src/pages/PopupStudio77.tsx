@@ -144,7 +144,7 @@ const PopupStudio77 = () => {
             He regularly plays pubs, restaurants, and private events, tailoring each set to the crowd — from Gen Z to Golden Agers — and is especially skilled at adapting to the unique dynamics of community groups, including those with special needs. Gary can also support events as a host or step in as a budget-friendly DJ.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            Gary and Ailsa first worked together in the summer of 2025, and he officially joined the Club Choir team in January 2026. Fun fact: Gary plays the guitar upside-down.
+            Gary and <Link to="/about" className="text-primary font-medium hover:underline">Ailsa</Link> first worked together in the summer of 2025, and he officially joined the Club Choir team in January 2026. Fun fact: Gary plays the guitar upside-down.
           </p>
         </div>
 
