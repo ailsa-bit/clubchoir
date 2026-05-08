@@ -123,8 +123,8 @@ const PopupStudio77 = () => {
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
             {isFr
-              ? "En une seule soirée, nous vous apprendrons une chanson à partir de zéro dans une ambiance détendue, accueillante et vraiment amusante."
-              : "In just one evening, we'll teach you a song from scratch in a relaxed, welcoming, and genuinely fun atmosphere."}
+              ? "En un seul après-midi, nous vous apprendrons une chanson à partir de zéro dans une ambiance détendue, accueillante et vraiment amusante."
+              : "In just one afternoon, we'll teach you a song from scratch in a relaxed, welcoming, and genuinely fun atmosphere."}
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
             {isFr
