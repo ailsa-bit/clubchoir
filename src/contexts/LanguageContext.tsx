@@ -49,7 +49,6 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Home - Sessions
  "home.sessions.title": { en: "Where & When We Sing", fr: "Où et quand nous chantons" },
- "home.sessions.fallSoon": { en: "Fall Session dates coming soon", fr: "Les dates de la session d'automne seront bientôt annoncées" },
  "home.sessions.fall2026": { en: "Fall Session 2026", fr: "Session d'automne 2026" },
  "home.sessions.tbc": { en: "Dates to be confirmed", fr: "Dates à confirmer" },
   "home.sessions.pricing": { en: "per 14-week session · Winter session starting February · Fall session starting September", fr: "par session de 14 semaines · Session d'hiver débutant en février · Session d'automne débutant en septembre" },
@@ -273,10 +272,6 @@ const translations: Record<string, Record<Language, string>> = {
   "home.hero.eventsSummary": {
     en: "We're also excited to announce Fall 2026 session dates and locations, with choirs returning across the Greater Montreal area this September.",
     fr: "Nous sommes également ravis d'annoncer les dates et lieux de la session d'automne 2026, avec le retour des chorales dans la grande région de Montréal en septembre."
-  },
-  "home.hero.hudsonCaption": {
-    en: "Looking ahead, our new fall session dates are coming soon. Check back for details and find the location that works best for you.",
-    fr: "À venir : les dates de notre nouvelle session d'automne seront bientôt annoncées. Revenez consulter les détails et trouvez l'emplacement qui vous convient le mieux."
   },
 
   // Hudson Session page
