@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, Sparkles, Calendar, Users, Heart } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
-import founderPhoto from "@/assets/founder-ailsa.jpg";
+import founderPhoto from "@/assets/founder-ailsa.webp";
 
 const About = () => {
   return (
