@@ -47,7 +47,7 @@ const statusColors: Record<string, string> = {
   TRIAL: "bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30",
 };
 
-const PAST_SESSIONS = ["Winter 2025", "Fall 2025", "Winter 2026", "Summer 2026"] as const;
+const PAST_SESSIONS = ["Winter 2025", "Fall 2025", "Winter 2026"] as const;
 const UPCOMING_SESSION = "Fall 2026";
 
 const MemberDetail = () => {
