@@ -106,7 +106,7 @@ const Index = () => {
       </section>
 
       {/* Founder teaser */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
           <img
