@@ -62,7 +62,7 @@ const App = () => (
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/signed-up-users" element={<SignedUpUsers />} />
             <Route path="/subscribe" element={<Subscribe />} />
-            <Route path="/hudson-session" element={<HudsonSession />} />
+            
             <Route path="/popup/studio-77" element={<PopupStudio77 />} />
             <Route path="/popup-reservations" element={<PopupReservations />} />
             <Route path="/checkin/:token" element={<CheckIn />} />
