@@ -45,7 +45,7 @@ const Index = () => {
 
   return (
     <div>
-      <PageMeta title="Club Choir – Community Choir in Quebec" description="Join Club Choir – a fun, welcoming community choir. No audition required. Sing together at 5 locations across Quebec." path="/" />
+      <PageMeta title="Club Choir – No-Audition Community Choir in Montreal, Hudson, Pointe-Claire, Saint-Hubert & Arundel" description="Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel. Fall 2026 registration is open." path="/" />
       <section className="bg-gradient-hero py-16 lg:py-20 px-4">
         <div className="container mx-auto max-w-7xl">
           <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-12 items-center">
