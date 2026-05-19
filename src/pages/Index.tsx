@@ -112,16 +112,16 @@ const Index = () => {
           <img
             src={founderPhoto}
             alt="Ailsa Pehi, founder of Club Choir"
-            className="w-full h-full object-cover object-[right_25%] scale-x-[-1]"
+            className="w-full h-full object-cover object-[center_25%]"
             loading="lazy"
           />
-          {/* Readability overlay: darker on the left where text sits */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/25" />
+          {/* Readability overlay: darker on the right where text sits */}
+          <div className="absolute inset-0 bg-gradient-to-l from-foreground/85 via-foreground/65 to-foreground/25" />
           <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/30" />
         </div>
 
         <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="max-w-xl text-center md:text-left">
+          <div className="max-w-xl ml-auto text-center md:text-right">
             <p className="text-sm font-bold uppercase tracking-wider text-background/90 mb-2">Our Story</p>
             <h2 className="font-heading font-bold text-2xl md:text-3xl text-background mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
               Sing together. Laugh together. Learn together.
