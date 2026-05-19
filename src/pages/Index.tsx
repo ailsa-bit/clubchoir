@@ -77,9 +77,6 @@ const Index = () => {
                   {t("home.hero.upcomingEvents")}
                 </Link>
               </div>
-              <p className="text-base text-muted-foreground mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in lg:text-left text-center" style={{ animationDelay: "0.24s" }}>
-                {t("home.hero.hudsonCaption")}
-              </p>
             </div>
 
             {/* Right (lg+) / below CTAs (mobile): hero video */}
