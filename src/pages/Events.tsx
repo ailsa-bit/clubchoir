@@ -1,5 +1,5 @@
 import PageMeta from "@/components/PageMeta";
-import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft } from "lucide-react";
+import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -7,6 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import PhotoGallery from "@/components/PhotoGallery";
+import { porchfestPhotos } from "@/assets/photos/porchfest";
 
 
 const events = [
