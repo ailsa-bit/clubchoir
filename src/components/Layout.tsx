@@ -52,7 +52,10 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   { label: t("nav.thisWeek"), path: "/this-week", children: thisWeekChildren },
   { label: t("nav.community"), path: "/community" },
   { label: t("nav.chat"), path: "/chat" },
-  { label: t("nav.resources"), path: "/resources" }];
+  { label: t("nav.songs"), path: "/resources", children: [
+    { label: t("nav.songs.winter2026"), path: "/resources" },
+    { label: t("nav.songs.fall2026"), path: "/resources/fall-2026" },
+  ] }];
 
 
   const navItems: Array<{ label: string; path: string; children?: { label: string; path: string }[] }> =

@@ -18,6 +18,7 @@ import BringAFriend from "./pages/BringAFriend";
 import NotFound from "./pages/NotFound";
 import LocationSchedule from "./pages/LocationSchedule";
 import Resources from "./pages/Resources";
+import FallSongs from "./pages/FallSongs";
 import SendEmail from "./pages/SendEmail";
 import LocationChat from "./pages/LocationChat";
 import ManageMembers from "./pages/ManageMembers";
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="/events" element={<Events />} />
             <Route path="/register" element={<Register />} />
             <Route path="/resources" element={<ActiveMemberGate><Resources /></ActiveMemberGate>} />
+            <Route path="/resources/fall-2026" element={<ActiveMemberGate><FallSongs /></ActiveMemberGate>} />
             <Route path="/corporate" element={<Corporate />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
