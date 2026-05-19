@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Layout from "./components/Layout";
 import ActiveMemberGate from "./components/ActiveMemberGate";
@@ -71,6 +71,18 @@ const App = () => (
             <Route path="/popup-reservations" element={<PopupReservations />} />
             <Route path="/checkin/:token" element={<CheckIn />} />
             <Route path="/about" element={<About />} />
+
+            {/* SEO redirects for legacy indexed URLs */}
+            <Route path="/website-about-us" element={<Navigate to="/about" replace />} />
+            <Route path="/website-about-us/*" element={<Navigate to="/about" replace />} />
+            <Route path="/website-contact-us" element={<Navigate to="/about" replace />} />
+            <Route path="/website-contact-us/*" element={<Navigate to="/about" replace />} />
+            <Route path="/club-choir-page-sessions" element={<Navigate to="/register" replace />} />
+            <Route path="/club-choir-page-sessions/*" element={<Navigate to="/register" replace />} />
+            <Route path="/themed-events" element={<Navigate to="/events" replace />} />
+            <Route path="/themed-events/*" element={<Navigate to="/events" replace />} />
+            <Route path="/fr" element={<Navigate to="/" replace />} />
+            <Route path="/fr/*" element={<Navigate to="/" replace />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
