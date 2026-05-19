@@ -6,8 +6,8 @@ import PageMeta from "@/components/PageMeta";
 import HeroVideo from "@/components/HeroVideo";
 import PhotoGallery from "@/components/PhotoGallery";
 import { choirPhotos } from "@/assets/photos";
-import clubChoirWordmark from "@/assets/club-choir-wordmark.png";
-import founderPhoto from "@/assets/founder-ailsa.jpg";
+import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
+import founderPhoto from "@/assets/founder-ailsa.webp";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
@@ -54,8 +54,11 @@ const Index = () => {
               <img
                 src={clubChoirWordmark}
                 alt="Club Choir"
+                width="600"
+                height="240"
                 className="w-full max-w-[180px] sm:max-w-[220px] mx-auto lg:mx-0 mb-4 animate-fade-in"
                 loading="eager"
+                fetchPriority="high"
               />
               <p className="text-base text-muted-foreground mb-2 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
                 {t("home.hero.subtitle")}
