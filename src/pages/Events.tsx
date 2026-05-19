@@ -101,8 +101,37 @@ const Events = () => {
           {t("events.upcoming")}
         </h2>
 
+        {/* Fall 2026 Registration CTA */}
+        <Card className="mb-6 border-primary/30 bg-primary/5">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-primary mb-1">
+              <Music className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Inscriptions ouvertes" : "Registration open"}
+              </span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {language === "fr" ? "Session d'automne 2026" : "Fall 2026 Session"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Inscrivez-vous à l'une de nos chorales d'automne à Montréal, Hudson, Saint-Hubert, Pointe-Claire ou Arundel."
+                : "Sign up for one of our fall choirs in Montreal, Hudson, Saint-Hubert, Pointe-Claire, or Arundel."}
+            </p>
+            <div className="pt-2">
+              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-semibold">
+                <Link to="/register">
+                  <Music className="w-4 h-4 mr-1.5" />
+                  {language === "fr" ? "S'inscrire maintenant" : "Register now"}
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
-        {/* Studio 77 Pop-Up — bookable */}
+
         <Card className="mb-6 border-purple/30 bg-purple-light">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-purple mb-1">
