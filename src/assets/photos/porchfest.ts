@@ -21,6 +21,5 @@ export const porchfestPhotos: ChoirPhoto[] = [
   { id: "pf-guitar", wide: w6, tile: t6, alt: { en: "Guitarist accompanying Club Choir at NDG Porchfest", fr: "Guitariste accompagnant Club Choir au Porchfest NDG" }, tags: ["montreal", "performance"] },
   { id: "pf-crowd", wide: w7, tile: t7, alt: { en: "Club Choir surrounded by an audience at NDG Porchfest", fr: "Club Choir entouré d'un public au Porchfest NDG" }, tags: ["montreal", "performance", "atmosphere"] },
   { id: "pf-formation", wide: w8, tile: t8, alt: { en: "Full Club Choir in formation in front of the brick church at NDG Porchfest", fr: "Club Choir au complet en formation devant l'église en brique au Porchfest NDG" }, tags: ["montreal", "performance", "group"] },
-  { id: "pf-pink-shirt", wide: w9, tile: t9, alt: { en: "Club Choir director in a pink Club Choir tee waving hello", fr: "La directrice de Club Choir en t-shirt rose saluant" }, tags: ["montreal", "atmosphere"] },
   { id: "pf-hey-sign", wide: w10, tile: t10, alt: { en: "Volunteer holding a hand-painted 'Hey' sign welcoming people to NDG Porchfest", fr: "Bénévole tenant une affiche peinte à la main « Hey » accueillant les gens au Porchfest NDG" }, tags: ["montreal", "atmosphere"] },
 ];
