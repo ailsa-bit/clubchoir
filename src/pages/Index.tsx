@@ -138,9 +138,9 @@ const Index = () => {
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => {
-              const isHudson = item.location === "Hudson";
-              const to = isHudson ? "/hudson-session" : "/events";
+              const to = "/events";
               return (
+
                 <Link
                   key={item.location}
                   to={to}
