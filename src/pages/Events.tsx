@@ -170,12 +170,12 @@ const Events = () => {
           </CardContent>
         </Card>
 
-        {/* NDG PorchFest */}
+        {/* NDG PorchFest — recap */}
         <Card className="mb-6 border-pink/30 bg-pink-light">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-pink mb-1">
-              <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.communityPerf")}</span>
+              <CheckCircle2 className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.completedBadge")}</span>
             </div>
             <CardTitle className="text-xl font-heading">
               {t("events.porchfestTitle")}
@@ -192,11 +192,11 @@ const Events = () => {
             <p className="text-muted-foreground leading-relaxed">
               {t("events.porchfestDesc2")}
             </p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-pink" />
-                <span className="font-medium">Kensington Presbyterian Church, 6225 Av. Godfrey, {t("events.porchfestVenue")}</span>
-              </div>
+            <p className="text-muted-foreground leading-relaxed">
+              {t("events.porchfestDesc3")}
+            </p>
+            <div className="pt-2">
+              <PhotoGallery photos={porchfestPhotos} columns={3} />
             </div>
           </CardContent>
         </Card>
