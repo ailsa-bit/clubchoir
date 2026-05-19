@@ -7,11 +7,11 @@ const ThisWeek = () => {
   const { t } = useLanguage();
 
   const sessions = [
-    { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church", day: t("day.monday"), time: "7:00–8:30 PM", address: "6225 Av. Godfrey", dot: "bg-pink", bg: "bg-pink-light border-pink/20" },
-    { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub", day: t("day.monday"), time: "7:00–8:30 PM", address: "84 Cameron, Hudson, J0P 1H0", dot: "bg-orange", bg: "bg-orange-light border-orange/20" },
-    { location: "Arundel", slug: "arundel", venue: "Centre Arundel Centre", day: t("day.tuesday"), time: "6:30–8:00 PM", address: "17 rue du Village, Arundel", dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20" },
-    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church", day: t("day.wednesday"), time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20" },
-    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church", day: t("day.thursday"), time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire", dot: "bg-purple", bg: "bg-purple-light border-purple/20" },
+    { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church", day: t("day.monday"), time: "7:00–8:30 PM", address: "6225 Av. Godfrey", dot: "bg-pink", bg: "bg-pink-light border-pink/20", dates: "Sept 7 – Dec 7, 2026" },
+    { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub", day: t("day.monday"), time: "7:00–8:30 PM", address: "84 Cameron, Hudson, J0P 1H0", dot: "bg-orange", bg: "bg-orange-light border-orange/20", dates: "Sept 8 – Dec 8, 2026" },
+    { location: "Arundel", slug: "arundel", venue: "Centre Arundel Centre", day: t("day.tuesday"), time: "6:30–8:00 PM", address: "17 rue du Village, Arundel", dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20", dates: t("home.sessions.tbc") },
+    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church", day: t("day.wednesday"), time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20", dates: "Sept 9 – Dec 9, 2026" },
+    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church", day: t("day.thursday"), time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire", dot: "bg-purple", bg: "bg-purple-light border-purple/20", dates: "Sept 10 – Dec 10, 2026" },
   ];
 
   return (
@@ -32,6 +32,7 @@ const ThisWeek = () => {
                 <span className={`w-3 h-3 rounded-full ${s.dot}`} />
                 <h3 className="font-heading font-bold text-lg text-foreground">{s.location}</h3>
               </div>
+              <p className="text-sm font-semibold text-foreground mb-1">{s.dates}</p>
               <p className="text-sm font-medium text-foreground/80 mb-1">{s.venue}</p>
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{s.day} · {s.time}</span>
