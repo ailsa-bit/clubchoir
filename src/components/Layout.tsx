@@ -28,7 +28,6 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   }, []);
 
   const eventsChildren = [
-    { label: "Hudson Session", path: "/hudson-session" },
     { label: "Studio 77 Pop-Up Choir", path: "/popup/studio-77" },
     { label: "More...", path: "/events" },
   ];

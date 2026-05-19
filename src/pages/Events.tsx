@@ -8,15 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
-const hudsonSummer = {
-  location: "Hudson",
-  venue: "Kingfisher Pub",
-  address: "84 Cameron, Hudson, J0P 1H0",
-  day: { en: "Mondays", fr: "Lundis" },
-  time: "7:00–8:30 PM",
-  season: { en: "Summer 2026", fr: "Été 2026" },
-  dates: { en: "May 18 – August 17, 2026", fr: "18 mai – 17 août 2026" },
-};
 
 const events = [
   {
@@ -110,45 +101,6 @@ const Events = () => {
           {t("events.upcoming")}
         </h2>
 
-        {/* Hudson Summer Choir — bookable */}
-        <Card className="mb-6 border-orange/30 bg-orange-light">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-orange mb-1">
-              <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">
-                {t("events.summerOpen")}
-              </span>
-            </div>
-            <CardTitle className="text-xl font-heading">
-              {t("events.hudsonSummerTitle")}
-            </CardTitle>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
-              <Calendar className="w-4 h-4" />
-              <span>
-                {getText(hudsonSummer.dates, language)} · {getText(hudsonSummer.day, language)} · {hudsonSummer.time}
-              </span>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-muted-foreground leading-relaxed">
-              {t("events.hudsonSummerDesc")}
-            </p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-orange" />
-                <span className="font-medium">{hudsonSummer.venue}, {hudsonSummer.address}</span>
-              </div>
-            </div>
-            <div className="pt-3">
-              <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
-                <Link to="/hudson-session">
-                  <Music className="w-4 h-4 mr-1.5" />
-                  {t("events.reserveSpot")}
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Studio 77 Pop-Up — bookable */}
         <Card className="mb-6 border-purple/30 bg-purple-light">

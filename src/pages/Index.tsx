@@ -63,18 +63,8 @@ const Index = () => {
               <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
                 {t("home.hero.desc")}
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
-                <Link
-                  to="/hudson-session"
-                  className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-orange/90 hover:scale-[1.02] transition-all"
-                >
-                  <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-foreground text-background text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                    <Sparkles className="w-3 h-3" /> {t("home.hero.startingSoon")}
-                  </span>
-                  <Sparkles className="w-5 h-5" />
-                  {t("home.hero.reserveHudson")}
-                </Link>
-              </div>
+              <div className="hidden" />
+
               <p className="text-base text-muted-foreground mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
                 {t("home.hero.eventsSummary")}
               </p>
@@ -87,9 +77,6 @@ const Index = () => {
                   {t("home.hero.upcomingEvents")}
                 </Link>
               </div>
-              <p className="text-base text-muted-foreground mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in lg:text-left text-center" style={{ animationDelay: "0.24s" }}>
-                {t("home.hero.hudsonCaption")}
-              </p>
             </div>
 
             {/* Right (lg+) / below CTAs (mobile): hero video */}
@@ -148,9 +135,9 @@ const Index = () => {
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => {
-              const isHudson = item.location === "Hudson";
-              const to = isHudson ? "/hudson-session" : "/events";
+              const to = "/events";
               return (
+
                 <Link
                   key={item.location}
                   to={to}
