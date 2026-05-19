@@ -36,8 +36,8 @@ const translations: Record<string, Record<Language, string>> = {
   "home.hero.title": { en: "Your Club Choir Space", fr: "Votre espace Club Choir" },
   "home.hero.subtitle": { en: "Ever thought about joining a choir, but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists.", fr: "Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe." },
  "home.hero.desc": {
-  en: "Our winter session has now ended, and we are so grateful for an incredible season of singing, learning, laughing, and building community together.\n\nThis summer, Club Choir is still singing. A new Hudson Summer Choir begins on Monday, May 18 at the Kingfisher Pub, running weekly from 7:00–8:30 PM.",
-  fr: "Notre session d'hiver est maintenant terminée, et nous sommes tellement reconnaissants pour une saison incroyable de chant, d'apprentissage, de rires et de communauté.\n\nCet été, Club Choir continue de chanter. Une nouvelle Chorale d'été à Hudson débute le lundi 18 mai au Kingfisher Pub, chaque semaine de 19h00 à 20h30."
+  en: "Our winter session has now ended, and we are so grateful for an incredible season of singing, learning, laughing, and building community together.\n\nThis summer, Club Choir is still singing. Keep an eye out for pop-up choirs, community performances, and special events happening throughout the summer months.",
+  fr: "Notre session d'hiver est maintenant terminée, et nous sommes tellement reconnaissants pour une saison incroyable de chant, d'apprentissage, de rires et de communauté.\n\nCet été, Club Choir continue de chanter. Restez à l'affût des chorales pop-up, performances communautaires et événements spéciaux organisés tout au long de l'été."
  },
   "home.hero.try": { en: "Get in Touch", fr: "Nous contacter" },
   "home.hero.friend": { en: "Bring a Friend", fr: "Inviter un ami" },
@@ -266,8 +266,8 @@ const translations: Record<string, Record<Language, string>> = {
   "home.hero.trySession": { en: "Try a session", fr: "Essayer une session" },
   "home.hero.upcomingEvents": { en: "See upcoming events", fr: "Voir les événements à venir" },
   "home.hero.eventsSummary": {
-    en: "Visit our Events page to find out what Club Choir will be up to this summer, including pop-up choirs, community performances, and special events.",
-    fr: "Visitez notre page Événements pour découvrir ce que Club Choir prépare cet été : chorales pop-up, performances communautaires et événements spéciaux."
+    en: "We're also excited to announce Fall 2026 session dates and locations, with choirs returning across the Greater Montreal area this September.",
+    fr: "Nous sommes également ravis d'annoncer les dates et lieux de la session d'automne 2026, avec le retour des chorales dans la grande région de Montréal en septembre."
   },
   "home.hero.hudsonCaption": {
     en: "Looking ahead, our new fall session dates are coming soon. Check back for details and find the location that works best for you.",
