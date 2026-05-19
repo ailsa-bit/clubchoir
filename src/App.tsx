@@ -49,6 +49,7 @@ const App = () => (
             <Route path="/schedule/:locationSlug" element={<LocationSchedule />} />
             <Route path="/community" element={<ActiveMemberGate><Community /></ActiveMemberGate>} />
             <Route path="/events" element={<Events />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/resources" element={<ActiveMemberGate><Resources /></ActiveMemberGate>} />
             <Route path="/corporate" element={<Corporate />} />
             <Route path="/profile" element={<Profile />} />
