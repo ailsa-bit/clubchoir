@@ -8,15 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
-const hudsonSummer = {
-  location: "Hudson",
-  venue: "Kingfisher Pub",
-  address: "84 Cameron, Hudson, J0P 1H0",
-  day: { en: "Mondays", fr: "Lundis" },
-  time: "7:00–8:30 PM",
-  season: { en: "Summer 2026", fr: "Été 2026" },
-  dates: { en: "May 18 – August 17, 2026", fr: "18 mai – 17 août 2026" },
-};
 
 const events = [
   {
