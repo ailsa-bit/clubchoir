@@ -273,10 +273,6 @@ const translations: Record<string, Record<Language, string>> = {
     en: "We're also excited to announce Fall 2026 session dates and locations, with choirs returning across the Greater Montreal area this September.",
     fr: "Nous sommes également ravis d'annoncer les dates et lieux de la session d'automne 2026, avec le retour des chorales dans la grande région de Montréal en septembre."
   },
-  "home.hero.hudsonCaption": {
-    en: "Looking ahead, our new fall session dates are coming soon. Check back for details and find the location that works best for you.",
-    fr: "À venir : les dates de notre nouvelle session d'automne seront bientôt annoncées. Revenez consulter les détails et trouvez l'emplacement qui vous convient le mieux."
-  },
 
   // Hudson Session page
   "hudson.backHome": { en: "Back home", fr: "Retour à l'accueil" },
