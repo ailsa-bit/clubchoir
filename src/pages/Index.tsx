@@ -106,13 +106,13 @@ const Index = () => {
       </section>
 
       {/* Founder teaser */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
           <img
             src={founderPhoto}
             alt="Ailsa Pehi, founder of Club Choir"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-[center_25%]"
             loading="lazy"
           />
           {/* Readability overlay: darker on the right where text sits */}
