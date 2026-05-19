@@ -31,8 +31,8 @@ const events = [
     title: { en: "Seasonal Showcase — Hudson", fr: "Spectacle saisonnier — Hudson" },
     date: { en: "Tuesday, December 8, 2026 · 7:00 PM", fr: "Mardi 8 décembre 2026 · 19 h" },
     location: "Hudson",
-    color: "border-yellow/30 bg-yellow-light",
-    dot: "bg-yellow",
+    color: "border-orange/30 bg-orange-light",
+    dot: "bg-orange",
     description: { en: "Celebrate the season with our Hudson choir! Friends and family are welcome to enjoy an evening of song.", fr: "Célébrez la saison avec notre chorale d'Hudson ! Amis et famille sont les bienvenus pour une soirée en chanson." },
   },
   {
