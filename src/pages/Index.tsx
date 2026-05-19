@@ -57,9 +57,9 @@ const Index = () => {
             fetchPriority="high"
           />
           {/* Readability overlay: darker on the left where text sits, softer on the right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/40" />
-          {/* Subtle warm tint to match brand */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/55 to-foreground/25" />
+          {/* Subtle bottom vignette */}
+          <div className="absolute inset-0 bg-gradient-to-b from-foreground/20 via-transparent to-foreground/40" />
         </div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
