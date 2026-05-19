@@ -191,8 +191,8 @@ const translations: Record<string, Record<Language, string>> = {
   "community.event.cta": { en: "Join us", fr: "Rejoignez-nous" },
 
   // Resources
-  "resources.title": { en: "Song Resources", fr: "Ressources musicales" },
-  "resources.subtitle": { en: "Recordings, lyrics, and sheet music for the songs we're learning.", fr: "Enregistrements, paroles et partitions des chansons que nous apprenons." },
+  "resources.title": { en: "Winter 2026 Songs", fr: "Chansons Hiver 2026" },
+  "resources.subtitle": { en: "Recordings, lyrics, and sheet music for the songs we're learning this session.", fr: "Enregistrements, paroles et partitions des chansons de cette session." },
   "resources.search": { en: "Search songs or files…", fr: "Rechercher des chansons ou fichiers…" },
   "resources.membersOnly": { en: "Members Only", fr: "Membres seulement" },
   "resources.signIn": { en: "Sign in to access song resources.", fr: "Connectez-vous pour accéder aux ressources musicales." },
