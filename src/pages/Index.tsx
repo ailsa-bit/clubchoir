@@ -48,7 +48,7 @@ const Index = () => {
       <PageMeta title="Club Choir – No-Audition Community Choir in Montreal, Hudson, Pointe-Claire, Saint-Hubert & Arundel" description="Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel. Fall 2026 registration is open." path="/" />
       <section className="relative overflow-hidden px-4 py-20 lg:py-28">
         {/* Full-bleed background photo */}
-        <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 z-0">
           <img
             src={heroStage}
             alt="Club Choir performing on stage"
@@ -62,7 +62,7 @@ const Index = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/30" />
         </div>
 
-        <div className="container mx-auto max-w-7xl">
+        <div className="container mx-auto max-w-7xl relative z-10">
           <div className="max-w-2xl text-center lg:text-left">
             <img
               src={clubChoirWordmark}
