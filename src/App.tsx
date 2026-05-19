@@ -46,8 +46,8 @@ const App = () => (
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/this-week" element={<ThisWeek />} />
-            <Route path="/schedule/:locationSlug" element={<LocationSchedule />} />
+            <Route path="/this-week" element={<ActiveMemberGate><ThisWeek /></ActiveMemberGate>} />
+            <Route path="/schedule/:locationSlug" element={<ActiveMemberGate><LocationSchedule /></ActiveMemberGate>} />
             <Route path="/community" element={<ActiveMemberGate><Community /></ActiveMemberGate>} />
             <Route path="/events" element={<Events />} />
             <Route path="/register" element={<Register />} />
