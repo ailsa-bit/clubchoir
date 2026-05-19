@@ -639,6 +639,11 @@ const translations: Record<string, Record<Language, string>> = {
   "events.victoriaDesc2": { en: "This is a relaxed, welcoming event designed for anyone who loves music and wants to be part of something uplifting and social.", fr: "C'est un événement décontracté et accueillant conçu pour tous ceux qui aiment la musique et veulent faire partie de quelque chose de joyeux et social." },
   "events.victoriaVenue": { en: "Prince-Albert Square", fr: "Place Prince-Albert" },
   "events.accompanied": { en: "Accompanied by Gary White", fr: "Accompagné par Gary White" },
+  "events.pointeclaireTitle": { en: "Club Choir at Pointe-Claire Village Day Festival", fr: "Club Choir au Festival du Village de Pointe-Claire" },
+  "events.pointeclaireDate": { en: "Saturday, August 8 · Time to be confirmed", fr: "Samedi 8 août · Heure à confirmer" },
+  "events.pointeclaireDesc1": { en: "Join Club Choir at the Pointe-Claire Village Day Festival for a fun, interactive outdoor singing experience filled with music, energy, and community spirit. We'll kick things off with a live performance, then invite the crowd to sing along with us—Club Choir style. No experience needed, just bring your voice and enjoy the moment.", fr: "Joignez-vous à Club Choir au Festival du Village de Pointe-Claire pour une expérience de chant extérieure interactive et amusante, remplie de musique, d'énergie et d'esprit communautaire. Nous commencerons par une performance live, puis inviterons la foule à chanter avec nous, à la manière Club Choir. Aucune expérience requise, apportez simplement votre voix et profitez du moment." },
+  "events.pointeclaireDesc2": { en: "This is a relaxed and welcoming event for anyone who loves music, connection, and being part of something uplifting. Whether you sing all the time or only in the car, everyone is welcome to join in.", fr: "C'est un événement décontracté et accueillant pour tous ceux qui aiment la musique, le lien social et faire partie de quelque chose de joyeux. Que vous chantiez tout le temps ou seulement dans votre voiture, tout le monde est le bienvenu." },
+  "events.pointeclaireVenue": { en: "Pointe-Claire Village", fr: "Village de Pointe-Claire" },
   "events.loginRegister": { en: "Please log in to register.", fr: "Veuillez vous connecter pour vous inscrire." },
 };
 
