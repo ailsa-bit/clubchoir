@@ -321,6 +321,62 @@ export type Database = {
         }
         Relationships: []
       }
+      session_registrations: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          is_returning_member: boolean
+          last_name: string
+          location: string
+          member_id: string | null
+          notes: string | null
+          payment_link_sent_at: string | null
+          payment_status: string
+          session_label: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          is_returning_member?: boolean
+          last_name: string
+          location: string
+          member_id?: string | null
+          notes?: string | null
+          payment_link_sent_at?: string | null
+          payment_status?: string
+          session_label: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          is_returning_member?: boolean
+          last_name?: string
+          location?: string
+          member_id?: string | null
+          notes?: string | null
+          payment_link_sent_at?: string | null
+          payment_status?: string
+          session_label?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_registrations_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       song_resources: {
         Row: {
           created_at: string
