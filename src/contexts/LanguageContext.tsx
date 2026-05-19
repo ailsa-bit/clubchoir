@@ -16,7 +16,12 @@ const translations: Record<string, Record<Language, string>> = {
   "nav.corporate": { en: "Corporate Events", fr: "Événements corporatifs" },
   "nav.community": { en: "Choir Community", fr: "Communauté chorale" },
   "nav.chat": { en: "Chat", fr: "Clavardage" },
-  "nav.resources": { en: "Song Resources", fr: "Ressources musicales" },
+  "nav.resources": { en: "Songs", fr: "Chansons" },
+  "nav.songs": { en: "Songs", fr: "Chansons" },
+  "nav.songs.winter2026": { en: "Winter 2026", fr: "Hiver 2026" },
+  "nav.songs.fall2026": { en: "Fall 2026", fr: "Automne 2026" },
+  "songs.fall2026.title": { en: "Fall 2026 Songs", fr: "Chansons Automne 2026" },
+  "songs.fall2026.comingSoon": { en: "Song resources for the Fall 2026 session will appear here soon.", fr: "Les ressources musicales pour la session Automne 2026 apparaîtront ici bientôt." },
   "nav.profile": { en: "Profile", fr: "Profil" },
 
   // Footer
@@ -186,8 +191,8 @@ const translations: Record<string, Record<Language, string>> = {
   "community.event.cta": { en: "Join us", fr: "Rejoignez-nous" },
 
   // Resources
-  "resources.title": { en: "Song Resources", fr: "Ressources musicales" },
-  "resources.subtitle": { en: "Recordings, lyrics, and sheet music for the songs we're learning.", fr: "Enregistrements, paroles et partitions des chansons que nous apprenons." },
+  "resources.title": { en: "Winter 2026 Songs", fr: "Chansons Hiver 2026" },
+  "resources.subtitle": { en: "Recordings, lyrics, and sheet music for the songs we're learning this session.", fr: "Enregistrements, paroles et partitions des chansons de cette session." },
   "resources.search": { en: "Search songs or files…", fr: "Rechercher des chansons ou fichiers…" },
   "resources.membersOnly": { en: "Members Only", fr: "Membres seulement" },
   "resources.signIn": { en: "Sign in to access song resources.", fr: "Connectez-vous pour accéder aux ressources musicales." },
