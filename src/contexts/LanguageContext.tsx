@@ -261,7 +261,8 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Home - Hero CTAs
   "home.hero.startingSoon": { en: "Starting soon", fr: "Bientôt" },
-  "home.hero.reserveHudson": { en: "Reserve your Hudson spot", fr: "Réservez votre place à Hudson" },
+ "home.hero.reserveHudson": { en: "Reserve your Hudson spot", fr: "Réservez votre place à Hudson" },
+ "home.hero.registerFall": { en: "Register for Fall 2026", fr: "Inscrivez-vous — Automne 2026" },
   "home.hero.trySession": { en: "Try a session", fr: "Essayer une session" },
   "home.hero.upcomingEvents": { en: "See upcoming events", fr: "Voir les événements à venir" },
   "home.hero.eventsSummary": {

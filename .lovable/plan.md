@@ -1,113 +1,89 @@
-## Current state (read-only audit)
+## Goal
 
-**`members` (363 rows)** — status × payment_status:
+A single public page `/register` where anyone can sign up for a Fall 2026 choir session (Montreal, Hudson, Saint-Hubert, Pointe-Claire, Arundel). No login required. Server detects whether the email already belongs to a member and links the signup to the existing record — no duplicates. Admin sends the Stripe payment link manually later.
 
-| status | payment_status | count |
-|---|---|---|
-| ACTIVE | PAID | 152 |
-| ACTIVE | Paid | 23 |
-| ACTIVE | *(blank)* | 17 |
-| ACTIVE | OWES | 3 |
-| ACTIVE | PROBONO | 3 |
-| ACTIVE | NA | 2 |
-| ACTIVE | Pending | 1 |
-| INACTIVE | NA | 50 |
-| INACTIVE | Paid/PAID/OWES/blank | 4 |
-| PROSPECT | NA | 61 |
-| PROSPECT | *(blank)* | 7 |
-| TRIAL | NA | 40 |
+## How existing members vs new people are handled
 
-→ **201 ACTIVE** members today. All should become **INACTIVE** (Winter 2026 is over, nobody is enrolled).
+The key principle: **email is the identity key, dedup happens server-side, not in the form.** The form is the same for everyone — we don't ask "are you a member?". The backend decides.
 
-**`member_sessions` (229 rows)**: Winter 2026 = 95, Fall 2026 = 78, Fall 2025 = 49, Summer 2026 = 6, Winter 2025 = 1.
+When the form is submitted, an edge function does an email lookup against the `members` table (case-insensitive) and follows one of three branches:
 
-**`hudson_session_signups`**: 32 rows. 8 already exist in `members` (all currently ACTIVE — same people).
-**`prospects`**: 7 rows. None overlap with `members`.
-**`popup_ticket_reservations`**: 4 rows, all paid. 1 overlaps members (Danna Vincent, already PROSPECT).
+```text
+                ┌─ ACTIVE member found ─────► link signup to member_id
+                │                              · update location if changed
+email lookup ───┤                              · reply: "Welcome back!"
+                │                              · NO new member row
+                │
+                ├─ INACTIVE / former member ──► reactivate (status = ACTIVE)
+                │                              · link signup to existing member_id
+                │                              · update location/joined if needed
+                │
+                └─ No match ────────────────► create new member (status = PENDING)
+                                              · link signup to new member_id
+                                              · reply: "Welcome to Club Choir!"
+```
 
----
+We also **block duplicate signups for the same session+location** by checking if a row already exists in the new signups table for that member + session — return a friendly "you're already registered" response instead of inserting again.
 
-## Proposed bulk cleanup
+## Database
 
-### Step 1 — Reset every ACTIVE member to INACTIVE
-All 201 ACTIVE rows → `status = 'INACTIVE'`. This covers the Winter 2026 cohort and the 100 ACTIVE members not linked to any session row.
+New table `session_registrations` (we won't reuse `hudson_session_signups` — keep that legacy table alone):
 
-### Step 2 — Normalize `payment_status` across the whole table
-Map all current values to the new enum:
+- `member_id` — links to `members.id` (set by edge function, never trusted from client)
+- `session_label` — e.g. `"fall-2026"` (so this page can be reused next season)
+- `location` — Montreal / Hudson / Saint-Hubert / Pointe-Claire / Arundel
+- `first_name`, `last_name`, `email` — captured at submission (snapshot)
+- `notes` — optional message from registrant
+- `is_returning_member` — boolean snapshot (was a member at signup time)
+- `payment_status` — default `'unpaid'`, admin marks `'paid'` later
+- `payment_link_sent_at` — admin sets when they email the Stripe link
+- Unique index on (`member_id`, `session_label`, `location`) to prevent dupes
 
-| current | new |
-|---|---|
-| PAID, Paid | `PAID` |
-| PROBONO | `COMPED` |
-| OWES | `OWES` |
-| NA, *(blank)*, Pending | `NOT_REQUIRED` |
+RLS:
+- Public INSERT blocked (only edge function with service role writes).
+- Admin SELECT/UPDATE/DELETE via `has_role(auth.uid(), 'admin')`.
 
-Since no session is running, after Step 1 there should be **no UNPAID rows**. `Pending` (1 row, Indy Gos, TRIAL) → flag for manual review but default to `NOT_REQUIRED`.
+## Edge function: `register-session`
 
-### Step 3 — Apply Fall 2026 PROSPECT status
-For every member linked to `member_sessions.session_name = 'Fall 2026'` who is not already PROSPECT/TRIAL → set `status = 'PROSPECT'`, `payment_status = 'NOT_REQUIRED'`. (Fall 2026 = interested, not registered.)
+Public function (`verify_jwt = false`). Validates input with Zod, then:
+1. Look up `members` by lowercased email.
+2. Branch as shown above (match / reactivate / create).
+3. Check uniqueness on (member_id, session_label, location); return `already_registered` if found.
+4. Insert into `session_registrations`.
+5. Send two emails via existing email infra:
+   - Registrant: confirmation (bilingual, different copy for returning vs new).
+   - Admin (ailsa@clubchoir.ca): notification with name, email, location, returning flag, notes.
 
-Current Fall 2026 linkage: 40 PROSPECT, 17 TRIAL, 11 INACTIVE, 2 ACTIVE → after Step 1+3, the 2 ACTIVE and 11 INACTIVE become PROSPECT; existing TRIAL stays TRIAL.
+## Frontend: `/register` page
 
-### Step 4 — Hudson signups → Fall 2026 PROSPECTs
-- For the **8 Hudson signups already in members** (Barbara Gottel, Belinda Jarry, Deirdre McCormack, Judy Paul, Eileen McAleese, Sylvie/André, Alexandra Dalgleish): set `status='PROSPECT'`, `location='Hudson'`, `payment_status='NOT_REQUIRED'`, and ensure a Fall 2026 row in `member_sessions`.
-  - ⚠️ Alexandra Dalgleish currently has `location='Pointe-Claire'` — needs manual confirm before overwriting to Hudson.
-- For the **24 Hudson signups not in members**: insert new `members` rows with `status='PROSPECT'`, `location='Hudson'`, `payment_status='NOT_REQUIRED'`, plus a Fall 2026 `member_sessions` row.
+- Bilingual page following existing patterns (PageMeta, Quicksand headings, solid colors, no gradients).
+- Form fields: first name, last name, email, location (radio cards for the 5 locations using their existing color tokens), optional message.
+- Arundel option shows "Dates to be confirmed" note but still submits.
+- Client-side validation (zod) — non-empty trimmed name, valid email, location selected.
+- On success: success card explaining "we'll email you a payment link to confirm your spot." Different copy if the API response says `returning_member: true`.
+- On `already_registered`: friendly message + link to contact.
 
-### Step 5 — `prospects` table → fold into members
-7 rows, none overlap members. Insert into `members` with `status='PROSPECT'`, `location=locations[1]` (Reagan Niedan has two locations — manual pick), `payment_status='NOT_REQUIRED'`. Add a Fall 2026 `member_sessions` row each. Heather (last row) has no last name — flag.
+## Wiring
 
-### Step 6 — `popup_ticket_reservations` — leave alone
-Stays separate. Only Danna Vincent overlaps (already PROSPECT). No changes.
+- Add `/register` route in `App.tsx`.
+- Add a primary "Register for Fall 2026" CTA on the homepage hero (replacing the empty hidden div left from the Hudson removal) and on the Events page.
+- Add nav link under Events dropdown in `Layout.tsx`.
 
-### Step 7 — Ensure no one is REGISTERED / UNPAID
-Verification query: after the run, expect `0` rows with `status='REGISTERED'` and `0` with `payment_status='UNPAID'`.
+## Admin view (small addition)
 
----
+Extend the existing admin area with a `/manage-registrations` page listing rows from `session_registrations`, filterable by session + location, with buttons to:
+- Mark "payment link sent" (timestamps the row).
+- Mark "paid" (updates `payment_status` and also bumps the linked `members.payment_status`).
 
-## Records flagged for manual review before running
+## Out of scope for this plan
 
-1. **Duplicate emails in `members` (8 pairs — looks like couples sharing one inbox):**
-   - davepaper@gmail.com — David Carruthers / Denise Lapointe
-   - kz.lupita@gmail.com — Lupita Zambelli / Vito Longo
-   - nakano.cho@videotron.ca — Edward Cho / Jane Nakano
-   - karenvaage65@gmail.com — Harold Griffiths / Karen Vaage
-   - bgallay@gsmcpa.ca — Brahm Gallay / Maria Elana Antunez
-   - aluddie@icloud.com — Annette / Eric Ludwick
-   - glpalardy@gmail.com — Gary / Linda Palardy
-   - paulamalo@hotmail.com — Mary Ellen / Paula Malolepszy
-   - → Leave both rows; the cleanup treats them as separate people. Confirm this is fine (the `handle_new_user` trigger only matches on email so only one will auto-activate when they sign up).
+- Stripe checkout from the page itself (admin sends link manually per your decision).
+- Capacity limits / waitlists.
+- Multi-session bulk registration in one submission.
 
-2. **Location anomalies:** 1 member with blank location, 1 with `Laval`. Decide a target value.
+## Technical notes
 
-3. **Alexandra Dalgleish** — in Hudson signups but currently `location='Pointe-Claire'`. Confirm move to Hudson or keep Pointe-Claire and just add Fall 2026 Hudson session row.
-
-4. **Sylvie et André** (`sylvielad.andre@gmail.com`) — one members row, two Hudson signups (duplicate). Will dedupe the Hudson side.
-
-5. **Indy Gos** — currently `payment_status='Pending'`. Default to `NOT_REQUIRED` unless you want OWES.
-
-6. **Heather (prospects table)** — no last name.
-
-7. **Reagan Niedan (prospects table)** — locations `[Hudson, Pointe-Claire]`. Pick one for the `members.location` field.
-
-8. **3 ACTIVE members currently marked `OWES`** — after Step 1 they become INACTIVE with `OWES`. Confirm you still want to track the debt or wipe to `NOT_REQUIRED`.
-
----
-
-## Risks & assumptions
-
-- **Assumption:** "All current ACTIVE → INACTIVE" applies to every ACTIVE row regardless of session linkage, including the 100 ACTIVE members with no `member_sessions` history.
-- **Assumption:** Fall 2026 PROSPECT outranks "leftover INACTIVE" — if someone is linked to Fall 2026 they become PROSPECT, not INACTIVE.
-- **Assumption:** Existing TRIAL members stay TRIAL (the rules don't say to reset trials).
-- **Risk:** The `handle_new_user` trigger only auto-activates a profile when a matching member is `status='ACTIVE'`. After this cleanup, **nobody** will auto-activate on signup until you flip members back to ACTIVE for the next session. Confirm this is the desired behaviour between sessions.
-- **Risk:** No backups are taken inside Lovable. Recommend exporting `members`, `member_sessions`, `hudson_session_signups`, `prospects` to CSV before running. I can generate those CSVs first.
-- **Reversibility:** Updates are destructive (old `payment_status` strings like `Paid`, `NA`, `PROBONO` are lost). CSV export mitigates this.
-
----
-
-## Execution order once you approve
-
-1. Export CSV snapshots of the 5 tables to `/mnt/documents/`.
-2. Resolve the 8 manual-review items above.
-3. Run Step 1 → 2 → 3 → 4 → 5 as separate `UPDATE`/`INSERT` statements so each can be verified.
-4. Run verification queries (no REGISTERED, no UNPAID, all payment_status values in the new enum, every Fall 2026 member is PROSPECT or TRIAL).
+- Reuses existing `members` table and `handle_new_user` philosophy (email is the join key).
+- Edge function is the only writer to `session_registrations` so RLS can stay locked.
+- New members created via this flow get `status = 'PENDING'` (not ACTIVE) so they don't immediately appear in the member directory until Ailsa confirms payment and flips them to ACTIVE — keeps the directory clean.
+- Emails reuse the existing transactional email pipeline (no new infra).
