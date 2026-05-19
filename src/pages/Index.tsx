@@ -73,31 +73,31 @@ const Index = () => {
               loading="eager"
               fetchPriority="high"
             />
-            <p className="text-lg text-background/95 mb-2 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <p className="text-2xl text-background/95 mb-3 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               {t("home.hero.subtitle")}
             </p>
-            <p className="text-base text-background/85 mb-8 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
+            <p className="text-xl text-background/85 mb-10 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
               {t("home.hero.desc")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
               <Link
                 to="/events"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-secondary text-secondary-foreground font-semibold text-lg shadow hover:shadow-lg hover:scale-[1.02] transition-all"
               >
-                <Calendar className="w-5 h-5" />
+                <Calendar className="w-6 h-6" />
                 {t("home.hero.upcomingEvents")}
               </Link>
             </div>
 
-            <p className="text-base text-background/90 mt-6 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
+            <p className="text-xl text-background/90 mt-8 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
               {t("home.hero.eventsSummary")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-4 animate-fade-in" style={{ animationDelay: "0.23s" }}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-5 animate-fade-in" style={{ animationDelay: "0.23s" }}>
               <Link
                 to="/register"
-                className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+                className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
               >
-                <Sparkles className="w-5 h-5" />
+                <Sparkles className="w-6 h-6" />
                 {t("home.hero.registerFall")}
               </Link>
             </div>
