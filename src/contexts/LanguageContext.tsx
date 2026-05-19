@@ -49,7 +49,6 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Home - Sessions
  "home.sessions.title": { en: "Where & When We Sing", fr: "Où et quand nous chantons" },
- "home.sessions.fallSoon": { en: "Fall Session dates coming soon", fr: "Les dates de la session d'automne seront bientôt annoncées" },
  "home.sessions.fall2026": { en: "Fall Session 2026", fr: "Session d'automne 2026" },
  "home.sessions.tbc": { en: "Dates to be confirmed", fr: "Dates à confirmer" },
   "home.sessions.pricing": { en: "per 14-week session · Winter session starting February · Fall session starting September", fr: "par session de 14 semaines · Session d'hiver débutant en février · Session d'automne débutant en septembre" },
