@@ -112,7 +112,7 @@ const Index = () => {
           <img
             src={founderPhoto}
             alt="Ailsa Pehi, founder of Club Choir"
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-[center_25%]"
             loading="lazy"
           />
           {/* Readability overlay: darker on the right where text sits */}
