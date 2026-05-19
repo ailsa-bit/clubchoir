@@ -144,7 +144,7 @@ const Index = () => {
             {t("home.sessions.title")}
           </h2>
           <p className="text-base text-muted-foreground text-center mb-8">
-            {t("home.sessions.fallSoon")}
+            {t("home.sessions.fall2026")}
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => {
@@ -160,6 +160,7 @@ const Index = () => {
                     <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
                     <span className="font-heading font-bold text-foreground">{item.location}</span>
                   </div>
+                  <p className="text-sm font-semibold text-foreground mb-1">{item.dates}</p>
                   <p className="text-base text-muted-foreground mb-1">
                     {item.day} · {item.time}
                   </p>
