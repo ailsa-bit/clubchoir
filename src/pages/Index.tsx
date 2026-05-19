@@ -69,35 +69,35 @@ const Index = () => {
               alt="Club Choir"
               width="600"
               height="240"
-              className="w-full max-w-[200px] sm:max-w-[240px] mx-auto lg:mx-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+              className="w-full max-w-[260px] sm:max-w-[320px] mx-auto lg:mx-0 mb-6 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
               loading="eager"
               fetchPriority="high"
             />
-            <p className="text-lg text-background/95 mb-2 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <p className="text-2xl text-background/95 mb-3 animate-fade-in" style={{ animationDelay: "0.1s" }}>
               {t("home.hero.subtitle")}
             </p>
-            <p className="text-base text-background/85 mb-8 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
+            <p className="text-xl text-background/85 mb-10 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
               {t("home.hero.desc")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
               <Link
                 to="/events"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-secondary text-secondary-foreground font-semibold text-lg shadow hover:shadow-lg hover:scale-[1.02] transition-all"
               >
-                <Calendar className="w-5 h-5" />
+                <Calendar className="w-6 h-6" />
                 {t("home.hero.upcomingEvents")}
               </Link>
             </div>
 
-            <p className="text-base text-background/90 mt-6 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
+            <p className="text-xl text-background/90 mt-8 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
               {t("home.hero.eventsSummary")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-4 animate-fade-in" style={{ animationDelay: "0.23s" }}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-5 animate-fade-in" style={{ animationDelay: "0.23s" }}>
               <Link
                 to="/register"
-                className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+                className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
               >
-                <Sparkles className="w-5 h-5" />
+                <Sparkles className="w-6 h-6" />
                 {t("home.hero.registerFall")}
               </Link>
             </div>
@@ -122,21 +122,21 @@ const Index = () => {
 
         <div className="container mx-auto max-w-5xl relative z-10">
           <div className="max-w-xl ml-auto text-center md:text-right">
-            <p className="text-sm font-bold uppercase tracking-wider text-background/90 mb-2">Our Story</p>
-            <h2 className="font-heading font-bold text-2xl md:text-3xl text-background mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+            <p className="text-base font-bold uppercase tracking-wider text-background/90 mb-3">Our Story</p>
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
               Sing together. Laugh together. Learn together.
             </h2>
-            <p className="text-base text-background/95 leading-relaxed mb-5 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+            <p className="text-xl text-background/95 leading-relaxed mb-6 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
               Club Choir began in 2024 with 21 voices in Montreal. Today, founder Ailsa leads a
               regional family of 194 singers — with live musicians at every rehearsal and a
               simple philosophy: progress over perfection.
             </p>
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
             >
               Read our story
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </div>
