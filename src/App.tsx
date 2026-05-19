@@ -31,6 +31,7 @@ import PopupStudio77 from "./pages/PopupStudio77";
 import PopupReservations from "./pages/PopupReservations";
 import CheckIn from "./pages/CheckIn";
 import About from "./pages/About";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
