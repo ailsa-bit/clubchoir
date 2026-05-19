@@ -36,11 +36,11 @@ const Index = () => {
   ];
 
   const locations = [
-    { location: "Montreal", venue: "Kensington Presbyterian Church\n6225 Av. Godfrey, Montréal, QC H4B 1K3", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink" },
-    { location: "Hudson", venue: "Kingfisher Pub\n84 Cameron, Hudson, QC J0P 1H0", color: "bg-orange-light border-orange/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-orange" },
-    { location: "Arundel", venue: "Centre Arundel Centre\n17 Rue du Village, Arundel, QC J0T 1A0", color: "bg-aqua-light border-aqua/20", day: t("day.tuesday"), time: "6:30–8:00 PM", dot: "bg-aqua" },
-    { location: "Saint-Hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert, QC J3Y 2K7", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime" },
-    { location: "Pointe-Claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire, QC H9R 4H2", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple" },
+    { location: "Montreal", venue: "Kensington Presbyterian Church\n6225 Av. Godfrey, Montréal, QC H4B 1K3", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: "Sept 7 – Dec 7, 2026" },
+    { location: "Hudson", venue: "Kingfisher Pub\n84 Cameron, Hudson, QC J0P 1H0", color: "bg-orange-light border-orange/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: "Sept 8 – Dec 8, 2026" },
+    { location: "Arundel", venue: "Centre Arundel Centre\n17 Rue du Village, Arundel, QC J0T 1A0", color: "bg-aqua-light border-aqua/20", day: t("day.tuesday"), time: "6:30–8:00 PM", dot: "bg-aqua", dates: t("home.sessions.tbc") },
+    { location: "Saint-Hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert, QC J3Y 2K7", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: "Sept 9 – Dec 9, 2026" },
+    { location: "Pointe-Claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire, QC H9R 4H2", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026" },
   ];
 
   return (
@@ -144,7 +144,7 @@ const Index = () => {
             {t("home.sessions.title")}
           </h2>
           <p className="text-base text-muted-foreground text-center mb-8">
-            {t("home.sessions.fallSoon")}
+            {t("home.sessions.fall2026")}
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => {
@@ -160,6 +160,7 @@ const Index = () => {
                     <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
                     <span className="font-heading font-bold text-foreground">{item.location}</span>
                   </div>
+                  <p className="text-sm font-semibold text-foreground mb-1">{item.dates}</p>
                   <p className="text-base text-muted-foreground mb-1">
                     {item.day} · {item.time}
                   </p>
