@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://clubchoir.ca/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://clubchoir.ca/about</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://clubchoir.ca/this-week</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://clubchoir.ca/events</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
   <url><loc>https://clubchoir.ca/register</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://clubchoir.ca/corporate</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://clubchoir.ca/try</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://clubchoir.ca/bring-a-friend</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://clubchoir.ca/subscribe</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://clubchoir.ca/popup/studio-77</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
 </urlset>
