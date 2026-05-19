@@ -65,11 +65,11 @@ const Index = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
                 <Link
-                  to="/register"
-                  className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+                  to="/events"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
                 >
-                  <Sparkles className="w-5 h-5" />
-                  {t("home.hero.registerFall")}
+                  <Calendar className="w-5 h-5" />
+                  {t("home.hero.upcomingEvents")}
                 </Link>
               </div>
 
@@ -78,11 +78,11 @@ const Index = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-4 animate-fade-in" style={{ animationDelay: "0.23s" }}>
                 <Link
-                  to="/events"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
+                  to="/register"
+                  className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
                 >
-                  <Calendar className="w-5 h-5" />
-                  {t("home.hero.upcomingEvents")}
+                  <Sparkles className="w-5 h-5" />
+                  {t("home.hero.registerFall")}
                 </Link>
               </div>
             </div>
