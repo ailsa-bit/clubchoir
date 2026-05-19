@@ -46,56 +46,62 @@ const Index = () => {
   return (
     <div>
       <PageMeta title="Club Choir – No-Audition Community Choir in Montreal, Hudson, Pointe-Claire, Saint-Hubert & Arundel" description="Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel. Fall 2026 registration is open." path="/" />
-      <section className="bg-gradient-hero py-16 lg:py-20 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-12 items-center">
-            {/* Left: copy + CTAs */}
-            <div className="text-center lg:text-left">
-              <img
-                src={clubChoirWordmark}
-                alt="Club Choir"
-                width="600"
-                height="240"
-                className="w-full max-w-[180px] sm:max-w-[220px] mx-auto lg:mx-0 mb-4 animate-fade-in"
-                loading="eager"
-                fetchPriority="high"
-              />
-              <p className="text-base text-muted-foreground mb-2 max-w-xl mx-auto lg:mx-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-                {t("home.hero.subtitle")}
-              </p>
-              <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
-                {t("home.hero.desc")}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
-                <Link
-                  to="/events"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
-                >
-                  <Calendar className="w-5 h-5" />
-                  {t("home.hero.upcomingEvents")}
-                </Link>
-              </div>
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28">
+        {/* Full-bleed background photo */}
+        <div className="absolute inset-0 -z-10">
+          <img
+            src={heroStage}
+            alt="Club Choir performing on stage"
+            className="w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+          />
+          {/* Readability overlay: darker on the left where text sits, softer on the right */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/40" />
+          {/* Subtle warm tint to match brand */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/30" />
+        </div>
 
-              <p className="text-base text-muted-foreground mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
-                {t("home.hero.eventsSummary")}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-4 animate-fade-in" style={{ animationDelay: "0.23s" }}>
-                <Link
-                  to="/register"
-                  className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
-                >
-                  <Sparkles className="w-5 h-5" />
-                  {t("home.hero.registerFall")}
-                </Link>
-              </div>
+        <div className="container mx-auto max-w-7xl">
+          <div className="max-w-2xl text-center lg:text-left">
+            <img
+              src={clubChoirWordmark}
+              alt="Club Choir"
+              width="600"
+              height="240"
+              className="w-full max-w-[200px] sm:max-w-[240px] mx-auto lg:mx-0 mb-5 animate-fade-in brightness-0 invert"
+              loading="eager"
+              fetchPriority="high"
+            />
+            <p className="text-lg text-background/95 mb-2 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+              {t("home.hero.subtitle")}
+            </p>
+            <p className="text-base text-background/85 mb-8 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
+              {t("home.hero.desc")}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
+              <Link
+                to="/events"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-base shadow hover:shadow-lg hover:scale-[1.02] transition-all"
+              >
+                <Calendar className="w-5 h-5" />
+                {t("home.hero.upcomingEvents")}
+              </Link>
             </div>
 
-            {/* Right (lg+) / below CTAs (mobile): hero video */}
-            <div className="animate-fade-in" style={{ animationDelay: "0.25s" }}>
-              <HeroVideo />
+            <p className="text-base text-background/90 mt-6 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
+              {t("home.hero.eventsSummary")}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-4 animate-fade-in" style={{ animationDelay: "0.23s" }}>
+              <Link
+                to="/register"
+                className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+              >
+                <Sparkles className="w-5 h-5" />
+                {t("home.hero.registerFall")}
+              </Link>
             </div>
           </div>
-
         </div>
       </section>
 
