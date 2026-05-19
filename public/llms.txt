@@ -1,0 +1,17 @@
+# Club Choir
+
+> A fun, welcoming community choir with locations across Quebec. No audition required — just show up and sing.
+
+Club Choir is a non-auditioned community choir founded by Ailsa Pehi, offering weekly rehearsals at five locations in Quebec: Montreal, Hudson, Arundel, Saint-Hubert, and Pointe-Claire. We learn by ear, champion progress over perfection, and bring live musicians to every session.
+
+## Pages
+
+- [Home](/): Overview of Club Choir, locations, and how to join.
+- [Our Story](/about): About founder Ailsa and the philosophy behind Club Choir.
+- [This Week](/this-week): Weekly rehearsal times and venues for all locations.
+- [Upcoming Events](/events): Concerts, pop-ups, and special events.
+- [Register](/register): Sign up for a session at one of our locations.
+- [Try a Session](/try): Drop in for a single rehearsal to see if it's right for you.
+- [Bring a Friend](/bring-a-friend): Invite someone to join you at a rehearsal.
+- [Corporate Team-Building](/corporate): Singing workshops for companies and teams.
+- [Mailing List](/subscribe): Stay in the loop about new sessions and events.
