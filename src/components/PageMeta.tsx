@@ -4,9 +4,10 @@ interface PageMetaProps {
   title: string;
   description: string;
   path?: string;
+  noindex?: boolean;
 }
 
-const PageMeta = ({ title, description, path = "/" }: PageMetaProps) => (
+const PageMeta = ({ title, description, path = "/", noindex = false }: PageMetaProps) => (
   <Helmet>
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -14,6 +15,7 @@ const PageMeta = ({ title, description, path = "/" }: PageMetaProps) => (
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={`https://clubchoir.ca${path}`} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
   </Helmet>
 );
 
