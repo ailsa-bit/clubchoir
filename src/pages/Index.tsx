@@ -63,7 +63,18 @@ const Index = () => {
               <p className="text-base text-muted-foreground mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
                 {t("home.hero.desc")}
               </p>
-              <div className="hidden" />
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
+                <Link
+                  to="/register"
+                  className="relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+                >
+                  <span className="absolute -top-2 -right-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-foreground text-background text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                    <Sparkles className="w-3 h-3" /> {t("home.hero.startingSoon")}
+                  </span>
+                  <Sparkles className="w-5 h-5" />
+                  {t("home.hero.registerFall")}
+                </Link>
+              </div>
 
               <p className="text-base text-muted-foreground mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
                 {t("home.hero.eventsSummary")}
