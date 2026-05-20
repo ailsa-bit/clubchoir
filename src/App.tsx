@@ -22,6 +22,7 @@ import FallSongs from "./pages/FallSongs";
 import SendEmail from "./pages/SendEmail";
 import LocationChat from "./pages/LocationChat";
 import ManageMembers from "./pages/ManageMembers";
+import ManageProspects from "./pages/ManageProspects";
 import MemberDetail from "./pages/MemberDetail";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import ResetPassword from "./pages/ResetPassword";
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/chat" element={<ActiveMemberGate><LocationChat /></ActiveMemberGate>} />
             <Route path="/manage-members" element={<ManageMembers />} />
             <Route path="/manage-members/:memberId" element={<MemberDetail />} />
+            <Route path="/manage-prospects" element={<ManageProspects />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/signed-up-users" element={<SignedUpUsers />} />
