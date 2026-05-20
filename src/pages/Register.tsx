@@ -77,8 +77,8 @@ const Register = () => {
   const t = {
     title: isFr ? "Inscription — Session d'automne 2026" : "Register — Fall 2026 Session",
     subtitle: isFr
-      ? "Inscrivez-vous à l'une de nos chorales d'automne. Nous vous enverrons un lien de paiement pour confirmer votre place."
-      : "Sign up for one of our fall choirs. We'll email you a payment link to confirm your spot.",
+      ? "Inscrivez-vous à l'une de nos chorales d'automne. Nous vous enverrons les instructions de virement pour confirmer votre place."
+      : "Sign up for one of our fall choirs. We'll email you e-transfer instructions to confirm your spot.",
     first: isFr ? "Prénom" : "First name",
     last: isFr ? "Nom" : "Last name",
     email: "Courriel",
@@ -95,8 +95,8 @@ const Register = () => {
     successTitleNew: isFr ? "Bienvenue à Club Choir !" : "Welcome to Club Choir!",
     successTitleReturning: isFr ? "Bon retour parmi nous !" : "Welcome back!",
     successDesc: isFr
-      ? "Votre inscription est reçue. Ailsa vous enverra sous peu un lien de paiement Stripe pour confirmer votre place. Les places sont attribuées selon le principe du premier arrivé, premier servi."
-      : "Your registration is in. Ailsa will email you a Stripe payment link shortly to confirm your spot. Spots are filled on a first-come, first-served basis.",
+      ? "Votre inscription est reçue. Ailsa vous enverra les instructions de virement en juillet pour confirmer votre place. Les places sont attribuées selon le principe du premier arrivé, premier servi."
+      : "Your registration is in. Ailsa will email you e-transfer instructions in July to confirm your spot. Spots are filled on a first-come, first-served basis.",
     alreadyTitle: isFr ? "Vous êtes déjà inscrit·e" : "You're already registered",
     alreadyDesc: isFr
       ? "Nous avons déjà une inscription pour cette chorale à votre nom. Si vous pensez que c'est une erreur, écrivez-nous."
