@@ -170,7 +170,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <p style="margin: 0; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(notes)}</p>
               </div>` : ""}
               <p style="color: #333; font-size: 14px; line-height: 1.6;">
-                Next step: send them the Stripe payment link to confirm their spot.
+                Next step: send them e-transfer instructions in July to confirm their spot.
               </p>
             </div>
           `,
@@ -186,8 +186,8 @@ const handler = async (req: Request): Promise<Response> => {
           : (isReturning ? `Welcome back, ${first_name}!` : `Welcome to Club Choir, ${first_name}!`);
 
         const bodyCopy = lang === "fr"
-          ? `Merci de vous être inscrit à la session d'automne 2026 à <strong>${escapeHtml(location)}</strong>. Nous vous enverrons sous peu un lien de paiement Stripe pour confirmer votre place. Les places sont limitées et attribuées selon le principe du premier arrivé, premier servi.`
-          : `Thanks for registering for the Fall 2026 session in <strong>${escapeHtml(location)}</strong>. We'll email you a Stripe payment link shortly to confirm your spot. Spots are limited and filled on a first-come, first-served basis.`;
+          ? `Merci de vous être inscrit à la session d'automne 2026 à <strong>${escapeHtml(location)}</strong>. Nous vous enverrons les instructions de virement en juillet pour confirmer votre place. Les places sont limitées et attribuées selon le principe du premier arrivé, premier servi.`
+          : `Thanks for registering for the Fall 2026 session in <strong>${escapeHtml(location)}</strong>. We'll email you e-transfer instructions in July to confirm your spot. Spots are limited and filled on a first-come, first-served basis.`;
 
         const sessionLabel = lang === "fr" ? "Détails de la session" : "Session details";
         const sign = lang === "fr" ? "À très bientôt !<br/>— Ailsa et l'équipe Club Choir" : "See you soon!<br/>— Ailsa & the Club Choir team";
