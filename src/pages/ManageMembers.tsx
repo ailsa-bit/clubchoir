@@ -31,6 +31,7 @@ import {
   AlertTriangle,
   Loader2,
   UserCheck,
+  Sparkles,
 } from "lucide-react";
 
 interface MemberRow {
@@ -295,7 +296,12 @@ const ManageMembers = () => {
             </h1>
             <p className="text-sm text-muted-foreground mt-1">{members.length} total members</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link to="/manage-prospects">
+              <Button variant="outline" size="sm">
+                <Sparkles className="w-4 h-4 mr-1" /> Prospects
+              </Button>
+            </Link>
             <Link to="/signed-up-users">
               <Button variant="outline" size="sm">
                 <UserCheck className="w-4 h-4 mr-1" /> Signed Up Users
