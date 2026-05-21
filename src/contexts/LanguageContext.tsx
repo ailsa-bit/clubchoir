@@ -39,10 +39,10 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Home - Hero
   "home.hero.title": { en: "Your Club Choir Space", fr: "Votre espace Club Choir" },
-  "home.hero.subtitle": { en: "Ever thought about joining a choir, but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists.", fr: "Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe." },
+  "home.hero.subtitle": { en: "A no-audition community choir for adults in Montreal, Hudson, Pointe-Claire, Saint-Hubert, and Arundel. Ever thought about joining a choir but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists.", fr: "Une chorale communautaire pour adultes, sans audition, à Montréal, Hudson, Pointe-Claire, Saint-Hubert et Arundel. Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe." },
  "home.hero.desc": {
-  en: "Our winter session has now ended, and we are so grateful for an incredible season of singing, learning, laughing, and building community together.\n\nThis summer, Club Choir is still singing. Keep an eye out for pop-up choirs, community performances, and special events happening throughout the summer months.",
-  fr: "Notre session d'hiver est maintenant terminée, et nous sommes tellement reconnaissants pour une saison incroyable de chant, d'apprentissage, de rires et de communauté.\n\nCet été, Club Choir continue de chanter. Restez à l'affût des chorales pop-up, performances communautaires et événements spéciaux organisés tout au long de l'été."
+  en: "Our winter session has now ended, and we are so grateful for an incredible season of singing, learning, laughing, and building community together.\n\nThis summer, Club Choir is still singing across Quebec — keep an eye out for pop-up choirs, community performances, and special events all summer long, then join us when our 14-week Fall 2026 session starts in September.",
+  fr: "Notre session d'hiver est maintenant terminée, et nous sommes tellement reconnaissants pour une saison incroyable de chant, d'apprentissage, de rires et de communauté.\n\nCet été, Club Choir continue de chanter partout au Québec — restez à l'affût des chorales pop-up, performances communautaires et événements spéciaux tout l'été, puis rejoignez-nous pour notre session d'automne 2026 de 14 semaines, dès septembre."
  },
   "home.hero.try": { en: "Get in Touch", fr: "Nous contacter" },
   "home.hero.friend": { en: "Bring a Friend", fr: "Inviter un ami" },
@@ -62,8 +62,8 @@ const translations: Record<string, Record<Language, string>> = {
   // Home - Moments / Photo gallery
   "home.moments.title": { en: "Real moments, real voices", fr: "De vrais moments, de vraies voix" },
   "home.moments.subtitle": {
-    en: "Snapshots from our weekly sessions and stage nights — no audition, no judgment, just the joy of singing together.",
-    fr: "Aperçus de nos sessions hebdomadaires et soirées sur scène — pas d'audition, pas de jugement, juste la joie de chanter ensemble.",
+    en: "Snapshots from our weekly adult choir rehearsals and showcase nights across Quebec — no audition, no judgment, just the joy of singing together.",
+    fr: "Aperçus de nos répétitions hebdomadaires de chorale pour adultes et de nos soirées spectacles partout au Québec — pas d'audition, pas de jugement, juste la joie de chanter ensemble.",
   },
 
   "home.faq.q.cost": { en: "How much does it cost?", fr: "Combien ça coûte ?" },

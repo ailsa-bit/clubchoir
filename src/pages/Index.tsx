@@ -142,8 +142,9 @@ const Index = () => {
             </h2>
             <p className="text-xl text-background/95 leading-relaxed mb-6 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
               Club Choir began in 2024 with 21 voices in Montreal. Today, founder Ailsa leads a
-              regional family of 194 singers — with live instrumental accompaniment at every rehearsal and a
-              simple philosophy: progress over perfection.
+              regional family of 194 adult singers across Quebec — weekly no-audition choir
+              rehearsals with live instrumental accompaniment and one simple philosophy:
+              progress over perfection.
             </p>
             <Link
               to="/about"
@@ -162,8 +163,13 @@ const Index = () => {
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.sessions.title")}
           </h2>
-          <p className="text-base text-muted-foreground text-center mb-8">
+          <p className="text-base text-muted-foreground text-center mb-2">
             {t("home.sessions.fall2026")}
+          </p>
+          <p className="text-sm text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
+            {isFr
+              ? "Cinq lieux à travers le Québec — Montréal, Hudson, Pointe-Claire, Saint-Hubert et Arundel — pour des répétitions de chorale hebdomadaires, sans audition, ouvertes à tous les adultes."
+              : "Five locations across Quebec — Montreal, Hudson, Pointe-Claire, Saint-Hubert, and Arundel — for weekly no-audition adult choir rehearsals open to all skill levels."}
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => (
