@@ -118,6 +118,7 @@ const LocationSchedule = () => {
 
   return (
     <div className="py-12 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-3xl">
         <Link to="/this-week" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to This Week
