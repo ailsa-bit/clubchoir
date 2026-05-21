@@ -250,6 +250,19 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             loading="lazy"
           />
           <p className="mb-3">{t("footer.tagline")} © {new Date().getFullYear()}</p>
+
+          {/* Site links for SEO & navigation */}
+          <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
+            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+            <Link to="/about" className="hover:text-foreground transition-colors">About</Link>
+            <Link to="/register" className="hover:text-foreground transition-colors">Register</Link>
+            <Link to="/events" className="hover:text-foreground transition-colors">Events</Link>
+            <Link to="/try" className="hover:text-foreground transition-colors">Try a Session</Link>
+            <Link to="/bring-a-friend" className="hover:text-foreground transition-colors">Bring a Friend</Link>
+            <Link to="/corporate" className="hover:text-foreground transition-colors">Corporate Choir</Link>
+            <Link to="/subscribe" className="hover:text-foreground transition-colors">Mailing List</Link>
+          </nav>
+
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/subscribe"

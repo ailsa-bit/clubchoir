@@ -45,7 +45,20 @@ const Index = () => {
 
   return (
     <div>
-      <PageMeta title="Choir Montreal | Club Choir – No-Audition Community Choir for Adults" description="Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel. Fall 2026 registration is open." path="/" />
+      <PageMeta
+        title="Choir Montreal | Club Choir – No-Audition Community Choir for Adults"
+        description="Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel. Fall 2026 registration is open."
+        path="/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqItems.map((it) => ({
+            "@type": "Question",
+            name: it.q,
+            acceptedAnswer: { "@type": "Answer", text: it.a },
+          })),
+        }}
+      />
       <section className="relative overflow-hidden px-4 py-20 lg:py-28">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
