@@ -159,45 +159,53 @@ const Index = () => {
       </section>
 
       {/* Why Members Come Back */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-6 text-center">
-            {t("home.whyComeBack.title")}
-          </h2>
-          <div className="space-y-4 text-center mb-12">
-            <p className="text-base text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              {t("home.whyComeBack.p1")}
-            </p>
-            <p className="text-base text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              {t("home.whyComeBack.p2")}
-            </p>
-            <p className="text-base text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              {t("home.whyComeBack.p3")}
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-3 gap-8 mb-12">
-            <blockquote className="text-center">
-              <p className="text-lg text-foreground/80 italic leading-relaxed">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
+        {/* Full-bleed background photo */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={whyComeBackPhoto}
+            alt="Club Choir members celebrating together"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          {/* Readability overlay: darker on the left where text sits */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/25" />
+          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/30" />
+        </div>
+
+        <div className="container mx-auto max-w-5xl relative z-10">
+          <div className="max-w-xl mr-auto text-center md:text-left">
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+              {t("home.whyComeBack.title")}
+            </h2>
+            <div className="space-y-4 mb-8">
+              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+                {t("home.whyComeBack.p1")}
+              </p>
+              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+                {t("home.whyComeBack.p2")}
+              </p>
+              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+                {t("home.whyComeBack.p3")}
+              </p>
+            </div>
+            <div className="space-y-3 mb-8">
+              <blockquote className="text-lg text-background/95 italic leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 &ldquo;{t("home.whyComeBack.quote1")}&rdquo;
-              </p>
-            </blockquote>
-            <blockquote className="text-center">
-              <p className="text-lg text-foreground/80 italic leading-relaxed">
+              </blockquote>
+              <blockquote className="text-lg text-background/95 italic leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 &ldquo;{t("home.whyComeBack.quote2")}&rdquo;
-              </p>
-            </blockquote>
-            <blockquote className="text-center">
-              <p className="text-lg text-foreground/80 italic leading-relaxed">
+              </blockquote>
+              <blockquote className="text-lg text-background/95 italic leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 &ldquo;{t("home.whyComeBack.quote3")}&rdquo;
-              </p>
-            </blockquote>
-          </div>
-          <div className="text-center">
+              </blockquote>
+            </div>
             <Link
               to="/register"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
             >
               {t("home.whyComeBack.cta")}
+              <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </div>
