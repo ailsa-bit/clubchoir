@@ -34,6 +34,7 @@ import PopupReservations from "./pages/PopupReservations";
 import CheckIn from "./pages/CheckIn";
 import About from "./pages/About";
 import Register from "./pages/Register";
+import ChoirLocation from "./pages/ChoirLocation";
 
 const queryClient = new QueryClient();
 
@@ -73,6 +74,7 @@ const App = () => (
             <Route path="/popup-reservations" element={<PopupReservations />} />
             <Route path="/checkin/:token" element={<CheckIn />} />
             <Route path="/about" element={<About />} />
+            <Route path="/choir/:city" element={<ChoirLocation />} />
 
             {/* SEO redirects for legacy indexed URLs */}
             <Route path="/website-about-us" element={<Navigate to="/about" replace />} />
