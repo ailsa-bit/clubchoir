@@ -20,6 +20,12 @@ import p10Wide from "./p10-group-christmas-wide.webp";
 import p10Tile from "./p10-group-christmas-tile.webp";
 import p11Wide from "./p11-group-rehearsal-wide.webp";
 import p11Tile from "./p11-group-rehearsal-tile.webp";
+import sh1Wide from "./sh1-saint-hubert-wide.webp";
+import sh1Tile from "./sh1-saint-hubert-tile.webp";
+import sh2Wide from "./sh2-saint-hubert-wide.webp";
+import sh2Tile from "./sh2-saint-hubert-tile.webp";
+import sh3Wide from "./sh3-saint-hubert-wide.webp";
+import sh3Tile from "./sh3-saint-hubert-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
