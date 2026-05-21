@@ -82,17 +82,17 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
       fr: "Chorale Hudson – Mardis soirs au Kingfisher Pub",
     },
     heroBlurb: {
-      en: "A warm, no-audition adult choir in Hudson with live music, string lights, and a built-in pub vibe.",
-      fr: "Une chorale conviviale et sans audition à Hudson, avec musique en direct, guirlandes lumineuses et ambiance de pub.",
+      en: "A warm, no-audition adult choir in Hudson, upstairs at the Kingfisher Pub — a resilient gathering place with live music, string lights, and a story worth singing about.",
+      fr: "Une chorale conviviale et sans audition à Hudson, à l'étage du Kingfisher Pub — un lieu résilient avec musique en direct, guirlandes lumineuses et une histoire qui mérite d'être chantée.",
     },
     about: {
       en: [
-        "Club Choir Hudson meets every Tuesday night upstairs at the Kingfisher Pub — one of the warmest, most atmospheric spaces in town. It's a no-audition community choir for adults, so whether you've sung your whole life or never set foot in a rehearsal, you're welcome to pull up a chair.",
-        "Director Ailsa Pehi leads the group through pop, folk, and feel-good harmonies, with live musicians in the room every week. The Hudson session is known for its laughter, its end-of-term showcase, and the friendships that spill out into the village long after rehearsal ends.",
+        "In May 2024, Hudson adopted the kingfisher as its official bird — tireless, patient yet swift, cool yet industrious, and above all, resilient. When the ownership team learned this, they knew immediately it was the right name for the pub they were bringing back to life on Rue Cameron. Like the bird, the building had nearly vanished; like the choir, it is now full of life again.",
+        "Club Choir Hudson meets every Tuesday night upstairs at the Kingfisher Pub — one of the warmest, most atmospheric spaces in town. It's a no-audition community choir for adults, so whether you've sung your whole life or never set foot in a rehearsal, you're welcome to pull up a chair. Director Ailsa Pehi leads the group through pop, folk, and feel-good harmonies, with live musicians in the room every week. The Hudson session is known for its laughter, its end-of-term showcase, and the friendships that spill out into the village long after rehearsal ends.",
       ],
       fr: [
-        "Club Choir Hudson se rencontre chaque mardi soir à l'étage du Kingfisher Pub — l'un des endroits les plus chaleureux du village. C'est une chorale communautaire sans audition pour les adultes : que vous chantiez depuis toujours ou jamais, vous êtes les bienvenus.",
-        "La directrice Ailsa Pehi guide le groupe à travers la pop, le folk et des harmonies entraînantes, avec des musiciens en direct chaque semaine. La session de Hudson est connue pour ses rires, son spectacle de fin de session et les amitiés qui se prolongent bien après les répétitions.",
+        "En mai 2024, Hudson a adopté le martin-pêcheur comme oiseau officiel — infatigable, patient mais rapide, calme mais industrieux, et surtout, résilient. Quand l'équipe de propriétaires a appris cela, ils ont su immédiatement que c'était le bon nom pour le pub qu'ils faisaient revivre sur la rue Cameron. Comme l'oiseau, le bâtiment avait presque disparu ; comme la chorale, il est aujourd'hui de nouveau plein de vie.",
+        "Club Choir Hudson se rencontre chaque mardi soir à l'étage du Kingfisher Pub — l'un des endroits les plus chaleureux du village. C'est une chorale communautaire sans audition pour les adultes : que vous chantiez depuis toujours ou jamais, vous êtes les bienvenus. La directrice Ailsa Pehi guide le groupe à travers la pop, le folk et des harmonies entraînantes, avec des musiciens en direct chaque semaine. La session de Hudson est connue pour ses rires, son spectacle de fin de session et les amitiés qui se prolongent bien après les répétitions.",
       ],
     },
     day: { en: "Tuesdays", fr: "Mardis" },
