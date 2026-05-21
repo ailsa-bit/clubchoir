@@ -183,7 +183,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     country: "CA",
     mapsUrl: "https://maps.google.com/?q=Valois+United+Church+70+Belmont+Pointe-Claire",
     theme: { bg: "bg-purple-light", border: "border-purple/30", dot: "bg-purple" },
-    photoIds: ["ptc-concert", "ptc-formation", "group-portrait"],
+    photoIds: ["ptc-folders", "ptc-formation", "group-portrait"],
   },
   arundel: {
     slug: "arundel",
