@@ -100,7 +100,7 @@ const About = () => {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
               Members
             </p>
-            <p className="font-heading font-bold text-3xl text-foreground">194</p>
+            <p className="font-heading font-bold text-3xl text-foreground">390</p>
             <p className="text-xs text-muted-foreground">Voices and growing</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
