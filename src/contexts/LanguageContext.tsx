@@ -88,6 +88,16 @@ const translations: Record<string, Record<Language, string>> = {
   "home.testimonials.subtitle": { en: "All 5-star reviews from Google", fr: "Tous des avis 5 étoiles sur Google" },
   "home.testimonials.review": { en: "Leave Us a Review on Google", fr: "Laissez-nous un avis sur Google" },
 
+  // Home - Why Members Come Back
+  "home.whyComeBack.title": { en: "Why Members Come Back", fr: "Pourquoi les membres reviennent" },
+  "home.whyComeBack.p1": { en: "At the end of our session, we asked Club Choir members what made the experience meaningful. Again and again, they mentioned the same things: the joy of singing in harmony, the welcoming community, the supportive teaching, and the confidence that builds over time.", fr: "À la fin de notre session, nous avons demandé aux membres de Club Choir ce qui avait rendu l'expérience significative. Encore et encore, ils ont mentionné les mêmes choses : la joie de chanter en harmonie, la communauté accueillante, l'enseignement bienveillant et la confiance qui se construit avec le temps." },
+  "home.whyComeBack.p2": { en: "Many members joined feeling nervous. By the final show, they described feeling proud, uplifted, and surprised by what they were able to do.", fr: "Beaucoup de membres se sont joints en se sentant nerveux. Au spectacle final, ils se disaient fiers, épanouis et surpris de ce qu'ils avaient pu accomplir." },
+  "home.whyComeBack.p3": { en: "Club Choir is not about perfection. It's about singing together, learning together, and leaving each week feeling a little lighter.", fr: "Club Choir n'est pas une question de perfection. C'est chanter ensemble, apprendre ensemble et quitter chaque semaine en se sentant un peu plus léger." },
+  "home.whyComeBack.quote1": { en: "I always left feeling better than when I arrived.", fr: "Je repartais toujours en me sentant mieux qu'à mon arrivée." },
+  "home.whyComeBack.quote2": { en: "Fun, welcoming, and confidence-building.", fr: "Amusant, accueillant et porteur de confiance." },
+  "home.whyComeBack.quote3": { en: "No pressure, just joy and community.", fr: "Aucune pression, juste de la joie et une communauté." },
+  "home.whyComeBack.cta": { en: "Join a Session", fr: "Joignez une session" },
+
   // Home - Community
   "home.community.title": { en: "Club Choir Community", fr: "Communauté Club Choir" },
   "home.community.events": { en: "Club Choir Events", fr: "Événements Club Choir" },
