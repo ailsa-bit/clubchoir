@@ -62,8 +62,8 @@ const translations: Record<string, Record<Language, string>> = {
   // Home - Moments / Photo gallery
   "home.moments.title": { en: "Real moments, real voices", fr: "De vrais moments, de vraies voix" },
   "home.moments.subtitle": {
-    en: "Snapshots from our weekly sessions and stage nights — no audition, no judgment, just the joy of singing together.",
-    fr: "Aperçus de nos sessions hebdomadaires et soirées sur scène — pas d'audition, pas de jugement, juste la joie de chanter ensemble.",
+    en: "Snapshots from our weekly adult choir rehearsals and showcase nights across Quebec — no audition, no judgment, just the joy of singing together.",
+    fr: "Aperçus de nos répétitions hebdomadaires de chorale pour adultes et de nos soirées spectacles partout au Québec — pas d'audition, pas de jugement, juste la joie de chanter ensemble.",
   },
 
   "home.faq.q.cost": { en: "How much does it cost?", fr: "Combien ça coûte ?" },
