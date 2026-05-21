@@ -23,6 +23,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import {
+import { Helmet } from "react-helmet-async";
   Search,
   Plus,
   Pencil,
@@ -288,6 +289,7 @@ const ManageMembers = () => {
 
   return (
     <div className="py-10 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-5xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>

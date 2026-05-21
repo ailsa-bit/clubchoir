@@ -6,6 +6,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Search, Play, Pause } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Helmet } from "react-helmet-async";
 
 interface SongResource {
   id: string;
@@ -232,6 +233,7 @@ const Resources = () => {
 
   return (
     <div className="py-12 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-5xl">
         {searchParams.get("search") && (
           <button

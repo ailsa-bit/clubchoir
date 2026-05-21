@@ -15,6 +15,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Helmet } from "react-helmet-async";
 
 interface MemberRow {
   id: string;
@@ -93,6 +94,7 @@ const Community = () => {
 
   return (
     <div className="py-10 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-5xl">
         <div className="text-center mb-8">
           <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">

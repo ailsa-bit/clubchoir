@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Helmet } from "react-helmet-async";
 
 const Profile = () => {
   const { user, isAdmin } = useAdmin();
@@ -18,6 +19,7 @@ const Profile = () => {
 
   return (
     <div className="py-16 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-md text-center">
         <div className="w-20 h-20 rounded-full bg-gradient-warm mx-auto mb-4 flex items-center justify-center">
           <User className="w-10 h-10 text-primary-foreground" />

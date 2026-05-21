@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Ticket, CheckCircle2, Circle, Mail, UserCheck, Trash2 } from "lucide-react";
 import {
+import { Helmet } from "react-helmet-async";
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -136,6 +137,7 @@ const PopupReservations = () => {
 
   return (
     <div className="py-10 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-6xl">
         <div className="mb-8">
           <h1 className="font-heading font-bold text-2xl text-foreground flex items-center gap-2">
