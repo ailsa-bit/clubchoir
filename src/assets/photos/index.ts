@@ -20,6 +20,12 @@ import p10Wide from "./p10-group-christmas-wide.webp";
 import p10Tile from "./p10-group-christmas-tile.webp";
 import p11Wide from "./p11-group-rehearsal-wide.webp";
 import p11Tile from "./p11-group-rehearsal-tile.webp";
+import sh1Wide from "./sh1-saint-hubert-wide.webp";
+import sh1Tile from "./sh1-saint-hubert-tile.webp";
+import sh2Wide from "./sh2-saint-hubert-wide.webp";
+import sh2Tile from "./sh2-saint-hubert-tile.webp";
+import sh3Wide from "./sh3-saint-hubert-wide.webp";
+import sh3Tile from "./sh3-saint-hubert-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
@@ -120,6 +126,36 @@ export const choirPhotos: ChoirPhoto[] = [
       fr: "Grande photo de groupe de Club Choir lors d'une répétition en salle communautaire, membres souriant ensemble en rangées",
     },
     tags: ["pointe-claire", "group", "session"],
+  },
+  {
+    id: "sh-band",
+    wide: sh1Wide,
+    tile: sh1Tile,
+    alt: {
+      en: "Director Ailsa leading Club Choir Saint-Hubert with bass and guitar accompaniment in the stained-glass hall at St-Gabriel",
+      fr: "La directrice Ailsa dirigeant Club Choir Saint-Hubert avec basse et guitare dans la salle aux vitraux de St-Gabriel",
+    },
+    tags: ["saint-hubert", "session", "atmosphere"],
+  },
+  {
+    id: "sh-group",
+    wide: sh2Wide,
+    tile: sh2Tile,
+    alt: {
+      en: "Joyful group selfie of Club Choir Saint-Hubert members and live musicians after rehearsal",
+      fr: "Égoportrait joyeux des membres de Club Choir Saint-Hubert et des musiciens en direct après la répétition",
+    },
+    tags: ["saint-hubert", "group", "atmosphere"],
+  },
+  {
+    id: "sh-concert",
+    wide: sh3Wide,
+    tile: sh3Tile,
+    alt: {
+      en: "Club Choir Saint-Hubert performing for an audience with live guitar accompaniment under stained-glass windows",
+      fr: "Club Choir Saint-Hubert en spectacle devant un public avec accompagnement à la guitare sous les vitraux",
+    },
+    tags: ["saint-hubert", "performance", "group"],
   },
 ];
 
