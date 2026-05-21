@@ -36,11 +36,11 @@ const Index = () => {
   ];
 
   const locations = [
-    { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church\n6225 Av. Godfrey, Montréal, QC H4B 1K3", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: "Sept 7 – Dec 7, 2026" },
-    { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub\n84 Cameron, Hudson, QC J0P 1H0", color: "bg-orange-light border-orange/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: "Sept 8 – Dec 8, 2026" },
-    { location: "Arundel", slug: "arundel", venue: "Centre Arundel Centre\n17 Rue du Village, Arundel, QC J0T 1A0", color: "bg-aqua-light border-aqua/20", day: t("day.tuesday"), time: "6:30–8:00 PM", dot: "bg-aqua", dates: t("home.sessions.tbc") },
-    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert, QC J3Y 2K7", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: "Sept 9 – Dec 9, 2026" },
-    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire, QC H9R 4H2", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026" },
+    { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church\n6225 Av. Godfrey, Montréal, QC H4B 1K3", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: "Sept 7 – Dec 7, 2026", isNew: false },
+    { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub\n84 Rue Cameron, Hudson, QC J0P 1H0", color: "bg-orange-light border-orange/20", day: t("day.tuesday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: "Sept 8 – Dec 8, 2026", isNew: true },
+    { location: "Arundel", slug: "arundel", venue: "Centre Arundel Centre\n17 Rue du Village, Arundel, QC J0T 1A0", color: "bg-aqua-light border-aqua/20", day: t("day.tuesday"), time: "6:30–8:00 PM", dot: "bg-aqua", dates: t("home.sessions.tbc"), isNew: false },
+    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert, QC J3Y 2K7", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: "Sept 9 – Dec 9, 2026", isNew: false },
+    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire, QC H9R 4H2", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026", isNew: false },
   ];
 
   return (
@@ -171,9 +171,14 @@ const Index = () => {
                 to={`/choir/${item.slug}`}
                 className={`relative rounded-2xl border p-5 ${item.color} transition-shadow hover:shadow-md block`}
               >
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
                   <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
                   <span className="font-heading font-bold text-foreground">{item.location}</span>
+                  {item.isNew && (
+                    <span className="inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+                      {isFr ? "Nouveau" : "New"}
+                    </span>
+                  )}
                 </div>
                 <p className="text-sm font-semibold text-foreground mb-1">{item.dates}</p>
                 <p className="text-base text-muted-foreground mb-1">

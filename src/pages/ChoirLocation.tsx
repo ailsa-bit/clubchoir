@@ -99,11 +99,16 @@ const ChoirLocation = () => {
       {/* Hero */}
       <section className="container mx-auto max-w-5xl px-4 pt-6">
         <div className={`rounded-3xl border ${data.theme.border} ${data.theme.bg} p-6 md:p-10 overflow-hidden`}>
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
             <span className={`w-2.5 h-2.5 rounded-full ${data.theme.dot}`} />
             <span className="text-xs font-bold uppercase tracking-wider text-foreground/70">
               Club Choir · {data.city}
             </span>
+            {data.isNew && (
+              <span className="inline-flex items-center rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+                {isFr ? "Nouveau" : "New"}
+              </span>
+            )}
           </div>
           <h1 className="font-heading font-bold text-3xl md:text-5xl text-foreground mb-3 leading-tight">
             {data.heroHeadline[isFr ? "fr" : "en"]}

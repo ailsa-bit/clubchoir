@@ -267,7 +267,10 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
           <nav aria-label="Locations" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
             <span className="text-xs uppercase tracking-wider text-muted-foreground/70">Locations:</span>
             <Link to="/choir/montreal" className="hover:text-foreground transition-colors">Montreal Choir</Link>
-            <Link to="/choir/hudson" className="hover:text-foreground transition-colors">Hudson Choir</Link>
+            <Link to="/choir/hudson" className="hover:text-foreground transition-colors inline-flex items-center gap-1">
+              Hudson Choir
+              <span className="inline-flex items-center rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground">New</span>
+            </Link>
             <Link to="/choir/pointe-claire" className="hover:text-foreground transition-colors">Pointe-Claire Choir</Link>
             <Link to="/choir/saint-hubert" className="hover:text-foreground transition-colors">Saint-Hubert Choir</Link>
             <Link to="/choir/arundel" className="hover:text-foreground transition-colors">Arundel Choir</Link>
