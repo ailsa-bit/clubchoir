@@ -28,6 +28,8 @@ import sh3Wide from "./sh3-saint-hubert-wide.webp";
 import sh3Tile from "./sh3-saint-hubert-tile.webp";
 import ptc2Wide from "./ptc2-concert-wide.webp";
 import ptc2Tile from "./ptc2-concert-tile.webp";
+import ptc3Wide from "./ptc3-concert-wide.webp";
+import ptc3Tile from "./ptc3-concert-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
@@ -91,11 +93,11 @@ export const choirPhotos: ChoirPhoto[] = [
   },
   {
     id: "ptc-formation",
-    wide: p7Wide,
-    tile: p7Tile,
+    wide: ptc3Wide,
+    tile: ptc3Tile,
     alt: {
-      en: "Pointe-Claire choir in performance formation under cathedral skylights, songbooks open",
-      fr: "Chorale de Pointe-Claire en formation de spectacle sous les puits de lumière de la cathédrale, cahiers ouverts",
+      en: "Club Choir Pointe-Claire performing in concert at Valois United Church to a full audience",
+      fr: "Club Choir Pointe-Claire en concert à l'église Valois United devant une salle comble",
     },
     tags: ["pointe-claire", "performance", "group"],
   },
