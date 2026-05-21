@@ -8,7 +8,7 @@ const About = () => {
     <div className="py-12 px-4">
       <PageMeta
         title="Our Story – Club Choir | Founder Ailsa"
-        description="Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to a regional family of 194 singers — sing together, laugh together, learn together."
+        description="Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to a regional family of 390 singers — sing together, laugh together, learn together."
         path="/about"
       />
 
@@ -63,7 +63,7 @@ const About = () => {
           </p>
           <p className="text-muted-foreground leading-relaxed mb-5">
             I started Club Choir to bridge that gap, beginning with just 21 members in Montreal.
-            Today, we are a vibrant regional family of 194 voices, with a new location launching in
+            Today, we are a vibrant regional family of 390 voices, with a new location launching in
             Hudson in Summer 2026. To bring a dynamic, live energy to our rehearsals, I am joined
             by talented local musicians at each location, ensuring every session feels like a
             shared performance.
@@ -100,7 +100,7 @@ const About = () => {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
               Members
             </p>
-            <p className="font-heading font-bold text-3xl text-foreground">194</p>
+            <p className="font-heading font-bold text-3xl text-foreground">390</p>
             <p className="text-xs text-muted-foreground">Voices and growing</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
