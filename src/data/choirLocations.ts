@@ -71,7 +71,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     country: "CA",
     mapsUrl: "https://maps.google.com/?q=Kensington+Presbyterian+Church+6225+Godfrey+Montreal",
     theme: { bg: "bg-pink-light", border: "border-pink/30", dot: "bg-pink" },
-    photoIds: ["group-portrait", "stage-performance", "group-christmas", "group-rehearsal"],
+    photoIds: ["stage-performance", "group-christmas", "group-rehearsal"],
   },
   hudson: {
     slug: "hudson",
