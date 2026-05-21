@@ -31,6 +31,8 @@ export interface ChoirLocationData {
   theme: { bg: string; border: string; dot: string };
   /** Which photo ids from src/assets/photos to feature */
   photoIds: string[];
+  /** Show a "NEW" badge on the page and in listings */
+  isNew?: boolean;
 }
 
 export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
