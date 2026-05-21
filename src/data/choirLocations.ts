@@ -146,7 +146,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     country: "CA",
     mapsUrl: "https://maps.google.com/?q=St-Gabriel+Catholic+Church+5070+Gilbert+Saint-Hubert",
     theme: { bg: "bg-lime-light", border: "border-lime/30", dot: "bg-lime" },
-    photoIds: ["group-portrait", "group-rehearsal", "group-christmas"],
+    photoIds: ["sh-concert", "sh-band", "sh-group"],
   },
   "pointe-claire": {
     slug: "pointe-claire",
