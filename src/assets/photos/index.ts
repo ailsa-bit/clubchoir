@@ -30,6 +30,10 @@ import ptc2Wide from "./ptc2-concert-wide.webp";
 import ptc2Tile from "./ptc2-concert-tile.webp";
 import ptc3Wide from "./ptc3-concert-wide.webp";
 import ptc3Tile from "./ptc3-concert-tile.webp";
+import ar1Wide from "./ar1-arundel-wide.webp";
+import ar1Tile from "./ar1-arundel-tile.webp";
+import ar2Wide from "./ar2-arundel-wide.webp";
+import ar2Tile from "./ar2-arundel-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
@@ -170,6 +174,26 @@ export const choirPhotos: ChoirPhoto[] = [
       fr: "Club Choir Pointe-Claire en concert à l'église Valois United avec accompagnement au piano",
     },
     tags: ["pointe-claire", "performance", "group"],
+  },
+  {
+    id: "ar-rehearsal",
+    wide: ar1Wide,
+    tile: ar1Tile,
+    alt: {
+      en: "Club Choir Arundel rehearsing on stage at Centre Arundel Centre with guitar accompaniment beneath the stained glass window",
+      fr: "Club Choir Arundel en répétition sur scène au Centre Arundel Centre avec accompagnement à la guitare sous le vitrail",
+    },
+    tags: ["arundel", "session", "group"],
+  },
+  {
+    id: "ar-group",
+    wide: ar2Wide,
+    tile: ar2Tile,
+    alt: {
+      en: "Group portrait of Club Choir Arundel members smiling together on stage at Centre Arundel Centre",
+      fr: "Portrait de groupe des membres de Club Choir Arundel souriant ensemble sur scène au Centre Arundel Centre",
+    },
+    tags: ["arundel", "group"],
   },
 ];
 
