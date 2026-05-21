@@ -30,6 +30,10 @@ import ptc2Wide from "./ptc2-concert-wide.webp";
 import ptc2Tile from "./ptc2-concert-tile.webp";
 import ptc3Wide from "./ptc3-concert-wide.webp";
 import ptc3Tile from "./ptc3-concert-tile.webp";
+import ar1Wide from "./ar1-arundel-wide.webp";
+import ar1Tile from "./ar1-arundel-tile.webp";
+import ar2Wide from "./ar2-arundel-wide.webp";
+import ar2Tile from "./ar2-arundel-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
