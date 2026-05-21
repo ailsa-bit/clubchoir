@@ -222,6 +222,13 @@ const TryASession = () => {
           </div>
         )}
       </div>
+
+      <div className="bg-muted/40 mt-12 -mx-4 px-4 py-2">
+        <ChoirFaq
+          title="Before you reach out"
+          subtitle="The questions we get most often from people thinking about trying a session."
+        />
+      </div>
     </div>
   );
 };
