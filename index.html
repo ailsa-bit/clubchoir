@@ -8,7 +8,7 @@
     <title>Club Choir – No-Audition Community Choir in Montreal, Hudson, Pointe-Claire, Saint-Hubert & Arundel</title>
     <meta name="description" content="Choir Montreal – Club Choir is a fun, welcoming no-audition community choir for adults across 5 Quebec locations. Fall 2026 registration is open." />
     <meta name="author" content="Club Choir" />
-    <link rel="canonical" href="https://clubchoir.ca/" />
+    <!-- Canonical is set per-route via react-helmet-async (see src/components/PageMeta.tsx). -->
 
     <meta property="og:title" content="Club Choir – Sing Together" />
     <meta property="og:description" content="Join Club Choir – a fun, welcoming community choir. No audition required. 5 locations across Quebec: Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel." />
@@ -20,7 +20,7 @@
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Club Choir – Sing Together" />
-    <meta name="twitter:description" content="Join Club Choir – a fun, welcoming community choir. No audition required. 5 locations across Quebec including Hudson." />
+    <meta name="twitter:description" content="Join Club Choir – a fun, welcoming no-audition community choir. 5 locations across Quebec: Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel." />
     <meta name="twitter:image" content="https://clubchoir.ca/og-image.jpg" />
 
     <script type="application/ld+json">
@@ -31,58 +31,52 @@
       "url": "https://clubchoir.ca",
       "logo": "https://clubchoir.ca/lovable-uploads/9b9fec09-89e5-4f4b-9661-e5086cf87924.png",
       "email": "ailsa@clubchoir.ca",
-      "description": "A fun, welcoming community choir with locations in Montreal, Arundel, Saint-Hubert and Pointe-Claire. No audition required.",
+      "founder": { "@type": "Person", "name": "Ailsa Pehi" },
+      "description": "A fun, welcoming no-audition community choir for adults with locations in Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel, Quebec.",
       "sameAs": ["https://www.facebook.com/clubchoir"],
+      "areaServed": [
+        { "@type": "City", "name": "Montreal" },
+        { "@type": "City", "name": "Hudson" },
+        { "@type": "City", "name": "Pointe-Claire" },
+        { "@type": "City", "name": "Saint-Hubert" },
+        { "@type": "City", "name": "Arundel" }
+      ],
       "location": [
         {
           "@type": "Place",
-          "name": "Kensington Presbyterian Church",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "6225 Av. Godfrey",
-            "addressLocality": "Montréal",
-            "addressRegion": "QC",
-            "postalCode": "H4B 1K3",
-            "addressCountry": "CA"
-          }
+          "name": "Kensington Presbyterian Church (Montreal)",
+          "address": { "@type": "PostalAddress", "streetAddress": "6225 Av. Godfrey", "addressLocality": "Montréal", "addressRegion": "QC", "postalCode": "H4B 1K3", "addressCountry": "CA" }
+        },
+        {
+          "@type": "Place",
+          "name": "Kingfisher Pub (Hudson)",
+          "address": { "@type": "PostalAddress", "streetAddress": "84 Cameron", "addressLocality": "Hudson", "addressRegion": "QC", "postalCode": "J0P 1H0", "addressCountry": "CA" }
         },
         {
           "@type": "Place",
           "name": "Centre Arundel Centre",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "17 Rue du Village",
-            "addressLocality": "Arundel",
-            "addressRegion": "QC",
-            "postalCode": "J0T 1A0",
-            "addressCountry": "CA"
-          }
+          "address": { "@type": "PostalAddress", "streetAddress": "17 Rue du Village", "addressLocality": "Arundel", "addressRegion": "QC", "postalCode": "J0T 1A0", "addressCountry": "CA" }
         },
         {
           "@type": "Place",
-          "name": "St-Gabriel Catholic Church",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "5070 Rue Gilbert",
-            "addressLocality": "Saint-Hubert",
-            "addressRegion": "QC",
-            "postalCode": "J3Y 2K7",
-            "addressCountry": "CA"
-          }
+          "name": "St-Gabriel Catholic Church (Saint-Hubert)",
+          "address": { "@type": "PostalAddress", "streetAddress": "5070 Rue Gilbert", "addressLocality": "Saint-Hubert", "addressRegion": "QC", "postalCode": "J3Y 2K7", "addressCountry": "CA" }
         },
         {
           "@type": "Place",
-          "name": "Valois United Church",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "70 Av. Belmont",
-            "addressLocality": "Pointe-Claire",
-            "addressRegion": "QC",
-            "postalCode": "H9R 4H2",
-            "addressCountry": "CA"
-          }
+          "name": "Valois United Church (Pointe-Claire)",
+          "address": { "@type": "PostalAddress", "streetAddress": "70 Av. Belmont", "addressLocality": "Pointe-Claire", "addressRegion": "QC", "postalCode": "H9R 4H2", "addressCountry": "CA" }
         }
       ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Club Choir",
+      "url": "https://clubchoir.ca",
+      "inLanguage": ["en", "fr"]
     }
     </script>
     <!-- Google Analytics (GA4) -->
