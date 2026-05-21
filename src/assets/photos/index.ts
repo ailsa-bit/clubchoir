@@ -127,6 +127,36 @@ export const choirPhotos: ChoirPhoto[] = [
     },
     tags: ["pointe-claire", "group", "session"],
   },
+  {
+    id: "sh-band",
+    wide: sh1Wide,
+    tile: sh1Tile,
+    alt: {
+      en: "Director Ailsa leading Club Choir Saint-Hubert with bass and guitar accompaniment in the stained-glass hall at St-Gabriel",
+      fr: "La directrice Ailsa dirigeant Club Choir Saint-Hubert avec basse et guitare dans la salle aux vitraux de St-Gabriel",
+    },
+    tags: ["saint-hubert", "session", "atmosphere"],
+  },
+  {
+    id: "sh-group",
+    wide: sh2Wide,
+    tile: sh2Tile,
+    alt: {
+      en: "Joyful group selfie of Club Choir Saint-Hubert members and live musicians after rehearsal",
+      fr: "Égoportrait joyeux des membres de Club Choir Saint-Hubert et des musiciens en direct après la répétition",
+    },
+    tags: ["saint-hubert", "group", "atmosphere"],
+  },
+  {
+    id: "sh-concert",
+    wide: sh3Wide,
+    tile: sh3Tile,
+    alt: {
+      en: "Club Choir Saint-Hubert performing for an audience with live guitar accompaniment under stained-glass windows",
+      fr: "Club Choir Saint-Hubert en spectacle devant un public avec accompagnement à la guitare sous les vitraux",
+    },
+    tags: ["saint-hubert", "performance", "group"],
+  },
 ];
 
 export function photosByTag(tag: ChoirPhoto["tags"][number]): ChoirPhoto[] {
