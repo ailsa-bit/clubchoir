@@ -175,6 +175,26 @@ export const choirPhotos: ChoirPhoto[] = [
     },
     tags: ["pointe-claire", "performance", "group"],
   },
+  {
+    id: "ar-rehearsal",
+    wide: ar1Wide,
+    tile: ar1Tile,
+    alt: {
+      en: "Club Choir Arundel rehearsing on stage at Centre Arundel Centre with guitar accompaniment beneath the stained glass window",
+      fr: "Club Choir Arundel en répétition sur scène au Centre Arundel Centre avec accompagnement à la guitare sous le vitrail",
+    },
+    tags: ["arundel", "session", "group"],
+  },
+  {
+    id: "ar-group",
+    wide: ar2Wide,
+    tile: ar2Tile,
+    alt: {
+      en: "Group portrait of Club Choir Arundel members smiling together on stage at Centre Arundel Centre",
+      fr: "Portrait de groupe des membres de Club Choir Arundel souriant ensemble sur scène au Centre Arundel Centre",
+    },
+    tags: ["arundel", "group"],
+  },
 ];
 
 export function photosByTag(tag: ChoirPhoto["tags"][number]): ChoirPhoto[] {

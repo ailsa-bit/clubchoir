@@ -220,7 +220,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     country: "CA",
     mapsUrl: "https://maps.google.com/?q=Centre+Arundel+Centre+17+Village+Arundel",
     theme: { bg: "bg-aqua-light", border: "border-aqua/30", dot: "bg-aqua" },
-    photoIds: ["group-portrait", "group-rehearsal"],
+    photoIds: ["group-portrait", "ar-rehearsal", "ar-group"],
   },
 };
 
