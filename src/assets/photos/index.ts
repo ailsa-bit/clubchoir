@@ -28,6 +28,8 @@ import sh3Wide from "./sh3-saint-hubert-wide.webp";
 import sh3Tile from "./sh3-saint-hubert-tile.webp";
 import ptc2Wide from "./ptc2-concert-wide.webp";
 import ptc2Tile from "./ptc2-concert-tile.webp";
+import ptc3Wide from "./ptc3-concert-wide.webp";
+import ptc3Tile from "./ptc3-concert-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
