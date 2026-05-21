@@ -142,8 +142,9 @@ const Index = () => {
             </h2>
             <p className="text-xl text-background/95 leading-relaxed mb-6 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
               Club Choir began in 2024 with 21 voices in Montreal. Today, founder Ailsa leads a
-              regional family of 194 singers — with live instrumental accompaniment at every rehearsal and a
-              simple philosophy: progress over perfection.
+              regional family of 194 adult singers across Quebec — weekly no-audition choir
+              rehearsals with live instrumental accompaniment and one simple philosophy:
+              progress over perfection.
             </p>
             <Link
               to="/about"
