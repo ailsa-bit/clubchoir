@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Ticket, CheckCircle2, Circle, Mail, UserCheck, Trash2 } from "lucide-react";
 import {
-import { Helmet } from "react-helmet-async";
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -18,6 +17,7 @@ import { Helmet } from "react-helmet-async";
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Helmet } from "react-helmet-async";
 
 interface Reservation {
   id: string;

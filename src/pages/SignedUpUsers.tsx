@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import {
-import { Helmet } from "react-helmet-async";
   Search,
   UserCheck,
   Loader2,
@@ -17,6 +16,7 @@ import { Helmet } from "react-helmet-async";
   CheckSquare,
   Users,
 } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 interface PendingSignup {
   id: string;
