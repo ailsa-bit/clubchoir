@@ -86,7 +86,40 @@ const Events = () => {
 
   return (
     <div className="py-16 px-4">
-      <PageMeta title="Events & Schedule – Club Choir" description="View upcoming Club Choir events, performances, and weekly rehearsal schedules across Montreal, Arundel, Saint-Hubert and Pointe-Claire." path="/events" />
+      <PageMeta
+        title="Upcoming Choir Events & Performances – Club Choir"
+        description="Seasonal showcases, pop-up choirs and public performances by Club Choir in Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel. Friends and family welcome."
+        path="/events"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: "Club Choir upcoming events",
+            itemListElement: events.map((e, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              item: {
+                "@type": "Event",
+                name: e.title.en,
+                startDate: ["2026-12-07","2026-12-08","2026-12-09","2026-12-10"][i] ?? "2026-12-07",
+                eventStatus: "https://schema.org/EventScheduled",
+                eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+                location: { "@type": "Place", name: `${e.location}, QC, Canada` },
+                description: e.description.en,
+                organizer: { "@type": "Organization", name: "Club Choir", url: "https://clubchoir.ca" },
+              },
+            })),
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://clubchoir.ca/" },
+              { "@type": "ListItem", position: 2, name: "Events", item: "https://clubchoir.ca/events" },
+            ],
+          },
+        ]}
+      />
       <div className="container mx-auto max-w-4xl">
         <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> {t("hudson.backHome")}
