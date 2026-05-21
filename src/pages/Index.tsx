@@ -11,7 +11,7 @@ import heroStage from "@/assets/photos/hero-stage-wide.jpg";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
-  { name: "Sonia Klebanskyj", stars: 5, text: "ClubChoir is so much fun! Ailsa Pehi is a wonderful choir director for a novice choir singer or for people who want to rediscover the joy of singing. Join and you won't be disappointed!" },
+  { name: "Sonia Klebanskyj", stars: 5, text: "ClubChoir is so much fun! Ailsa is a wonderful choir director for a novice choir singer or for people who want to rediscover the joy of singing. Join and you won't be disappointed!" },
   { name: "Claude Aimée Villeneuve", stars: 5, text: "I love the way Ailsa has an interesting way of teaching the songs so that anyone who just loves singing can enjoy themselves right away, no need to know how to read music or have previous choir experience. It's fun, the vibes are upbeat!" },
   { name: "Claudine Turnbull", stars: 5, text: "I'm so thankful to my friend for encouraging me to join Club Choir! Ailsa instantly makes you feel comfortable and brings amazing energy every week. It's truly become my weekly happiness boost!" },
   { name: "Martin Leclerc", stars: 5, text: "Great, contagious energy from Ailsa, leading the choir through fun singing! Very happy with the repertoire, the people, the arrangement and the simple enjoyment of it all." },
@@ -125,7 +125,7 @@ const Index = () => {
         <div className="absolute inset-0 z-0">
           <img
             src={founderPhoto}
-            alt="Ailsa Pehi, founder of Club Choir"
+            alt="Ailsa, founder of Club Choir"
             className="w-full h-full object-cover object-[center_25%]"
             loading="lazy"
           />
@@ -142,7 +142,7 @@ const Index = () => {
             </h2>
             <p className="text-xl text-background/95 leading-relaxed mb-6 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
               Club Choir began in 2024 with 21 voices in Montreal. Today, founder Ailsa leads a
-              regional family of 194 singers — with live musicians at every rehearsal and a
+              regional family of 194 singers — with live instrumental accompaniment at every rehearsal and a
               simple philosophy: progress over perfection.
             </p>
             <Link

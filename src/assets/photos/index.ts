@@ -46,8 +46,8 @@ export const choirPhotos: ChoirPhoto[] = [
     wide: p2Wide,
     tile: p2Tile,
     alt: {
-      en: "Smiling group portrait of Club Choir members with director Ailsa Pehi front and centre",
-      fr: "Portrait de groupe souriant des membres de Club Choir avec la directrice Ailsa Pehi au centre",
+      en: "Smiling group portrait of Club Choir members with director Ailsa front and centre",
+      fr: "Portrait de groupe souriant des membres de Club Choir avec la directrice Ailsa au centre",
     },
     tags: ["saint-hubert", "group"],
   },

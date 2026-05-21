@@ -41,7 +41,7 @@ const About = () => {
         <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 overflow-hidden">
           <img
             src={founderPhoto}
-            alt="Ailsa Pehi, founder of Club Choir, recording in a studio"
+            alt="Ailsa, founder of Club Choir, recording in a studio"
             className="w-full h-auto rounded-xl mb-5 object-cover"
             loading="eager"
           />
