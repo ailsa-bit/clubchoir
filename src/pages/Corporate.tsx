@@ -1,4 +1,5 @@
 import PageMeta from "@/components/PageMeta";
+import ChoirFaq from "@/components/ChoirFaq";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Send, Users, Music, Sparkles, Loader2 } from "lucide-react";
@@ -486,6 +487,13 @@ const Corporate = () => {
             ailsa@clubchoir.ca
           </a>
         </p>
+      </div>
+
+      <div className="bg-muted/40 mt-12">
+        <ChoirFaq
+          title="Curious about how Club Choir actually works?"
+          subtitle="These are the same questions new singers ask before joining a public session — and they apply to corporate groups too."
+        />
       </div>
     </div>
   );

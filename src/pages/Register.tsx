@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, AlertCircle, Calendar, MapPin } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
+import ChoirFaq from "@/components/ChoirFaq";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
@@ -309,6 +310,14 @@ const Register = () => {
             {submitting ? t.submitting : t.submit}
           </Button>
         </form>
+      </div>
+
+      <div className="bg-muted/40 mt-16 -mx-4 px-4 py-2">
+        <ChoirFaq
+          title={isFr ? "Questions fréquentes" : "Common questions before registering"}
+          subtitle={isFr ? "Tout ce que les nouveaux choristes demandent." : "Everything new singers ask before joining a session."}
+          includeJsonLd
+        />
       </div>
     </div>
   );
