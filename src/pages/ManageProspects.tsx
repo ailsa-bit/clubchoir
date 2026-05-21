@@ -26,6 +26,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Search, Plus, Trash2, Loader2, Sparkles, ArrowLeft, Mail } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire", "Arundel"] as const;
 
@@ -194,6 +195,7 @@ const ManageProspects = () => {
 
   return (
     <div className="py-10 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-5xl">
         <Button variant="ghost" size="sm" className="mb-4" onClick={() => navigate("/manage-members")}>
           <ArrowLeft className="w-4 h-4 mr-1" /> Back to Manage Members

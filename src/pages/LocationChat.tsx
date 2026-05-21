@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Helmet } from "react-helmet-async";
 
 const LOCATIONS = ["Montreal", "Hudson", "Arundel", "Saint-Hubert", "Pointe-Claire"];
 
@@ -186,6 +187,7 @@ const LocationChat = () => {
 
   return (
     <div className="py-10 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-3xl">
         <div className="text-center mb-8">
           <MessageCircle className="w-10 h-10 text-primary mx-auto mb-3" />

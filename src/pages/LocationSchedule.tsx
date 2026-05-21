@@ -5,6 +5,7 @@ import { Music, Calendar, Star, PartyPopper, Clock, MapPin, ArrowLeft, Upload } 
 import { useAdmin } from "@/hooks/use-admin";
 import { format, parseISO, isThisWeek, isFuture, isPast } from "date-fns";
 import AdminScheduleUpload from "@/components/AdminScheduleUpload";
+import { Helmet } from "react-helmet-async";
 
 interface SessionRow {
   id: string;
@@ -105,6 +106,7 @@ const LocationSchedule = () => {
   if (!meta) {
     return (
       <div className="py-16 px-4 text-center">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
         <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Location not found</h1>
         <Link to="/this-week" className="text-primary hover:underline">Back to This Week</Link>
       </div>
@@ -116,6 +118,7 @@ const LocationSchedule = () => {
 
   return (
     <div className="py-12 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-3xl">
         <Link to="/this-week" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to This Week

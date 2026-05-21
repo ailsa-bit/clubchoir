@@ -20,6 +20,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { MemberEditForm } from "@/components/MemberEditForm";
+import { Helmet } from "react-helmet-async";
 
 interface MemberRow {
   id: string;
@@ -197,6 +198,7 @@ const MemberDetail = () => {
 
   return (
     <div className="py-10 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-3xl">
         <Button variant="ghost" size="sm" className="mb-6" onClick={() => navigate("/manage-members")}>
           <ArrowLeft className="w-4 h-4 mr-1" /> Back to Members

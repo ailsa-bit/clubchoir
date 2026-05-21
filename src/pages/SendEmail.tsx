@@ -21,6 +21,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useToast } from "@/hooks/use-toast";
+import { Helmet } from "react-helmet-async";
 
 interface MemberRow {
   id: string;
@@ -188,6 +189,7 @@ const SendEmail = () => {
 
   return (
     <div className="py-10 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-2xl">
         <div className="text-center mb-8">
           <Mail className="w-10 h-10 text-primary mx-auto mb-3" />

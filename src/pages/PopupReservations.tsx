@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Helmet } from "react-helmet-async";
 
 interface Reservation {
   id: string;
@@ -136,6 +137,7 @@ const PopupReservations = () => {
 
   return (
     <div className="py-10 px-4">
+      <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-6xl">
         <div className="mb-8">
           <h1 className="font-heading font-bold text-2xl text-foreground flex items-center gap-2">
