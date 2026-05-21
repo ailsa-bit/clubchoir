@@ -26,6 +26,8 @@ import sh2Wide from "./sh2-saint-hubert-wide.webp";
 import sh2Tile from "./sh2-saint-hubert-tile.webp";
 import sh3Wide from "./sh3-saint-hubert-wide.webp";
 import sh3Tile from "./sh3-saint-hubert-tile.webp";
+import ptc2Wide from "./ptc2-concert-wide.webp";
+import ptc2Tile from "./ptc2-concert-tile.webp";
 
 export interface ChoirPhoto {
   id: string;
@@ -156,6 +158,16 @@ export const choirPhotos: ChoirPhoto[] = [
       fr: "Club Choir Saint-Hubert en spectacle devant un public avec accompagnement à la guitare sous les vitraux",
     },
     tags: ["saint-hubert", "performance", "group"],
+  },
+  {
+    id: "ptc-concert",
+    wide: ptc2Wide,
+    tile: ptc2Tile,
+    alt: {
+      en: "Club Choir Pointe-Claire performing in concert at Valois United Church with piano accompaniment",
+      fr: "Club Choir Pointe-Claire en concert à l'église Valois United avec accompagnement au piano",
+    },
+    tags: ["pointe-claire", "performance", "group"],
   },
 ];
 
