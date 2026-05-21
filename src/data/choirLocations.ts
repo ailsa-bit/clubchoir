@@ -53,11 +53,11 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     about: {
       en: [
         "Club Choir Montreal is a relaxed, no-audition choir for adults of all ages and skill levels. We meet Monday evenings at Kensington Presbyterian Church in NDG, and you don't need to read music or have any choir experience to take part. If you love singing — or have always wanted to try — you belong here.",
-        "Every week, founder and director Ailsa Pehi leads the group through pop classics, soulful ballads, and feel-good harmonies, accompanied by live musicians. Sessions run for 14 weeks each fall (September–December) and winter (February–May) and end with a fun community showcase. It's a chance to learn something new, meet wonderful people across Montreal, and leave each rehearsal a little lighter than you arrived.",
+        "Every week, founder and director Ailsa leads the group through pop classics, soulful ballads, and feel-good harmonies, with live instrumental accompaniment at every rehearsal. Sessions run for 14 weeks each fall (September–December) and winter (February–May) and end with a fun community showcase. It's a chance to learn something new, meet wonderful people across Montreal, and leave each rehearsal a little lighter than you arrived.",
       ],
       fr: [
         "Club Choir Montréal est une chorale détendue et sans audition pour les adultes de tous âges et niveaux. Nous nous rencontrons le lundi soir à l'église Kensington Presbyterian à NDG, et vous n'avez pas besoin de lire la musique ou d'avoir de l'expérience pour participer. Si vous aimez chanter — ou avez toujours voulu essayer — vous avez votre place ici.",
-        "Chaque semaine, la fondatrice et directrice Ailsa Pehi guide le groupe à travers des classiques pop, des ballades soul et des harmonies entraînantes, accompagnés par des musiciens en direct. Les sessions durent 14 semaines, à l'automne (septembre–décembre) et à l'hiver (février–mai), et se terminent par un spectacle communautaire convivial. C'est l'occasion d'apprendre, de rencontrer des gens formidables et de repartir un peu plus léger chaque semaine.",
+        "Chaque semaine, la fondatrice et directrice Ailsa guide le groupe à travers des classiques pop, des ballades soul et des harmonies entraînantes, avec un accompagnement instrumental live à chaque répétition. Les sessions durent 14 semaines, à l'automne (septembre–décembre) et à l'hiver (février–mai), et se terminent par un spectacle communautaire convivial. C'est l'occasion d'apprendre, de rencontrer des gens formidables et de repartir un peu plus léger chaque semaine.",
       ],
     },
     day: { en: "Mondays", fr: "Lundis" },
@@ -90,11 +90,11 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     about: {
       en: [
         "In May 2024, Hudson adopted the kingfisher as its official bird — tireless, patient yet swift, cool yet industrious, and above all, resilient. When the ownership team learned this, they knew immediately it was the right name for the pub they were bringing back to life on Rue Cameron. Like the bird, the building had nearly vanished; now, a new story is about to begin.",
-        "Club Choir Hudson will launch in September 2026, meeting every Tuesday night upstairs at the Kingfisher Pub — one of the warmest, most atmospheric spaces in town. It will be a no-audition community choir for adults, so whether you've sung your whole life or never set foot in a rehearsal, you'll be welcome to pull up a chair. Director Ailsa Pehi will lead the group through pop, folk, and feel-good harmonies, with live musicians in the room every week. The Hudson session will be known for its laughter, its end-of-term showcase, and the friendships that spill out into the village long after rehearsal ends.",
+        "Club Choir Hudson will launch in September 2026, meeting every Tuesday night upstairs at the Kingfisher Pub — one of the warmest, most atmospheric spaces in town. It will be a no-audition community choir for adults, so whether you've sung your whole life or never set foot in a rehearsal, you'll be welcome to pull up a chair. Director Ailsa will lead the group through pop, folk, and feel-good harmonies, with live instrumental accompaniment at every rehearsal. The Hudson session will be known for its laughter, its end-of-term showcase, and the friendships that spill out into the village long after rehearsal ends.",
       ],
       fr: [
         "En mai 2024, Hudson a adopté le martin-pêcheur comme oiseau officiel — infatigable, patient mais rapide, calme mais industrieux, et surtout, résilient. Quand l'équipe de propriétaires a appris cela, ils ont su immédiatement que c'était le bon nom pour le pub qu'ils faisaient revivre sur la rue Cameron. Comme l'oiseau, le bâtiment avait presque disparu ; aujourd'hui, une nouvelle histoire est sur le point de commencer.",
-        "Club Choir Hudson sera lancée en septembre 2026, se réunissant chaque mardi soir à l'étage du Kingfisher Pub — l'un des endroits les plus chaleureux du village. Ce sera une chorale communautaire sans audition pour les adultes : que vous chantiez depuis toujours ou jamais, vous serez les bienvenus. La directrice Ailsa Pehi guidera le groupe à travers la pop, le folk et des harmonies entraînantes, avec des musiciens en direct chaque semaine. La session de Hudson sera connue pour ses rires, son spectacle de fin de session et les amitiés qui se prolongeront bien après les répétitions.",
+        "Club Choir Hudson sera lancée en septembre 2026, se réunissant chaque mardi soir à l'étage du Kingfisher Pub — l'un des endroits les plus chaleureux du village. Ce sera une chorale communautaire sans audition pour les adultes : que vous chantiez depuis toujours ou jamais, vous serez les bienvenus. La directrice Ailsa guidera le groupe à travers la pop, le folk et des harmonies entraînantes, avec un accompagnement instrumental live à chaque répétition. La session de Hudson sera connue pour ses rires, son spectacle de fin de session et les amitiés qui se prolongeront bien après les répétitions.",
       ],
     },
     day: { en: "Tuesdays", fr: "Mardis" },
@@ -128,11 +128,11 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     about: {
       en: [
         "Club Choir Saint-Hubert brings the same warm, no-audition spirit to Montreal's South Shore. We meet Wednesday evenings at St-Gabriel Catholic Church on Rue Gilbert, and the door is open to any adult who wants to sing — beginners absolutely welcome.",
-        "Each session, director Ailsa Pehi teaches songs by ear with the help of live musicians, so you'll never need to read music. Sessions run for 14 weeks — fall (September–December) and winter (February–May) — and finish with a relaxed showcase performance. Expect harmony, laughter, and a real sense of community right in your own backyard.",
+        "Each session, director Ailsa teaches songs by ear with live instrumental accompaniment at every rehearsal, so you'll never need to read music. Sessions run for 14 weeks — fall (September–December) and winter (February–May) — and finish with a relaxed showcase performance. Expect harmony, laughter, and a real sense of community right in your own backyard.",
       ],
       fr: [
         "Club Choir Saint-Hubert apporte la même ambiance chaleureuse et sans audition sur la Rive-Sud. Nous nous rencontrons le mercredi soir à l'église St-Gabriel sur la rue Gilbert, et la porte est ouverte à tous les adultes qui veulent chanter — débutants bienvenus.",
-        "Chaque session, la directrice Ailsa Pehi enseigne les chansons à l'oreille avec l'aide de musiciens en direct : pas besoin de lire la musique. Les sessions durent 14 semaines — à l'automne (septembre–décembre) et à l'hiver (février–mai) — et se terminent par un spectacle détendu. Attendez-vous à des harmonies, des rires et un vrai sentiment de communauté.",
+        "Chaque session, la directrice Ailsa enseigne les chansons à l'oreille avec un accompagnement instrumental live à chaque répétition : pas besoin de lire la musique. Les sessions durent 14 semaines — à l'automne (septembre–décembre) et à l'hiver (février–mai) — et se terminent par un spectacle détendu. Attendez-vous à des harmonies, des rires et un vrai sentiment de communauté.",
       ],
     },
     day: { en: "Wednesdays", fr: "Mercredis" },
@@ -165,11 +165,11 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     about: {
       en: [
         "Club Choir Pointe-Claire is the West Island home of our adult, no-audition choir. We gather Thursday evenings at Valois United Church on Avenue Belmont, and we welcome singers of every level — including people who've been told they 'can't sing.'",
-        "Director Ailsa Pehi and live musicians lead the group through pop, classics, and modern favourites in approachable harmonies. The vibe is upbeat and pressure-free, and the 14-week session — fall (September–December) or winter (February–May) — wraps with a friendly performance you can invite your people to.",
+        "Director Ailsa leads the group through pop, classics, and modern favourites in approachable harmonies. The vibe is upbeat and pressure-free, and the 14-week session — fall (September–December) or winter (February–May) — wraps with a friendly performance you can invite your people to.",
       ],
       fr: [
         "Club Choir Pointe-Claire est notre chorale adulte sans audition dans l'Ouest-de-l'Île. Nous nous rencontrons le jeudi soir à l'église Valois United, avenue Belmont, et nous accueillons les chanteurs de tous les niveaux — y compris ceux à qui on a dit qu'ils ne savaient pas chanter.",
-        "La directrice Ailsa Pehi et les musiciens en direct guident le groupe à travers la pop, les classiques et les favoris modernes dans des harmonies accessibles. L'ambiance est joyeuse et sans pression, et la session de 14 semaines (automne septembre–décembre ou hiver février–mai) se termine par un spectacle convivial.",
+        "La directrice Ailsa guide le groupe à travers la pop, les classiques et les favoris modernes dans des harmonies accessibles. L'ambiance est joyeuse et sans pression, et la session de 14 semaines (automne septembre–décembre ou hiver février–mai) se termine par un spectacle convivial.",
       ],
     },
     day: { en: "Thursdays", fr: "Jeudis" },
@@ -202,11 +202,11 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     about: {
       en: [
         "Club Choir Arundel brings our no-audition, adults-of-all-levels approach to the Laurentians, meeting at Centre Arundel Centre in the heart of the village. Whether you live in Arundel, Mont-Tremblant, Sainte-Agathe, or anywhere nearby, you're invited to sing with us.",
-        "Director Ailsa Pehi teaches everything by ear with live musicians in the room, so reading music isn't required. Sessions are 14 weeks — fall (September–December) and winter (February–May) — and end with a casual showcase. Want to be the first to know when the next Arundel session opens? Join the mailing list.",
+        "Director Ailsa teaches everything by ear with live instrumental accompaniment at every rehearsal, so reading music isn't required. Sessions are 14 weeks — fall (September–December) and winter (February–May) — and end with a casual showcase. Want to be the first to know when the next Arundel session opens? Join the mailing list.",
       ],
       fr: [
         "Club Choir Arundel apporte notre approche sans audition, pour tous les adultes, dans les Laurentides, au Centre Arundel Centre, au cœur du village. Que vous habitiez Arundel, Mont-Tremblant, Sainte-Agathe ou les environs, vous êtes invité à chanter avec nous.",
-        "La directrice Ailsa Pehi enseigne tout à l'oreille avec des musiciens en direct, donc pas besoin de lire la musique. Les sessions durent 14 semaines — à l'automne (septembre–décembre) et à l'hiver (février–mai) — et se terminent par un spectacle convivial. Pour être informé de l'ouverture de la prochaine session, inscrivez-vous à la liste de diffusion.",
+        "La directrice Ailsa enseigne tout à l'oreille avec un accompagnement instrumental live à chaque répétition, donc pas besoin de lire la musique. Les sessions durent 14 semaines — à l'automne (septembre–décembre) et à l'hiver (février–mai) — et se terminent par un spectacle convivial. Pour être informé de l'ouverture de la prochaine session, inscrivez-vous à la liste de diffusion.",
       ],
     },
     day: { en: "TBD", fr: "À confirmer" },
