@@ -22,7 +22,8 @@ const testimonials = [
 ];
 
 const Index = () => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const isFr = language === "fr";
 
   const faqItems = [
     { q: t("home.faq.q.cost"), a: t("home.faq.a.cost") },
