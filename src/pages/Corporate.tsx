@@ -246,12 +246,12 @@ const Corporate = () => {
       }
 
       toast({
-        title: "Inquiry sent!",
-        description: "Check your inbox for a confirmation. We'll reach out within 48 hours.",
+        title: t("corporate.toast.sent.title"),
+        description: t("corporate.toast.sent.desc"),
       });
       setForm(initial);
     } catch (err: any) {
-      toast({ title: "Failed to send", description: "Please try again or email us directly.", variant: "destructive" });
+      toast({ title: t("corporate.toast.failed.title"), description: t("corporate.toast.failed.desc"), variant: "destructive" });
     } finally {
       setSending(false);
     }
