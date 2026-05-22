@@ -98,6 +98,19 @@ const translations: Record<string, Record<Language, string>> = {
   "home.whyComeBack.quote3": { en: "No pressure, just joy and community.", fr: "Aucune pression, juste de la joie et une communauté." },
   "home.whyComeBack.cta": { en: "Join a Session", fr: "Joignez une session" },
 
+  // Home - What Do We Sing
+  "home.whatWeSing.title": { en: "What Do We Sing?", fr: "Que chantons-nous ?" },
+  "home.whatWeSing.intro": {
+    en: "Club Choir sings feel-good pop, classic rock, folk-pop, bilingual favourites, and nostalgic singalong songs arranged for group harmony.",
+    fr: "Club Choir chante du pop feel-good, du rock classique, du folk-pop, des favoris bilingues et des chansons nostalgiques à chanter ensemble, arrangées pour l'harmonie de groupe."
+  },
+  "home.whatWeSing.recent": { en: "Our recent songs have included:", fr: "Nos chansons récentes incluaient :" },
+  "home.whatWeSing.closing": {
+    en: "This is not a formal classical choir. It's familiar songs, big choruses, warm harmonies, and the joy of singing music people actually know and love.",
+    fr: "Ce n'est pas une chorale classique formelle. Ce sont des chansons familières, de grands refrains, des harmonies chaleureuses et la joie de chanter de la musique que les gens connaissent et aiment vraiment."
+  },
+  "home.whatWeSing.cta": { en: "Come Sing With Us", fr: "Venez chanter avec nous" },
+
   // Home - Community
   "home.community.title": { en: "Club Choir Community", fr: "Communauté Club Choir" },
   "home.community.events": { en: "Club Choir Events", fr: "Événements Club Choir" },

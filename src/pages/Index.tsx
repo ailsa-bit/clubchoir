@@ -211,6 +211,60 @@ const Index = () => {
         </div>
       </section>
 
+      {/* What Do We Sing */}
+      <section className="py-16 px-4">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-start">
+            {/* Left: copy */}
+            <div>
+              <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-4">
+                {t("home.whatWeSing.title")}
+              </h2>
+              <p className="text-base text-muted-foreground leading-relaxed mb-4">
+                {t("home.whatWeSing.intro")}
+              </p>
+              <p className="text-base text-muted-foreground leading-relaxed mb-6">
+                {t("home.whatWeSing.closing")}
+              </p>
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              >
+                {t("home.whatWeSing.cta")}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Right: song list */}
+            <div className="md:pt-2">
+              <p className="font-heading font-bold text-base text-foreground mb-3">
+                {t("home.whatWeSing.recent")}
+              </p>
+              <ul className="space-y-2">
+                {[
+                  "Valerie",
+                  "Hélène",
+                  "Ho Hey",
+                  "You're The One That I Want",
+                  "I See Fire",
+                  "Sweet Child O' Mine",
+                  "Pretty Woman",
+                  "Sweet Dreams / Seven Nation Army",
+                ].map((song) => (
+                  <li
+                    key={song}
+                    className="flex items-center gap-3 text-base text-muted-foreground"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-5" />
+                    <span>{song}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Sessions Overview */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
