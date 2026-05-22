@@ -510,12 +510,12 @@ const Corporate = () => {
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold shadow hover:shadow-lg hover:scale-[1.02] transition-all disabled:opacity-60 disabled:pointer-events-none"
           >
             {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-            {sending ? "Sending..." : "Send Inquiry"}
+            {sending ? t("corporate.sendingInquiry") : t("corporate.sendInquiry")}
           </button>
         </form>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
-          Have questions?{" "}
+          {t("common.questions")}{" "}
           <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
             ailsa@clubchoir.ca
           </a>
@@ -524,8 +524,8 @@ const Corporate = () => {
 
       <div className="bg-muted/40 mt-12">
         <ChoirFaq
-          title="Curious about how Club Choir actually works?"
-          subtitle="These are the same questions new singers ask before joining a public session — and they apply to corporate groups too."
+          title={t("corporate.faq.title")}
+          subtitle={t("corporate.faq.subtitle")}
         />
       </div>
     </div>
