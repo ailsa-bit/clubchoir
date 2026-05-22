@@ -9,6 +9,7 @@ import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import founderPhoto from "@/assets/founder-ailsa.webp";
 import heroStage from "@/assets/photos/hero-stage-wide.jpg";
 import whyComeBackPhoto from "@/assets/why-members-come-back.webp";
+import whatWeSingPhoto from "@/assets/photos/pf07-wide.webp";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
@@ -212,32 +213,35 @@ const Index = () => {
       </section>
 
       {/* What Do We Sing */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-start">
-            {/* Left: copy */}
-            <div>
-              <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-4">
-                {t("home.whatWeSing.title")}
-              </h2>
-              <p className="text-base text-muted-foreground leading-relaxed mb-4">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
+        {/* Full-bleed background photo */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={whatWeSingPhoto}
+            alt="Club Choir performing at NDG Porchfest"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          {/* Readability overlay: darker on the left where text sits */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/25" />
+          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/30" />
+        </div>
+
+        <div className="container mx-auto max-w-5xl relative z-10">
+          <div className="max-w-xl mr-auto text-center md:text-left">
+            <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+              {t("home.whatWeSing.title")}
+            </h2>
+            <div className="space-y-4 mb-8">
+              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.intro")}
               </p>
-              <p className="text-base text-muted-foreground leading-relaxed mb-6">
+              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.closing")}
               </p>
-              <Link
-                to="/register"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all"
-              >
-                {t("home.whatWeSing.cta")}
-                <ArrowRight className="w-4 h-4" />
-              </Link>
             </div>
-
-            {/* Right: song list */}
-            <div className="md:pt-2">
-              <p className="font-heading font-bold text-base text-foreground mb-3">
+            <div className="mb-8">
+              <p className="font-heading font-bold text-base text-background mb-3 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.recent")}
               </p>
               <ul className="space-y-2">
@@ -253,14 +257,21 @@ const Index = () => {
                 ].map((song) => (
                   <li
                     key={song}
-                    className="flex items-center gap-3 text-base text-muted-foreground"
+                    className="flex items-center gap-3 text-base text-background/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-5" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-background/80 shrink-0" />
                     <span>{song}</span>
                   </li>
                 ))}
               </ul>
             </div>
+            <Link
+              to="/register"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+            >
+              {t("home.whatWeSing.cta")}
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>
