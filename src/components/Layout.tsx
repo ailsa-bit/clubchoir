@@ -241,18 +241,6 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
       </header>
 
       <main className="flex-1">
-        {location.pathname !== "/" && (
-          <div className="container mx-auto px-4 pt-6 flex justify-center">
-            <Link to="/" aria-label="Club Choir home" className="opacity-75 hover:opacity-100 transition-opacity">
-              <img
-                src={clubChoirWordmark}
-                alt="Club Choir"
-                className="h-10 sm:h-12 w-auto"
-                loading="lazy"
-              />
-            </Link>
-          </div>
-        )}
         {children}
       </main>
 
