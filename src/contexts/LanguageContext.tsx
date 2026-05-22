@@ -112,7 +112,7 @@ const translations: Record<string, Record<Language, string>> = {
   "footer.choir.arundel": { en: "Arundel Choir", fr: "Chorale d'Arundel" },
 
   // Common
-  "common.back": { en: "Back to home", fr: "Retour à l'accueil" },
+  "common.backHome": { en: "Back to home", fr: "Retour à l'accueil" },
   "common.questions": { en: "Have questions?", fr: "Des questions ?" },
 
   // About page
