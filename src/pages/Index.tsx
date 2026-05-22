@@ -7,7 +7,7 @@ import PhotoGallery from "@/components/PhotoGallery";
 import { choirPhotos } from "@/assets/photos";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import founderPhoto from "@/assets/founder-ailsa.webp";
-import heroStage from "@/assets/photos/p2-group-portrait-wide.webp";
+import heroStage from "@/assets/photos/pf08-wide.webp";
 import whyComeBackPhoto from "@/assets/why-members-come-back.webp";
 import whatWeSingPhoto from "@/assets/photos/pf07-wide.webp";
 
@@ -67,7 +67,7 @@ const Index = () => {
         <div className="absolute inset-0 z-0">
           <img
             src={heroStage}
-            alt="Smiling group portrait of Club Choir members with director Ailsa front and centre"
+            alt="Full Club Choir in formation in front of the brick church at NDG Porchfest"
             className="w-full h-full object-cover"
             loading="eager"
             fetchPriority="high"
