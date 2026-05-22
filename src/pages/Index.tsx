@@ -7,7 +7,7 @@ import PhotoGallery from "@/components/PhotoGallery";
 import { choirPhotos } from "@/assets/photos";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import founderPhoto from "@/assets/founder-ailsa.webp";
-import heroStage from "@/assets/photos/hero-stage-wide.jpg";
+import heroStage from "@/assets/photos/p2-group-portrait-wide.webp";
 import whyComeBackPhoto from "@/assets/why-members-come-back.webp";
 import whatWeSingPhoto from "@/assets/photos/pf07-wide.webp";
 
