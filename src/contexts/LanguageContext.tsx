@@ -39,7 +39,11 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Home - Hero
   "home.hero.title": { en: "Your Club Choir Space", fr: "Votre espace Club Choir" },
-  "home.hero.subtitle": { en: "A no-audition community choir for adults in Montreal, Hudson, Pointe-Claire, Saint-Hubert, and Arundel. Ever thought about joining a choir but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists.", fr: "Une chorale communautaire pour adultes, sans audition, à Montréal, Hudson, Pointe-Claire, Saint-Hubert et Arundel. Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe." },
+  "home.hero.h1": {
+    en: "No-Audition Community Choir for Adults in Montreal and Across Quebec",
+    fr: "Chorale communautaire sans audition pour adultes à Montréal et partout au Québec"
+  },
+  "home.hero.subtitle": { en: "Ever thought about joining a choir but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists — in Montreal, Hudson, Pointe-Claire, Saint-Hubert, and Arundel.", fr: "Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe — à Montréal, Hudson, Pointe-Claire, Saint-Hubert et Arundel." },
  "home.hero.desc": {
   en: "Our winter session has now ended, and we are so grateful for an incredible season of singing, learning, laughing, and building community together.\n\nThis summer, Club Choir is still singing across Quebec — keep an eye out for pop-up choirs, community performances, and special events all summer long, then join us when our 14-week Fall 2026 session starts in September.",
   fr: "Notre session d'hiver est maintenant terminée, et nous sommes tellement reconnaissants pour une saison incroyable de chant, d'apprentissage, de rires et de communauté.\n\nCet été, Club Choir continue de chanter partout au Québec — restez à l'affût des chorales pop-up, performances communautaires et événements spéciaux tout l'été, puis rejoignez-nous pour notre session d'automne 2026 de 14 semaines, dès septembre."
@@ -51,6 +55,7 @@ const translations: Record<string, Record<Language, string>> = {
  "home.sessions.title": { en: "Where & When We Sing", fr: "Où et quand nous chantons" },
  "home.sessions.fall2026": { en: "Fall Session 2026", fr: "Session d'automne 2026" },
  "home.sessions.tbc": { en: "Dates to be confirmed", fr: "Dates à confirmer" },
+ "home.sessions.learnMore": { en: "View location details", fr: "Voir les détails du lieu" },
   "home.sessions.pricing": { en: "per 14-week session · Winter session starting February · Fall session starting September", fr: "par session de 14 semaines · Session d'hiver débutant en février · Session d'automne débutant en septembre" },
 
   // Home - FAQ

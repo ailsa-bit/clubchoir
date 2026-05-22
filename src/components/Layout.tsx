@@ -133,11 +133,18 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                 {t("nav.profile")}
               </Link>
             ) : (
-              <Link
-                to="/login"
-                className="ml-2 px-3 py-1.5 rounded-lg text-base font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-                {t("login.signIn")}
-              </Link>
+              <>
+                <Link
+                  to="/register"
+                  className="ml-2 px-4 py-1.5 rounded-lg text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm">
+                  {language === "fr" ? "Inscription" : "Register"}
+                </Link>
+                <Link
+                  to="/login"
+                  className="ml-1 px-3 py-1.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  {t("login.signIn")}
+                </Link>
+              </>
             )}
           </nav>
 
@@ -214,12 +221,20 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                 {t("nav.profile")}
               </Link>
             ) : (
-              <Link
-                to="/login"
-                onClick={() => setMobileOpen(false)}
-                className="block px-3 py-2.5 rounded-lg text-sm font-medium text-primary hover:bg-primary/10 transition-colors">
-                {t("login.signIn")}
-              </Link>
+              <>
+                <Link
+                  to="/register"
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-3 py-2.5 rounded-lg text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-center">
+                  {language === "fr" ? "Inscription" : "Register"}
+                </Link>
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                  {t("login.signIn")}
+                </Link>
+              </>
             )}
           </nav>
         }

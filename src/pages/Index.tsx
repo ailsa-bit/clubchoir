@@ -7,7 +7,7 @@ import PhotoGallery from "@/components/PhotoGallery";
 import { choirPhotos } from "@/assets/photos";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import founderPhoto from "@/assets/founder-ailsa.webp";
-import heroStage from "@/assets/photos/hero-stage-wide.jpg";
+import heroStage from "@/assets/photos/p2-group-portrait-wide.webp";
 import whyComeBackPhoto from "@/assets/why-members-come-back.webp";
 import whatWeSingPhoto from "@/assets/photos/pf07-wide.webp";
 
@@ -67,15 +67,14 @@ const Index = () => {
         <div className="absolute inset-0 z-0">
           <img
             src={heroStage}
-            alt="Club Choir performing on stage"
+            alt="Smiling group portrait of Club Choir members with director Ailsa front and centre"
             className="w-full h-full object-cover"
             loading="eager"
             fetchPriority="high"
           />
-          {/* Readability overlay: darker on the left where text sits, softer on the right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/55 to-foreground/25" />
-          {/* Subtle bottom vignette */}
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/20 via-transparent to-foreground/40" />
+          {/* Lighter readability overlay — keeps the joyful photo visible */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/45 to-foreground/15" />
+          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/30" />
         </div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
@@ -85,30 +84,24 @@ const Index = () => {
               alt="Club Choir"
               width="600"
               height="240"
-              className="w-full max-w-[260px] sm:max-w-[320px] mx-auto lg:mx-0 mb-6 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+              className="w-full max-w-[240px] sm:max-w-[300px] mx-auto lg:mx-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
               loading="eager"
               fetchPriority="high"
             />
-            <p className="text-2xl text-background/95 mb-3 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-background mb-5 leading-tight animate-fade-in drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+              {t("home.hero.h1")}
+            </h1>
+            <p className="text-lg sm:text-xl text-background/95 mb-8 animate-fade-in leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.1s" }}>
               {t("home.hero.subtitle")}
             </p>
-            <p className="text-xl text-background/85 mb-10 animate-fade-in whitespace-pre-line" style={{ animationDelay: "0.15s" }}>
+            <p className="text-base sm:text-lg text-background/90 mb-8 animate-fade-in whitespace-pre-line leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.15s" }}>
               {t("home.hero.desc")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              <Link
-                to="/events"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-secondary text-secondary-foreground font-semibold text-lg shadow hover:shadow-lg hover:scale-[1.02] transition-all"
-              >
-                <Calendar className="w-6 h-6" />
-                {t("home.hero.upcomingEvents")}
-              </Link>
-            </div>
 
-            <p className="text-xl text-background/90 mt-8 leading-relaxed animate-fade-in" style={{ animationDelay: "0.22s" }}>
+            <p className="text-lg sm:text-xl text-background/95 mb-5 leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
               {t("home.hero.eventsSummary")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mt-5 animate-fade-in" style={{ animationDelay: "0.23s" }}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
               <Link
                 to="/register"
                 className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
@@ -116,13 +109,20 @@ const Index = () => {
                 <Sparkles className="w-6 h-6" />
                 {t("home.hero.registerFall")}
               </Link>
+              <Link
+                to="/events"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background/95 text-foreground font-semibold text-lg shadow hover:shadow-lg hover:bg-background hover:scale-[1.02] transition-all"
+              >
+                <Calendar className="w-6 h-6" />
+                {t("home.hero.upcomingEvents")}
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* Founder teaser */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
           <img
@@ -157,7 +157,7 @@ const Index = () => {
       </section>
 
       {/* Why Members Come Back */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
           <img
@@ -210,7 +210,7 @@ const Index = () => {
       </section>
 
       {/* What Do We Sing */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
           <img
@@ -241,9 +241,11 @@ const Index = () => {
               <p className="font-heading font-bold text-base text-background mb-3 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.recent")}
               </p>
-              <ul className="space-y-2">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2">
                 {[
                   "Valerie",
+                  "Lemon Tree",
+                  "Wicked Game",
                   "Hélène",
                   "Ho Hey",
                   "You're The One That I Want",
@@ -251,6 +253,7 @@ const Index = () => {
                   "Sweet Child O' Mine",
                   "Pretty Woman",
                   "Sweet Dreams / Seven Nation Army",
+                  "Lose It",
                 ].map((song) => (
                   <li
                     key={song}
@@ -308,8 +311,8 @@ const Index = () => {
                   {item.day} · {item.time}
                 </p>
                 <p className="text-sm text-muted-foreground whitespace-pre-line mb-2">{item.venue}</p>
-                <p className="text-xs font-semibold text-primary">
-                  {t("home.sessions.learnMore") || "Learn more →"}
+                <p className="text-xs font-semibold text-primary inline-flex items-center gap-1">
+                  {t("home.sessions.learnMore")} <ArrowRight className="w-3 h-3" />
                 </p>
               </Link>
             ))}
