@@ -352,20 +352,10 @@ const Corporate = () => {
           {nightClubPhoto && (
             <img src={nightClubPhoto.wide} alt={nightClubPhoto.alt.en} className="w-full h-auto rounded-xl mb-5 object-cover" loading="lazy" />
           )}
-          <h2 className="font-heading font-bold text-2xl text-foreground mb-3">Team-building through music</h2>
-          <p className="text-muted-foreground leading-relaxed mb-3">
-            Bring your team together through the power of music. Club Choir offers a unique and engaging team-building experience where colleagues
-            connect, collaborate, and create something meaningful together. No singing experience is required — just a willingness to participate and
-            have fun.
-          </p>
-          <p className="text-muted-foreground leading-relaxed mb-3">
-            In a single session, your group will learn a song in harmony, building confidence, communication, and a sense of shared accomplishment.
-            It's an energizing, low-pressure environment that encourages creativity, laughter, and connection.
-          </p>
-          <p className="text-muted-foreground leading-relaxed">
-            Perfect for corporate events, retreats, or team celebrations, Club Choir transforms a group of individuals into a unified voice — because
-            the best teams don't just work together, they listen, support, and grow together.
-          </p>
+          <h2 className="font-heading font-bold text-2xl text-foreground mb-3">{t("corporate.about.title")}</h2>
+          <p className="text-muted-foreground leading-relaxed mb-3">{t("corporate.about.p1")}</p>
+          <p className="text-muted-foreground leading-relaxed mb-3">{t("corporate.about.p2")}</p>
+          <p className="text-muted-foreground leading-relaxed">{t("corporate.about.p3")}</p>
         </div>
 
         {/* Value props */}
