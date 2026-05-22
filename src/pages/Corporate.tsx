@@ -371,14 +371,7 @@ const Corporate = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-          <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">Corporate Team Building Inquiry</h2>
-
-          {/* 1. Basic Information */}
-          <div className={sectionCls}>
-            <h3 className={sectionTitle}>1. Basic Information</h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className={labelCls}>Company name</label>
+          <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">{t("corporate.form.title")}</h2>
                 <input className={inputCls} value={form.companyName} onChange={(e) => update("companyName", e.target.value)} />
                 {errors.companyName && <p className="text-xs text-destructive mt-1">{errors.companyName}</p>}
               </div>
