@@ -241,9 +241,11 @@ const Index = () => {
               <p className="font-heading font-bold text-base text-background mb-3 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.recent")}
               </p>
-              <ul className="space-y-2">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2">
                 {[
                   "Valerie",
+                  "Lemon Tree",
+                  "Wicked Game",
                   "Hélène",
                   "Ho Hey",
                   "You're The One That I Want",
@@ -251,6 +253,7 @@ const Index = () => {
                   "Sweet Child O' Mine",
                   "Pretty Woman",
                   "Sweet Dreams / Seven Nation Army",
+                  "Lose It",
                 ].map((song) => (
                   <li
                     key={song}
