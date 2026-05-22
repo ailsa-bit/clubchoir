@@ -383,17 +383,17 @@ const Corporate = () => {
                 {errors.companyName && <p className="text-xs text-destructive mt-1">{errors.companyName}</p>}
               </div>
               <div>
-                <label className={labelCls}>Contact name</label>
+                <label className={labelCls}>{t("corporate.label.contactName")}</label>
                 <input className={inputCls} value={form.contactName} onChange={(e) => update("contactName", e.target.value)} />
                 {errors.contactName && <p className="text-xs text-destructive mt-1">{errors.contactName}</p>}
               </div>
               <div>
-                <label className={labelCls}>Email</label>
+                <label className={labelCls}>{t("corporate.label.email")}</label>
                 <input type="email" className={inputCls} value={form.email} onChange={(e) => update("email", e.target.value)} />
                 {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
               </div>
               <div>
-                <label className={labelCls}>Phone number</label>
+                <label className={labelCls}>{t("corporate.label.phone")}</label>
                 <input type="tel" className={inputCls} value={form.phone} onChange={(e) => update("phone", e.target.value)} />
                 {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
               </div>
@@ -402,32 +402,32 @@ const Corporate = () => {
 
           {/* 2. Event Details */}
           <div className={sectionCls}>
-            <h3 className={sectionTitle}>2. Event Details</h3>
+            <h3 className={sectionTitle}>{t("corporate.section.event")}</h3>
             <div className="space-y-5">
               <div>
-                <label className={labelCls}>What type of event are you planning?</label>
+                <label className={labelCls}>{t("corporate.label.eventType")}</label>
                 <RadioGroup field="eventType" options={EVENT_TYPES} />
                 {errors.eventType && <p className="text-xs text-destructive mt-1">{errors.eventType}</p>}
               </div>
               <div>
-                <label className={labelCls}>Preferred date(s)</label>
+                <label className={labelCls}>{t("corporate.label.preferredDates")}</label>
                 <input
                   className={inputCls}
-                  placeholder="e.g. Dec 15, or 'Not sure yet'"
+                  placeholder={t("corporate.label.preferredDatesPh")}
                   value={form.preferredDates}
                   onChange={(e) => update("preferredDates", e.target.value)}
                 />
               </div>
               <div>
-                <label className={labelCls}>Preferred time of day</label>
+                <label className={labelCls}>{t("corporate.label.preferredTime")}</label>
                 <RadioGroup field="preferredTime" options={TIMES} />
               </div>
               <div>
-                <label className={labelCls}>Where are you located? (City / Area)</label>
+                <label className={labelCls}>{t("corporate.label.cityArea")}</label>
                 <input className={inputCls} value={form.cityArea} onChange={(e) => update("cityArea", e.target.value)} />
               </div>
               <div>
-                <label className={labelCls}>Event location</label>
+                <label className={labelCls}>{t("corporate.label.eventLocation")}</label>
                 <RadioGroup field="eventLocation" options={EVENT_LOCATIONS} />
               </div>
             </div>
@@ -435,15 +435,15 @@ const Corporate = () => {
 
           {/* 3. Group Size & Profile */}
           <div className={sectionCls}>
-            <h3 className={sectionTitle}>3. Group Size & Profile</h3>
+            <h3 className={sectionTitle}>{t("corporate.section.group")}</h3>
             <div className="space-y-5">
               <div>
-                <label className={labelCls}>How many participants?</label>
+                <label className={labelCls}>{t("corporate.label.groupSize")}</label>
                 <RadioGroup field="groupSize" options={GROUP_SIZES} />
                 {errors.groupSize && <p className="text-xs text-destructive mt-1">{errors.groupSize}</p>}
               </div>
               <div>
-                <label className={labelCls}>Describe your team (select all that apply)</label>
+                <label className={labelCls}>{t("corporate.label.teamProfile")}</label>
                 <CheckGroup field="teamProfile" options={TEAM_PROFILE} />
               </div>
             </div>
@@ -451,22 +451,22 @@ const Corporate = () => {
 
           {/* 4. Goals & Outcomes */}
           <div className={sectionCls}>
-            <h3 className={sectionTitle}>4. Goals & Outcomes</h3>
-            <label className={labelCls}>What are your main goals for this event? (select up to 3)</label>
+            <h3 className={sectionTitle}>{t("corporate.section.goals")}</h3>
+            <label className={labelCls}>{t("corporate.label.goals")}</label>
             <CheckGroup field="goals" options={GOALS} />
             {errors.goals && <p className="text-xs text-destructive mt-1">{errors.goals}</p>}
           </div>
 
           {/* 5. Experience Preferences */}
           <div className={sectionCls}>
-            <h3 className={sectionTitle}>5. Experience Preferences</h3>
+            <h3 className={sectionTitle}>{t("corporate.section.experience")}</h3>
             <div className="space-y-5">
               <div>
-                <label className={labelCls}>What kind of experience are you looking for?</label>
+                <label className={labelCls}>{t("corporate.label.experience")}</label>
                 <RadioGroup field="experience" options={EXPERIENCES} />
               </div>
               <div>
-                <label className={labelCls}>Music preferences (optional)</label>
+                <label className={labelCls}>{t("corporate.label.musicPref")}</label>
                 <RadioGroup field="musicPref" options={MUSIC} />
               </div>
             </div>
@@ -474,14 +474,14 @@ const Corporate = () => {
 
           {/* 6. Logistics */}
           <div className={sectionCls}>
-            <h3 className={sectionTitle}>6. Logistics</h3>
+            <h3 className={sectionTitle}>{t("corporate.section.logistics")}</h3>
             <div className="space-y-5">
               <div>
-                <label className={labelCls}>Session length preference</label>
+                <label className={labelCls}>{t("corporate.label.sessionLength")}</label>
                 <RadioGroup field="sessionLength" options={SESSION_LENGTHS} />
               </div>
               <div>
-                <label className={labelCls}>Will there be any special considerations? (e.g. accessibility, space limitations)</label>
+                <label className={labelCls}>{t("corporate.label.specialConsiderations")}</label>
                 <textarea
                   rows={3}
                   className={`${inputCls} resize-none`}
@@ -494,8 +494,8 @@ const Corporate = () => {
 
           {/* 7. Additional Information */}
           <div className={sectionCls}>
-            <h3 className={sectionTitle}>7. Additional Information</h3>
-            <label className={labelCls}>Is there anything else we should know about your team or event?</label>
+            <h3 className={sectionTitle}>{t("corporate.section.additional")}</h3>
+            <label className={labelCls}>{t("corporate.label.additionalInfo")}</label>
             <textarea
               rows={4}
               className={`${inputCls} resize-none`}
