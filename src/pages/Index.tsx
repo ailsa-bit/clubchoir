@@ -67,7 +67,7 @@ const Index = () => {
         <div className="absolute inset-0 z-0">
           <img
             src={heroStage}
-            alt="Smiling group portrait of Club Choir members with director Ailsa front and centre"
+            alt="Full Club Choir in formation in front of the brick church at NDG Porchfest"
             className="w-full h-full object-cover"
             loading="eager"
             fetchPriority="high"
