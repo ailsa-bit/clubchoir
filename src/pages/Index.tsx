@@ -290,7 +290,7 @@ const Index = () => {
               ? "Cinq lieux à travers le Québec — Montréal, Hudson, Pointe-Claire, Saint-Hubert et Arundel — pour des répétitions de chorale hebdomadaires, sans audition, ouvertes à tous les adultes."
               : "Five locations across Quebec — Montreal, Hudson, Pointe-Claire, Saint-Hubert, and Arundel — for weekly no-audition adult choir rehearsals open to all skill levels."}
           </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {locations.map((item) => (
               <Link
                 key={item.location}
