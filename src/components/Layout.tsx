@@ -137,7 +137,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                 <Link
                   to="/register"
                   className="ml-2 px-4 py-1.5 rounded-lg text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm">
-                  {t("nav.events")?.toString && false ? "" : (language === "fr" ? "Inscription" : "Register")}
+                  {language === "fr" ? "Inscription" : "Register"}
                 </Link>
                 <Link
                   to="/login"
