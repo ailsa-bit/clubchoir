@@ -88,6 +88,12 @@ const translations: Record<string, Record<Language, string>> = {
   "home.testimonials.subtitle": { en: "All 5-star reviews from Google", fr: "Tous des avis 5 étoiles sur Google" },
   "home.testimonials.review": { en: "Leave Us a Review on Google", fr: "Laissez-nous un avis sur Google" },
 
+  // Home - Our Story
+  "home.ourStory.eyebrow": { en: "Our Story", fr: "Notre histoire" },
+  "home.ourStory.title": { en: "Sing together. Laugh together. Learn together.", fr: "Chanter ensemble. Rire ensemble. Apprendre ensemble." },
+  "home.ourStory.body": { en: "Club Choir began in 2024 with 21 voices in Montreal. Today, founder Ailsa leads a regional family of 390 adult singers across Quebec — weekly no-audition choir rehearsals with live instrumental accompaniment and one simple philosophy: progress over perfection.", fr: "Club Choir a vu le jour en 2024 avec 21 voix à Montréal. Aujourd'hui, sa fondatrice Ailsa anime une grande famille régionale de 390 chanteurs adultes partout au Québec — des répétitions de chorale hebdomadaires sans audition, avec accompagnement instrumental en direct et une philosophie toute simple : le progrès avant la perfection." },
+  "home.ourStory.cta": { en: "Read our story", fr: "Lire notre histoire" },
+
   // Home - Why Members Come Back
   "home.whyComeBack.title": { en: "Why Members Come Back", fr: "Pourquoi les membres reviennent" },
   "home.whyComeBack.p1": { en: "At the end of our session, we asked Club Choir members what made the experience meaningful. Again and again, they mentioned the same things: the joy of singing in harmony, the welcoming community, the supportive teaching, and the confidence that builds over time.", fr: "À la fin de notre session, nous avons demandé aux membres de Club Choir ce qui avait rendu l'expérience significative. Encore et encore, ils ont mentionné les mêmes choses : la joie de chanter en harmonie, la communauté accueillante, l'enseignement bienveillant et la confiance qui se construit avec le temps." },

@@ -138,21 +138,18 @@ const Index = () => {
 
         <div className="container mx-auto max-w-5xl relative z-10">
           <div className="max-w-xl ml-auto text-center md:text-right">
-            <p className="text-base font-bold uppercase tracking-wider text-background/90 mb-3">Our Story</p>
+            <p className="text-base font-bold uppercase tracking-wider text-background/90 mb-3">{t("home.ourStory.eyebrow")}</p>
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-              Sing together. Laugh together. Learn together.
+              {t("home.ourStory.title")}
             </h2>
             <p className="text-xl text-background/95 leading-relaxed mb-6 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-              Club Choir began in 2024 with 21 voices in Montreal. Today, founder Ailsa leads a
-              regional family of 390 adult singers across Quebec — weekly no-audition choir
-              rehearsals with live instrumental accompaniment and one simple philosophy:
-              progress over perfection.
+              {t("home.ourStory.body")}
             </p>
             <Link
               to="/about"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
             >
-              Read our story
+              {t("home.ourStory.cta")}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
