@@ -311,8 +311,8 @@ const Index = () => {
                   {item.day} · {item.time}
                 </p>
                 <p className="text-sm text-muted-foreground whitespace-pre-line mb-2">{item.venue}</p>
-                <p className="text-xs font-semibold text-primary">
-                  {t("home.sessions.learnMore") || "Learn more →"}
+                <p className="text-xs font-semibold text-primary inline-flex items-center gap-1">
+                  {t("home.sessions.learnMore")} <ArrowRight className="w-3 h-3" />
                 </p>
               </Link>
             ))}
