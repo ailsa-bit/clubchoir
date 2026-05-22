@@ -274,14 +274,14 @@ const Corporate = () => {
     options,
   }: {
     field: keyof FormState;
-    options: string[];
+    options: Opt[];
   }) => (
     <div className="grid sm:grid-cols-2 gap-2">
       {options.map((opt) => {
-        const checked = form[field] === opt;
+        const checked = form[field] === opt.value;
         return (
           <label
-            key={opt}
+            key={opt.value}
             className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-sm cursor-pointer transition-colors ${
               checked ? "border-primary bg-primary/10 text-foreground" : "border-input bg-background text-muted-foreground hover:border-primary/50"
             }`}
@@ -289,12 +289,12 @@ const Corporate = () => {
             <input
               type="radio"
               name={field as string}
-              value={opt}
+              value={opt.value}
               checked={checked}
-              onChange={() => update(field, opt as never)}
+              onChange={() => update(field, opt.value as never)}
               className="accent-primary"
             />
-            <span>{opt}</span>
+            <span>{t(opt.labelKey)}</span>
           </label>
         );
       })}
@@ -306,20 +306,20 @@ const Corporate = () => {
     options,
   }: {
     field: "teamProfile" | "goals";
-    options: string[];
+    options: Opt[];
   }) => (
     <div className="grid sm:grid-cols-2 gap-2">
       {options.map((opt) => {
-        const checked = form[field].includes(opt);
+        const checked = form[field].includes(opt.value);
         return (
           <label
-            key={opt}
+            key={opt.value}
             className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-sm cursor-pointer transition-colors ${
               checked ? "border-primary bg-primary/10 text-foreground" : "border-input bg-background text-muted-foreground hover:border-primary/50"
             }`}
           >
-            <input type="checkbox" checked={checked} onChange={() => toggleArr(field, opt)} className="accent-primary" />
-            <span>{opt}</span>
+            <input type="checkbox" checked={checked} onChange={() => toggleArr(field, opt.value)} className="accent-primary" />
+            <span>{t(opt.labelKey)}</span>
           </label>
         );
       })}
