@@ -253,27 +253,27 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
 
           {/* Site links for SEO & navigation */}
           <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
-            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
-            <Link to="/about" className="hover:text-foreground transition-colors">About</Link>
-            <Link to="/register" className="hover:text-foreground transition-colors">Register</Link>
-            <Link to="/events" className="hover:text-foreground transition-colors">Events</Link>
-            <Link to="/try" className="hover:text-foreground transition-colors">Try a Session</Link>
-            <Link to="/bring-a-friend" className="hover:text-foreground transition-colors">Bring a Friend</Link>
-            <Link to="/corporate" className="hover:text-foreground transition-colors">Corporate Choir</Link>
-            <Link to="/subscribe" className="hover:text-foreground transition-colors">Mailing List</Link>
+            <Link to="/" className="hover:text-foreground transition-colors">{t("footer.nav.home")}</Link>
+            <Link to="/about" className="hover:text-foreground transition-colors">{t("footer.nav.about")}</Link>
+            <Link to="/register" className="hover:text-foreground transition-colors">{t("footer.nav.register")}</Link>
+            <Link to="/events" className="hover:text-foreground transition-colors">{t("footer.nav.events")}</Link>
+            <Link to="/try" className="hover:text-foreground transition-colors">{t("footer.nav.try")}</Link>
+            <Link to="/bring-a-friend" className="hover:text-foreground transition-colors">{t("footer.nav.bringFriend")}</Link>
+            <Link to="/corporate" className="hover:text-foreground transition-colors">{t("footer.nav.corporate")}</Link>
+            <Link to="/subscribe" className="hover:text-foreground transition-colors">{t("footer.nav.mailing")}</Link>
           </nav>
 
           {/* Per-location links for SEO ([city] choir queries) */}
           <nav aria-label="Locations" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
-            <span className="text-xs uppercase tracking-wider text-muted-foreground/70">Locations:</span>
-            <Link to="/choir/montreal" className="hover:text-foreground transition-colors">Montreal Choir</Link>
+            <span className="text-xs uppercase tracking-wider text-muted-foreground/70">{t("footer.locations")}</span>
+            <Link to="/choir/montreal" className="hover:text-foreground transition-colors">{t("footer.choir.montreal")}</Link>
             <Link to="/choir/hudson" className="hover:text-foreground transition-colors inline-flex items-center gap-1">
-              Hudson Choir
-              <span className="inline-flex items-center rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground">New</span>
+              {t("footer.choir.hudson")}
+              <span className="inline-flex items-center rounded-full bg-primary px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary-foreground">{t("footer.choir.new")}</span>
             </Link>
-            <Link to="/choir/pointe-claire" className="hover:text-foreground transition-colors">Pointe-Claire Choir</Link>
-            <Link to="/choir/saint-hubert" className="hover:text-foreground transition-colors">Saint-Hubert Choir</Link>
-            <Link to="/choir/arundel" className="hover:text-foreground transition-colors">Arundel Choir</Link>
+            <Link to="/choir/pointe-claire" className="hover:text-foreground transition-colors">{t("footer.choir.pointeClaire")}</Link>
+            <Link to="/choir/saint-hubert" className="hover:text-foreground transition-colors">{t("footer.choir.saintHubert")}</Link>
+            <Link to="/choir/arundel" className="hover:text-foreground transition-colors">{t("footer.choir.arundel")}</Link>
           </nav>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
