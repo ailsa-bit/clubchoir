@@ -122,7 +122,7 @@ const Index = () => {
       </section>
 
       {/* Founder teaser */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
           <img
@@ -157,7 +157,7 @@ const Index = () => {
       </section>
 
       {/* Why Members Come Back */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
           <img
@@ -210,7 +210,7 @@ const Index = () => {
       </section>
 
       {/* What Do We Sing */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y-4 border-primary/30">
+      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
         {/* Full-bleed background photo */}
         <div className="absolute inset-0 z-0">
           <img
