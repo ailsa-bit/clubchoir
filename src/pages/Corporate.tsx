@@ -172,7 +172,7 @@ const Corporate = () => {
         if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
       });
       setErrors(fieldErrors);
-      toast({ title: "Please review the form", description: "Some required fields are missing.", variant: "destructive" });
+      toast({ title: t("corporate.toast.invalid.title"), description: t("corporate.toast.invalid.desc"), variant: "destructive" });
       return;
     }
     setErrors({});
