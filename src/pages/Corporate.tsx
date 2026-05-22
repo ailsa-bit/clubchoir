@@ -31,34 +31,77 @@ const inquirySchema = z.object({
   additionalInfo: z.string().trim().max(1000).optional(),
 });
 
-const EVENT_TYPES = ["Team building", "Holiday party", "Retreat", "Conference activity", "Client appreciation event", "Other"];
-const TIMES = ["Morning", "Afternoon", "Evening", "Flexible", "Not sure yet"];
-const EVENT_LOCATIONS = ["At your office", "External venue", "Not decided yet"];
-const GROUP_SIZES = ["10–20", "20–40", "40–60", "60+", "Not sure yet"];
-const TEAM_PROFILE = [
-  "Mostly desk-based professionals",
-  "Creative team",
-  "Leadership/management group",
-  "Mixed departments",
-  "High-energy/social",
-  "More reserved/introverted",
-  "Diverse age range",
-  "Other",
+type Opt = { value: string; labelKey: string };
+
+const EVENT_TYPES: Opt[] = [
+  { value: "Team building", labelKey: "corporate.opt.eventType.teamBuilding" },
+  { value: "Holiday party", labelKey: "corporate.opt.eventType.holidayParty" },
+  { value: "Retreat", labelKey: "corporate.opt.eventType.retreat" },
+  { value: "Conference activity", labelKey: "corporate.opt.eventType.conference" },
+  { value: "Client appreciation event", labelKey: "corporate.opt.eventType.clientAppreciation" },
+  { value: "Other", labelKey: "corporate.opt.eventType.other" },
 ];
-const GOALS = [
-  "Team bonding / connection",
-  "Boost morale",
-  "Encourage collaboration",
-  "Try something fun and different",
-  "Celebrate a milestone",
-  "Reduce stress",
-  "Build confidence",
-  "Other",
-  "Not sure yet",
+const TIMES: Opt[] = [
+  { value: "Morning", labelKey: "corporate.opt.time.morning" },
+  { value: "Afternoon", labelKey: "corporate.opt.time.afternoon" },
+  { value: "Evening", labelKey: "corporate.opt.time.evening" },
+  { value: "Flexible", labelKey: "corporate.opt.time.flexible" },
+  { value: "Not sure yet", labelKey: "corporate.opt.time.notSure" },
 ];
-const EXPERIENCES = ["Light and fun", "Energetic and interactive", "Relaxed and low-pressure", "A balance of fun and learning", "Not sure yet"];
-const MUSIC = ["Pop / Top 40", "Classics / throwbacks", "Rock", "Mixed styles", "No preference"];
-const SESSION_LENGTHS = ["60 minutes", "90 minutes", "2 hours", "Custom", "Not sure yet"];
+const EVENT_LOCATIONS: Opt[] = [
+  { value: "At your office", labelKey: "corporate.opt.loc.office" },
+  { value: "External venue", labelKey: "corporate.opt.loc.external" },
+  { value: "Not decided yet", labelKey: "corporate.opt.loc.notDecided" },
+];
+const GROUP_SIZES: Opt[] = [
+  { value: "10–20", labelKey: "corporate.opt.size.10_20" },
+  { value: "20–40", labelKey: "corporate.opt.size.20_40" },
+  { value: "40–60", labelKey: "corporate.opt.size.40_60" },
+  { value: "60+", labelKey: "corporate.opt.size.60plus" },
+  { value: "Not sure yet", labelKey: "corporate.opt.size.notSure" },
+];
+const TEAM_PROFILE: Opt[] = [
+  { value: "Mostly desk-based professionals", labelKey: "corporate.opt.team.desk" },
+  { value: "Creative team", labelKey: "corporate.opt.team.creative" },
+  { value: "Leadership/management group", labelKey: "corporate.opt.team.leadership" },
+  { value: "Mixed departments", labelKey: "corporate.opt.team.mixed" },
+  { value: "High-energy/social", labelKey: "corporate.opt.team.energy" },
+  { value: "More reserved/introverted", labelKey: "corporate.opt.team.reserved" },
+  { value: "Diverse age range", labelKey: "corporate.opt.team.ages" },
+  { value: "Other", labelKey: "corporate.opt.team.other" },
+];
+const GOALS: Opt[] = [
+  { value: "Team bonding / connection", labelKey: "corporate.opt.goal.bonding" },
+  { value: "Boost morale", labelKey: "corporate.opt.goal.morale" },
+  { value: "Encourage collaboration", labelKey: "corporate.opt.goal.collab" },
+  { value: "Try something fun and different", labelKey: "corporate.opt.goal.fun" },
+  { value: "Celebrate a milestone", labelKey: "corporate.opt.goal.milestone" },
+  { value: "Reduce stress", labelKey: "corporate.opt.goal.stress" },
+  { value: "Build confidence", labelKey: "corporate.opt.goal.confidence" },
+  { value: "Other", labelKey: "corporate.opt.goal.other" },
+  { value: "Not sure yet", labelKey: "corporate.opt.goal.notSure" },
+];
+const EXPERIENCES: Opt[] = [
+  { value: "Light and fun", labelKey: "corporate.opt.exp.light" },
+  { value: "Energetic and interactive", labelKey: "corporate.opt.exp.energetic" },
+  { value: "Relaxed and low-pressure", labelKey: "corporate.opt.exp.relaxed" },
+  { value: "A balance of fun and learning", labelKey: "corporate.opt.exp.balance" },
+  { value: "Not sure yet", labelKey: "corporate.opt.exp.notSure" },
+];
+const MUSIC: Opt[] = [
+  { value: "Pop / Top 40", labelKey: "corporate.opt.music.pop" },
+  { value: "Classics / throwbacks", labelKey: "corporate.opt.music.classics" },
+  { value: "Rock", labelKey: "corporate.opt.music.rock" },
+  { value: "Mixed styles", labelKey: "corporate.opt.music.mixed" },
+  { value: "No preference", labelKey: "corporate.opt.music.noPref" },
+];
+const SESSION_LENGTHS: Opt[] = [
+  { value: "60 minutes", labelKey: "corporate.opt.length.60" },
+  { value: "90 minutes", labelKey: "corporate.opt.length.90" },
+  { value: "2 hours", labelKey: "corporate.opt.length.120" },
+  { value: "Custom", labelKey: "corporate.opt.length.custom" },
+  { value: "Not sure yet", labelKey: "corporate.opt.length.notSure" },
+];
 
 type FormState = {
   companyName: string;
