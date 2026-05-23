@@ -222,14 +222,14 @@ const Index = () => {
             style={{ filter: "brightness(1.15) saturate(1.05)" }}
             loading="lazy"
           />
-          {/* Readability overlay: darker on the left where text sits */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/60 to-foreground/15" />
+          {/* Readability overlay: darker on the right where text sits */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/15 via-foreground/60 to-foreground/85" />
           <div className="absolute inset-0 bg-gradient-to-b from-foreground/5 via-transparent to-foreground/20" />
 
         </div>
 
         <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="max-w-xl mr-auto text-center md:text-left">
+          <div className="max-w-xl ml-auto text-center md:text-left">
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
               {t("home.whatWeSing.title")}
             </h2>
