@@ -79,7 +79,7 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="max-w-2xl text-center lg:text-left">
+          <div className="max-w-2xl text-left">
             <img
               src={clubChoirWordmark}
               alt="Club Choir"
