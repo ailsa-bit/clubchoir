@@ -95,7 +95,7 @@ const Index = () => {
             <p className="text-lg sm:text-xl text-background/95 mb-8 animate-fade-in leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.1s" }}>
               {t("home.hero.subtitle")}
             </p>
-            <p className="text-base sm:text-lg text-background/90 mb-8 animate-fade-in whitespace-pre-line leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.15s" }}>
+            <p className="text-lg sm:text-xl text-background/90 mb-8 animate-fade-in whitespace-pre-line leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.15s" }}>
               {t("home.hero.desc")}
             </p>
 
