@@ -130,6 +130,7 @@ const Index = () => {
             src={founderPhoto}
             alt="Ailsa, founder of Club Choir"
             className="w-full h-full object-cover object-[center_25%]"
+            style={{ filter: "brightness(1.15) saturate(1.05)" }}
             loading="lazy"
           />
           {/* Readability overlay: darker on the right where text sits */}
