@@ -9,7 +9,7 @@ import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import founderPhoto from "@/assets/founder-ailsa.webp";
 import heroStage from "@/assets/photos/hero-choir.jpg";
 import whyComeBackPhoto from "@/assets/why-members-come-back.webp";
-import whatWeSingPhoto from "@/assets/photos/pf07-wide.webp";
+import whatWeSingPhoto from "@/assets/photos/what-we-sing.jpg";
 
 const testimonials = [
   { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
@@ -219,11 +219,13 @@ const Index = () => {
             src={whatWeSingPhoto}
             alt="Club Choir performing at NDG Porchfest"
             className="w-full h-full object-cover"
+            style={{ filter: "brightness(1.15) saturate(1.05)" }}
             loading="lazy"
           />
           {/* Readability overlay: darker on the left where text sits */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/60 to-foreground/15" />
+          <div className="absolute inset-0 bg-gradient-to-b from-foreground/5 via-transparent to-foreground/20" />
+
         </div>
 
         <div className="container mx-auto max-w-5xl relative z-10">
