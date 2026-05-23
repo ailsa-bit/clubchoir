@@ -85,7 +85,7 @@ const Index = () => {
               alt="Club Choir"
               width="600"
               height="240"
-              className="w-full max-w-[240px] sm:max-w-[300px] mx-auto lg:mx-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+              className="w-full max-w-[240px] sm:max-w-[300px] lg:mx-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
               loading="eager"
               fetchPriority="high"
             />
