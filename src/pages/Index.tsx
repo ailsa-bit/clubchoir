@@ -73,19 +73,19 @@ const Index = () => {
             loading="eager"
             fetchPriority="high"
           />
-          {/* Readability overlay — darker on the right where text sits, lighter on the left to keep the photo bright */}
-          <div className="absolute inset-0 bg-gradient-to-l from-foreground/65 via-foreground/30 to-transparent" />
+          {/* Readability overlay — darker on the left where text sits, lighter on the right to keep the photo bright */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/65 via-foreground/30 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/25" />
         </div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="max-w-2xl ml-auto text-center lg:text-right">
+          <div className="max-w-2xl text-center lg:text-left">
             <img
               src={clubChoirWordmark}
               alt="Club Choir"
               width="600"
               height="240"
-              className="w-full max-w-[240px] sm:max-w-[300px] mx-auto lg:ml-auto lg:mr-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+              className="w-full max-w-[240px] sm:max-w-[300px] mx-auto lg:mx-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
               loading="eager"
               fetchPriority="high"
             />
@@ -102,7 +102,7 @@ const Index = () => {
             <p className="text-lg sm:text-xl text-background/95 mb-5 leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
               {t("home.hero.eventsSummary")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-end animate-fade-in" style={{ animationDelay: "0.22s" }}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
               <Link
                 to="/register"
                 className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
