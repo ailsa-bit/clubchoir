@@ -322,7 +322,7 @@ const Index = () => {
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.faq.title")}
           </h2>
-          <p className="text-center text-muted-foreground mb-10">{t("home.faq.subtitle")}</p>
+          <p className="text-center text-lg md:text-base text-muted-foreground mb-10 leading-loose md:leading-relaxed">{t("home.faq.subtitle")}</p>
           <Accordion type="single" collapsible className="space-y-3">
             {faqItems.map((item, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="rounded-2xl border border-border bg-card px-5">
@@ -336,7 +336,7 @@ const Index = () => {
             ))}
           </Accordion>
           <div className="text-center mt-10">
-            <p className="text-muted-foreground mb-4">{t("home.faq.still")}</p>
+            <p className="text-lg md:text-base text-muted-foreground mb-4 leading-loose md:leading-relaxed">{t("home.faq.still")}</p>
             <Link
               to="/try"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
