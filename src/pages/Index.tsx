@@ -246,29 +246,11 @@ const Index = () => {
               <p className="font-heading font-bold text-base text-background mb-3 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.recent")}
               </p>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2">
-                {[
-                  "Valerie",
-                  "Lemon Tree",
-                  "Wicked Game",
-                  "Hélène",
-                  "Ho Hey",
-                  "You're The One That I Want",
-                  "I See Fire",
-                  "Sweet Child O' Mine",
-                  "Pretty Woman",
-                  "Sweet Dreams / Seven Nation Army",
-                  "Lose It",
-                ].map((song) => (
-                  <li
-                    key={song}
-                    className="flex items-center gap-3 text-base text-background/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-background/80 shrink-0" />
-                    <span>{song}</span>
-                  </li>
-                ))}
-              </ul>
+              <p className="text-base text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+                {isFr
+                  ? "Valerie, Lemon Tree, Wicked Game, Hélène, Ho Hey, You're The One That I Want, I See Fire, Sweet Child O' Mine, Pretty Woman, Sweet Dreams / Seven Nation Army et Lose It."
+                  : "Valerie, Lemon Tree, Wicked Game, Hélène, Ho Hey, You're The One That I Want, I See Fire, Sweet Child O' Mine, Pretty Woman, Sweet Dreams / Seven Nation Army and Lose It."}
+              </p>
             </div>
             <Link
               to="/register"
