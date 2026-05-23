@@ -229,7 +229,7 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="max-w-xl mr-auto text-center md:text-left">
+          <div className="max-w-xl ml-auto text-center md:text-left">
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
               {t("home.whatWeSing.title")}
             </h2>
