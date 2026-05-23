@@ -102,7 +102,7 @@ const Index = () => {
             <p className="text-lg sm:text-xl text-background/95 mb-5 leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
               {t("home.hero.eventsSummary")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
               <Link
                 to="/register"
                 className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
