@@ -165,11 +165,12 @@ const Index = () => {
             src={whyComeBackPhoto}
             alt="Club Choir members celebrating together"
             className="w-full h-full object-cover"
+            style={{ filter: "brightness(1.15) saturate(1.05)" }}
             loading="lazy"
           />
-          {/* Readability overlay: darker on the left where text sits */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/65 to-foreground/25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/30" />
+          {/* Readability overlay: darker on the left where text sits, lighter on the right to keep the photo bright */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/75 via-foreground/45 to-foreground/15" />
+          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/25" />
         </div>
 
         <div className="container mx-auto max-w-5xl relative z-10">
