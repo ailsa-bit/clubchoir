@@ -222,8 +222,8 @@ const Index = () => {
             style={{ filter: "brightness(1.15) saturate(1.05)" }}
             loading="lazy"
           />
-          {/* Readability overlay: darker on the left where text sits */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/60 to-foreground/15" />
+          {/* Readability overlay: darker on the right where text sits */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/15 via-foreground/60 to-foreground/85" />
           <div className="absolute inset-0 bg-gradient-to-b from-foreground/5 via-transparent to-foreground/20" />
 
         </div>
