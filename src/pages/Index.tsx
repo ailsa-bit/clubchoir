@@ -269,10 +269,10 @@ const Index = () => {
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.sessions.title")}
           </h2>
-          <p className="text-base text-muted-foreground text-center mb-2">
+          <p className="text-lg md:text-base text-muted-foreground text-center mb-2 leading-loose md:leading-relaxed">
             {t("home.sessions.fall2026")}
           </p>
-          <p className="text-sm text-muted-foreground text-center mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-sm text-muted-foreground text-center mb-8 max-w-2xl mx-auto leading-loose md:leading-relaxed">
             {isFr
               ? "Cinq lieux à travers le Québec — Montréal, Hudson, Pointe-Claire, Saint-Hubert et Arundel — pour des répétitions de chorale hebdomadaires, sans audition, ouvertes à tous les adultes."
               : "Five locations across Quebec — Montreal, Hudson, Pointe-Claire, Saint-Hubert, and Arundel — for weekly no-audition adult choir rehearsals open to all skill levels."}
@@ -354,7 +354,7 @@ const Index = () => {
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.moments.title")}
           </h2>
-          <p className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
+          <p className="text-center text-lg md:text-base text-muted-foreground mb-10 max-w-2xl mx-auto leading-loose md:leading-relaxed">
             {t("home.moments.subtitle")}
           </p>
           <PhotoGallery photos={choirPhotos} columns={3} />
@@ -367,7 +367,7 @@ const Index = () => {
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.testimonials.title")}
           </h2>
-          <p className="text-center text-muted-foreground mb-6">{t("home.testimonials.subtitle")}</p>
+          <p className="text-center text-lg md:text-base text-muted-foreground mb-6 leading-loose md:leading-relaxed">{t("home.testimonials.subtitle")}</p>
           <div className="text-center mb-10">
             <a
               href="https://g.page/r/CU1hiLJTYmtXEAE/review"
@@ -390,7 +390,7 @@ const Index = () => {
                     <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                   ))}
                 </div>
-                <p className="text-base text-muted-foreground leading-relaxed line-clamp-4">{tst.text}</p>
+                <p className="text-lg md:text-base text-muted-foreground leading-loose md:leading-relaxed line-clamp-4">{tst.text}</p>
                 <p className="mt-auto font-heading font-bold text-base text-foreground">{tst.name}</p>
               </div>
             ))}
@@ -411,7 +411,7 @@ const Index = () => {
             >
               <Calendar className="w-8 h-8 text-aqua mb-3" />
               <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t("home.community.events")}</h3>
-              <p className="text-base text-muted-foreground">{t("home.community.eventsDesc")}</p>
+              <p className="text-lg md:text-base text-muted-foreground leading-loose md:leading-relaxed">{t("home.community.eventsDesc")}</p>
             </Link>
             <Link
               to="/corporate"
@@ -419,7 +419,7 @@ const Index = () => {
             >
               <Users className="w-8 h-8 text-purple mb-3" />
               <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t("home.community.corporate")}</h3>
-              <p className="text-base text-muted-foreground">{t("home.community.corporateDesc")}</p>
+              <p className="text-lg md:text-base text-muted-foreground leading-loose md:leading-relaxed">{t("home.community.corporateDesc")}</p>
             </Link>
           </div>
         </div>
@@ -435,7 +435,7 @@ const Index = () => {
             <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-2">
               {t("home.subscribe.title")}
             </h2>
-            <p className="text-sm md:text-base text-muted-foreground mb-5 max-w-xl mx-auto">
+            <p className="text-base md:text-sm text-muted-foreground mb-5 max-w-xl mx-auto leading-loose md:leading-relaxed">
               {t("home.subscribe.desc")}
             </p>
             <Link
