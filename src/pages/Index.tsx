@@ -92,14 +92,14 @@ const Index = () => {
             <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-background mb-5 leading-tight animate-fade-in drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
               {t("home.hero.h1")}
             </h1>
-            <p className="text-lg sm:text-xl text-background/95 mb-8 animate-fade-in leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.1s" }}>
+            <p className="text-xl sm:text-xl text-background/95 mb-8 animate-fade-in leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.1s" }}>
               {t("home.hero.subtitle")}
             </p>
-            <p className="text-lg sm:text-xl text-background/90 mb-8 animate-fade-in whitespace-pre-line leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.15s" }}>
+            <p className="text-xl sm:text-xl text-background/90 mb-8 animate-fade-in whitespace-pre-line leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.15s" }}>
               {t("home.hero.desc")}
             </p>
 
-            <p className="text-lg sm:text-xl text-background/95 mb-5 leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
+            <p className="text-xl sm:text-xl text-background/95 mb-5 leading-loose md:leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
               {t("home.hero.eventsSummary")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
@@ -144,7 +144,7 @@ const Index = () => {
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
               {t("home.ourStory.title")}
             </h2>
-            <p className="text-xl text-background/95 leading-relaxed mb-6 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+            <p className="text-xl text-background/95 leading-loose md:leading-relaxed mb-6 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
               {t("home.ourStory.body")}
             </p>
             <Link
@@ -180,24 +180,24 @@ const Index = () => {
               {t("home.whyComeBack.title")}
             </h2>
             <div className="space-y-4 mb-8">
-              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whyComeBack.p1")}
               </p>
-              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whyComeBack.p2")}
               </p>
-              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whyComeBack.p3")}
               </p>
             </div>
             <div className="space-y-3 mb-8">
-              <blockquote className="text-lg text-background/95 italic leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <blockquote className="text-xl md:text-lg text-background/95 italic leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 &ldquo;{t("home.whyComeBack.quote1")}&rdquo;
               </blockquote>
-              <blockquote className="text-lg text-background/95 italic leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <blockquote className="text-xl md:text-lg text-background/95 italic leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 &ldquo;{t("home.whyComeBack.quote2")}&rdquo;
               </blockquote>
-              <blockquote className="text-lg text-background/95 italic leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <blockquote className="text-xl md:text-lg text-background/95 italic leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 &ldquo;{t("home.whyComeBack.quote3")}&rdquo;
               </blockquote>
             </div>
@@ -235,10 +235,10 @@ const Index = () => {
               {t("home.whatWeSing.title")}
             </h2>
             <div className="space-y-4 mb-8">
-              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.intro")}
               </p>
-              <p className="text-lg text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.closing")}
               </p>
             </div>
@@ -246,7 +246,7 @@ const Index = () => {
               <p className="font-heading font-bold text-base text-background mb-3 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {t("home.whatWeSing.recent")}
               </p>
-              <p className="text-base text-background/95 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
+              <p className="text-lg md:text-base text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
                 {isFr
                   ? "Valerie, Lemon Tree, Wicked Game, Hélène, Ho Hey, You're The One That I Want, I See Fire, Sweet Child O' Mine, Pretty Woman, Sweet Dreams / Seven Nation Army et Lose It."
                   : "Valerie, Lemon Tree, Wicked Game, Hélène, Ho Hey, You're The One That I Want, I See Fire, Sweet Child O' Mine, Pretty Woman, Sweet Dreams / Seven Nation Army and Lose It."}
