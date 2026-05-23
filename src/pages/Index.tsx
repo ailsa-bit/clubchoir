@@ -79,13 +79,13 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="max-w-2xl text-center lg:text-left">
+          <div className="max-w-2xl text-left">
             <img
               src={clubChoirWordmark}
               alt="Club Choir"
               width="600"
               height="240"
-              className="w-full max-w-[240px] sm:max-w-[300px] mx-auto lg:mx-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+              className="w-full max-w-[240px] sm:max-w-[300px] lg:mx-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
               loading="eager"
               fetchPriority="high"
             />
@@ -102,7 +102,7 @@ const Index = () => {
             <p className="text-lg sm:text-xl text-background/95 mb-5 leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
               {t("home.hero.eventsSummary")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
+            <div className="flex flex-col sm:flex-row gap-3 justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
               <Link
                 to="/register"
                 className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
@@ -139,7 +139,7 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="max-w-xl ml-auto text-center md:text-right">
+          <div className="max-w-xl ml-auto text-right">
             <p className="text-base font-bold uppercase tracking-wider text-background/90 mb-3">{t("home.ourStory.eyebrow")}</p>
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
               {t("home.ourStory.title")}
@@ -175,7 +175,7 @@ const Index = () => {
         </div>
 
         <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="max-w-xl mr-auto text-center md:text-left">
+          <div className="max-w-xl mr-auto text-left">
             <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
               {t("home.whyComeBack.title")}
             </h2>
