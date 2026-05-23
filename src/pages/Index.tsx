@@ -73,8 +73,8 @@ const Index = () => {
             loading="eager"
             fetchPriority="high"
           />
-          {/* Readability overlay — darker on the left where text sits, lighter on the right to keep the photo bright */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/65 via-foreground/30 to-transparent" />
+          {/* Readability overlay — darker on the right where text sits, lighter on the left to keep the photo bright */}
+          <div className="absolute inset-0 bg-gradient-to-l from-foreground/65 via-foreground/30 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/25" />
         </div>
 
