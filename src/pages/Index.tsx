@@ -7,7 +7,7 @@ import PhotoGallery from "@/components/PhotoGallery";
 import { choirPhotos } from "@/assets/photos";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import founderPhoto from "@/assets/founder-ailsa.webp";
-import heroStage from "@/assets/photos/pf08-wide.webp";
+import heroStage from "@/assets/photos/hero-choir.jpg";
 import whyComeBackPhoto from "@/assets/why-members-come-back.webp";
 import whatWeSingPhoto from "@/assets/photos/pf07-wide.webp";
 
@@ -67,14 +67,15 @@ const Index = () => {
         <div className="absolute inset-0 z-0">
           <img
             src={heroStage}
-            alt="Full Club Choir in formation in front of the brick church at NDG Porchfest"
+            alt="Club Choir members singing outdoors from colorful Club Choir binders at NDG Porchfest"
             className="w-full h-full object-cover"
+            style={{ filter: "brightness(1.15) saturate(1.05)" }}
             loading="eager"
             fetchPriority="high"
           />
-          {/* Lighter readability overlay — keeps the joyful photo visible */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/45 to-foreground/15" />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/30" />
+          {/* Readability overlay — darker on the left where text sits, lighter on the right to keep the photo bright */}
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/65 via-foreground/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-foreground/25" />
         </div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
