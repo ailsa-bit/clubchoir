@@ -146,8 +146,9 @@ const PopupReservations = () => {
             <Ticket className="w-6 h-6" /> Pop-Up Ticket Reservations
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {rows.length} reservations · ${totalPaid} CAD received · ${totalOwed} CAD pending · {checkedIn} checked in
+            {rows.length} reservations · {ticketsSold} tickets sold · {ticketsPending} tickets pending · ${totalPaid} CAD received · ${totalOwed} CAD pending · {checkedIn} checked in
           </p>
+
         </div>
 
         {rows.length === 0 ? (
