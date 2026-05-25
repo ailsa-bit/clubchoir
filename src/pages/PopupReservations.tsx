@@ -131,8 +131,10 @@ const PopupReservations = () => {
   }
   if (!isAdmin) return null;
 
-  const totalPaid = rows.filter((r) => r.payment_received).reduce((s, r) => s + r.ticket_count * PRICE, 0);
-  const totalOwed = rows.filter((r) => !r.payment_received).reduce((s, r) => s + r.ticket_count * PRICE, 0);
+  const ticketsSold = rows.filter((r) => r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
+  const ticketsPending = rows.filter((r) => !r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
+  const totalPaid = ticketsSold * PRICE;
+  const totalOwed = ticketsPending * PRICE;
   const checkedIn = rows.filter((r) => r.checked_in_at).length;
 
   return (
