@@ -1,0 +1,1 @@
+UPDATE public.popup_ticket_reservations SET ticket_token = gen_random_uuid() WHERE id = 'fbb9e4d9-f98f-458a-a838-eb0e7899ab33';
