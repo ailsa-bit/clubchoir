@@ -110,6 +110,99 @@ const PopupStudio77 = () => {
           </a>
         </div>
 
+        {/* Waitlist form */}
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8" id="waitlist">
+          {submitted ? (
+            <div className="text-center py-6">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 text-green-600 mb-4">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+                {isFr ? "Vous êtes sur la liste !" : "You're on the list!"}
+              </h2>
+              <p className="text-muted-foreground max-w-md mx-auto mb-4">
+                {isFr
+                  ? "Merci ! Vous serez parmi les premiers informés dès que nous annoncerons notre prochain événement Pop-Up."
+                  : "Thank you! You'll be among the first to know as soon as we announce our next Pop-Up event."}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {isFr ? "Des questions ? Écrivez-nous à " : "Questions? Email us at "}
+                <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
+                  ailsa@clubchoir.ca
+                </a>
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
+                <BellRing className="w-3.5 h-3.5" /> {isFr ? "Liste d'attente" : "Waitlist"}
+              </div>
+              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+                {isFr ? "Soyez les premiers informés du prochain Pop-Up" : "Be the first to know about the next Pop-Up"}
+              </h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                {isFr
+                  ? "Laissez-nous votre nom et votre courriel — nous vous contacterons dès que la prochaine date sera annoncée, avant tout le monde."
+                  : "Leave us your name and email — we'll reach out the moment the next date is announced, ahead of everyone else."}
+              </p>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="firstName">
+                      {isFr ? "Prénom" : "First name"}
+                    </label>
+                    <input
+                      id="firstName"
+                      type="text"
+                      required
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="lastName">
+                      {isFr ? "Nom" : "Last name"}
+                    </label>
+                    <input
+                      id="lastName"
+                      type="text"
+                      required
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="email">
+                    {isFr ? "Adresse courriel" : "Email"}
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <BellRing className="w-5 h-5" />
+                  {submitting
+                    ? (isFr ? "Envoi en cours..." : "Submitting...")
+                    : (isFr ? "Me prévenir du prochain événement" : "Notify me about the next event")}
+                </button>
+              </form>
+            </>
+          )}
+        </div>
+
         {/* Hero */}
         <div className="rounded-2xl border border-orange/20 bg-orange-light p-6 md:p-8 mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
@@ -210,100 +303,6 @@ const PopupStudio77 = () => {
             <p className="text-xs text-muted-foreground">{isFr ? "2 heures" : "2 hours"}</p>
           </div>
         </div>
-
-        {/* Waitlist form */}
-        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8" id="waitlist">
-          {submitted ? (
-            <div className="text-center py-6">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 text-green-600 mb-4">
-                <CheckCircle2 className="w-8 h-8" />
-              </div>
-              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-                {isFr ? "Vous êtes sur la liste !" : "You're on the list!"}
-              </h2>
-              <p className="text-muted-foreground max-w-md mx-auto mb-4">
-                {isFr
-                  ? "Merci ! Vous serez parmi les premiers informés dès que nous annoncerons notre prochain événement Pop-Up."
-                  : "Thank you! You'll be among the first to know as soon as we announce our next Pop-Up event."}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {isFr ? "Des questions ? Écrivez-nous à " : "Questions? Email us at "}
-                <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
-                  ailsa@clubchoir.ca
-                </a>
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
-                <BellRing className="w-3.5 h-3.5" /> {isFr ? "Liste d'attente" : "Waitlist"}
-              </div>
-              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-                {isFr ? "Soyez les premiers informés du prochain Pop-Up" : "Be the first to know about the next Pop-Up"}
-              </h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                {isFr
-                  ? "Laissez-nous votre nom et votre courriel — nous vous contacterons dès que la prochaine date sera annoncée, avant tout le monde."
-                  : "Leave us your name and email — we'll reach out the moment the next date is announced, ahead of everyone else."}
-              </p>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="firstName">
-                      {isFr ? "Prénom" : "First name"}
-                    </label>
-                    <input
-                      id="firstName"
-                      type="text"
-                      required
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="lastName">
-                      {isFr ? "Nom" : "Last name"}
-                    </label>
-                    <input
-                      id="lastName"
-                      type="text"
-                      required
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="email">
-                    {isFr ? "Adresse courriel" : "Email"}
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  <BellRing className="w-5 h-5" />
-                  {submitting
-                    ? (isFr ? "Envoi en cours..." : "Submitting...")
-                    : (isFr ? "Me prévenir du prochain événement" : "Notify me about the next event")}
-                </button>
-              </form>
-            </>
-          )}
-        </div>
-
 
         {/* FAQ */}
         <section className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
