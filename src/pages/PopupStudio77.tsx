@@ -91,6 +91,25 @@ const PopupStudio77 = () => {
           <ArrowLeft className="w-4 h-4" /> {isFr ? "Retour aux événements" : "Back to events"}
         </Link>
 
+        {/* SOLD OUT banner */}
+        <div className="rounded-2xl bg-orange text-orange-foreground p-6 md:p-8 mb-8 text-center shadow-lg">
+          <h2 className="font-heading font-extrabold text-3xl md:text-4xl tracking-wide mb-2">
+            {isFr ? "COMPLET — MERCI !" : "SOLD OUT — THANK YOU!"}
+          </h2>
+          <p className="text-base md:text-lg opacity-95 max-w-xl mx-auto">
+            {isFr
+              ? "Tous les billets pour cet événement sont vendus. Joignez-vous à la liste d'attente ci-dessous pour être les premiers informés de notre prochain Pop-Up !"
+              : "Every ticket for this event has been claimed. Join the waitlist below to be the first to know about our next Pop-Up event!"}
+          </p>
+          <a
+            href="#waitlist"
+            className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-full bg-background text-foreground font-semibold shadow hover:shadow-lg transition-all"
+          >
+            <BellRing className="w-4 h-4" />
+            {isFr ? "Rejoindre la liste d'attente" : "Join the waitlist"}
+          </a>
+        </div>
+
         {/* Hero */}
         <div className="rounded-2xl border border-orange/20 bg-orange-light p-6 md:p-8 mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
