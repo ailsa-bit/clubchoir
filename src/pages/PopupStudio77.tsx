@@ -54,13 +54,12 @@ const PopupStudio77 = () => {
     }
     setSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("notify-popup-reservation", {
+      const { error } = await supabase.functions.invoke("notify-popup-waitlist", {
         body: {
           event_slug: EVENT_SLUG,
           first_name: firstName.trim(),
           last_name: lastName.trim(),
           email: email.trim(),
-          ticket_count: tickets,
         },
       });
       if (error) throw error;
@@ -79,7 +78,6 @@ const PopupStudio77 = () => {
     }
   };
 
-  const total = PRICE_PER_TICKET * tickets;
 
   return (
     <div className="py-12 px-4">
