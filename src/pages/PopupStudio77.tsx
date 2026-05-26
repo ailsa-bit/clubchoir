@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, Mail, CheckCircle2, AlertCircle, Ticket } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, Mail, CheckCircle2, AlertCircle, Ticket, BellRing } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,7 +16,6 @@ const PopupStudio77 = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [tickets, setTickets] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -55,13 +54,12 @@ const PopupStudio77 = () => {
     }
     setSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("notify-popup-reservation", {
+      const { error } = await supabase.functions.invoke("notify-popup-waitlist", {
         body: {
           event_slug: EVENT_SLUG,
           first_name: firstName.trim(),
           last_name: lastName.trim(),
           email: email.trim(),
-          ticket_count: tickets,
         },
       });
       if (error) throw error;
@@ -80,7 +78,6 @@ const PopupStudio77 = () => {
     }
   };
 
-  const total = PRICE_PER_TICKET * tickets;
 
   return (
     <div className="py-12 px-4">
@@ -93,6 +90,25 @@ const PopupStudio77 = () => {
         <Link to="/events" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> {isFr ? "Retour aux événements" : "Back to events"}
         </Link>
+
+        {/* SOLD OUT banner */}
+        <div className="rounded-2xl bg-orange text-orange-foreground p-6 md:p-8 mb-8 text-center shadow-lg">
+          <h2 className="font-heading font-extrabold text-3xl md:text-4xl tracking-wide mb-2">
+            {isFr ? "COMPLET — MERCI !" : "SOLD OUT — THANK YOU!"}
+          </h2>
+          <p className="text-base md:text-lg opacity-95 max-w-xl mx-auto">
+            {isFr
+              ? "Tous les billets pour cet événement sont vendus. Joignez-vous à la liste d'attente ci-dessous pour être les premiers informés de notre prochain Pop-Up !"
+              : "Every ticket for this event has been claimed. Join the waitlist below to be the first to know about our next Pop-Up event!"}
+          </p>
+          <a
+            href="#waitlist"
+            className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-full bg-background text-foreground font-semibold shadow hover:shadow-lg transition-all"
+          >
+            <BellRing className="w-4 h-4" />
+            {isFr ? "Rejoindre la liste d'attente" : "Join the waitlist"}
+          </a>
+        </div>
 
         {/* Hero */}
         <div className="rounded-2xl border border-orange/20 bg-orange-light p-6 md:p-8 mb-8">
@@ -195,33 +211,20 @@ const PopupStudio77 = () => {
           </div>
         </div>
 
-        {/* Urgency banner */}
-        <div className="rounded-2xl bg-gradient-warm text-primary-foreground p-6 mb-8 text-center shadow-md">
-          <Music className="w-8 h-8 mx-auto mb-2 opacity-90" />
-          <h3 className="font-heading font-bold text-xl mb-1">
-            {isFr ? "Places limitées" : "Spots are limited"}
-          </h3>
-          <p className="text-sm md:text-base opacity-95 max-w-md mx-auto">
-            {isFr
-              ? `${PRICE_PER_TICKET} $ par personne · Réservez votre place avant qu'il n'y ait plus de billets.`
-              : `$${PRICE_PER_TICKET} per person · Reserve your spot before tickets sell out.`}
-          </p>
-        </div>
-
-        {/* Reservation form */}
-        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8" id="reserve">
+        {/* Waitlist form */}
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8" id="waitlist">
           {submitted ? (
             <div className="text-center py-6">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 text-green-600 mb-4">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-                {isFr ? "Réservation reçue !" : "Reservation received!"}
+                {isFr ? "Vous êtes sur la liste !" : "You're on the list!"}
               </h2>
               <p className="text-muted-foreground max-w-md mx-auto mb-4">
                 {isFr
-                  ? "Vérifiez votre boîte de réception — nous vous avons envoyé les instructions de paiement par e-Transfert. Votre place ne sera confirmée qu'après réception du paiement."
-                  : "Check your inbox — we've sent you e-Transfer payment instructions. Your spot will only be confirmed once we receive your payment."}
+                  ? "Merci ! Vous serez parmi les premiers informés dès que nous annoncerons notre prochain événement Pop-Up."
+                  : "Thank you! You'll be among the first to know as soon as we announce our next Pop-Up event."}
               </p>
               <p className="text-sm text-muted-foreground">
                 {isFr ? "Des questions ? Écrivez-nous à " : "Questions? Email us at "}
@@ -232,13 +235,16 @@ const PopupStudio77 = () => {
             </div>
           ) : (
             <>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
+                <BellRing className="w-3.5 h-3.5" /> {isFr ? "Liste d'attente" : "Waitlist"}
+              </div>
               <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-                {isFr ? "Réservez votre place" : "Reserve your spot"}
+                {isFr ? "Soyez les premiers informés du prochain Pop-Up" : "Be the first to know about the next Pop-Up"}
               </h2>
               <p className="text-sm text-muted-foreground mb-6">
                 {isFr
-                  ? "Remplissez ce formulaire et nous vous enverrons les instructions de paiement par e-Transfert."
-                  : "Fill out this form and we'll send you e-Transfer payment instructions."}
+                  ? "Laissez-nous votre nom et votre courriel — nous vous contacterons dès que la prochaine date sera annoncée, avant tout le monde."
+                  : "Leave us your name and email — we'll reach out the moment the next date is announced, ahead of everyone else."}
               </p>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -282,67 +288,22 @@ const PopupStudio77 = () => {
                     className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">
-                    {isFr ? "Combien de billets ?" : "How many tickets?"}
-                  </label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {[1, 2, 3, 4].map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        onClick={() => setTickets(n)}
-                        className={`py-3 rounded-xl border-2 font-semibold transition-all ${
-                          tickets === n
-                            ? "border-orange bg-orange text-orange-foreground"
-                            : "border-border bg-background text-foreground hover:border-orange/50"
-                        }`}
-                      >
-                        {n}
-                      </button>
-                    ))}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {isFr
-                      ? "Pour réserver pour plus de 4 personnes, écrivez-nous à "
-                      : "To reserve for more than 4 people, please email us at "}
-                    <a href="mailto:ailsa@clubchoir.ca" className="text-primary hover:underline">
-                      ailsa@clubchoir.ca
-                    </a>
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between rounded-xl bg-muted/50 px-4 py-3">
-                  <span className="text-sm font-medium text-foreground">
-                    {isFr ? "Total à payer" : "Total to pay"}
-                  </span>
-                  <span className="font-heading font-bold text-xl text-foreground">
-                    ${total} CAD
-                  </span>
-                </div>
 
                 <button
                   type="submit"
                   disabled={submitting}
                   className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <Ticket className="w-5 h-5" />
+                  <BellRing className="w-5 h-5" />
                   {submitting
                     ? (isFr ? "Envoi en cours..." : "Submitting...")
-                    : (isFr ? "Réserver ma place" : "Reserve my spot")}
+                    : (isFr ? "Me prévenir du prochain événement" : "Notify me about the next event")}
                 </button>
-                <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
-                  <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <p>
-                    {isFr
-                      ? "Une fois votre réservation soumise, vous recevrez un courriel avec les instructions de paiement par e-Transfert. Votre place ne sera pas sécurisée tant que nous n'aurons pas confirmé la réception du paiement."
-                      : "Once you reserve your ticket, you will receive an email with e-Transfer payment instructions. Your space will not be secured until we confirm payment."}
-                  </p>
-                </div>
               </form>
             </>
           )}
         </div>
+
 
         {/* FAQ */}
         <section className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">

@@ -258,6 +258,33 @@ export type Database = {
         }
         Relationships: []
       }
+      popup_waitlist: {
+        Row: {
+          created_at: string
+          email: string
+          event_slug: string
+          first_name: string
+          id: string
+          last_name: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          event_slug: string
+          first_name: string
+          id?: string
+          last_name: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          event_slug?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
