@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, Mail, CheckCircle2, AlertCircle, Ticket } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, Mail, CheckCircle2, AlertCircle, Ticket, BellRing } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
