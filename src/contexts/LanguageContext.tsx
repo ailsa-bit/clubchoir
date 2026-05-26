@@ -804,6 +804,8 @@ const translations: Record<string, Record<Language, string>> = {
   "events.hudsonSummerTitle": { en: "Hudson Summer Choir", fr: "Chorale d'été à Hudson" },
   "events.hudsonSummerDesc": { en: "Join us every Monday this summer at the Kingfisher Pub in Hudson for group singing in a relaxed, welcoming atmosphere. No experience needed.", fr: "Joignez-vous à nous tous les lundis de l'été au Kingfisher Pub à Hudson pour chanter en groupe dans une ambiance détendue et accueillante. Aucune expérience requise." },
   "events.reserveSpot": { en: "Reserve your spot", fr: "Réservez votre place" },
+  "events.joinWaitlist": { en: "Join waitlist", fr: "Rejoindre la liste d'attente" },
+  "events.popupSoldOut": { en: "SOLD OUT", fr: "COMPLET" },
   "events.popupTickets": { en: "Pop-Up Choir · Tickets on sale", fr: "Chorale Pop-Up · Billets en vente" },
   "events.popupTitle": { en: "Club Choir Pop-Up at Studio 77", fr: "Club Choir Pop-Up au Studio 77" },
   "events.popupDate": { en: "Sunday, May 31 · 3:00 PM – 5:00 PM", fr: "Dimanche 31 mai · 15 h – 17 h" },

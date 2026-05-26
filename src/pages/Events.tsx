@@ -1,5 +1,5 @@
 import PageMeta from "@/components/PageMeta";
-import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft, CheckCircle2, BellRing } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -167,11 +167,11 @@ const Events = () => {
         </Card>
 
 
-        <Card className="mb-6 border-purple/30 bg-purple-light">
+        <Card className="mb-6 border-orange/30 bg-orange-light">
           <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-purple mb-1">
+            <div className="flex items-center gap-2 text-orange mb-1">
               <Ticket className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.popupTickets")}</span>
+              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.popupSoldOut")}</span>
             </div>
             <CardTitle className="text-xl font-heading">
               {t("events.popupTitle")}
@@ -182,21 +182,31 @@ const Events = () => {
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
+            {/* SOLD OUT banner */}
+            <div className="rounded-xl bg-orange text-orange-foreground p-4 text-center">
+              <h3 className="font-heading font-bold text-lg mb-1">
+                {language === "fr" ? "COMPLET — MERCI !" : "SOLD OUT — THANK YOU!"}
+              </h3>
+              <p className="text-sm opacity-95">
+                {language === "fr"
+                  ? "Tous les billets sont vendus. Rejoignez la liste d'attente pour le prochain événement."
+                  : "All tickets have been claimed. Join the waitlist for the next event."}
+              </p>
+            </div>
             <p className="text-muted-foreground leading-relaxed">
               {t("events.popupDesc")}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-purple" />
+                <MapPin className="w-4 h-4 text-orange" />
                 <span className="font-medium">Studio 77, Pointe-Claire</span>
               </div>
-              <span className="text-muted-foreground">{t("events.popupPrice")}</span>
             </div>
             <div className="pt-3">
-              <Button asChild className="bg-purple text-purple-foreground hover:bg-purple/90 rounded-full font-semibold">
+              <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
                 <Link to="/popup/studio-77">
-                  <Ticket className="w-4 h-4 mr-1.5" />
-                  {t("events.reserveSpot")}
+                  <BellRing className="w-4 h-4 mr-1.5" />
+                  {t("events.joinWaitlist")}
                 </Link>
               </Button>
             </div>
