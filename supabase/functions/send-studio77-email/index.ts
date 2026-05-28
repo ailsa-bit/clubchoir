@@ -121,8 +121,11 @@ const handler = async (req: Request): Promise<Response> => {
       .eq("event_slug", "studio-77-may-31");
     if (error) throw error;
 
+    const extras: { first_name: string; email: string }[] = Array.isArray(body.extras) ? body.extras : [];
+    const allRows = [...(rows || []), ...extras];
+
     const byEmail = new Map<string, string[]>();
-    for (const r of rows || []) {
+    for (const r of allRows) {
       const email = String(r.email).trim().toLowerCase();
       if (!email) continue;
       const arr = byEmail.get(email) || [];
