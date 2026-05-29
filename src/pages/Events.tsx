@@ -171,7 +171,9 @@ const Events = () => {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-orange mb-1">
               <Ticket className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.popupSoldOut")}</span>
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Nouvelles places ajoutées" : "More seats just added"}
+              </span>
             </div>
             <CardTitle className="text-xl font-heading">
               {t("events.popupTitle")}
@@ -182,17 +184,11 @@ const Events = () => {
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            {/* SOLD OUT banner */}
-            <div className="rounded-xl bg-orange text-orange-foreground p-4 text-center">
-              <h3 className="font-heading font-bold text-lg mb-1">
-                {language === "fr" ? "COMPLET — MERCI !" : "SOLD OUT — THANK YOU!"}
-              </h3>
-              <p className="text-sm opacity-95">
-                {language === "fr"
-                  ? "Tous les billets sont vendus. Rejoignez la liste d'attente pour le prochain événement."
-                  : "All tickets have been claimed. Join the waitlist for the next event."}
-              </p>
-            </div>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Nous avons ajouté 10 places supplémentaires ! Réservez la vôtre avant qu'elles ne disparaissent."
+                : "We've added 10 more seats! Reserve yours before they're gone."}
+            </p>
             <p className="text-muted-foreground leading-relaxed">
               {t("events.popupDesc")}
             </p>
@@ -205,8 +201,8 @@ const Events = () => {
             <div className="pt-3">
               <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
                 <Link to="/popup/studio-77">
-                  <BellRing className="w-4 h-4 mr-1.5" />
-                  {t("events.joinWaitlist")}
+                  <Ticket className="w-4 h-4 mr-1.5" />
+                  {language === "fr" ? "Réserver ma place" : "Reserve my spot"}
                 </Link>
               </Button>
             </div>
