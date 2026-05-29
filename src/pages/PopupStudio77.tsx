@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, Mail, CheckCircle2, AlertCircle, Ticket, BellRing } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Calendar, Music, Sparkles, CheckCircle2, AlertCircle, Ticket, BellRing } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,16 +10,46 @@ import garyWhitePhoto from "@/assets/gary-white.jpg";
 
 const EVENT_SLUG = "studio-77-may-31";
 const PRICE_PER_TICKET = 15;
+const NEW_SEATS_RELEASED = 10;
 
 const PopupStudio77 = () => {
   const { language } = useLanguage();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [tickets, setTickets] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  // Waitlist form state
+  const [wlFirstName, setWlFirstName] = useState("");
+  const [wlLastName, setWlLastName] = useState("");
+  const [wlEmail, setWlEmail] = useState("");
+  const [wlSubmitting, setWlSubmitting] = useState(false);
+  const [wlSubmitted, setWlSubmitted] = useState(false);
+
+  const [remaining, setRemaining] = useState<number | null>(null);
+
   const isFr = language === "fr";
+
+  useEffect(() => {
+    const fetchRemaining = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke("popup-remaining-seats", {
+          body: { event_slug: EVENT_SLUG },
+        });
+        if (error) throw error;
+        if (typeof data?.remaining === "number") setRemaining(data.remaining);
+      } catch (e) {
+        console.error("Failed to fetch remaining seats", e);
+      }
+    };
+    fetchRemaining();
+  }, [submitted]);
+
+  const soldOut = remaining !== null && remaining <= 0;
+  const maxTickets = Math.min(4, remaining ?? 4);
+  const total = tickets * PRICE_PER_TICKET;
 
   const faqItems = isFr
     ? [
@@ -43,7 +73,7 @@ const PopupStudio77 = () => {
         { q: "What if I need to cancel?", a: "Spots are limited, so we ask for at least 48 hours' notice. Tickets are non-refundable, but you are welcome to transfer your spot to a friend." },
       ];
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleReserve = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName.trim() || !lastName.trim() || !email.trim()) {
       toast({
@@ -52,14 +82,25 @@ const PopupStudio77 = () => {
       });
       return;
     }
+    if (remaining !== null && tickets > remaining) {
+      toast({
+        title: isFr ? "Pas assez de places disponibles" : "Not enough seats left",
+        description: isFr
+          ? `Il reste ${remaining} place(s).`
+          : `Only ${remaining} seat(s) left.`,
+        variant: "destructive",
+      });
+      return;
+    }
     setSubmitting(true);
     try {
-      const { error } = await supabase.functions.invoke("notify-popup-waitlist", {
+      const { error } = await supabase.functions.invoke("notify-popup-reservation", {
         body: {
           event_slug: EVENT_SLUG,
           first_name: firstName.trim(),
           last_name: lastName.trim(),
           email: email.trim(),
+          ticket_count: tickets,
         },
       });
       if (error) throw error;
@@ -78,6 +119,37 @@ const PopupStudio77 = () => {
     }
   };
 
+  const handleWaitlist = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!wlFirstName.trim() || !wlLastName.trim() || !wlEmail.trim()) {
+      toast({
+        title: isFr ? "Veuillez remplir tous les champs" : "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+    setWlSubmitting(true);
+    try {
+      const { error } = await supabase.functions.invoke("notify-popup-waitlist", {
+        body: {
+          event_slug: EVENT_SLUG,
+          first_name: wlFirstName.trim(),
+          last_name: wlLastName.trim(),
+          email: wlEmail.trim(),
+        },
+      });
+      if (error) throw error;
+      setWlSubmitted(true);
+    } catch (err: any) {
+      console.error(err);
+      toast({
+        title: isFr ? "Une erreur s'est produite" : "Something went wrong",
+        variant: "destructive",
+      });
+    } finally {
+      setWlSubmitting(false);
+    }
+  };
 
   return (
     <div className="py-12 px-4">
@@ -91,117 +163,43 @@ const PopupStudio77 = () => {
           <ArrowLeft className="w-4 h-4" /> {isFr ? "Retour aux événements" : "Back to events"}
         </Link>
 
-        {/* SOLD OUT banner */}
-        <div className="rounded-2xl bg-orange text-orange-foreground p-6 md:p-8 mb-8 text-center shadow-lg">
-          <h2 className="font-heading font-extrabold text-3xl md:text-4xl tracking-wide mb-2">
-            {isFr ? "COMPLET — MERCI !" : "SOLD OUT — THANK YOU!"}
-          </h2>
-          <p className="text-base md:text-lg opacity-95 max-w-xl mx-auto">
-            {isFr
-              ? "Tous les billets pour cet événement sont vendus. Joignez-vous à la liste d'attente ci-dessous pour être les premiers informés de notre prochain Pop-Up !"
-              : "Every ticket for this event has been claimed. Join the waitlist below to be the first to know about our next Pop-Up event!"}
-          </p>
-          <a
-            href="#waitlist"
-            className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-full bg-background text-foreground font-semibold shadow hover:shadow-lg transition-all"
-          >
-            <BellRing className="w-4 h-4" />
-            {isFr ? "Rejoindre la liste d'attente" : "Join the waitlist"}
-          </a>
-        </div>
-
-        {/* Waitlist form */}
-        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8" id="waitlist">
-          {submitted ? (
-            <div className="text-center py-6">
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 text-green-600 mb-4">
-                <CheckCircle2 className="w-8 h-8" />
-              </div>
-              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-                {isFr ? "Vous êtes sur la liste !" : "You're on the list!"}
-              </h2>
-              <p className="text-muted-foreground max-w-md mx-auto mb-4">
-                {isFr
-                  ? "Merci ! Vous serez parmi les premiers informés dès que nous annoncerons notre prochain événement Pop-Up."
-                  : "Thank you! You'll be among the first to know as soon as we announce our next Pop-Up event."}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {isFr ? "Des questions ? Écrivez-nous à " : "Questions? Email us at "}
-                <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
-                  ailsa@clubchoir.ca
-                </a>
-              </p>
+        {/* Seats countdown banner */}
+        {remaining !== null && (
+          <div className="rounded-2xl bg-orange text-orange-foreground p-6 md:p-8 mb-8 text-center shadow-lg">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-background/20 text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
+              <Sparkles className="w-3.5 h-3.5" />
+              {isFr ? "Nouvelles places ajoutées" : "More seats just added"}
             </div>
-          ) : (
-            <>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
-                <BellRing className="w-3.5 h-3.5" /> {isFr ? "Liste d'attente" : "Waitlist"}
-              </div>
-              <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-                {isFr ? "Soyez les premiers informés du prochain Pop-Up" : "Be the first to know about the next Pop-Up"}
-              </h2>
-              <p className="text-sm text-muted-foreground mb-6">
-                {isFr
-                  ? "Laissez-nous votre nom et votre courriel — nous vous contacterons dès que la prochaine date sera annoncée, avant tout le monde."
-                  : "Leave us your name and email — we'll reach out the moment the next date is announced, ahead of everyone else."}
-              </p>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="firstName">
-                      {isFr ? "Prénom" : "First name"}
-                    </label>
-                    <input
-                      id="firstName"
-                      type="text"
-                      required
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="lastName">
-                      {isFr ? "Nom" : "Last name"}
-                    </label>
-                    <input
-                      id="lastName"
-                      type="text"
-                      required
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="email">
-                    {isFr ? "Adresse courriel" : "Email"}
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  <BellRing className="w-5 h-5" />
-                  {submitting
-                    ? (isFr ? "Envoi en cours..." : "Submitting...")
-                    : (isFr ? "Me prévenir du prochain événement" : "Notify me about the next event")}
-                </button>
-              </form>
-            </>
-          )}
-        </div>
+            <div className="font-heading font-extrabold text-6xl md:text-7xl tabular-nums leading-none mb-2">
+              {remaining}
+            </div>
+            <p className="font-heading font-bold text-xl md:text-2xl mb-1">
+              {soldOut
+                ? (isFr ? "Tous les nouveaux billets sont vendus" : "All new tickets are gone")
+                : remaining === 1
+                  ? (isFr ? "billet restant" : "ticket left")
+                  : (isFr ? "billets restants" : "tickets left")}
+            </p>
+            <p className="text-sm md:text-base opacity-95 max-w-xl mx-auto">
+              {soldOut
+                ? (isFr
+                    ? "Rejoignez la liste d'attente ci-dessous pour notre prochain Pop-Up."
+                    : "Join the waitlist below for our next Pop-Up.")
+                : (isFr
+                    ? `Nous venons d'ajouter ${NEW_SEATS_RELEASED} places supplémentaires — réservez la vôtre avant qu'elles ne disparaissent !`
+                    : `We've just added ${NEW_SEATS_RELEASED} more seats — grab yours before they're gone!`)}
+            </p>
+            {!soldOut && (
+              <a
+                href="#reserve"
+                className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-full bg-background text-foreground font-semibold shadow hover:shadow-lg transition-all"
+              >
+                <Ticket className="w-4 h-4" />
+                {isFr ? "Réserver ma place" : "Reserve my spot"}
+              </a>
+            )}
+          </div>
+        )}
 
         {/* Hero */}
         <div className="rounded-2xl border border-orange/20 bg-orange-light p-6 md:p-8 mb-8">
@@ -221,9 +219,7 @@ const PopupStudio77 = () => {
         {/* Description */}
         <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
           <p className="text-muted-foreground leading-relaxed mb-3">
-            {isFr
-              ? "Cet événement est pour quiconque aime chanter !"
-              : "This is for anyone who loves to sing!"}
+            {isFr ? "Cet événement est pour quiconque aime chanter !" : "This is for anyone who loves to sing!"}
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
             {isFr
@@ -246,14 +242,10 @@ const PopupStudio77 = () => {
               : "Ailsa will guide the group step by step while Gary White brings the music to life, and before you know it, you'll be singing in harmony together as one big choir."}
           </p>
           <p className="text-muted-foreground leading-relaxed mb-3">
-            {isFr
-              ? "C'est joyeux, exaltant, un peu chaotique et très amusant."
-              : "It's joyful, uplifting, a little chaotic, and a lot of fun."}
+            {isFr ? "C'est joyeux, exaltant, un peu chaotique et très amusant." : "It's joyful, uplifting, a little chaotic, and a lot of fun."}
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            {isFr
-              ? "Venez seul ou amenez un ami, tout le monde est bienvenu !"
-              : "Come by yourself or bring a friend, everyone is welcome!"}
+            {isFr ? "Venez seul ou amenez un ami, tout le monde est bienvenu !" : "Come by yourself or bring a friend, everyone is welcome!"}
           </p>
         </div>
 
@@ -303,6 +295,217 @@ const PopupStudio77 = () => {
             <p className="text-xs text-muted-foreground">{isFr ? "2 heures" : "2 hours"}</p>
           </div>
         </div>
+
+        {/* Reservation form OR waitlist if sold out */}
+        {!soldOut ? (
+          <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8" id="reserve">
+            {submitted ? (
+              <div className="text-center py-6">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 text-green-600 mb-4">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+                  {isFr ? "Réservation reçue !" : "Reservation received!"}
+                </h2>
+                <p className="text-muted-foreground max-w-md mx-auto mb-4">
+                  {isFr
+                    ? "Vérifiez votre boîte de réception — nous vous avons envoyé les instructions de paiement par e-Transfert. Votre place ne sera confirmée qu'après réception du paiement."
+                    : "Check your inbox — we've sent you e-Transfer payment instructions. Your spot will only be confirmed once we receive your payment."}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {isFr ? "Des questions ? Écrivez-nous à " : "Questions? Email us at "}
+                  <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">
+                    ailsa@clubchoir.ca
+                  </a>
+                </p>
+              </div>
+            ) : (
+              <>
+                <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+                  {isFr ? "Réservez votre place" : "Reserve your spot"}
+                </h2>
+                <p className="text-sm text-muted-foreground mb-6">
+                  {isFr
+                    ? "Remplissez ce formulaire et nous vous enverrons les instructions de paiement par e-Transfert."
+                    : "Fill out this form and we'll send you e-Transfer payment instructions."}
+                </p>
+                <form onSubmit={handleReserve} className="space-y-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="firstName">
+                        {isFr ? "Prénom" : "First name"}
+                      </label>
+                      <input
+                        id="firstName"
+                        type="text"
+                        required
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="lastName">
+                        {isFr ? "Nom" : "Last name"}
+                      </label>
+                      <input
+                        id="lastName"
+                        type="text"
+                        required
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="email">
+                      {isFr ? "Adresse courriel" : "Email"}
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-1.5">
+                      {isFr ? "Combien de billets ?" : "How many tickets?"}
+                    </label>
+                    <div className="grid grid-cols-4 gap-2">
+                      {[1, 2, 3, 4].map((n) => {
+                        const disabled = n > maxTickets;
+                        return (
+                          <button
+                            key={n}
+                            type="button"
+                            disabled={disabled}
+                            onClick={() => setTickets(n)}
+                            className={`py-3 rounded-xl border-2 font-semibold transition-all ${
+                              tickets === n
+                                ? "border-orange bg-orange text-orange-foreground"
+                                : "border-border bg-background text-foreground hover:border-orange/50"
+                            } ${disabled ? "opacity-40 cursor-not-allowed hover:border-border" : ""}`}
+                          >
+                            {n}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {remaining !== null && remaining < 4 && (
+                      <p className="text-xs text-orange font-medium mt-2">
+                        {isFr
+                          ? `Seulement ${remaining} place(s) restante(s) !`
+                          : `Only ${remaining} seat(s) left!`}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-xl bg-muted/50 px-4 py-3">
+                    <span className="text-sm font-medium text-foreground">
+                      {isFr ? "Total à payer" : "Total to pay"}
+                    </span>
+                    <span className="font-heading font-bold text-xl text-foreground">
+                      ${total} CAD
+                    </span>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <Ticket className="w-5 h-5" />
+                    {submitting
+                      ? (isFr ? "Envoi en cours..." : "Submitting...")
+                      : (isFr ? "Réserver ma place" : "Reserve my spot")}
+                  </button>
+                  <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <p>
+                      {isFr
+                        ? "Une fois votre réservation soumise, vous recevrez un courriel avec les instructions de paiement par e-Transfert. Votre place ne sera pas sécurisée tant que nous n'aurons pas confirmé la réception du paiement."
+                        : "Once you reserve your ticket, you will receive an email with e-Transfer payment instructions. Your space will not be secured until we confirm payment."}
+                    </p>
+                  </div>
+                </form>
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8" id="waitlist">
+            {wlSubmitted ? (
+              <div className="text-center py-6">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 text-green-600 mb-4">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+                  {isFr ? "Vous êtes sur la liste !" : "You're on the list!"}
+                </h2>
+                <p className="text-muted-foreground max-w-md mx-auto">
+                  {isFr
+                    ? "Merci ! Vous serez parmi les premiers informés dès que nous annoncerons notre prochain événement Pop-Up."
+                    : "Thank you! You'll be among the first to know as soon as we announce our next Pop-Up event."}
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange text-orange-foreground text-xs font-bold uppercase tracking-wider mb-3">
+                  <BellRing className="w-3.5 h-3.5" /> {isFr ? "Liste d'attente" : "Waitlist"}
+                </div>
+                <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
+                  {isFr ? "Soyez les premiers informés du prochain Pop-Up" : "Be the first to know about the next Pop-Up"}
+                </h2>
+                <p className="text-sm text-muted-foreground mb-6">
+                  {isFr
+                    ? "Laissez-nous votre nom et votre courriel — nous vous contacterons dès que la prochaine date sera annoncée."
+                    : "Leave us your name and email — we'll reach out the moment the next date is announced."}
+                </p>
+                <form onSubmit={handleWaitlist} className="space-y-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      required
+                      placeholder={isFr ? "Prénom" : "First name"}
+                      value={wlFirstName}
+                      onChange={(e) => setWlFirstName(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                    />
+                    <input
+                      type="text"
+                      required
+                      placeholder={isFr ? "Nom" : "Last name"}
+                      value={wlLastName}
+                      onChange={(e) => setWlLastName(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                    />
+                  </div>
+                  <input
+                    type="email"
+                    required
+                    placeholder={isFr ? "Adresse courriel" : "Email"}
+                    value={wlEmail}
+                    onChange={(e) => setWlEmail(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-orange/40"
+                  />
+                  <button
+                    type="submit"
+                    disabled={wlSubmitting}
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-orange text-orange-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <BellRing className="w-5 h-5" />
+                    {wlSubmitting
+                      ? (isFr ? "Envoi en cours..." : "Submitting...")
+                      : (isFr ? "Me prévenir du prochain événement" : "Notify me about the next event")}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        )}
 
         {/* FAQ */}
         <section className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8">
