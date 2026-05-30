@@ -15,6 +15,58 @@ interface ContactRequest {
   subject?: string;
 }
 
+// Per-location session info (kept in sync with src/data/choirLocations.ts)
+const LOCATION_INFO: Record<
+  string,
+  { city: string; day: string; time: string; dates: string; venue: string }
+> = {
+  Montreal: {
+    city: "Montreal",
+    day: "Mondays",
+    time: "7:00–8:30 PM",
+    dates: "Sept 7 – Dec 7, 2026",
+    venue: "Kensington Presbyterian Church, 6225 Av. Godfrey, Montréal",
+  },
+  Hudson: {
+    city: "Hudson",
+    day: "Tuesdays",
+    time: "7:00–8:30 PM",
+    dates: "Sept 8 – Dec 8, 2026",
+    venue: "Kingfisher Pub (upstairs), 84 Rue Cameron, Hudson",
+  },
+  "Saint-Hubert": {
+    city: "Saint-Hubert",
+    day: "Wednesdays",
+    time: "7:00–8:30 PM",
+    dates: "Sept 9 – Dec 9, 2026",
+    venue: "St-Gabriel Catholic Church, 5070 Rue Gilbert, Saint-Hubert",
+  },
+  "Pointe-Claire": {
+    city: "Pointe-Claire",
+    day: "Thursdays",
+    time: "7:00–8:30 PM",
+    dates: "Sept 10 – Dec 10, 2026",
+    venue: "Valois United Church, 70 Av. Belmont, Pointe-Claire",
+  },
+  Arundel: {
+    city: "Arundel",
+    day: "TBD",
+    time: "TBD",
+    dates: "Dates to be confirmed",
+    venue: "Centre Arundel Centre, 17 Rue du Village, Arundel",
+  },
+};
+
+function getLocationInfo(location: string) {
+  // location is shaped like "Hudson – Monday"; match by city prefix
+  for (const key of Object.keys(LOCATION_INFO)) {
+    if (location.toLowerCase().startsWith(key.toLowerCase())) {
+      return LOCATION_INFO[key];
+    }
+  }
+  return null;
+}
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -33,7 +85,8 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Missing required fields: name, email, location, message");
     }
 
-    const emailResponse = await resend.emails.send({
+    // 1. Notify admin
+    const adminEmail = await resend.emails.send({
       from: "Club Choir <noreply@clubchoir.ca>",
       to: ["ailsa@clubchoir.ca"],
       subject: subject || "Try a Session",
@@ -48,7 +101,63 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    return new Response(JSON.stringify(emailResponse), {
+    // 2. Send confirmation to the registrant
+    const info = getLocationInfo(location);
+    const sessionBlock = info
+      ? `
+        <h3 style="font-family: 'Quicksand', Arial, sans-serif; color:#1a1a1a; margin: 24px 0 8px;">
+          Club Choir ${info.city} — session details
+        </h3>
+        <ul style="font-family: 'Nunito', Arial, sans-serif; color:#333; line-height:1.6; padding-left: 18px;">
+          <li><strong>When:</strong> ${info.day}, ${info.time}</li>
+          <li><strong>Dates:</strong> ${info.dates}</li>
+          <li><strong>Where:</strong> ${info.venue}</li>
+        </ul>
+      `
+      : `
+        <p style="font-family: 'Nunito', Arial, sans-serif; color:#333;">
+          You picked: <strong>${location}</strong>. We'll be in touch with the details.
+        </p>
+      `;
+
+    const firstName = name.trim().split(/\s+/)[0] || name;
+
+    await resend.emails.send({
+      from: "Club Choir <noreply@clubchoir.ca>",
+      to: [email],
+      replyTo: "ailsa@clubchoir.ca",
+      subject: `You're on the list to try Club Choir ${info?.city ?? ""}`.trim(),
+      html: `
+        <div style="font-family: 'Nunito', Arial, sans-serif; color:#1a1a1a; max-width: 560px; margin: 0 auto; padding: 24px;">
+          <h1 style="font-family: 'Quicksand', Arial, sans-serif; font-size: 22px; margin: 0 0 12px;">
+            Hi ${firstName}, thanks for reaching out!
+          </h1>
+          <p style="line-height:1.6; color:#333;">
+            We're so glad you want to come try a session with us. Here are the details for the choir you picked:
+          </p>
+          ${sessionBlock}
+          <p style="line-height:1.6; color:#333; margin-top: 20px;">
+            As a bonus — because you've reached out — <strong>you'll be the first to receive an invitation
+            to our open house in your area</strong>. It's a relaxed, free evening to come sing, meet the group,
+            and see what Club Choir is all about before committing to a full session.
+          </p>
+          <p style="line-height:1.6; color:#333;">
+            Ailsa will personally follow up shortly to confirm your spot and answer any questions.
+            In the meantime, feel free to just reply to this email.
+          </p>
+          <p style="line-height:1.6; color:#333; margin-top: 24px;">
+            Can't wait to sing with you,<br/>
+            <strong>The Club Choir Team</strong>
+          </p>
+          <hr style="border:none; border-top: 1px solid #eee; margin: 28px 0;" />
+          <p style="font-size: 12px; color:#888;">
+            Club Choir · <a href="https://clubchoir.ca" style="color:#888;">clubchoir.ca</a>
+          </p>
+        </div>
+      `,
+    });
+
+    return new Response(JSON.stringify(adminEmail), {
       status: 200,
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
