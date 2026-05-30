@@ -152,6 +152,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     mapsUrl: "https://maps.google.com/?q=St-Gabriel+Catholic+Church+5070+Gilbert+Saint-Hubert",
     theme: { bg: "bg-lime-light", border: "border-lime/30", dot: "bg-lime" },
     photoIds: ["sh-concert", "sh-band", "sh-group"],
+    openHouse: { en: "Wednesday, August 5, 2026", fr: "Mercredi 5 août 2026", time: "7:00 PM" },
   },
   "pointe-claire": {
     slug: "pointe-claire",
