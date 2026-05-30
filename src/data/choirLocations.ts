@@ -190,6 +190,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     mapsUrl: "https://maps.google.com/?q=Valois+United+Church+70+Belmont+Pointe-Claire",
     theme: { bg: "bg-purple-light", border: "border-purple/30", dot: "bg-purple" },
     photoIds: ["ptc-folders", "ptc-formation", "ptc-concert"],
+    openHouse: { en: "Thursday, August 6, 2026", fr: "Jeudi 6 août 2026", time: "7:00 PM" },
   },
   arundel: {
     slug: "arundel",
