@@ -36,6 +36,7 @@ import CheckIn from "./pages/CheckIn";
 import About from "./pages/About";
 import Register from "./pages/Register";
 import ChoirLocation from "./pages/ChoirLocation";
+import OpenHouseRegister from "./pages/OpenHouseRegister";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/try" element={<TryASession />} />
+            <Route path="/open-house" element={<OpenHouseRegister />} />
             <Route path="/bring-a-friend" element={<BringAFriend />} />
             <Route path="/send-email" element={<SendEmail />} />
             <Route path="/chat" element={<ActiveMemberGate><LocationChat /></ActiveMemberGate>} />

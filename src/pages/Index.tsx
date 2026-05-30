@@ -119,7 +119,7 @@ const Index = () => {
                 {t("home.hero.upcomingEvents")}
               </Link>
               <Link
-                to="/events#open-house"
+                to="/open-house"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background text-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-background/90 transition-all"
               >
                 <Sparkles className="w-5 h-5" />
