@@ -33,6 +33,9 @@ export interface ChoirLocationData {
   photoIds: string[];
   /** Show a "NEW" badge on the page and in listings */
   isNew?: boolean;
+  /** Open house date (Aug 2026), if applicable */
+  openHouse?: { en: string; fr: string; time: string };
+
 }
 
 export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
