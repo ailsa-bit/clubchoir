@@ -321,7 +321,7 @@ const Events = () => {
           ].map((oh, i) => (
             <Link
               key={i}
-              to={`/try?location=${encodeURIComponent(oh.location)}`}
+              to={`/open-house?location=${encodeURIComponent(oh.location)}`}
               className={`group rounded-2xl border p-6 ${oh.color} transition-shadow hover:shadow-md block`}
             >
               <div className="flex items-center gap-2 mb-3">
