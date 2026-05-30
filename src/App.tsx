@@ -62,6 +62,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/try" element={<TryASession />} />
+            <Route path="/open-house" element={<OpenHouseRegister />} />
             <Route path="/bring-a-friend" element={<BringAFriend />} />
             <Route path="/send-email" element={<SendEmail />} />
             <Route path="/chat" element={<ActiveMemberGate><LocationChat /></ActiveMemberGate>} />
