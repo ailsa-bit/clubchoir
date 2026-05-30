@@ -106,23 +106,21 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
               <Link
                 to="/register"
-                className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
               >
-                <Sparkles className="w-6 h-6" />
+                <Sparkles className="w-5 h-5" />
                 {t("home.hero.registerFall")}
               </Link>
               <Link
                 to="/events"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background/95 text-foreground font-semibold text-lg shadow hover:shadow-lg hover:bg-background hover:scale-[1.02] transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background text-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-background/90 transition-all"
               >
-                <Calendar className="w-6 h-6" />
+                <Calendar className="w-5 h-5" />
                 {t("home.hero.upcomingEvents")}
               </Link>
-            </div>
-            <div className="mt-3 animate-fade-in" style={{ animationDelay: "0.28s" }}>
               <Link
                 to="/events#open-house"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-background/95 border-2 border-primary text-primary font-semibold text-base shadow hover:shadow-lg hover:bg-background transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background text-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-background/90 transition-all"
               >
                 <Sparkles className="w-5 h-5" />
                 {language === "fr" ? "S'inscrire aux portes ouvertes — Août" : "Register for Open House — August"}
@@ -318,9 +316,9 @@ const Index = () => {
           <div className="text-center mt-6">
             <Link
               to="/register"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-5 h-5" />
               {t("home.hero.registerFall")}
             </Link>
           </div>
@@ -350,9 +348,9 @@ const Index = () => {
             <p className="text-lg md:text-base text-muted-foreground mb-4 leading-loose md:leading-relaxed">{t("home.faq.still")}</p>
             <Link
               to="/try"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-5 h-5" />
               {t("home.faq.touch")}
             </Link>
           </div>
@@ -384,9 +382,9 @@ const Index = () => {
               href="https://g.page/r/CU1hiLJTYmtXEAE/review"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
             >
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="w-5 h-5" />
               {t("home.testimonials.review")}
             </a>
           </div>
