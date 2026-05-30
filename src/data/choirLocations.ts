@@ -113,6 +113,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     mapsUrl: "https://maps.google.com/?q=Kingfisher+Pub+Hudson+QC",
     theme: { bg: "bg-orange-light", border: "border-orange/30", dot: "bg-orange" },
     photoIds: ["pub-conducting", "pub-singing", "hudson-lyrics"],
+    openHouse: { en: "Tuesday, August 4, 2026", fr: "Mardi 4 août 2026", time: "7:00 PM" },
     isNew: true,
   },
   "saint-hubert": {
