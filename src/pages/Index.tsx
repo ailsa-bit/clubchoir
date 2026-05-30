@@ -348,9 +348,9 @@ const Index = () => {
             <p className="text-lg md:text-base text-muted-foreground mb-4 leading-loose md:leading-relaxed">{t("home.faq.still")}</p>
             <Link
               to="/try"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
             >
-              <MessageCircle className="w-4 h-4" />
+              <MessageCircle className="w-5 h-5" />
               {t("home.faq.touch")}
             </Link>
           </div>
