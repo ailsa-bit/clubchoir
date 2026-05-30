@@ -103,28 +103,33 @@ const Index = () => {
             <p className="text-xl sm:text-xl text-background/95 mb-5 leading-loose md:leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
               {t("home.hero.eventsSummary")}
             </p>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
+            <div className="flex flex-col gap-3 animate-fade-in" style={{ animationDelay: "0.22s" }}>
+              {/* Primary CTA */}
               <Link
                 to="/register"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto sm:self-start px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
               >
                 <Sparkles className="w-5 h-5" />
                 {t("home.hero.registerFall")}
               </Link>
-              <Link
-                to="/events"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background text-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-background/90 transition-all"
-              >
-                <Calendar className="w-5 h-5" />
-                {t("home.hero.upcomingEvents")}
-              </Link>
-              <Link
-                to="/open-house"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background text-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-background/90 transition-all"
-              >
-                <Sparkles className="w-5 h-5" />
-                {language === "fr" ? "S'inscrire aux portes ouvertes — Août" : "Register for Open House — August"}
-              </Link>
+
+              {/* Secondary CTAs */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:max-w-xl">
+                <Link
+                  to="/open-house"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-background/95 text-foreground font-semibold text-base shadow-sm hover:shadow-md hover:bg-background transition-all"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  {language === "fr" ? "Portes ouvertes — Août" : "Open House — August"}
+                </Link>
+                <Link
+                  to="/events"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-background/95 text-foreground font-semibold text-base shadow-sm hover:shadow-md hover:bg-background transition-all"
+                >
+                  <Calendar className="w-4 h-4" />
+                  {t("home.hero.upcomingEvents")}
+                </Link>
+              </div>
             </div>
 
           </div>
