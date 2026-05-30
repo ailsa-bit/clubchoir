@@ -304,7 +304,7 @@ const Events = () => {
         </Card>
 
         {/* Open House Dates */}
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-2 text-center">
+        <h2 id="open-house" className="font-heading font-bold text-2xl text-foreground mb-2 text-center scroll-mt-24">
           {language === "fr" ? "Portes ouvertes — Août 2026" : "Open House — August 2026"}
         </h2>
         <p className="text-center text-muted-foreground mb-6 max-w-lg mx-auto">
