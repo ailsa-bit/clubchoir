@@ -75,6 +75,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     mapsUrl: "https://maps.google.com/?q=Kensington+Presbyterian+Church+6225+Godfrey+Montreal",
     theme: { bg: "bg-pink-light", border: "border-pink/30", dot: "bg-pink" },
     photoIds: ["stage-performance", "group-christmas", "group-rehearsal"],
+    openHouse: { en: "Monday, August 3, 2026", fr: "Lundi 3 août 2026", time: "7:00 PM" },
   },
   hudson: {
     slug: "hudson",
