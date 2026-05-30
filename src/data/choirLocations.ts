@@ -33,6 +33,9 @@ export interface ChoirLocationData {
   photoIds: string[];
   /** Show a "NEW" badge on the page and in listings */
   isNew?: boolean;
+  /** Open house date (Aug 2026), if applicable */
+  openHouse?: { en: string; fr: string; time: string };
+
 }
 
 export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
@@ -72,6 +75,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     mapsUrl: "https://maps.google.com/?q=Kensington+Presbyterian+Church+6225+Godfrey+Montreal",
     theme: { bg: "bg-pink-light", border: "border-pink/30", dot: "bg-pink" },
     photoIds: ["stage-performance", "group-christmas", "group-rehearsal"],
+    openHouse: { en: "Monday, August 3, 2026", fr: "Lundi 3 août 2026", time: "7:00 PM" },
   },
   hudson: {
     slug: "hudson",
@@ -109,6 +113,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     mapsUrl: "https://maps.google.com/?q=Kingfisher+Pub+Hudson+QC",
     theme: { bg: "bg-orange-light", border: "border-orange/30", dot: "bg-orange" },
     photoIds: ["pub-conducting", "pub-singing", "hudson-lyrics"],
+    openHouse: { en: "Tuesday, August 4, 2026", fr: "Mardi 4 août 2026", time: "7:00 PM" },
     isNew: true,
   },
   "saint-hubert": {
@@ -147,6 +152,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     mapsUrl: "https://maps.google.com/?q=St-Gabriel+Catholic+Church+5070+Gilbert+Saint-Hubert",
     theme: { bg: "bg-lime-light", border: "border-lime/30", dot: "bg-lime" },
     photoIds: ["sh-concert", "sh-band", "sh-group"],
+    openHouse: { en: "Wednesday, August 5, 2026", fr: "Mercredi 5 août 2026", time: "7:00 PM" },
   },
   "pointe-claire": {
     slug: "pointe-claire",
@@ -184,6 +190,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     mapsUrl: "https://maps.google.com/?q=Valois+United+Church+70+Belmont+Pointe-Claire",
     theme: { bg: "bg-purple-light", border: "border-purple/30", dot: "bg-purple" },
     photoIds: ["ptc-folders", "ptc-formation", "ptc-concert"],
+    openHouse: { en: "Thursday, August 6, 2026", fr: "Jeudi 6 août 2026", time: "7:00 PM" },
   },
   arundel: {
     slug: "arundel",

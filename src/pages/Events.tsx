@@ -1,5 +1,5 @@
 import PageMeta from "@/components/PageMeta";
-import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft, CheckCircle2, BellRing } from "lucide-react";
+import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft, ArrowRight, CheckCircle2, BellRing } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -304,7 +304,7 @@ const Events = () => {
         </Card>
 
         {/* Open House Dates */}
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-2 text-center">
+        <h2 id="open-house" className="font-heading font-bold text-2xl text-foreground mb-2 text-center scroll-mt-24">
           {language === "fr" ? "Portes ouvertes — Août 2026" : "Open House — August 2026"}
         </h2>
         <p className="text-center text-muted-foreground mb-6 max-w-lg mx-auto">
@@ -319,7 +319,11 @@ const Events = () => {
             { day: { en: "Wednesday, August 5", fr: "Mercredi 5 août" }, location: "Saint-Hubert", color: "border-lime/30 bg-lime-light", dot: "bg-lime", text: "text-lime" },
             { day: { en: "Thursday, August 6", fr: "Jeudi 6 août" }, location: "Pointe-Claire", color: "border-purple/30 bg-purple-light", dot: "bg-purple", text: "text-purple" },
           ].map((oh, i) => (
-            <div key={i} className={`rounded-2xl border p-6 ${oh.color}`}>
+            <Link
+              key={i}
+              to={`/try?location=${encodeURIComponent(oh.location)}`}
+              className={`group rounded-2xl border p-6 ${oh.color} transition-shadow hover:shadow-md block`}
+            >
               <div className="flex items-center gap-2 mb-3">
                 <span className={`w-2.5 h-2.5 rounded-full ${oh.dot}`} />
                 <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
@@ -333,12 +337,17 @@ const Events = () => {
                 <Calendar className="w-3.5 h-3.5" />
                 <span>{getText(oh.day, language)}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                 <Clock className="w-3.5 h-3.5" />
                 <span>7:00 PM</span>
               </div>
-            </div>
+              <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${oh.text} group-hover:underline`}>
+                {language === "fr" ? "S'inscrire" : "Register"}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </span>
+            </Link>
           ))}
+
         </div>
 
         {/* Community Events */}

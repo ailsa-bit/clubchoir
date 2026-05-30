@@ -103,7 +103,7 @@ const Index = () => {
             <p className="text-xl sm:text-xl text-background/95 mb-5 leading-loose md:leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
               {t("home.hero.eventsSummary")}
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
               <Link
                 to="/register"
                 className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
@@ -119,6 +119,16 @@ const Index = () => {
                 {t("home.hero.upcomingEvents")}
               </Link>
             </div>
+            <div className="mt-3 animate-fade-in" style={{ animationDelay: "0.28s" }}>
+              <Link
+                to="/events#open-house"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-background/95 border-2 border-primary text-primary font-semibold text-base shadow hover:shadow-lg hover:bg-background transition-all"
+              >
+                <Sparkles className="w-5 h-5" />
+                {language === "fr" ? "S'inscrire aux portes ouvertes — Août" : "Register for Open House — August"}
+              </Link>
+            </div>
+
           </div>
         </div>
       </section>

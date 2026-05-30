@@ -1,6 +1,8 @@
 import PageMeta from "@/components/PageMeta";
 import ChoirFaq from "@/components/ChoirFaq";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -64,11 +66,21 @@ const TryASession = () => {
   const [sent, setSent] = useState(false);
   const { toast } = useToast();
   const { t } = useLanguage();
+  const [searchParams] = useSearchParams();
+
+  // Prefill location from ?location= query param, matching a known option
+  const prefilledLocation = useMemo(() => {
+    const raw = (searchParams.get("location") || "").toLowerCase();
+    if (!raw) return "";
+    const match = LOCATIONS.find((l) => l.value.toLowerCase().startsWith(raw));
+    return match?.value ?? "";
+  }, [searchParams]);
 
   const form = useForm<ContactForm>({
     resolver: zodResolver(makeContactSchema(t)),
-    defaultValues: { name: "", email: "", location: "", message: "" },
+    defaultValues: { name: "", email: "", location: prefilledLocation, message: "" },
   });
+
 
   const onSubmit = async (data: ContactForm) => {
     setSending(true);
