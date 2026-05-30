@@ -36,6 +36,7 @@ import CheckIn from "./pages/CheckIn";
 import About from "./pages/About";
 import Register from "./pages/Register";
 import ChoirLocation from "./pages/ChoirLocation";
+import OpenHouseRegister from "./pages/OpenHouseRegister";
 
 const queryClient = new QueryClient();
 
