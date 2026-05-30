@@ -303,6 +303,44 @@ const Events = () => {
           </CardContent>
         </Card>
 
+        {/* Open House Dates */}
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-2 text-center">
+          {language === "fr" ? "Portes ouvertes — Août 2026" : "Open House — August 2026"}
+        </h2>
+        <p className="text-center text-muted-foreground mb-6 max-w-lg mx-auto">
+          {language === "fr"
+            ? "Une soirée gratuite et détendue pour venir chanter, rencontrer le groupe et découvrir Club Choir."
+            : "A free, relaxed evening to come sing, meet the group, and see what Club Choir is all about."}
+        </p>
+        <div className="grid sm:grid-cols-2 gap-5 mb-12">
+          {[
+            { day: { en: "Monday, August 3", fr: "Lundi 3 août" }, location: "Montreal", color: "border-pink/30 bg-pink-light", dot: "bg-pink", text: "text-pink" },
+            { day: { en: "Tuesday, August 4", fr: "Mardi 4 août" }, location: "Hudson", color: "border-orange/30 bg-orange-light", dot: "bg-orange", text: "text-orange" },
+            { day: { en: "Wednesday, August 5", fr: "Mercredi 5 août" }, location: "Saint-Hubert", color: "border-lime/30 bg-lime-light", dot: "bg-lime", text: "text-lime" },
+            { day: { en: "Thursday, August 6", fr: "Jeudi 6 août" }, location: "Pointe-Claire", color: "border-purple/30 bg-purple-light", dot: "bg-purple", text: "text-purple" },
+          ].map((oh, i) => (
+            <div key={i} className={`rounded-2xl border p-6 ${oh.color}`}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className={`w-2.5 h-2.5 rounded-full ${oh.dot}`} />
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                  {oh.location}
+                </span>
+              </div>
+              <h3 className="font-heading font-bold text-lg text-foreground mb-2">
+                {language === "fr" ? `Portes ouvertes — ${oh.location}` : `Open House — ${oh.location}`}
+              </h3>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+                <Calendar className="w-3.5 h-3.5" />
+                <span>{getText(oh.day, language)}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="w-3.5 h-3.5" />
+                <span>7:00 PM</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* Community Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
           {t("events.communityEvents")}
