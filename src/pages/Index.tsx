@@ -382,9 +382,9 @@ const Index = () => {
               href="https://g.page/r/CU1hiLJTYmtXEAE/review"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-warm text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:scale-105 transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
             >
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="w-5 h-5" />
               {t("home.testimonials.review")}
             </a>
           </div>
