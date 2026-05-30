@@ -1,23 +1,13 @@
 import PageMeta from "@/components/PageMeta";
 import ChoirFaq from "@/components/ChoirFaq";
 import { useState, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-
+import { Link, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Music, Send } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Form,
   FormControl,
@@ -28,16 +18,66 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { choirPhotos } from "@/assets/photos";
 
-const previewPhoto = choirPhotos.find((p) => p.id === "hudson-lyrics") ?? choirPhotos[0];
+type Loc = {
+  value: string;
+  name: string;
+  color: string;
+  border: string;
+  dot: string;
+  ring: string;
+  day: { en: string; fr: string };
+  venue?: { en: string; fr: string };
+};
 
-const LOCATIONS = [
-  { value: "Montreal – Monday", label: "Montreal – Monday" },
-  { value: "Hudson – Monday", label: "Hudson – Monday" },
-  { value: "Arundel – Tuesday", label: "Arundel – Tuesday" },
-  { value: "Saint-Hubert – Wednesday", label: "Saint-Hubert – Wednesday" },
-  { value: "Pointe-Claire – Thursday", label: "Pointe-Claire – Thursday" },
+const LOCATIONS: Loc[] = [
+  {
+    value: "Montreal – Monday",
+    name: "Montreal",
+    color: "bg-pink-light",
+    border: "border-pink/30",
+    dot: "bg-pink",
+    ring: "ring-pink",
+    day: { en: "Mondays · 7:00–8:30 PM", fr: "Lundis · 19 h – 20 h 30" },
+    venue: { en: "Kensington Presbyterian Church", fr: "Kensington Presbyterian Church" },
+  },
+  {
+    value: "Hudson – Monday",
+    name: "Hudson",
+    color: "bg-orange-light",
+    border: "border-orange/30",
+    dot: "bg-orange",
+    ring: "ring-orange",
+    day: { en: "Tuesdays · 7:00–8:30 PM", fr: "Mardis · 19 h – 20 h 30" },
+    venue: { en: "Kingfisher Pub", fr: "Kingfisher Pub" },
+  },
+  {
+    value: "Saint-Hubert – Wednesday",
+    name: "Saint-Hubert",
+    color: "bg-lime-light",
+    border: "border-lime/30",
+    dot: "bg-lime",
+    ring: "ring-lime",
+    day: { en: "Wednesdays · 7:00–8:30 PM", fr: "Mercredis · 19 h – 20 h 30" },
+  },
+  {
+    value: "Pointe-Claire – Thursday",
+    name: "Pointe-Claire",
+    color: "bg-purple-light",
+    border: "border-purple/30",
+    dot: "bg-purple",
+    ring: "ring-purple",
+    day: { en: "Thursdays · 7:00–8:30 PM", fr: "Jeudis · 19 h – 20 h 30" },
+  },
+  {
+    value: "Arundel – Tuesday",
+    name: "Arundel",
+    color: "bg-aqua-light",
+    border: "border-aqua/30",
+    dot: "bg-aqua",
+    ring: "ring-aqua",
+    day: { en: "Day to be confirmed", fr: "Jour à confirmer" },
+  },
 ];
 
 const makeContactSchema = (t: (k: string) => string) =>
@@ -65,10 +105,10 @@ const TryASession = () => {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isFr = language === "fr";
   const [searchParams] = useSearchParams();
 
-  // Prefill location from ?location= query param, matching a known option
   const prefilledLocation = useMemo(() => {
     const raw = (searchParams.get("location") || "").toLowerCase();
     if (!raw) return "";
@@ -80,7 +120,6 @@ const TryASession = () => {
     resolver: zodResolver(makeContactSchema(t)),
     defaultValues: { name: "", email: "", location: prefilledLocation, message: "" },
   });
-
 
   const onSubmit = async (data: ContactForm) => {
     setSending(true);
@@ -102,143 +141,182 @@ const TryASession = () => {
     }
   };
 
-  return (
-    <div className="min-h-[60vh] py-16 px-4">
-      <PageMeta title="Try a Free Session – Club Choir" description="Try a free Club Choir session! No audition, no experience needed. Come sing with us at any of our 4 Quebec locations." path="/try" />
-      <div className="container mx-auto max-w-lg">
-        <div className="text-center mb-8">
-          <Music className="w-10 h-10 text-primary mx-auto mb-3" />
-          <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2">
-            {t("try.title")}
-          </h1>
-          <p className="text-muted-foreground">
-            {t("try.subtitle")}
-          </p>
-        </div>
+  const back = isFr ? "Retour à l'accueil" : "Back to home";
 
-        {previewPhoto && (
-          <figure className="mb-10 rounded-2xl overflow-hidden border border-border shadow-sm">
-            <img
-              src={previewPhoto.wide}
-              alt={previewPhoto.alt.en}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-48 md:h-56 object-cover"
-            />
-            <figcaption className="px-4 py-2.5 text-xs text-muted-foreground bg-muted/40 text-center">
-              {t("try.preview.caption")}
-            </figcaption>
-          </figure>
-        )}
+  return (
+    <div className="py-12 px-4">
+      <PageMeta
+        title="Try a Free Session – Club Choir"
+        description="Try a free Club Choir session! No audition, no experience needed. Come sing with us at any of our 4 Quebec locations."
+        path="/try"
+      />
+      <div className="container mx-auto max-w-3xl">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" /> {back}
+        </Link>
+
+        <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
+          {t("try.title")}
+        </h1>
+        <p className="text-center text-muted-foreground mb-8 max-w-xl mx-auto">
+          {t("try.subtitle")}
+        </p>
 
         {sent ? (
-          <div className="rounded-2xl border border-border bg-card p-8 text-center">
-            <h2 className="font-heading font-bold text-xl text-foreground mb-2">
+          <div className="rounded-2xl border border-primary/30 bg-primary/5 p-8 text-center">
+            <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
               {t("try.thanks.title")}
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-base text-foreground/80 leading-relaxed">
               {t("try.thanks.desc")}
             </p>
           </div>
         ) : (
-          <div className="rounded-2xl border border-border bg-card p-8">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-5"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Location picker */}
+              <FormField
+                control={form.control}
+                name="location"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="block text-sm font-bold text-foreground mb-3">
+                      {t("try.location")} <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {LOCATIONS.map((loc) => {
+                          const selected = field.value === loc.value;
+                          return (
+                            <button
+                              key={loc.value}
+                              type="button"
+                              onClick={() => field.onChange(loc.value)}
+                              className={`text-left rounded-2xl border-2 p-4 transition-all ${loc.color} ${
+                                selected
+                                  ? `${loc.border} ring-2 ${loc.ring} shadow-md`
+                                  : "border-transparent hover:border-border"
+                              }`}
+                              aria-pressed={selected}
+                            >
+                              <div className="flex items-center gap-2 mb-1.5">
+                                <span className={`w-2.5 h-2.5 rounded-full ${loc.dot}`} />
+                                <span className="font-heading font-bold text-foreground">
+                                  {loc.name}
+                                </span>
+                              </div>
+                              <p className="text-sm text-foreground/80 flex items-start gap-1.5">
+                                <Calendar className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                                <span>{loc.day[isFr ? "fr" : "en"]}</span>
+                              </p>
+                              {loc.venue && (
+                                <p className="text-sm text-muted-foreground flex items-start gap-1.5 mt-1">
+                                  <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                                  <span>{loc.venue[isFr ? "fr" : "en"]}</span>
+                                </p>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="block text-sm font-bold text-foreground mb-1.5">
+                      {t("try.name")} <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <input
+                        {...field}
+                        maxLength={100}
+                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="block text-sm font-bold text-foreground mb-1.5">
+                      {t("try.email")} <span className="text-destructive">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <input
+                        {...field}
+                        type="email"
+                        maxLength={255}
+                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="block text-sm font-bold text-foreground mb-1.5">
+                      {t("try.message")}
+                    </FormLabel>
+                    <FormControl>
+                      <textarea
+                        {...field}
+                        rows={4}
+                        maxLength={2000}
+                        placeholder={t("try.messagePlaceholder")}
+                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                disabled={sending}
+                className="w-full sm:w-auto px-8 py-6 rounded-full bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90"
               >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("try.name")}</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Jane Doe" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("try.email")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="email"
-                          placeholder="jane@example.com"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="location"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("try.location")}</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t("try.locationPlaceholder")} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {LOCATIONS.map((loc) => (
-                            <SelectItem key={loc.value} value={loc.value}>
-                              {loc.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("try.message")}</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder={t("try.messagePlaceholder")}
-                          rows={4}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  type="submit"
-                  disabled={sending}
-                  className="w-full rounded-full bg-gradient-warm text-primary-foreground"
-                >
-                  {sending ? t("try.sending") : (
-                    <>
-                      <Send className="w-4 h-4 mr-2" /> {t("try.send")}
-                    </>
-                  )}
-                </Button>
-              </form>
-            </Form>
-          </div>
+                {sending ? (
+                  t("try.sending")
+                ) : (
+                  <>
+                    <Send className="w-4 h-4 mr-2" /> {t("try.send")}
+                  </>
+                )}
+              </Button>
+            </form>
+          </Form>
         )}
       </div>
 
-      <div className="bg-muted/40 mt-12 -mx-4 px-4 py-2">
+      <div className="bg-muted/40 mt-16 -mx-4 px-4 py-2">
         <ChoirFaq
-          title="Before you reach out"
-          subtitle="The questions we get most often from people thinking about trying a session."
+          title={isFr ? "Avant de nous écrire" : "Before you reach out"}
+          subtitle={
+            isFr
+              ? "Les questions les plus fréquentes des personnes qui pensent essayer une session."
+              : "The questions we get most often from people thinking about trying a session."
+          }
         />
       </div>
     </div>
