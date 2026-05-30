@@ -106,23 +106,21 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 justify-start animate-fade-in" style={{ animationDelay: "0.22s" }}>
               <Link
                 to="/register"
-                className="relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 hover:scale-[1.02] transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
               >
-                <Sparkles className="w-6 h-6" />
+                <Sparkles className="w-5 h-5" />
                 {t("home.hero.registerFall")}
               </Link>
               <Link
                 to="/events"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background/95 text-foreground font-semibold text-lg shadow hover:shadow-lg hover:bg-background hover:scale-[1.02] transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background text-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-background/90 transition-all"
               >
-                <Calendar className="w-6 h-6" />
+                <Calendar className="w-5 h-5" />
                 {t("home.hero.upcomingEvents")}
               </Link>
-            </div>
-            <div className="mt-3 animate-fade-in" style={{ animationDelay: "0.28s" }}>
               <Link
                 to="/events#open-house"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-background/95 border-2 border-primary text-primary font-semibold text-base shadow hover:shadow-lg hover:bg-background transition-all"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-background text-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-background/90 transition-all"
               >
                 <Sparkles className="w-5 h-5" />
                 {language === "fr" ? "S'inscrire aux portes ouvertes — Août" : "Register for Open House — August"}
