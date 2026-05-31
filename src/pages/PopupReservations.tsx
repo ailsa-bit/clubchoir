@@ -231,9 +231,19 @@ const PopupReservations = () => {
                       </td>
                       <td className="p-3">
                         <div className="flex items-center gap-2 flex-wrap">
+                          <Button
+                            size="sm"
+                            variant={r.checked_in_at ? "outline" : "default"}
+                            className="h-7 text-[11px]"
+                            disabled={busyId === r.id}
+                            onClick={() => toggleCheckIn(r)}
+                          >
+                            <UserCheck className="w-3 h-3 mr-1" />
+                            {r.checked_in_at ? "Undo check-in" : "Check in"}
+                          </Button>
                           {r.checked_in_at && (
                             <Badge variant="outline" className="text-[10px] bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/30">
-                              <UserCheck className="w-3 h-3 mr-1" /> Checked in
+                              ✓ {new Date(r.checked_in_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                             </Badge>
                           )}
                           {r.payment_received && (
@@ -244,7 +254,7 @@ const PopupReservations = () => {
                               title={r.paid_email_sent_at ? `Last sent ${new Date(r.paid_email_sent_at).toLocaleString()}` : "Send ticket email"}
                             >
                               <Mail className="w-3 h-3 mr-1" />
-                              {r.paid_email_sent_at ? "Resend ticket" : "Send ticket"}
+                              {r.paid_email_sent_at ? "Resend" : "Send ticket"}
                             </Button>
                           )}
                         </div>
