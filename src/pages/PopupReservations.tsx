@@ -152,7 +152,7 @@ const PopupReservations = () => {
   const totalPaid = ticketsSold * PRICE;
   const totalOwed = ticketsPending * PRICE;
   const checkedInTickets = rows.filter((r) => r.checked_in_at).reduce((s, r) => s + r.ticket_count, 0);
-  const CAPACITY = 39;
+  const CAPACITY = 40;
   const remaining = Math.max(0, CAPACITY - checkedInTickets);
 
   return (
