@@ -1,0 +1,1 @@
+UPDATE popup_ticket_reservations SET ticket_token = gen_random_uuid()::text WHERE id = 'db9de9a3-2c60-4f6e-9a91-40d4da32f45c';
