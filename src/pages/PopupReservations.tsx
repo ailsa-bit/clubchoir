@@ -47,7 +47,7 @@ const PopupReservations = () => {
     const { data, error } = await supabase
       .from("popup_ticket_reservations")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("first_name", { ascending: true });
     if (error) {
       toast({ title: "Error loading reservations", description: error.message, variant: "destructive" });
     } else {
