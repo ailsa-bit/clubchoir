@@ -9,8 +9,7 @@ const corsHeaders = {
 
 // Total ticket capacity per event_slug (sum of ticket_count)
 const CAPACITY: Record<string, number> = {
-  // 29 tickets already reserved + 10 new seats released = 39 total
-  "studio-77-may-31": 39,
+  "studio-77-may-31": 40,
 };
 
 serve(async (req) => {
