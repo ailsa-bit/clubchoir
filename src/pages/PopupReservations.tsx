@@ -110,6 +110,22 @@ const PopupReservations = () => {
     setBusyId(null);
   };
 
+  const toggleCheckIn = async (r: Reservation) => {
+    setBusyId(r.id);
+    const newVal = r.checked_in_at ? null : new Date().toISOString();
+    const { error } = await supabase
+      .from("popup_ticket_reservations")
+      .update({ checked_in_at: newVal })
+      .eq("id", r.id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      setRows((prev) => prev.map((x) => (x.id === r.id ? { ...x, checked_in_at: newVal } : x)));
+      toast({ title: newVal ? `✓ Checked in ${r.first_name}` : "Check-in undone" });
+    }
+    setBusyId(null);
+  };
+
   const deleteReservation = async (r: Reservation) => {
     setBusyId(r.id);
     const { error } = await supabase.from("popup_ticket_reservations").delete().eq("id", r.id);
