@@ -151,21 +151,39 @@ const PopupReservations = () => {
   const ticketsPending = rows.filter((r) => !r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
   const totalPaid = ticketsSold * PRICE;
   const totalOwed = ticketsPending * PRICE;
-  const checkedIn = rows.filter((r) => r.checked_in_at).length;
+  const checkedInTickets = rows.filter((r) => r.checked_in_at).reduce((s, r) => s + r.ticket_count, 0);
+  const CAPACITY = 39;
+  const remaining = Math.max(0, CAPACITY - checkedInTickets);
 
   return (
     <div className="py-10 px-4">
       <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-6xl">
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="font-heading font-bold text-2xl text-foreground flex items-center gap-2">
             <Ticket className="w-6 h-6" /> Pop-Up Ticket Reservations
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {rows.length} reservations · {ticketsSold} tickets sold · {ticketsPending} tickets pending · ${totalPaid} CAD received · ${totalOwed} CAD pending · {checkedIn} checked in
+            {rows.length} reservations · {ticketsSold} sold · {ticketsPending} pending · ${totalPaid} received · ${totalOwed} owed
           </p>
-
         </div>
+
+        {/* Door counter */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="rounded-xl border-2 border-blue-500/30 bg-blue-500/5 p-4 text-center">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Checked in</p>
+            <p className="text-3xl font-bold text-blue-700 dark:text-blue-400">{checkedInTickets}</p>
+          </div>
+          <div className="rounded-xl border-2 border-border bg-card p-4 text-center">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Capacity</p>
+            <p className="text-3xl font-bold text-foreground">{CAPACITY}</p>
+          </div>
+          <div className="rounded-xl border-2 border-green-500/30 bg-green-500/5 p-4 text-center">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Seats left</p>
+            <p className="text-3xl font-bold text-green-700 dark:text-green-400">{remaining}</p>
+          </div>
+        </div>
+
 
         {rows.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-12">No reservations yet.</p>
