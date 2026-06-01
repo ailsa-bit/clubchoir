@@ -170,13 +170,13 @@ const Events = () => {
         <Card className="mb-6 border-orange/30 bg-orange-light">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-orange mb-1">
-              <Ticket className="w-5 h-5" />
+              <CheckCircle2 className="w-5 h-5" />
               <span className="text-sm font-semibold uppercase tracking-wide">
-                {language === "fr" ? "Nouvelles places ajoutées" : "More seats just added"}
+                {language === "fr" ? "Un grand succès" : "A Huge Success"}
               </span>
             </div>
             <CardTitle className="text-xl font-heading">
-              {t("events.popupTitle")}
+              {language === "fr" ? "Studio 77 Pop-Up" : "Studio 77 Pop-Up"}
             </CardTitle>
             <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
               <Calendar className="w-4 h-4" />
@@ -186,25 +186,46 @@ const Events = () => {
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed">
               {language === "fr"
-                ? "Nous avons ajouté 10 places supplémentaires ! Réservez la vôtre avant qu'elles ne disparaissent."
-                : "We've added 10 more seats! Reserve yours before they're gone."}
+                ? "Notre premier pop-up Studio 77 a été un grand succès, et nous sommes profondément reconnaissants envers tous ceux qui sont venus, ont chanté avec nous et ont contribué à rendre l'événement si spécial."
+                : "Our first Studio 77 pop-up was a huge success, and we are so grateful to everyone who came out, sang with us, and helped make the event feel so special."}
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              {t("events.popupDesc")}
+              {language === "fr"
+                ? "Merci à chaque participant, chaque supporter et à tous ceux qui ont partagé leur énergie avec nous. La joie dans la pièce était un rappel magnifique de pourquoi Club Choir existe : rassembler les gens à travers la musique, la communauté et l'expérience partagée."
+                : "Thank you to every participant, every supporter, and everyone who shared their energy with us. The joy in the room was such a beautiful reminder of why Club Choir exists: to bring people together through music, community, and shared experience."}
             </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Nous sommes incroyablement reconnaissants pour la communauté Club Choir que nous construisons, et ce premier pop-up n'était que le début."
+                : "We are incredibly grateful for the Club Choir community we are building, and this first pop-up was only the beginning."}
+            </p>
+
+            <div className="pt-2">
+              <h4 className="font-heading font-bold text-lg text-foreground mb-2">
+                {language === "fr" ? "Événements futurs" : "Future Events"}
+              </h4>
+              <p className="text-muted-foreground leading-relaxed">
+                {language === "fr"
+                  ? "Restez à l'écoute pour plus de pop-ups Studio 77, d'ateliers et d'événements communautaires de chant. Les événements futurs comprendront des opportunités de chanter, de se connecter, de collaborer et de découvrir Club Choir dans de nouveaux espaces."
+                  : "Stay tuned for more Studio 77 pop-ups, workshops, and community singing events. Future events will include opportunities to sing, connect, collaborate, and experience Club Choir in new spaces."}
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                {language === "fr"
+                  ? "Pour être les premiers informés des dates à venir, des détails d'inscription et des événements spéciaux, rejoignez notre liste de diffusion ou suivez-nous sur les médias sociaux."
+                  : "To be the first to hear about upcoming dates, registration details, and special events, join our mailing list or follow us on social media."}
+              </p>
+              <p className="text-muted-foreground leading-relaxed font-medium">
+                {language === "fr"
+                  ? "Nous avons hâte de chanter à nouveau avec vous."
+                  : "We can't wait to sing with you again."}
+              </p>
+            </div>
+
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-orange" />
                 <span className="font-medium">Studio 77, Pointe-Claire</span>
               </div>
-            </div>
-            <div className="pt-3">
-              <Button asChild className="bg-orange text-orange-foreground hover:bg-orange/90 rounded-full font-semibold">
-                <Link to="/popup/studio-77">
-                  <Ticket className="w-4 h-4 mr-1.5" />
-                  {language === "fr" ? "Réserver ma place" : "Reserve my spot"}
-                </Link>
-              </Button>
             </div>
           </CardContent>
         </Card>
