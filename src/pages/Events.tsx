@@ -201,6 +201,22 @@ const Events = () => {
             </p>
 
             <div className="pt-2">
+              <div className="aspect-video rounded-xl overflow-hidden border border-orange/20 shadow-sm">
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/TbP7V_PzS-Y"
+                  title="Studio 77 Pop-Up Performance"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+              <p className="text-xs text-muted-foreground mt-1.5 text-center">
+                {language === "fr" ? "Regardez la performance finale" : "Watch the final performance"}
+              </p>
+            </div>
+
+            <div className="pt-2">
               <h4 className="font-heading font-bold text-lg text-foreground mb-2">
                 {language === "fr" ? "Événements futurs" : "Future Events"}
               </h4>
