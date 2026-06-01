@@ -29,7 +29,6 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
 
   const eventsChildren = [
     { label: "Register for Fall 2026", path: "/register" },
-    { label: "Studio 77 Pop-Up Choir", path: "/popup/studio-77" },
     { label: "More...", path: "/events" },
   ];
 
