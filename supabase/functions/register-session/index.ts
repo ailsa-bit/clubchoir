@@ -88,7 +88,7 @@ const handler = async (req: Request): Promise<Response> => {
           last_name,
           email,
           location,
-          status: "PENDING",
+          status: "PROSPECT",
           joined: new Date().toISOString().slice(0, 10),
         })
         .select("id")
