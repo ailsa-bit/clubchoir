@@ -5,6 +5,7 @@ import clubChoirLogo from "@/assets/club-choir-logo.webp";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAdmin } from "@/hooks/use-admin";
 
 const Layout = ({ children }: {children: React.ReactNode;}) => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
     setExpandedMenus((prev) => ({ ...prev, [path]: !prev[path] }));
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { language, setLanguage, t } = useLanguage();
+  const { isAdmin } = useAdmin();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -57,8 +59,10 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   ] }];
 
 
+  const adminNavItems = isAdmin ? [{ label: "CRM", path: "/crm" }] : [];
+
   const navItems: Array<{ label: string; path: string; children?: { label: string; path: string }[] }> =
-    isLoggedIn ? [...publicNavItems, ...memberNavItems] : publicNavItems;
+    isLoggedIn ? [...publicNavItems, ...memberNavItems, ...adminNavItems] : publicNavItems;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
