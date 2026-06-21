@@ -168,8 +168,10 @@ export type Database = {
       members: {
         Row: {
           created_at: string
+          crm_tags: string[]
           email: string | null
           first_name: string
+          follow_up_date: string | null
           id: string
           joined: string | null
           last_name: string
@@ -177,13 +179,16 @@ export type Database = {
           location: string
           notes: string
           payment_status: string
+          source: string
           status: string
           updated_at: string
         }
         Insert: {
           created_at?: string
+          crm_tags?: string[]
           email?: string | null
           first_name: string
+          follow_up_date?: string | null
           id?: string
           joined?: string | null
           last_name: string
@@ -191,13 +196,16 @@ export type Database = {
           location?: string
           notes?: string
           payment_status?: string
+          source?: string
           status?: string
           updated_at?: string
         }
         Update: {
           created_at?: string
+          crm_tags?: string[]
           email?: string | null
           first_name?: string
+          follow_up_date?: string | null
           id?: string
           joined?: string | null
           last_name?: string
@@ -205,6 +213,7 @@ export type Database = {
           location?: string
           notes?: string
           payment_status?: string
+          source?: string
           status?: string
           updated_at?: string
         }
