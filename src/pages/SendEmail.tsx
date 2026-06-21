@@ -89,8 +89,12 @@ const SendEmail = () => {
   }, [members, includeInactive, locationFilter]);
 
   useEffect(() => {
-    setSelectedEmails(new Set(filtered.map((m) => m.email!)));
-  }, [filtered]);
+    if (prefilledEmails.length > 0) {
+      setSelectedEmails(new Set(prefilledEmails));
+    } else {
+      setSelectedEmails(new Set(filtered.map((m) => m.email!)));
+    }
+  }, [filtered, prefilledEmails]);
 
   const locations = useMemo(
     () => [...new Set(members.map((m) => m.location).filter(Boolean))].sort(),
