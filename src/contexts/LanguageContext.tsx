@@ -43,7 +43,7 @@ const translations: Record<string, Record<Language, string>> = {
     en: "No-Audition Community Choir for Adults in Montreal and Across Quebec",
     fr: "Chorale communautaire sans audition pour adultes à Montréal et partout au Québec"
   },
-  "home.hero.subtitle": { en: "Ever thought about joining a choir but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists — in Montreal, Hudson, Pointe-Claire, Saint-Hubert, and Arundel.", fr: "Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe — à Montréal, Hudson, Pointe-Claire, Saint-Hubert et Arundel." },
+  "home.hero.subtitle": { en: "Ever thought about joining a choir but worried you \"can't sing\" or wouldn't fit in? That's exactly why Club Choir exists — in Montreal, Hudson, Pointe-Claire, and Saint-Hubert.", fr: "Vous avez déjà pensé à joindre une chorale, mais vous craignez de « ne pas savoir chanter » ou de ne pas être à votre place ? C'est exactement pour ça que Club Choir existe — à Montréal, Hudson, Pointe-Claire et Saint-Hubert." },
  "home.hero.desc": {
   en: "Our winter session has now ended, and we are so grateful for an incredible season of singing, learning, laughing, and building community together.\n\nThis summer, Club Choir is still singing across Quebec — keep an eye out for pop-up choirs, community performances, and special events all summer long, then join us when our 14-week Fall 2026 session starts in September.",
   fr: "Notre session d'hiver est maintenant terminée, et nous sommes tellement reconnaissants pour une saison incroyable de chant, d'apprentissage, de rires et de communauté.\n\nCet été, Club Choir continue de chanter partout au Québec — restez à l'affût des chorales pop-up, performances communautaires et événements spéciaux tout l'été, puis rejoignez-nous pour notre session d'automne 2026 de 14 semaines, dès septembre."
@@ -114,7 +114,7 @@ const translations: Record<string, Record<Language, string>> = {
   "footer.choir.new": { en: "New", fr: "Nouveau" },
   "footer.choir.pointeClaire": { en: "Pointe-Claire Choir", fr: "Chorale de Pointe-Claire" },
   "footer.choir.saintHubert": { en: "Saint-Hubert Choir", fr: "Chorale de Saint-Hubert" },
-  "footer.choir.arundel": { en: "Arundel Choir", fr: "Chorale d'Arundel" },
+  
 
   // Common
   "common.backHome": { en: "Back to home", fr: "Retour à l'accueil" },

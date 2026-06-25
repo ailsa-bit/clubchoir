@@ -69,15 +69,6 @@ const LOCATIONS: Loc[] = [
     ring: "ring-purple",
     day: { en: "Thursdays · 7:00–8:30 PM", fr: "Jeudis · 19 h – 20 h 30" },
   },
-  {
-    value: "Arundel – Tuesday",
-    name: "Arundel",
-    color: "bg-aqua-light",
-    border: "border-aqua/30",
-    dot: "bg-aqua",
-    ring: "ring-aqua",
-    day: { en: "Day to be confirmed", fr: "Jour à confirmer" },
-  },
 ];
 
 const makeContactSchema = (t: (k: string) => string) =>

@@ -28,7 +28,7 @@ import {
 import { Search, Plus, Trash2, Loader2, Sparkles, ArrowLeft, Mail } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 
-const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire", "Arundel"] as const;
+const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 
 interface ProspectRow {
   id: string;

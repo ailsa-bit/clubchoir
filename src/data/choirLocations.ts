@@ -1,7 +1,7 @@
 // Public landing page data for each Club Choir location.
 // Used by src/pages/ChoirLocation.tsx for SEO-friendly per-city pages.
 
-export type LocationSlug = "montreal" | "hudson" | "saint-hubert" | "pointe-claire" | "arundel";
+export type LocationSlug = "montreal" | "hudson" | "saint-hubert" | "pointe-claire";
 
 export interface ChoirLocationData {
   slug: LocationSlug;
@@ -191,43 +191,6 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     theme: { bg: "bg-purple-light", border: "border-purple/30", dot: "bg-purple" },
     photoIds: ["ptc-folders", "ptc-formation", "ptc-concert"],
     openHouse: { en: "Thursday, August 6, 2026", fr: "Jeudi 6 août 2026", time: "7:00 PM" },
-  },
-  arundel: {
-    slug: "arundel",
-    city: "Arundel",
-    pageTitle: "Arundel Choir – Club Choir | Laurentians Community Choir",
-    metaDescription:
-      "Club Choir Arundel — a no-audition adult community choir in the Laurentians, meeting at Centre Arundel Centre. Join the mailing list for upcoming session dates.",
-    heroHeadline: {
-      en: "Arundel Choir – A new choir for the Laurentians",
-      fr: "Chorale Arundel – Une nouvelle chorale pour les Laurentides",
-    },
-    heroBlurb: {
-      en: "A warm, no-audition adult community choir coming to Arundel. Dates for the next session to be confirmed.",
-      fr: "Une chorale communautaire chaleureuse et sans audition à Arundel. Dates de la prochaine session à confirmer.",
-    },
-    about: {
-      en: [
-        "Club Choir Arundel brings our no-audition, adults-of-all-levels approach to the Laurentians, meeting at Centre Arundel Centre in the heart of the village. Whether you live in Arundel, Mont-Tremblant, Sainte-Agathe, or anywhere nearby, you're invited to sing with us.",
-        "Director Ailsa teaches everything by ear with live instrumental accompaniment at every rehearsal, so reading music isn't required. Sessions are 14 weeks — fall (September–December) and winter (February–May) — and end with a casual showcase. Want to be the first to know when the next Arundel session opens? Join the mailing list.",
-      ],
-      fr: [
-        "Club Choir Arundel apporte notre approche sans audition, pour tous les adultes, dans les Laurentides, au Centre Arundel Centre, au cœur du village. Que vous habitiez Arundel, Mont-Tremblant, Sainte-Agathe ou les environs, vous êtes invité à chanter avec nous.",
-        "La directrice Ailsa enseigne tout à l'oreille avec un accompagnement instrumental live à chaque répétition, donc pas besoin de lire la musique. Les sessions durent 14 semaines — à l'automne (septembre–décembre) et à l'hiver (février–mai) — et se terminent par un spectacle convivial. Pour être informé de l'ouverture de la prochaine session, inscrivez-vous à la liste de diffusion.",
-      ],
-    },
-    day: { en: "TBD", fr: "À confirmer" },
-    time: "TBD",
-    dates: { en: "Dates to be confirmed", fr: "Dates à confirmer" },
-    venueName: "Centre Arundel Centre",
-    venueAddress: "17 Rue du Village",
-    venueCity: "Arundel",
-    postalCode: "J0T 1A0",
-    region: "QC",
-    country: "CA",
-    mapsUrl: "https://maps.google.com/?q=Centre+Arundel+Centre+17+Village+Arundel",
-    theme: { bg: "bg-aqua-light", border: "border-aqua/30", dot: "bg-aqua" },
-    photoIds: ["group-portrait", "ar-rehearsal", "ar-group"],
   },
 };
 

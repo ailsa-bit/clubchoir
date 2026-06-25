@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import PageMeta from "@/components/PageMeta";
 
-const LOCATIONS = ["Montreal", "Arundel", "Saint-Hubert", "Pointe-Claire", "Hudson"];
+const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
 
 const makeSchema = (tr: (k: string) => string) =>
   z.object({
