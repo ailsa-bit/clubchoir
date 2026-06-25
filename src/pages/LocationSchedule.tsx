@@ -19,7 +19,7 @@ interface SessionRow {
 const locationMeta: Record<string, { dot: string; bg: string; venue: string; day: string; time: string; address: string }> = {
   "Montreal": { dot: "bg-pink", bg: "bg-pink-light border-pink/20", venue: "Kensington – Kensington Room", day: "Monday", time: "7:00–8:30 PM", address: "6225 Av. Godfrey" },
   "Hudson": { dot: "bg-orange", bg: "bg-orange-light border-orange/20", venue: "Kingfisher Pub", day: "Monday", time: "7:00–8:30 PM", address: "84 Cameron, Hudson, J0P 1H0" },
-  "Arundel": { dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20", venue: "Centre Arundel Centre", day: "Tuesday", time: "6:30–8:00 PM", address: "17 rue du Village, Arundel" },
+  
   "Saint-Hubert": { dot: "bg-lime", bg: "bg-lime-light border-lime/20", venue: "St-Gabriel Catholic Church", day: "Wednesday", time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert" },
   "Pointe-Claire": { dot: "bg-purple", bg: "bg-purple-light border-purple/20", venue: "Valois United Church", day: "Thursday", time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire" },
 };

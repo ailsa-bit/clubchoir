@@ -18,7 +18,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Helmet } from "react-helmet-async";
 
-const LOCATIONS = ["Montreal", "Hudson", "Arundel", "Saint-Hubert", "Pointe-Claire"];
+const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
 
 interface ChatMessage {
   id: string;

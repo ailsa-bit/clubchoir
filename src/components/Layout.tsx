@@ -44,7 +44,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   const thisWeekChildren = [
     { label: "Montreal", path: "/schedule/montreal" },
     { label: "Hudson", path: "/schedule/hudson" },
-    { label: "Arundel", path: "/schedule/arundel" },
+    
     { label: "Saint-Hubert", path: "/schedule/saint-hubert" },
     { label: "Pointe-Claire", path: "/schedule/pointe-claire" },
   ];
@@ -279,7 +279,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             </Link>
             <Link to="/choir/pointe-claire" className="hover:text-foreground transition-colors">{t("footer.choir.pointeClaire")}</Link>
             <Link to="/choir/saint-hubert" className="hover:text-foreground transition-colors">{t("footer.choir.saintHubert")}</Link>
-            <Link to="/choir/arundel" className="hover:text-foreground transition-colors">{t("footer.choir.arundel")}</Link>
+            
           </nav>
 
           <div className="flex flex-wrap items-center justify-center gap-4">

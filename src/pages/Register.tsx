@@ -53,14 +53,6 @@ const LOCATIONS: Loc[] = [
     ring: "ring-purple",
     dates: { en: "Thursdays · Sept 10 – Dec 10, 2026 · 7:00–8:30 PM", fr: "Jeudis · 10 sept. – 10 déc. 2026 · 19 h – 20 h 30" },
   },
-  {
-    name: "Arundel",
-    color: "bg-aqua-light",
-    border: "border-aqua/30",
-    dot: "bg-aqua",
-    ring: "ring-aqua",
-    dates: { en: "Dates to be confirmed", fr: "Dates à confirmer" },
-  },
 ];
 
 const Register = () => {
@@ -188,7 +180,7 @@ const Register = () => {
     <div className="py-12 px-4">
       <PageMeta
         title="Register for Fall 2026 – Club Choir"
-        description="Sign up for a Club Choir Fall 2026 session in Montreal, Hudson, Saint-Hubert, Pointe-Claire, or Arundel."
+        description="Sign up for a Club Choir Fall 2026 session in Montreal, Hudson, Saint-Hubert, or Pointe-Claire."
         path="/register"
       />
       <div className="container mx-auto max-w-3xl">

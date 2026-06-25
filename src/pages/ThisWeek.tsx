@@ -9,7 +9,7 @@ const ThisWeek = () => {
   const sessions = [
     { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church", day: t("day.monday"), time: "7:00–8:30 PM", address: "6225 Av. Godfrey", dot: "bg-pink", bg: "bg-pink-light border-pink/20", dates: "Sept 7 – Dec 7, 2026" },
     { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub", day: t("day.monday"), time: "7:00–8:30 PM", address: "84 Cameron, Hudson, J0P 1H0", dot: "bg-orange", bg: "bg-orange-light border-orange/20", dates: "Sept 8 – Dec 8, 2026" },
-    { location: "Arundel", slug: "arundel", venue: "Centre Arundel Centre", day: t("day.tuesday"), time: "6:30–8:00 PM", address: "17 rue du Village, Arundel", dot: "bg-aqua", bg: "bg-aqua-light border-aqua/20", dates: t("home.sessions.tbc") },
+    
     { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church", day: t("day.wednesday"), time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20", dates: "Sept 9 – Dec 9, 2026" },
     { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church", day: t("day.thursday"), time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire", dot: "bg-purple", bg: "bg-purple-light border-purple/20", dates: "Sept 10 – Dec 10, 2026" },
   ];

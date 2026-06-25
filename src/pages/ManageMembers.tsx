@@ -49,7 +49,7 @@ interface MemberRow {
 }
 
 const STATUSES = ["ACTIVE", "INACTIVE", "PROSPECT", "TRIAL"] as const;
-const LOCATIONS = ["Montreal", "Hudson", "Arundel", "Saint-Hubert", "Pointe-Claire"] as const;
+const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 
 const statusColors: Record<string, string> = {
   ACTIVE: "bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30",

@@ -8,7 +8,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const VALID_LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire", "Arundel"];
+const VALID_LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
 const SESSION_LABEL = "fall-2026";
 
 const SESSION_DETAILS: Record<string, { en: string; fr: string }> = {
@@ -16,7 +16,6 @@ const SESSION_DETAILS: Record<string, { en: string; fr: string }> = {
   "Hudson": { en: "Tuesdays, Sept 8 – Dec 8, 2026 · Kingfisher Pub", fr: "Mardis, 8 sept. – 8 déc. 2026 · Kingfisher Pub" },
   "Saint-Hubert": { en: "Wednesdays, Sept 9 – Dec 9, 2026", fr: "Mercredis, 9 sept. – 9 déc. 2026" },
   "Pointe-Claire": { en: "Thursdays, Sept 10 – Dec 10, 2026", fr: "Jeudis, 10 sept. – 10 déc. 2026" },
-  "Arundel": { en: "Dates to be confirmed", fr: "Dates à confirmer" },
 };
 
 const escapeHtml = (s: string) =>

@@ -88,7 +88,7 @@ const Events = () => {
     <div className="py-16 px-4">
       <PageMeta
         title="Upcoming Choir Events & Performances – Club Choir"
-        description="Seasonal showcases, pop-up choirs and public performances by Club Choir in Montreal, Hudson, Pointe-Claire, Saint-Hubert and Arundel. Friends and family welcome."
+        description="Seasonal showcases, pop-up choirs and public performances by Club Choir in Montreal, Hudson, Pointe-Claire and Saint-Hubert. Friends and family welcome."
         path="/events"
         jsonLd={[
           {
@@ -152,8 +152,8 @@ const Events = () => {
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed">
               {language === "fr"
-                ? "Inscrivez-vous à l'une de nos chorales d'automne à Montréal, Hudson, Saint-Hubert, Pointe-Claire ou Arundel."
-                : "Sign up for one of our fall choirs in Montreal, Hudson, Saint-Hubert, Pointe-Claire, or Arundel."}
+                ? "Inscrivez-vous à l'une de nos chorales d'automne à Montréal, Hudson, Saint-Hubert ou Pointe-Claire."
+                : "Sign up for one of our fall choirs in Montreal, Hudson, Saint-Hubert, or Pointe-Claire."}
             </p>
             <div className="pt-2">
               <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-semibold">

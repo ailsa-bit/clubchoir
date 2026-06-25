@@ -48,13 +48,6 @@ const LOCATION_INFO: Record<
     dates: "Sept 10 – Dec 10, 2026",
     venue: "Valois United Church, 70 Av. Belmont, Pointe-Claire",
   },
-  Arundel: {
-    city: "Arundel",
-    day: "TBD",
-    time: "TBD",
-    dates: "Dates to be confirmed",
-    venue: "Centre Arundel Centre, 17 Rue du Village, Arundel",
-  },
 };
 
 function getLocationInfo(location: string) {
