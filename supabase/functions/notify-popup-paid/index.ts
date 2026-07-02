@@ -24,10 +24,10 @@ const EVENTS: Record<string, { name: string; date: string; time: string; venue: 
   },
   "sing-for-the-herd": {
     name: "Sing for the Herd",
-    date: "Sunday, August 16, 2026",
-    time: "2:00 PM – 4:00 PM",
-    venue: "Parc Terra Cotta",
-    address: "100 Terra Cotta Ave, Pointe-Claire, QC",
+    date: "Sunday, August 2, 2026",
+    time: "4:00 PM – 5:30 PM (choir event); herd meet-and-greet 2:45–3:45 PM",
+    venue: "A Horse Tale Rescue",
+    address: "27 Chemin Murphy, Vaudreuil-Dorion, QC J7V 4L2",
   },
 };
 
@@ -97,7 +97,9 @@ serve(async (req) => {
     // Use a backend redirect URL so the QR keeps working even if the frontend
     // hasn't been republished with the /checkin/:token route yet.
     const checkinUrl = `${supabaseUrl}/functions/v1/popup-ticket-redirect/${ticketToken}`;
-    const qrDataUrl = await QRCode.toDataURL(checkinUrl, { width: 400, margin: 2 });
+    // Generate QR as PNG buffer for CID attachment (Gmail strips inline base64 data URLs)
+    const qrPngBuffer = await QRCode.toBuffer(checkinUrl, { width: 400, margin: 2, type: "png" });
+    const qrBase64 = btoa(String.fromCharCode(...new Uint8Array(qrPngBuffer)));
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) {
@@ -143,7 +145,7 @@ serve(async (req) => {
             Show this QR code at the door — we'll scan it when you arrive.
           </p>
           <div style="text-align: center; margin: 24px 0; padding: 24px; background: #ffffff; border: 2px solid #f4f4f4; border-radius: 12px;">
-            <img src="${qrDataUrl}" alt="Your ticket QR code" style="width: 280px; height: 280px; display: block; margin: 0 auto;" />
+            <img src="cid:ticket-qr" alt="Your ticket QR code" style="width: 280px; height: 280px; display: block; margin: 0 auto;" />
             <p style="font-size: 12px; color: #999; margin: 12px 0 0; word-break: break-all;">
               Or open: <a href="${checkinUrl}" style="color: #f97316;">${checkinUrl}</a>
             </p>
@@ -169,6 +171,13 @@ serve(async (req) => {
           </p>
         </div>
       `,
+      attachments: [
+        {
+          filename: "ticket-qr.png",
+          content: qrBase64,
+          contentId: "ticket-qr",
+        },
+      ],
     });
 
     await supabase
