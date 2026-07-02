@@ -225,6 +225,15 @@ const Events = () => {
                 <MapPin className="w-4 h-4 text-purple" />
                 <span className="font-medium">{t("events.herdVenue")}</span>
               </div>
+              <a
+                href="https://www.ahtrescue.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-purple hover:underline font-medium"
+              >
+                <ExternalLink className="w-4 h-4" />
+                {t("events.herdLink")}
+              </a>
             </div>
           </CardContent>
         </Card>
