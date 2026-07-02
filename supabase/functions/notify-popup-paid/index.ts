@@ -145,7 +145,7 @@ serve(async (req) => {
             Show this QR code at the door — we'll scan it when you arrive.
           </p>
           <div style="text-align: center; margin: 24px 0; padding: 24px; background: #ffffff; border: 2px solid #f4f4f4; border-radius: 12px;">
-            <img src="${qrDataUrl}" alt="Your ticket QR code" style="width: 280px; height: 280px; display: block; margin: 0 auto;" />
+            <img src="cid:ticket-qr" alt="Your ticket QR code" style="width: 280px; height: 280px; display: block; margin: 0 auto;" />
             <p style="font-size: 12px; color: #999; margin: 12px 0 0; word-break: break-all;">
               Or open: <a href="${checkinUrl}" style="color: #f97316;">${checkinUrl}</a>
             </p>
