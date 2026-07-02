@@ -148,7 +148,7 @@ serve(async (req) => {
           <div style="background:#f4f4f4;border-radius:8px;padding:16px 20px;margin:8px 0 24px;">
             <p style="margin:4px 0;font-size:15px;"><strong>Send to:</strong> ailsa@clubchoir.ca</p>
             <p style="margin:4px 0;font-size:15px;"><strong>Amount:</strong> $${total} CAD</p>
-            <p style="margin:4px 0;font-size:15px;"><strong>Security question:</strong> choir name</p>
+            <p style="margin:4px 0;font-size:15px;"><strong>Security question:</strong> What is the choir name?</p>
             <p style="margin:4px 0;font-size:15px;"><strong>Answer:</strong> clubchoir <em>(one word, all lowercase)</em></p>
           </div>
 
