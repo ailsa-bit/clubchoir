@@ -134,7 +134,13 @@ const SingForTheHerd = () => {
         </div>
 
         {/* Description */}
-        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 space-y-3">
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 space-y-3 overflow-hidden">
+          <img
+            src={horsePhoto.url}
+            alt={isFr ? "Cheval de A Horse Tale Rescue" : "Horse at A Horse Tale Rescue"}
+            className="w-full h-auto rounded-xl mb-5 object-cover"
+            loading="eager"
+          />
           <p className="text-muted-foreground leading-relaxed">
             {isFr
               ? "Joignez-vous à nous le dimanche 2 août pour un après-midi en famille au A Horse Tale Rescue à Vaudreuil-Dorion."
