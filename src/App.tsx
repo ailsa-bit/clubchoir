@@ -38,6 +38,7 @@ import About from "./pages/About";
 import Register from "./pages/Register";
 import ChoirLocation from "./pages/ChoirLocation";
 import OpenHouseRegister from "./pages/OpenHouseRegister";
+import SingForTheHerd from "./pages/SingForTheHerd";
 
 const queryClient = new QueryClient();
 
@@ -81,6 +82,7 @@ const App = () => (
             <Route path="/checkin/:token" element={<CheckIn />} />
             <Route path="/about" element={<About />} />
             <Route path="/choir/:city" element={<ChoirLocation />} />
+            <Route path="/tickets/sing-for-the-herd" element={<SingForTheHerd />} />
 
             {/* SEO redirects for legacy indexed URLs */}
             <Route path="/website-about-us" element={<Navigate to="/about" replace />} />

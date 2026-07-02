@@ -235,6 +235,14 @@ const Events = () => {
                 {t("events.herdLink")}
               </a>
             </div>
+            <div className="pt-3">
+              <Button asChild className="bg-purple text-purple-foreground hover:bg-purple/90 rounded-full font-semibold">
+                <Link to="/tickets/sing-for-the-herd">
+                  <Ticket className="w-4 h-4 mr-1.5" />
+                  {language === "fr" ? "Obtenir des billets" : "Get Tickets"}
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
