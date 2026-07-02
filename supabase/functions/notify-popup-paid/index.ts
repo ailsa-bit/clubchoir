@@ -97,7 +97,9 @@ serve(async (req) => {
     // Use a backend redirect URL so the QR keeps working even if the frontend
     // hasn't been republished with the /checkin/:token route yet.
     const checkinUrl = `${supabaseUrl}/functions/v1/popup-ticket-redirect/${ticketToken}`;
-    const qrDataUrl = await QRCode.toDataURL(checkinUrl, { width: 400, margin: 2 });
+    // Generate QR as PNG buffer for CID attachment (Gmail strips inline base64 data URLs)
+    const qrPngBuffer = await QRCode.toBuffer(checkinUrl, { width: 400, margin: 2, type: "png" });
+    const qrBase64 = btoa(String.fromCharCode(...new Uint8Array(qrPngBuffer)));
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) {
