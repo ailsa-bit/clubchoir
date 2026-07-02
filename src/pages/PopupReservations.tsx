@@ -30,9 +30,37 @@ interface Reservation {
   paid_email_sent_at: string | null;
   checked_in_at: string | null;
   created_at: string;
+  notes: string | null;
 }
 
-const PRICE = 15;
+const DEFAULT_PRICE = 15;
+
+const EVENT_LABELS: Record<string, string> = {
+  "studio-77-may-31": "Pop-Up · Studio 77",
+  "sing-for-the-herd": "Sing for the Herd",
+};
+
+const parseNotes = (n: string | null): any => {
+  if (!n) return null;
+  try { return JSON.parse(n); } catch { return null; }
+};
+
+const owedFor = (r: Reservation): number => {
+  const parsed = parseNotes(r.notes);
+  if (parsed && typeof parsed.total_cad === "number") return parsed.total_cad;
+  return r.ticket_count * DEFAULT_PRICE;
+};
+
+const breakdownFor = (r: Reservation): string => {
+  const p = parseNotes(r.notes);
+  if (!p) return `${r.ticket_count} ticket${r.ticket_count > 1 ? "s" : ""}`;
+  const parts: string[] = [];
+  if (p.adults) parts.push(`${p.adults} adult`);
+  if (p.children_6_10) parts.push(`${p.children_6_10} child 6–10`);
+  if (p.family_passes) parts.push(`${p.family_passes} family pass`);
+  if (p.children_under_6) parts.push(`${p.children_under_6} under 6`);
+  return parts.length ? parts.join(", ") : `${r.ticket_count} ticket${r.ticket_count > 1 ? "s" : ""}`;
+};
 
 const PopupReservations = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
