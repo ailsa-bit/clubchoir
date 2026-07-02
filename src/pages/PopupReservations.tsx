@@ -176,11 +176,14 @@ const PopupReservations = () => {
   }
   if (!isAdmin) return null;
 
-  const ticketsSold = rows.filter((r) => r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
-  const ticketsPending = rows.filter((r) => !r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
-  const totalPaid = ticketsSold * PRICE;
-  const totalOwed = ticketsPending * PRICE;
-  const checkedInTickets = rows.filter((r) => r.checked_in_at).reduce((s, r) => s + r.ticket_count, 0);
+  const eventSlugs = Array.from(new Set(rows.map((r) => r.event_slug)));
+  const filteredRows = eventFilter === "all" ? rows : rows.filter((r) => r.event_slug === eventFilter);
+  const ticketsSold = filteredRows.filter((r) => r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
+  const ticketsPending = filteredRows.filter((r) => !r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
+  const totalPaid = filteredRows.filter((r) => r.payment_received).reduce((s, r) => s + owedFor(r), 0);
+  const totalOwed = filteredRows.filter((r) => !r.payment_received).reduce((s, r) => s + owedFor(r), 0);
+  const checkedInTickets = filteredRows.filter((r) => r.checked_in_at).reduce((s, r) => s + r.ticket_count, 0);
+  const showCapacity = eventFilter === "studio-77-may-31";
   const CAPACITY = 40;
   const remaining = Math.max(0, CAPACITY - checkedInTickets);
 
@@ -188,16 +191,28 @@ const PopupReservations = () => {
     <div className="py-10 px-4">
       <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-6xl">
-        <div className="mb-6">
-          <h1 className="font-heading font-bold text-2xl text-foreground flex items-center gap-2">
-            <Ticket className="w-6 h-6" /> Pop-Up Ticket Reservations
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {rows.length} reservations · {ticketsSold} sold · {ticketsPending} pending · ${totalPaid} received · ${totalOwed} owed
-          </p>
+        <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="font-heading font-bold text-2xl text-foreground flex items-center gap-2">
+              <Ticket className="w-6 h-6" /> Ticket Reservations
+            </h1>
+            <p className="text-sm text-muted-foreground mt-1">
+              {filteredRows.length} reservations · {ticketsSold} sold · {ticketsPending} pending · ${totalPaid} received · ${totalOwed} owed
+            </p>
+          </div>
+          <select
+            value={eventFilter}
+            onChange={(e) => setEventFilter(e.target.value)}
+            className="h-9 rounded-md border border-input bg-background px-3 text-sm"
+          >
+            <option value="all">All events</option>
+            {eventSlugs.map((s) => (
+              <option key={s} value={s}>{EVENT_LABELS[s] || s}</option>
+            ))}
+          </select>
         </div>
 
-        {/* Door counter */}
+        {showCapacity && (
         <div className="grid grid-cols-3 gap-3 mb-6">
           <div className="rounded-xl border-2 border-blue-500/30 bg-blue-500/5 p-4 text-center">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Checked in</p>
@@ -212,6 +227,7 @@ const PopupReservations = () => {
             <p className="text-3xl font-bold text-green-700 dark:text-green-400">{remaining}</p>
           </div>
         </div>
+        )}
 
 
         {rows.length === 0 ? (
