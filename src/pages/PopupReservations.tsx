@@ -69,6 +69,7 @@ const PopupReservations = () => {
   const [rows, setRows] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [eventFilter, setEventFilter] = useState<string>("all");
 
   const fetch = async () => {
     setLoading(true);
