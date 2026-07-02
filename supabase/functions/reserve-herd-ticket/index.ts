@@ -136,7 +136,6 @@ serve(async (req) => {
             <p style="margin:2px 0 2px 12px;font-size:14px;">2:45–3:45 PM: Meet the Herd</p>
             <p style="margin:2px 0 2px 12px;font-size:14px;">3:45 PM: Head to the barn</p>
             <p style="margin:2px 0 2px 12px;font-size:14px;">4:00–5:30 PM: Club Choir event</p>
-            <p style="margin:2px 0 2px 12px;font-size:14px;">5:30 PM onward: Wrap-up</p>
           </div>
 
           <h2 style="font-size:18px;margin-top:28px;margin-bottom:8px;">Your tickets</h2>
