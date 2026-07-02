@@ -295,15 +295,19 @@ const Events = () => {
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-muted-foreground leading-relaxed font-medium">
-              {language === "fr"
-                ? "L'événement a été un succès ! Un immense merci à tous les participants — nous avons hâte de vous retrouver au prochain événement."
-                : "The event was a success! A huge thank you to all of the participants — we look forward to our next event."}
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
               {t("events.victoriaDesc1")}
             </p>
             <p className="text-muted-foreground leading-relaxed">
               {t("events.victoriaDesc2")}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {t("events.victoriaDesc3")}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {t("events.victoriaDesc4")}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {t("events.victoriaDesc5")}
             </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
