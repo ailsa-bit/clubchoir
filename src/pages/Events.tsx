@@ -132,9 +132,9 @@ const Events = () => {
           {t("events.subtitle")}
         </p>
 
-        {/* Featured Events */}
+        {/* Upcoming Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
-          {t("events.upcoming")}
+          {language === "fr" ? "Événements à venir" : "Upcoming Events"}
         </h2>
 
         {/* Fall 2026 Registration CTA */}
