@@ -55,7 +55,7 @@ const SingForTheHerd = () => {
   const anyTicket =
     adults + children6to10 + childrenUnder6 + familyPasses > 0;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleReview = (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName.trim() || !lastName.trim() || !email.trim()) {
       toast({
@@ -71,6 +71,11 @@ const SingForTheHerd = () => {
       });
       return;
     }
+    setStep("review");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleConfirm = async () => {
     setSubmitting(true);
     try {
       const { error } = await supabase.functions.invoke("reserve-herd-ticket", {
