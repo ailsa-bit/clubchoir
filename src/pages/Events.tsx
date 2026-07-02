@@ -323,36 +323,6 @@ const Events = () => {
         </Card>
 
 
-        {/* Pointe-Claire Village Day Festival */}
-        <Card className="mb-8 border-aqua/30 bg-aqua-light">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-aqua mb-1">
-              <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.communityPerf")}</span>
-            </div>
-            <CardTitle className="text-xl font-heading">
-              {t("events.pointeclaireTitle")}
-            </CardTitle>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
-              <Calendar className="w-4 h-4" />
-              <span>{t("events.pointeclaireDate")}</span>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-muted-foreground leading-relaxed">
-              {t("events.pointeclaireDesc1")}
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              {t("events.pointeclaireDesc2")}
-            </p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-aqua" />
-                <span className="font-medium">{t("events.pointeclaireVenue")}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Open House Dates */}
         <h2 id="open-house" className="font-heading font-bold text-2xl text-foreground mb-2 text-center scroll-mt-24">
