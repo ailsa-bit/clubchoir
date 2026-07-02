@@ -282,8 +282,8 @@ const Events = () => {
         <Card className="mb-6 border-pink/30 bg-pink-light">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-pink mb-1">
-              <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.communityPerf")}</span>
+              <CheckCircle2 className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.completedBadge")}</span>
             </div>
             <CardTitle className="text-xl font-heading">
               {t("events.victoriaTitle")}
@@ -294,6 +294,11 @@ const Events = () => {
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              {language === "fr"
+                ? "L'événement a été un succès ! Un immense merci à tous les participants — nous avons hâte de vous retrouver au prochain événement."
+                : "The event was a success! A huge thank you to all of the participants — we look forward to our next event."}
+            </p>
             <p className="text-muted-foreground leading-relaxed">
               {t("events.victoriaDesc1")}
             </p>
@@ -307,8 +312,12 @@ const Events = () => {
               </div>
               <span className="text-muted-foreground">{t("events.accompanied")}</span>
             </div>
+            <div className="pt-2">
+              <PhotoGallery photos={victoriaVillagePhotos} columns={2} />
+            </div>
           </CardContent>
         </Card>
+
 
         {/* Pointe-Claire Village Day Festival */}
         <Card className="mb-8 border-aqua/30 bg-aqua-light">
