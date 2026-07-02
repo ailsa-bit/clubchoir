@@ -24,10 +24,10 @@ const EVENTS: Record<string, { name: string; date: string; time: string; venue: 
   },
   "sing-for-the-herd": {
     name: "Sing for the Herd",
-    date: "Sunday, August 16, 2026",
-    time: "2:00 PM – 4:00 PM",
-    venue: "Parc Terra Cotta",
-    address: "100 Terra Cotta Ave, Pointe-Claire, QC",
+    date: "Sunday, August 2, 2026",
+    time: "4:00 PM – 5:30 PM (choir event); herd meet-and-greet 2:45–3:45 PM",
+    venue: "A Horse Tale Rescue",
+    address: "27 Chemin Murphy, Vaudreuil-Dorion, QC J7V 4L2",
   },
 };
 
