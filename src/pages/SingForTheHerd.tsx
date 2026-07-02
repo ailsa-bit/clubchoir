@@ -169,8 +169,7 @@ const SingForTheHerd = () => {
             <p className="text-xs text-muted-foreground leading-relaxed">
               {isFr ? "14 h 45 – 15 h 45 : Rencontre du troupeau" : "2:45–3:45 PM: Meet the Herd"}<br/>
               {isFr ? "15 h 45 : Direction la grange" : "3:45 PM: Head to the barn"}<br/>
-              {isFr ? "16 h – 17 h 30 : Club Choir" : "4:00–5:30 PM: Club Choir event"}<br/>
-              {isFr ? "17 h 30 : Fin" : "5:30 PM: Wrap-up"}
+              {isFr ? "16 h – 17 h 30 : Club Choir" : "4:00–5:30 PM: Club Choir event"}
             </p>
           </div>
         </div>
