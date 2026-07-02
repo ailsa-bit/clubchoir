@@ -136,7 +136,7 @@ const SingForTheHerd = () => {
           <p className="text-muted-foreground leading-relaxed">
             {isFr
               ? "Les invités pourront rencontrer le troupeau avant de se rendre à la grange pour un événement Club Choir joyeux en soutien à A Horse Tale Rescue. Que vous veniez pour chanter, écouter, appuyer le refuge ou en apprendre plus sur notre nouvelle chorale de Hudson qui débute en septembre, vous êtes chaleureusement bienvenu."
-              : "Guests will have the chance to Meet the Herd before heading to the barn for a joyful Club Choir event in support of A Horse Tale Rescue. Whether you're coming to sing, listen, support the rescue, or learn more about Club Choir's new Hudson choir starting in September, you are warmly welcome."}
+              : "The afternoon begins with a chance to meet the herd, followed by a joyful Club Choir event in the barn in support of A Horse Tale Rescue. Whether you're coming to sing along, listen, support the rescue, or get a feel for Club Choir's new Hudson choir starting in September, we'd love to welcome you."}
           </p>
           <a
             href="https://www.ahtrescue.org/"
