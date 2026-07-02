@@ -5,6 +5,7 @@ import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import horsePhoto from "@/assets/horse-tale-rescue.png.asset.json";
 
 const PRICE_ADULT = 20;
 const PRICE_CHILD_6_10 = 10;
@@ -112,7 +113,7 @@ const SingForTheHerd = () => {
         description="Buy tickets to Sing for the Herd, a Club Choir fundraiser for A Horse Tale Rescue on Sunday August 2, 2026 in Vaudreuil-Dorion. Family-friendly. All proceeds support the rescue."
         path="/tickets/sing-for-the-herd"
       />
-      <div className="container mx-auto max-w-3xl">
+      <div className="container mx-auto max-w-7xl">
         <Link to="/events" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> {isFr ? "Retour aux événements" : "Back to events"}
         </Link>
@@ -133,7 +134,13 @@ const SingForTheHerd = () => {
         </div>
 
         {/* Description */}
-        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 space-y-3">
+        <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 space-y-3 overflow-hidden">
+          <img
+            src={horsePhoto.url}
+            alt={isFr ? "Cheval de A Horse Tale Rescue" : "Horse at A Horse Tale Rescue"}
+            className="w-full h-auto rounded-xl mb-5 object-cover"
+            loading="eager"
+          />
           <p className="text-muted-foreground leading-relaxed">
             {isFr
               ? "Joignez-vous à nous le dimanche 2 août pour un après-midi en famille au A Horse Tale Rescue à Vaudreuil-Dorion."
