@@ -22,6 +22,13 @@ const EVENTS: Record<string, { name: string; date: string; time: string; venue: 
     venue: "Studio 77",
     address: "271 Chem. du Bord-du-Lac-Lakeshore, Pointe-Claire, QC H9S 4L1",
   },
+  "sing-for-the-herd": {
+    name: "Sing for the Herd",
+    date: "Sunday, August 16, 2026",
+    time: "2:00 PM – 4:00 PM",
+    venue: "Parc Terra Cotta",
+    address: "100 Terra Cotta Ave, Pointe-Claire, QC",
+  },
 };
 
 const SITE_URL = "https://clubchoir.ca";
