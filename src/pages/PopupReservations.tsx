@@ -30,9 +30,37 @@ interface Reservation {
   paid_email_sent_at: string | null;
   checked_in_at: string | null;
   created_at: string;
+  notes: string | null;
 }
 
-const PRICE = 15;
+const DEFAULT_PRICE = 15;
+
+const EVENT_LABELS: Record<string, string> = {
+  "studio-77-may-31": "Pop-Up · Studio 77",
+  "sing-for-the-herd": "Sing for the Herd",
+};
+
+const parseNotes = (n: string | null): any => {
+  if (!n) return null;
+  try { return JSON.parse(n); } catch { return null; }
+};
+
+const owedFor = (r: Reservation): number => {
+  const parsed = parseNotes(r.notes);
+  if (parsed && typeof parsed.total_cad === "number") return parsed.total_cad;
+  return r.ticket_count * DEFAULT_PRICE;
+};
+
+const breakdownFor = (r: Reservation): string => {
+  const p = parseNotes(r.notes);
+  if (!p) return `${r.ticket_count} ticket${r.ticket_count > 1 ? "s" : ""}`;
+  const parts: string[] = [];
+  if (p.adults) parts.push(`${p.adults} adult`);
+  if (p.children_6_10) parts.push(`${p.children_6_10} child 6–10`);
+  if (p.family_passes) parts.push(`${p.family_passes} family pass`);
+  if (p.children_under_6) parts.push(`${p.children_under_6} under 6`);
+  return parts.length ? parts.join(", ") : `${r.ticket_count} ticket${r.ticket_count > 1 ? "s" : ""}`;
+};
 
 const PopupReservations = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -41,6 +69,7 @@ const PopupReservations = () => {
   const [rows, setRows] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [eventFilter, setEventFilter] = useState<string>("all");
 
   const fetch = async () => {
     setLoading(true);
@@ -147,11 +176,14 @@ const PopupReservations = () => {
   }
   if (!isAdmin) return null;
 
-  const ticketsSold = rows.filter((r) => r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
-  const ticketsPending = rows.filter((r) => !r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
-  const totalPaid = ticketsSold * PRICE;
-  const totalOwed = ticketsPending * PRICE;
-  const checkedInTickets = rows.filter((r) => r.checked_in_at).reduce((s, r) => s + r.ticket_count, 0);
+  const eventSlugs = Array.from(new Set(rows.map((r) => r.event_slug)));
+  const filteredRows = eventFilter === "all" ? rows : rows.filter((r) => r.event_slug === eventFilter);
+  const ticketsSold = filteredRows.filter((r) => r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
+  const ticketsPending = filteredRows.filter((r) => !r.payment_received).reduce((s, r) => s + r.ticket_count, 0);
+  const totalPaid = filteredRows.filter((r) => r.payment_received).reduce((s, r) => s + owedFor(r), 0);
+  const totalOwed = filteredRows.filter((r) => !r.payment_received).reduce((s, r) => s + owedFor(r), 0);
+  const checkedInTickets = filteredRows.filter((r) => r.checked_in_at).reduce((s, r) => s + r.ticket_count, 0);
+  const showCapacity = eventFilter === "studio-77-may-31";
   const CAPACITY = 40;
   const remaining = Math.max(0, CAPACITY - checkedInTickets);
 
@@ -159,16 +191,28 @@ const PopupReservations = () => {
     <div className="py-10 px-4">
       <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-6xl">
-        <div className="mb-6">
-          <h1 className="font-heading font-bold text-2xl text-foreground flex items-center gap-2">
-            <Ticket className="w-6 h-6" /> Pop-Up Ticket Reservations
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {rows.length} reservations · {ticketsSold} sold · {ticketsPending} pending · ${totalPaid} received · ${totalOwed} owed
-          </p>
+        <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="font-heading font-bold text-2xl text-foreground flex items-center gap-2">
+              <Ticket className="w-6 h-6" /> Ticket Reservations
+            </h1>
+            <p className="text-sm text-muted-foreground mt-1">
+              {filteredRows.length} reservations · {ticketsSold} sold · {ticketsPending} pending · ${totalPaid} received · ${totalOwed} owed
+            </p>
+          </div>
+          <select
+            value={eventFilter}
+            onChange={(e) => setEventFilter(e.target.value)}
+            className="h-9 rounded-md border border-input bg-background px-3 text-sm"
+          >
+            <option value="all">All events</option>
+            {eventSlugs.map((s) => (
+              <option key={s} value={s}>{EVENT_LABELS[s] || s}</option>
+            ))}
+          </select>
         </div>
 
-        {/* Door counter */}
+        {showCapacity && (
         <div className="grid grid-cols-3 gap-3 mb-6">
           <div className="rounded-xl border-2 border-blue-500/30 bg-blue-500/5 p-4 text-center">
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Checked in</p>
@@ -183,9 +227,10 @@ const PopupReservations = () => {
             <p className="text-3xl font-bold text-green-700 dark:text-green-400">{remaining}</p>
           </div>
         </div>
+        )}
 
 
-        {rows.length === 0 ? (
+        {filteredRows.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-12">No reservations yet.</p>
         ) : (
           <div className="rounded-xl border border-border overflow-hidden">
@@ -195,6 +240,9 @@ const PopupReservations = () => {
                   <tr className="bg-muted/50 border-b border-border">
                     <th className="p-3 text-left font-medium text-muted-foreground">Name</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Email</th>
+                    {eventFilter === "all" && (
+                      <th className="p-3 text-left font-medium text-muted-foreground">Event</th>
+                    )}
                     <th className="p-3 text-left font-medium text-muted-foreground">Tickets</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Owed</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Payment</th>
@@ -203,12 +251,18 @@ const PopupReservations = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map((r) => (
+                  {filteredRows.map((r) => (
                     <tr key={r.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
                       <td className="p-3 text-foreground font-medium">{r.first_name} {r.last_name}</td>
                       <td className="p-3 text-muted-foreground">{r.email}</td>
-                      <td className="p-3 text-foreground">{r.ticket_count}</td>
-                      <td className="p-3 text-foreground">${r.ticket_count * PRICE}</td>
+                      {eventFilter === "all" && (
+                        <td className="p-3 text-muted-foreground text-xs">{EVENT_LABELS[r.event_slug] || r.event_slug}</td>
+                      )}
+                      <td className="p-3 text-foreground">
+                        <div>{r.ticket_count}</div>
+                        <div className="text-[11px] text-muted-foreground">{breakdownFor(r)}</div>
+                      </td>
+                      <td className="p-3 text-foreground">${owedFor(r)}</td>
                       <td className="p-3">
                         <div className="flex items-center gap-2 flex-wrap">
                           {r.payment_received ? (
