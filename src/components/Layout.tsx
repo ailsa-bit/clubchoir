@@ -30,6 +30,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   }, []);
 
   const eventsChildren = [
+    { label: "Sing for the Herd", path: "/tickets/sing-for-the-herd" },
     { label: "Register for Fall 2026", path: "/register" },
     { label: "More...", path: "/events" },
   ];

@@ -19,6 +19,7 @@ const translations: Record<string, Record<Language, string>> = {
   "nav.resources": { en: "Songs", fr: "Chansons" },
   "nav.songs": { en: "Songs", fr: "Chansons" },
   "nav.songs.winter2026": { en: "Winter 2026", fr: "Hiver 2026" },
+  "nav.singForTheHerd": { en: "Sing for the Herd", fr: "Chantons pour le troupeau" },
   "nav.songs.fall2026": { en: "Fall 2026", fr: "Automne 2026" },
   "songs.fall2026.title": { en: "Fall 2026 Songs", fr: "Chansons Automne 2026" },
   "songs.fall2026.comingSoon": { en: "Song resources for the Fall 2026 session will appear here soon.", fr: "Les ressources musicales pour la session Automne 2026 apparaîtront ici bientôt." },
