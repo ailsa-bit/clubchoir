@@ -45,6 +45,7 @@ const SingForTheHerd = () => {
   const [familyPasses, setFamilyPasses] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [step, setStep] = useState<"form" | "review">("form");
 
   const total =
     adults * PRICE_ADULT +
