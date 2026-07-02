@@ -843,6 +843,7 @@ const translations: Record<string, Record<Language, string>> = {
   "events.herdDesc3": { en: "This afternoon is also a lovely opportunity for anyone curious about Club Choir to see what we're all about. We'll be starting a new Hudson choir session in September, and we invite anyone in the Hudson area who has been thinking about singing with us to meet the community, experience the atmosphere, and get a feel for what Club Choir offers.", fr: "Cet après-midi est aussi une belle occasion pour quiconque est curieux de découvrir Club Choir de voir ce que nous sommes. Nous commencerons une nouvelle session de chorale à Hudson en septembre, et nous invitons tous ceux de la région de Hudson qui ont pensé à chanter avec nous à rencontrer la communauté, vivre l'atmosphère et ressentir ce que Club Choir offre." },
   "events.herdDesc4": { en: "No auditions, no pressure, no need to read music. Just people coming together to sing, connect, and support a wonderful local organization.", fr: "Pas d'auditions, pas de pression, pas besoin de lire la musique. Simplement des gens qui se réunissent pour chanter, se connecter et soutenir une merveilleuse organisation locale." },
   "events.herdVenue": { en: "A Horse Tale Rescue, Vaudreuil-Dorion", fr: "A Horse Tale Rescue, Vaudreuil-Dorion" },
+  "events.herdLink": { en: "Learn more about A Horse Tale Rescue", fr: "En savoir plus sur A Horse Tale Rescue" },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);

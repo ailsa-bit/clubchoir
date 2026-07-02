@@ -1,5 +1,5 @@
 import PageMeta from "@/components/PageMeta";
-import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft, ArrowRight, CheckCircle2, BellRing, Heart } from "lucide-react";
+import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft, ArrowRight, CheckCircle2, BellRing, Heart, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -225,6 +225,15 @@ const Events = () => {
                 <MapPin className="w-4 h-4 text-purple" />
                 <span className="font-medium">{t("events.herdVenue")}</span>
               </div>
+              <a
+                href="https://www.ahtrescue.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-purple hover:underline font-medium"
+              >
+                <ExternalLink className="w-4 h-4" />
+                {t("events.herdLink")}
+              </a>
             </div>
           </CardContent>
         </Card>
