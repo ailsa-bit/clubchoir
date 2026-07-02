@@ -113,7 +113,7 @@ const SingForTheHerd = () => {
         description="Buy tickets to Sing for the Herd, a Club Choir fundraiser for A Horse Tale Rescue on Sunday August 2, 2026 in Vaudreuil-Dorion. Family-friendly. All proceeds support the rescue."
         path="/tickets/sing-for-the-herd"
       />
-      <div className="container mx-auto max-w-3xl">
+      <div className="container mx-auto max-w-7xl">
         <Link to="/events" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> {isFr ? "Retour aux événements" : "Back to events"}
         </Link>
