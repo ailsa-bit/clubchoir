@@ -22,6 +22,13 @@ const EVENTS: Record<string, { name: string; date: string; time: string; venue: 
     venue: "Studio 77",
     address: "271 Chem. du Bord-du-Lac-Lakeshore, Pointe-Claire, QC H9S 4L1",
   },
+  "sing-for-the-herd": {
+    name: "Sing for the Herd",
+    date: "Sunday, August 16, 2026",
+    time: "2:00 PM – 4:00 PM",
+    venue: "Parc Terra Cotta",
+    address: "100 Terra Cotta Ave, Pointe-Claire, QC",
+  },
 };
 
 const SITE_URL = "https://clubchoir.ca";
@@ -100,8 +107,15 @@ serve(async (req) => {
     }
 
     const resend = new Resend(resendKey);
-    const total = r.ticket_count * PRICE_PER_TICKET;
+    let total = r.ticket_count * PRICE_PER_TICKET;
+    if (r.notes && typeof r.notes === "string") {
+      try {
+        const parsed = JSON.parse(r.notes);
+        if (parsed && typeof parsed.total_cad === "number") total = parsed.total_cad;
+      } catch { /* notes may be plain text */ }
+    }
     const ticketLabel = r.ticket_count === 1 ? "1 ticket" : `${r.ticket_count} tickets`;
+
 
     await resend.emails.send({
       from: "Club Choir <noreply@clubchoir.ca>",
