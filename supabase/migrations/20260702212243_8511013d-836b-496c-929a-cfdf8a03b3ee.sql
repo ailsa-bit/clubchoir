@@ -1,0 +1,2 @@
+ALTER TABLE public.popup_ticket_reservations DROP CONSTRAINT IF EXISTS popup_ticket_reservations_ticket_count_check;
+ALTER TABLE public.popup_ticket_reservations ADD CONSTRAINT popup_ticket_reservations_ticket_count_check CHECK (ticket_count >= 1 AND ticket_count <= 100);

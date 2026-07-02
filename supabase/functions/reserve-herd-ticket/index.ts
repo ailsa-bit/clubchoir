@@ -79,7 +79,12 @@ serve(async (req) => {
         notes,
       });
 
-    if (insertError) console.error("Insert error:", insertError);
+    if (insertError) {
+      console.error("Insert error:", insertError);
+      return new Response(JSON.stringify({ error: "Could not save reservation. Please try again or contact ailsa@clubchoir.ca." }), {
+        status: 500, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) {
