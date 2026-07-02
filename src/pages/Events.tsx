@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import PhotoGallery from "@/components/PhotoGallery";
 import { porchfestPhotos } from "@/assets/photos/porchfest";
+import { victoriaVillagePhotos } from "@/assets/photos/victoriaVillage";
 
 
 const events = [
