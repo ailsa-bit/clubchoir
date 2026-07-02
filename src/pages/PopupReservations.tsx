@@ -230,7 +230,7 @@ const PopupReservations = () => {
         )}
 
 
-        {rows.length === 0 ? (
+        {filteredRows.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-12">No reservations yet.</p>
         ) : (
           <div className="rounded-xl border border-border overflow-hidden">
@@ -240,6 +240,9 @@ const PopupReservations = () => {
                   <tr className="bg-muted/50 border-b border-border">
                     <th className="p-3 text-left font-medium text-muted-foreground">Name</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Email</th>
+                    {eventFilter === "all" && (
+                      <th className="p-3 text-left font-medium text-muted-foreground">Event</th>
+                    )}
                     <th className="p-3 text-left font-medium text-muted-foreground">Tickets</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Owed</th>
                     <th className="p-3 text-left font-medium text-muted-foreground">Payment</th>
@@ -248,12 +251,18 @@ const PopupReservations = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {rows.map((r) => (
+                  {filteredRows.map((r) => (
                     <tr key={r.id} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
                       <td className="p-3 text-foreground font-medium">{r.first_name} {r.last_name}</td>
                       <td className="p-3 text-muted-foreground">{r.email}</td>
-                      <td className="p-3 text-foreground">{r.ticket_count}</td>
-                      <td className="p-3 text-foreground">${r.ticket_count * PRICE}</td>
+                      {eventFilter === "all" && (
+                        <td className="p-3 text-muted-foreground text-xs">{EVENT_LABELS[r.event_slug] || r.event_slug}</td>
+                      )}
+                      <td className="p-3 text-foreground">
+                        <div>{r.ticket_count}</div>
+                        <div className="text-[11px] text-muted-foreground">{breakdownFor(r)}</div>
+                      </td>
+                      <td className="p-3 text-foreground">${owedFor(r)}</td>
                       <td className="p-3">
                         <div className="flex items-center gap-2 flex-wrap">
                           {r.payment_received ? (
