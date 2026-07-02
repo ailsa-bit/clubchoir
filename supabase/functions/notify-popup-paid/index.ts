@@ -107,8 +107,15 @@ serve(async (req) => {
     }
 
     const resend = new Resend(resendKey);
-    const total = r.ticket_count * PRICE_PER_TICKET;
+    let total = r.ticket_count * PRICE_PER_TICKET;
+    if (r.notes && typeof r.notes === "string") {
+      try {
+        const parsed = JSON.parse(r.notes);
+        if (parsed && typeof parsed.total_cad === "number") total = parsed.total_cad;
+      } catch { /* notes may be plain text */ }
+    }
     const ticketLabel = r.ticket_count === 1 ? "1 ticket" : `${r.ticket_count} tickets`;
+
 
     await resend.emails.send({
       from: "Club Choir <noreply@clubchoir.ca>",
