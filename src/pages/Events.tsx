@@ -199,6 +199,36 @@ const Events = () => {
           </CardContent>
         </Card>
 
+        {/* Sing for the Herd — Fundraiser */}
+        <Card className="mb-8 border-purple/30 bg-purple-light">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-purple mb-1">
+              <Heart className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.herdBadge")}</span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {t("events.herdTitle")}
+            </CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">{t("events.herdSubtitle")}</p>
+            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+              <Calendar className="w-4 h-4" />
+              <span>{t("events.herdDate")}</span>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc1")}</p>
+            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc2")}</p>
+            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc3")}</p>
+            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc4")}</p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-purple" />
+                <span className="font-medium">{t("events.herdVenue")}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Past Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center mt-10">
           {language === "fr" ? "Événements passés" : "Past Events"}

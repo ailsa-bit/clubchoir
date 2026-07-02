@@ -834,6 +834,15 @@ const translations: Record<string, Record<Language, string>> = {
   "events.pointeclaireDesc2": { en: "This is a relaxed and welcoming event for anyone who loves music, connection, and being part of something uplifting. Whether you sing all the time or only in the car, everyone is welcome to join in.", fr: "C'est un événement décontracté et accueillant pour tous ceux qui aiment la musique, le lien social et faire partie de quelque chose de joyeux. Que vous chantiez tout le temps ou seulement dans votre voiture, tout le monde est le bienvenu." },
   "events.pointeclaireVenue": { en: "Pointe-Claire Village", fr: "Village de Pointe-Claire" },
   "events.loginRegister": { en: "Please log in to register.", fr: "Veuillez vous connecter pour vous inscrire." },
+  "events.herdTitle": { en: "Sing for the Herd", fr: "Chantons pour le troupeau" },
+  "events.herdSubtitle": { en: "A family-friendly Club Choir fundraiser for A Horse Tale Rescue", fr: "Une levée de fonds familiale de Club Choir pour A Horse Tale Rescue" },
+  "events.herdBadge": { en: "Fundraiser", fr: "Levée de fonds" },
+  "events.herdDate": { en: "Sunday, August 2, 2026", fr: "Dimanche 2 août 2026" },
+  "events.herdDesc1": { en: "Join Club Choir for a special afternoon of music, community, and connection in support of A Horse Tale Rescue.", fr: "Joignez-vous à Club Choir pour un après-midi spécial de musique, de communauté et de connexion en soutien à A Horse Tale Rescue." },
+  "events.herdDesc2": { en: "The event begins with a chance to Meet the Herd, followed by a joyful Club Choir gathering in the barn. This is a family-friendly event, and everyone is welcome.", fr: "L'événement commence par une occasion de rencontrer le troupeau, suivi d'un rassemblement joyeux de Club Choir dans la grange. C'est un événement familial, et tout le monde est le bienvenu." },
+  "events.herdDesc3": { en: "This afternoon is also a lovely opportunity for anyone curious about Club Choir to see what we're all about. We'll be starting a new Hudson choir session in September, and we invite anyone in the Hudson area who has been thinking about singing with us to meet the community, experience the atmosphere, and get a feel for what Club Choir offers.", fr: "Cet après-midi est aussi une belle occasion pour quiconque est curieux de découvrir Club Choir de voir ce que nous sommes. Nous commencerons une nouvelle session de chorale à Hudson en septembre, et nous invitons tous ceux de la région de Hudson qui ont pensé à chanter avec nous à rencontrer la communauté, vivre l'atmosphère et ressentir ce que Club Choir offre." },
+  "events.herdDesc4": { en: "No auditions, no pressure, no need to read music. Just people coming together to sing, connect, and support a wonderful local organization.", fr: "Pas d'auditions, pas de pression, pas besoin de lire la musique. Simplement des gens qui se réunissent pour chanter, se connecter et soutenir une merveilleuse organisation locale." },
+  "events.herdVenue": { en: "A Horse Tale Rescue, Vaudreuil-Dorion", fr: "A Horse Tale Rescue, Vaudreuil-Dorion" },
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
