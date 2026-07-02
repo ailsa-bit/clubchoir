@@ -5,6 +5,7 @@ import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import horsePhoto from "@/assets/horse-tale-rescue.png.asset.json";
 
 const PRICE_ADULT = 20;
 const PRICE_CHILD_6_10 = 10;
