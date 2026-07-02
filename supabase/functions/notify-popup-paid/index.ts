@@ -171,6 +171,13 @@ serve(async (req) => {
           </p>
         </div>
       `,
+      attachments: [
+        {
+          filename: "ticket-qr.png",
+          content: qrBase64,
+          contentId: "ticket-qr",
+        },
+      ],
     });
 
     await supabase
