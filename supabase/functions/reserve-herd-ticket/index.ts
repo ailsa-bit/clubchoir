@@ -136,7 +136,6 @@ serve(async (req) => {
             <p style="margin:2px 0 2px 12px;font-size:14px;">2:45–3:45 PM: Meet the Herd</p>
             <p style="margin:2px 0 2px 12px;font-size:14px;">3:45 PM: Head to the barn</p>
             <p style="margin:2px 0 2px 12px;font-size:14px;">4:00–5:30 PM: Club Choir event</p>
-            <p style="margin:2px 0 2px 12px;font-size:14px;">5:30 PM onward: Wrap-up</p>
           </div>
 
           <h2 style="font-size:18px;margin-top:28px;margin-bottom:8px;">Your tickets</h2>
@@ -149,7 +148,7 @@ serve(async (req) => {
           <div style="background:#f4f4f4;border-radius:8px;padding:16px 20px;margin:8px 0 24px;">
             <p style="margin:4px 0;font-size:15px;"><strong>Send to:</strong> ailsa@clubchoir.ca</p>
             <p style="margin:4px 0;font-size:15px;"><strong>Amount:</strong> $${total} CAD</p>
-            <p style="margin:4px 0;font-size:15px;"><strong>Security question:</strong> choir name</p>
+            <p style="margin:4px 0;font-size:15px;"><strong>Security question:</strong> What is the choir name?</p>
             <p style="margin:4px 0;font-size:15px;"><strong>Answer:</strong> clubchoir <em>(one word, all lowercase)</em></p>
           </div>
 

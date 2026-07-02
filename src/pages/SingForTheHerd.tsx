@@ -45,6 +45,7 @@ const SingForTheHerd = () => {
   const [familyPasses, setFamilyPasses] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [step, setStep] = useState<"form" | "review">("form");
 
   const total =
     adults * PRICE_ADULT +
@@ -54,7 +55,7 @@ const SingForTheHerd = () => {
   const anyTicket =
     adults + children6to10 + childrenUnder6 + familyPasses > 0;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleReview = (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName.trim() || !lastName.trim() || !email.trim()) {
       toast({
@@ -70,6 +71,11 @@ const SingForTheHerd = () => {
       });
       return;
     }
+    setStep("review");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleConfirm = async () => {
     setSubmitting(true);
     try {
       const { error } = await supabase.functions.invoke("reserve-herd-ticket", {
@@ -194,6 +200,99 @@ const SingForTheHerd = () => {
                 <a href="mailto:ailsa@clubchoir.ca" className="text-primary font-medium hover:underline">ailsa@clubchoir.ca</a>
               </p>
             </div>
+          ) : step === "review" ? (
+            <>
+              <h2 className="font-heading font-bold text-2xl text-foreground mb-1">
+                {isFr ? "Vérifiez votre réservation" : "Review your reservation"}
+              </h2>
+              <p className="text-sm text-muted-foreground mb-6">
+                {isFr
+                  ? "Vérifiez que votre courriel et vos billets sont exacts avant de confirmer. Nous vous enverrons les instructions de paiement à cette adresse."
+                  : "Please double-check that your email and tickets are correct before confirming. We'll send payment instructions to this email address."}
+              </p>
+
+              <div className="rounded-xl border border-border bg-background/50 p-4 mb-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                  {isFr ? "Nom" : "Name"}
+                </p>
+                <p className="text-foreground font-medium mb-3">{firstName} {lastName}</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                  {isFr ? "Courriel" : "Email"}
+                </p>
+                <p className="text-foreground font-medium break-all">{email}</p>
+              </div>
+
+              <div className="rounded-xl border border-border bg-background/50 p-4 mb-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                  {isFr ? "Billets" : "Tickets"}
+                </p>
+                <ul className="space-y-1 text-sm text-foreground">
+                  {adults > 0 && (
+                    <li className="flex justify-between">
+                      <span>{adults} × {isFr ? "Adulte" : "Adult"}</span>
+                      <span className="tabular-nums">${adults * PRICE_ADULT}</span>
+                    </li>
+                  )}
+                  {children6to10 > 0 && (
+                    <li className="flex justify-between">
+                      <span>{children6to10} × {isFr ? "Enfant 6–10" : "Child 6–10"}</span>
+                      <span className="tabular-nums">${children6to10 * PRICE_CHILD_6_10}</span>
+                    </li>
+                  )}
+                  {familyPasses > 0 && (
+                    <li className="flex justify-between">
+                      <span>{familyPasses} × {isFr ? "Passe famille" : "Family Pass"}</span>
+                      <span className="tabular-nums">${familyPasses * PRICE_FAMILY}</span>
+                    </li>
+                  )}
+                  {childrenUnder6 > 0 && (
+                    <li className="flex justify-between">
+                      <span>{childrenUnder6} × {isFr ? "Enfant 5 et moins" : "Child 5 and under"}</span>
+                      <span className="tabular-nums text-muted-foreground">{isFr ? "Gratuit" : "Free"}</span>
+                    </li>
+                  )}
+                </ul>
+              </div>
+
+              <div className="flex items-center justify-between rounded-xl bg-purple-light px-4 py-3 mb-4">
+                <span className="text-sm font-medium text-foreground">
+                  {isFr ? "Total à payer" : "Total to pay"}
+                </span>
+                <span className="font-heading font-bold text-2xl text-foreground">${total} CAD</span>
+              </div>
+
+              <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3 mb-5">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <p>
+                  {isFr
+                    ? "En confirmant, vous recevrez un courriel à l'adresse ci-dessus avec les instructions de paiement par e-Transfert."
+                    : "By confirming, you'll receive an email at the address above with e-Transfer payment instructions."}
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={() => setStep("form")}
+                  disabled={submitting}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border-2 border-border bg-background text-foreground font-semibold hover:border-purple/60 transition-all disabled:opacity-60"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  {isFr ? "Retour / modifier" : "Back / edit"}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirm}
+                  disabled={submitting}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-purple text-purple-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  <CheckCircle2 className="w-5 h-5" />
+                  {submitting
+                    ? (isFr ? "Envoi en cours..." : "Submitting...")
+                    : (isFr ? "Confirmer et réserver" : "Confirm & reserve")}
+                </button>
+              </div>
+            </>
           ) : (
             <>
               <h2 className="font-heading font-bold text-2xl text-foreground mb-1">
@@ -205,7 +304,7 @@ const SingForTheHerd = () => {
                   : "All ticket proceeds support A Horse Tale Rescue."}
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleReview} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-1.5" htmlFor="firstName">
@@ -240,7 +339,6 @@ const SingForTheHerd = () => {
                 </div>
 
                 <div className="rounded-xl border border-border bg-background/50 divide-y divide-border">
-                  {/* Adult */}
                   <div className="flex items-center justify-between p-4 gap-4">
                     <div>
                       <p className="font-semibold text-foreground">{isFr ? "Adulte" : "Adult"}</p>
@@ -248,7 +346,6 @@ const SingForTheHerd = () => {
                     </div>
                     <Counter value={adults} onChange={setAdults} />
                   </div>
-                  {/* Child 6-10 */}
                   <div className="flex items-center justify-between p-4 gap-4">
                     <div>
                       <p className="font-semibold text-foreground">{isFr ? "Enfant (6–10 ans)" : "Child (ages 6–10)"}</p>
@@ -256,7 +353,6 @@ const SingForTheHerd = () => {
                     </div>
                     <Counter value={children6to10} onChange={setChildren6to10} />
                   </div>
-                  {/* Family Pass */}
                   <div className="flex items-center justify-between p-4 gap-4">
                     <div>
                       <p className="font-semibold text-foreground">{isFr ? "Passe famille" : "Family Pass"}</p>
@@ -266,7 +362,6 @@ const SingForTheHerd = () => {
                     </div>
                     <Counter value={familyPasses} onChange={setFamilyPasses} max={5} />
                   </div>
-                  {/* Kids under 6 */}
                   <div className="flex items-center justify-between p-4 gap-4">
                     <div>
                       <p className="font-semibold text-foreground">{isFr ? "Enfant (5 ans et moins)" : "Child (5 and under)"}</p>
@@ -287,21 +382,19 @@ const SingForTheHerd = () => {
 
                 <button
                   type="submit"
-                  disabled={submitting || !anyTicket}
+                  disabled={!anyTicket}
                   className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-purple text-purple-foreground font-semibold shadow hover:shadow-lg hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <Ticket className="w-5 h-5" />
-                  {submitting
-                    ? (isFr ? "Envoi en cours..." : "Submitting...")
-                    : (isFr ? "Réserver mes billets" : "Reserve my tickets")}
+                  {isFr ? "Continuer" : "Continue"}
                 </button>
 
                 <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
                   <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                   <p>
                     {isFr
-                      ? "Après votre réservation, vous recevrez un courriel avec les instructions de paiement par e-Transfert. Vos billets vous seront envoyés une fois le paiement confirmé."
-                      : "After reserving, you'll receive an email with e-Transfer payment instructions. Your tickets will be emailed to you once we confirm your payment."}
+                      ? "Vous aurez la chance de vérifier votre réservation avant de la confirmer. Après confirmation, nous vous enverrons les instructions e-Transfert. Vos billets suivront une fois le paiement reçu."
+                      : "You'll get to review your reservation before confirming. After you confirm, we'll email you e-Transfer instructions. Your tickets follow once payment is received."}
                   </p>
                 </div>
               </form>
