@@ -150,6 +150,9 @@ serve(async (req) => {
             <p style="margin: 4px 0; font-size: 15px;"><strong>Tickets:</strong> ${r.ticket_count}</p>
           </div>
 
+          ${reminderHtml}
+
+
           <h2 style="font-size: 18px; margin-top: 28px; margin-bottom: 8px;">🎫 Your ticket</h2>
           <p style="font-size: 15px; line-height: 1.6;">
             Show this QR code at the door — we'll scan it when you arrive.
