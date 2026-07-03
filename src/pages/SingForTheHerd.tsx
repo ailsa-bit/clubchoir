@@ -149,7 +149,9 @@ const SingForTheHerd = () => {
           <p className="text-muted-foreground leading-relaxed">
             {isFr
               ? "Les invités pourront rencontrer le troupeau avant de se rendre à la grange pour un événement Club Choir joyeux en soutien à A Horse Tale Rescue. Que vous veniez pour chanter, écouter, appuyer le refuge ou en apprendre plus sur notre nouvelle chorale de Hudson qui débute en septembre, vous êtes chaleureusement bienvenu."
-              : "The afternoon begins with a chance to meet the herd, followed by a joyful Club Choir event in the barn in support of A Horse Tale Rescue. Bring your own lawn or camping chair, settle in, and enjoy an afternoon of singing in this unique barn setting. Whether you're coming to sing along, listen, support the rescue, or get a feel for Club Choir's new Hudson choir starting in September, we'd love to welcome you."}
+              : <>
+                  The afternoon begins with a chance to meet the herd, followed by a joyful Club Choir event in the barn in support of A Horse Tale Rescue. <strong>Bring your own lawn or camping chair</strong>, settle in, and enjoy an afternoon of singing in this unique barn setting. Whether you're coming to sing along, listen, support the rescue, or get a feel for Club Choir's new Hudson choir starting in September, we'd love to welcome you.
+                </>}
           </p>
           <a
             href="https://www.ahtrescue.org/"
