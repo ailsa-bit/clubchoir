@@ -219,7 +219,6 @@ const Events = () => {
             <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc1")}</p>
             <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc2")}</p>
             <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc3")}</p>
-            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc4")}</p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4 text-purple" />
