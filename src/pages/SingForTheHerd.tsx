@@ -5,7 +5,7 @@ import PageMeta from "@/components/PageMeta";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import horsePhoto from "@/assets/horse-tale-rescue.png.asset.json";
+import ahtLogo from "@/assets/aht-logo.png.asset.json";
 
 const PRICE_ADULT = 20;
 const PRICE_CHILD_6_10 = 10;
@@ -136,8 +136,8 @@ const SingForTheHerd = () => {
         {/* Description */}
         <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 space-y-3 overflow-hidden">
           <img
-            src={horsePhoto.url}
-            alt={isFr ? "Cheval de A Horse Tale Rescue" : "Horse at A Horse Tale Rescue"}
+            src={ahtLogo.url}
+            alt={isFr ? "Logo de A Horse Tale Rescue" : "A Horse Tale Rescue logo"}
             className="w-full h-auto rounded-xl mb-5 object-cover"
             loading="eager"
           />
