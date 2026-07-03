@@ -136,8 +136,8 @@ const SingForTheHerd = () => {
         {/* Description */}
         <div className="rounded-2xl border border-border bg-card p-6 md:p-8 mb-8 space-y-3 overflow-hidden">
           <img
-            src={horsePhoto.url}
-            alt={isFr ? "Cheval de A Horse Tale Rescue" : "Horse at A Horse Tale Rescue"}
+            src={ahtLogo.url}
+            alt={isFr ? "Logo de A Horse Tale Rescue" : "A Horse Tale Rescue logo"}
             className="w-full h-auto rounded-xl mb-5 object-cover"
             loading="eager"
           />
