@@ -118,6 +118,16 @@ serve(async (req) => {
     }
     const ticketLabel = r.ticket_count === 1 ? "1 ticket" : `${r.ticket_count} tickets`;
 
+    const reminderHtml = r.event_slug === "sing-for-the-herd"
+      ? `<div style="background:#fef3c7;border-left:4px solid #f59e0b;border-radius:8px;padding:16px 20px;margin:24px 0;">
+          <p style="margin:0;font-size:15px;line-height:1.6;">
+            🪑 <strong>Reminder:</strong> Bring your own lawn or camping chair, settle in, and enjoy the afternoon of singing in this unique barn setting.
+          </p>
+        </div>`
+      : "";
+
+
+
 
     await resend.emails.send({
       from: "Club Choir <noreply@clubchoir.ca>",
@@ -139,6 +149,9 @@ serve(async (req) => {
             <p style="margin: 4px 0; font-size: 15px;"><strong>Time:</strong> ${escapeHtml(event.time)}</p>
             <p style="margin: 4px 0; font-size: 15px;"><strong>Tickets:</strong> ${r.ticket_count}</p>
           </div>
+
+          ${reminderHtml}
+
 
           <h2 style="font-size: 18px; margin-top: 28px; margin-bottom: 8px;">🎫 Your ticket</h2>
           <p style="font-size: 15px; line-height: 1.6;">
