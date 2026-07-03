@@ -158,10 +158,14 @@ serve(async (req) => {
           </div>
 
           <div style="background:#fef3c7;border-radius:8px;padding:16px 20px;margin:16px 0;">
-            <p style="margin:0;font-size:15px;line-height:1.6;">
+            <p style="margin:0 0 8px;font-size:15px;line-height:1.6;">
               ⚠️ <strong>Important:</strong> Your spot is not officially secured until we confirm your e-Transfer. Once payment arrives we'll send your ticket by email.
             </p>
+            <p style="margin:0;font-size:15px;line-height:1.6;">
+              🪑 <strong>Reminder:</strong> Bring your own lawn or camping chair, settle in, and enjoy the afternoon of singing in this unique barn setting.
+            </p>
           </div>
+
 
           <p style="font-size:16px;line-height:1.6;">
             Any questions? Reply to this email or write to
