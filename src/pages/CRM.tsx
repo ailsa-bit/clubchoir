@@ -445,6 +445,21 @@ const CRM = () => {
                       {c.source && <span>· {c.source}</span>}
                     </div>
                   </div>
+                  {c.type === "registrant" && c.status !== "paid" && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 text-xs"
+                      onClick={() => markPaid(c)}
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Mark paid
+                    </Button>
+                  )}
+                  {c.type === "registrant" && c.status === "paid" && (
+                    <Badge variant="outline" className="text-[10px] bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30">
+                      Paid
+                    </Badge>
+                  )}
                   {c.detail_path && (
                     <Link to={c.detail_path}>
                       <Button size="sm" variant="ghost" className="h-8">
