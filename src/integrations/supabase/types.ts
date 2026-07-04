@@ -296,6 +296,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          active_until: string | null
           created_at: string
           display_name: string | null
           id: string
@@ -304,6 +305,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          active_until?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
@@ -312,6 +314,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          active_until?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
@@ -469,6 +472,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      activate_member_for_paid_registration: {
+        Args: { _active_until?: string; _email: string }
+        Returns: {
+          activated: boolean
+          matched_user_id: string
+        }[]
+      }
+      expire_stale_members: { Args: never; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

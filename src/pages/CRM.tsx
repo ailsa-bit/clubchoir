@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import {
   Search, Users, Mail, Loader2, UserCheck, Sparkles,
-  TicketIcon, ListChecks, MapPin, Tag, ChevronRight,
+  TicketIcon, ListChecks, MapPin, Tag, ChevronRight, CheckCircle2,
 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 type ContactType = "member" | "prospect" | "registrant" | "popup" | "waitlist";
 
@@ -272,6 +273,34 @@ const CRM = () => {
     navigate(`/send-email?to=${encodeURIComponent(emails.join(","))}`);
   };
 
+  const markPaid = async (c: UnifiedContact) => {
+    if (c.type !== "registrant" || !c.email) return;
+    const { error: regErr } = await supabase
+      .from("session_registrations")
+      .update({ payment_status: "paid" })
+      .eq("id", c.source_id);
+    if (regErr) {
+      toast({ title: "Could not mark paid", description: regErr.message, variant: "destructive" });
+      return;
+    }
+    const { data: rpc, error: rpcErr } = await supabase.rpc(
+      "activate_member_for_paid_registration",
+      { _email: c.email, _active_until: "2026-12-10" }
+    );
+    if (rpcErr) {
+      toast({ title: "Marked paid, but activation failed", description: rpcErr.message, variant: "destructive" });
+    } else {
+      const activated = Array.isArray(rpc) && rpc[0]?.activated;
+      toast({
+        title: "Marked paid",
+        description: activated
+          ? `${c.first_name} now has member access through Dec 10, 2026.`
+          : `${c.first_name} is marked paid. Access will unlock as soon as they sign up.`,
+      });
+    }
+    fetchAll();
+  };
+
   if (adminLoading || loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -416,6 +445,21 @@ const CRM = () => {
                       {c.source && <span>· {c.source}</span>}
                     </div>
                   </div>
+                  {c.type === "registrant" && c.status !== "paid" && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 text-xs"
+                      onClick={() => markPaid(c)}
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Mark paid
+                    </Button>
+                  )}
+                  {c.type === "registrant" && c.status === "paid" && (
+                    <Badge variant="outline" className="text-[10px] bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30">
+                      Paid
+                    </Badge>
+                  )}
                   {c.detail_path && (
                     <Link to={c.detail_path}>
                       <Button size="sm" variant="ghost" className="h-8">

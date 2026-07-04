@@ -64,10 +64,15 @@ const SignedUpUsers = () => {
   };
 
   const fetchPending = async () => {
+    // Only show recently-created inactive profiles (last 60 days) so the
+    // list stays actionable now that all members default to inactive.
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 60);
     const { data } = await supabase
       .from("profiles")
       .select("*")
       .eq("status", "inactive")
+      .gte("created_at", cutoff.toISOString())
       .order("created_at", { ascending: false });
     setPendingSignups((data as PendingSignup[]) || []);
     setPendingLoading(false);
@@ -85,10 +90,24 @@ const SignedUpUsers = () => {
   };
 
   const handleApprove = async (signup: PendingSignup) => {
-    const { error } = await supabase
-      .from("profiles")
-      .update({ status: "active" })
-      .eq("id", signup.id);
+    // Look up the user's email so we can use the payment-aware activation RPC.
+    const authUser = signedUpUsers.find((u) => u.id === signup.user_id);
+    const email = authUser?.email;
+    let error: any = null;
+    if (email) {
+      const { error: rpcErr } = await supabase.rpc(
+        "activate_member_for_paid_registration",
+        { _email: email, _active_until: "2026-12-10" }
+      );
+      error = rpcErr;
+    } else {
+      // Fallback for old flow — direct update (admin-only via RLS/trigger)
+      const res = await supabase
+        .from("profiles")
+        .update({ status: "active", active_until: "2026-12-10" })
+        .eq("id", signup.id);
+      error = res.error;
+    }
     if (error) {
       toast({ title: "Error approving", description: error.message, variant: "destructive" });
       return;
