@@ -275,9 +275,24 @@ const CRM = () => {
 
   const markPaid = async (c: UnifiedContact) => {
     if (c.type !== "registrant" || !c.email) return;
+    const raw = window.prompt(
+      `Amount received from ${c.first_name} ${c.last_name} (CAD)?\nLeave blank to skip.`,
+      ""
+    );
+    if (raw === null) return; // user cancelled
+    const trimmed = raw.trim();
+    let amount: number | null = null;
+    if (trimmed !== "") {
+      const parsed = Number(trimmed.replace(/[^0-9.]/g, ""));
+      if (!Number.isFinite(parsed) || parsed < 0) {
+        toast({ title: "Invalid amount", description: "Please enter a positive number.", variant: "destructive" });
+        return;
+      }
+      amount = parsed;
+    }
     const { error: regErr } = await supabase
       .from("session_registrations")
-      .update({ payment_status: "paid" })
+      .update({ payment_status: "paid", amount_paid: amount })
       .eq("id", c.source_id);
     if (regErr) {
       toast({ title: "Could not mark paid", description: regErr.message, variant: "destructive" });
