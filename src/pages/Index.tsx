@@ -121,7 +121,7 @@ const Index = () => {
 
                 <Link
                   to="/open-house"
-                  className="inline-flex items-center gap-2 text-lime font-bold text-base hover:translate-x-1 transition-transform w-fit"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-lime text-lime-foreground font-bold shadow-lg shadow-lime/25 hover:shadow-xl hover:scale-[1.02] transition-all w-fit"
                 >
                   <Sparkles className="w-4 h-4" />
                   {t("home.hero.openHouseAugust")}
