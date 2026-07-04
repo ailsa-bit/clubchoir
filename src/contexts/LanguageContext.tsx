@@ -448,14 +448,26 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Home - Hero CTAs
   "home.hero.startingSoon": { en: "Starting soon", fr: "Bientôt" },
- "home.hero.reserveHudson": { en: "Reserve your Hudson spot", fr: "Réservez votre place à Hudson" },
- "home.hero.registerFall": { en: "Register for Fall 2026", fr: "Inscrivez-vous — Automne 2026" },
+  "home.hero.reserveHudson": { en: "Reserve your Hudson spot", fr: "Réservez votre place à Hudson" },
+  "home.hero.registerFall": { en: "Register for Fall 2026", fr: "Inscrivez-vous — Automne 2026" },
   "home.hero.trySession": { en: "Try a session", fr: "Essayer une session" },
   "home.hero.upcomingEvents": { en: "See upcoming events", fr: "Voir les événements à venir" },
-  "home.hero.eventsSummary": {
-    en: "We're also excited to announce Fall 2026 session dates and locations, with choirs returning across the Greater Montreal area this September.",
-    fr: "Nous sommes également ravis d'annoncer les dates et lieux de la session d'automne 2026, avec le retour des chorales dans la grande région de Montréal en septembre."
+  "home.hero.seeSessions": { en: "See session dates & locations", fr: "Dates et lieux des sessions" },
+  "home.hero.openHouseAugust": { en: "Open Houses — August", fr: "Portes ouvertes — août" },
+  "home.hero.reassurance": {
+    en: "Fall 2026 registration is open · Spots fill first-come, first-served · E-transfer confirmation in July",
+    fr: "Inscriptions automne 2026 ouvertes · Premier arrivé, premier servi · Confirmation par virement en juillet",
   },
+  // Open Houses strip
+  "home.openHouse.title": { en: "Come try us before you register", fr: "Venez nous essayer avant de vous inscrire" },
+  "home.openHouse.subtitle": {
+    en: "Free open-house evenings in early August — sing along, meet the community, no commitment.",
+    fr: "Soirées portes ouvertes gratuites début août — venez chanter, rencontrer la communauté, sans engagement.",
+  },
+  "home.openHouse.reserve": { en: "Reserve a spot", fr: "Réserver une place" },
+  "home.sessions.register": { en: "Register", fr: "S'inscrire" },
+  "home.testimonials.showMore": { en: "Read more testimonials", fr: "Lire plus de témoignages" },
+  "home.testimonials.showLess": { en: "Show fewer", fr: "Voir moins" },
 
   // Hudson Session page
   "hudson.backHome": { en: "Back home", fr: "Retour à l'accueil" },
