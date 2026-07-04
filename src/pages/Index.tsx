@@ -75,72 +75,104 @@ const Index = () => {
         }}
       />
 
-      {/* HERO — slim, single overlay, lighter */}
-      <section className="relative overflow-hidden px-4 py-16 lg:py-24">
-        <div className="absolute inset-0 z-0">
-          <img
-            src={heroStage}
-            alt="Club Choir members singing outdoors from colorful Club Choir binders at NDG Porchfest"
-            className="w-full h-full object-cover"
-            loading="eager"
-            fetchPriority="high"
-            width={1920}
-            height={1080}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/75 via-foreground/50 to-foreground/20" />
-        </div>
-
+      {/* HERO — bright split layout on cream */}
+      <section className="relative overflow-hidden px-4 py-12 md:py-16 lg:py-24 bg-[hsl(var(--cream,42_50%_97%))] bg-card">
         <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="max-w-2xl text-left">
-            <img
-              src={clubChoirWordmark}
-              alt="Club Choir"
-              width="600"
-              height="240"
-              className="w-full max-w-[240px] sm:max-w-[300px] lg:mx-0 mb-5 animate-fade-in drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
-              loading="eager"
-              fetchPriority="high"
-            />
-            <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-background mb-4 leading-tight animate-fade-in drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
-              {t("home.hero.h1")}
-            </h1>
-            <p className="text-lg sm:text-xl text-background/95 mb-6 animate-fade-in leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.1s" }}>
-              {t("home.hero.subtitle")}
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
-            <div className="flex flex-col gap-3 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              <Link
-                to="/register"
-                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto sm:self-start px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
-              >
-                <Sparkles className="w-5 h-5" />
-                {t("home.hero.registerFall")}
-              </Link>
+            {/* Content */}
+            <div className="flex flex-col gap-8 order-2 lg:order-1 animate-fade-in">
+              <img
+                src={clubChoirWordmark}
+                alt="Club Choir"
+                width="600"
+                height="240"
+                className="w-full max-w-[220px] sm:max-w-[260px]"
+                loading="eager"
+                fetchPriority="high"
+              />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:max-w-xl">
-                <a
-                  href="#sessions"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-background/95 text-foreground font-semibold text-base shadow-sm hover:shadow-md hover:bg-background transition-all"
-                >
-                  <Calendar className="w-4 h-4" />
-                  {t("home.hero.seeSessions")}
-                </a>
+              <div className="space-y-5">
+                <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground leading-tight">
+                  {t("home.hero.h1")}
+                </h1>
+                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
+                  {t("home.hero.subtitle")}
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    to="/register"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-pink text-pink-foreground font-bold shadow-lg shadow-pink/25 hover:shadow-xl hover:scale-[1.02] transition-all"
+                  >
+                    <Sparkles className="w-5 h-5" />
+                    {t("home.hero.registerFall")}
+                  </Link>
+                  <a
+                    href="#sessions"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full border-2 border-orange text-orange font-bold hover:bg-orange hover:text-orange-foreground transition-colors"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    {t("home.hero.seeSessions")}
+                  </a>
+                </div>
+
                 <Link
                   to="/open-house"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-background/95 text-foreground font-semibold text-base shadow-sm hover:shadow-md hover:bg-background transition-all"
+                  className="inline-flex items-center gap-2 text-lime font-bold text-base hover:translate-x-1 transition-transform w-fit"
                 >
                   <Sparkles className="w-4 h-4" />
                   {t("home.hero.openHouseAugust")}
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
-              </div>
 
-              <p className="text-sm text-background/85 mt-2 max-w-xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
-                {t("home.hero.reassurance")}
-              </p>
+                <div className="pt-5 border-t border-orange/20">
+                  <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="px-2 py-0.5 bg-lime/20 text-lime rounded-md font-bold text-[10px] uppercase tracking-wider">
+                      {isFr ? "Ouvert" : "Open Now"}
+                    </span>
+                    <span>{t("home.hero.reassurance")}</span>
+                  </p>
+                </div>
+              </div>
             </div>
+
+            {/* Visual */}
+            <div className="relative order-1 lg:order-2 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+              {/* Soft accent blobs */}
+              <div className="absolute -top-10 -right-10 w-48 h-48 bg-lime/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-purple/20 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative">
+                {/* Offset outlined frame accent */}
+                <div className="absolute -top-4 -left-4 w-full h-full border-2 border-orange rounded-[2.5rem] -z-10" />
+                <div className="rounded-[2.5rem] overflow-hidden shadow-2xl bg-muted">
+                  <img
+                    src={heroStage}
+                    alt="Club Choir members singing outdoors at NDG Porchfest"
+                    className="w-full aspect-[4/5] object-cover"
+                    loading="eager"
+                    fetchPriority="high"
+                    width={1600}
+                    height={2000}
+                  />
+                </div>
+
+                {/* Floating chip badge */}
+                <div className="absolute -bottom-5 right-6 sm:right-12 bg-purple text-purple-foreground px-5 py-3 rounded-2xl shadow-xl rotate-3">
+                  <p className="font-heading font-bold text-sm sm:text-base whitespace-nowrap">
+                    {isFr ? "Tous les niveaux bienvenus" : "All levels welcome"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
+
 
       {/* SESSIONS — moved up. This is what registration visitors are looking for. */}
       <section id="sessions" className="py-16 px-4 bg-background scroll-mt-20">
