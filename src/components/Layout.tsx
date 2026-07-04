@@ -129,21 +129,47 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             )}
             <button
               onClick={() => setLanguage(language === "en" ? "fr" : "en")}
-              className="ml-2 px-2.5 py-1.5 rounded-lg text-xs font-bold border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-
-              {language === "en" ? "FR" : "EN"}
+              aria-label={language === "en" ? "Switch to French" : "Switch to English"}
+              title={language === "en" ? "Français" : "English"}
+              className="ml-2 inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+              <Globe className="w-4 h-4" />
+              <span>{language === "en" ? "FR" : "EN"}</span>
             </button>
             {isLoggedIn ? (
-              <Link
-                to="/profile"
-                className={`ml-1 px-3 py-1.5 rounded-lg text-base font-medium inline-flex items-center gap-1.5 transition-colors ${
-                location.pathname === "/profile" ?
-                "bg-primary/10 text-primary" :
-                "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-                }>
-                <User className="w-4 h-4" />
-                {t("nav.profile")}
-              </Link>
+              <div className="relative group ml-1">
+                <button
+                  className={`px-3 py-1.5 rounded-lg text-base font-medium inline-flex items-center gap-1.5 transition-colors ${
+                  location.pathname === "/profile" ?
+                  "bg-primary/10 text-primary" :
+                  "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                  }>
+                  <User className="w-4 h-4" />
+                  {t("nav.profile")}
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                <div className="absolute right-0 top-full pt-1 hidden group-hover:block z-50 min-w-[220px]">
+                  <div className="bg-card border border-border rounded-lg shadow-lg py-1">
+                    <Link to="/profile" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">
+                      {t("nav.profile")}
+                    </Link>
+                    {isAdmin && (
+                      <>
+                        <div className="my-1 border-t border-border" />
+                        <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70 inline-flex items-center gap-1">
+                          <Shield className="w-3 h-3" /> Admin
+                        </div>
+                        <Link to="/crm" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
+                        <Link to="/manage-members" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Manage Members</Link>
+                        <Link to="/send-email" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
+                      </>
+                    )}
+                    <div className="my-1 border-t border-border" />
+                    <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted inline-flex items-center gap-2">
+                      <LogOut className="w-4 h-4" /> {t("profile.signOut")}
+                    </button>
+                  </div>
+                </div>
+              </div>
             ) : (
               <>
                 <Link
@@ -158,6 +184,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                 </Link>
               </>
             )}
+
           </nav>
 
           {/* Mobile toggle */}
