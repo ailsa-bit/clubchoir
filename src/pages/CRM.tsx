@@ -7,38 +7,49 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
   Search, Users, Mail, Loader2, UserCheck, Sparkles,
-  TicketIcon, ListChecks, MapPin, Tag, ChevronRight, CheckCircle2,
+  TicketIcon, MapPin, Tag, ChevronRight, CheckCircle2,
+  ArrowUpDown, DollarSign,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 type ContactType = "member" | "prospect" | "registrant" | "popup" | "waitlist";
 
+interface RegPayment {
+  id: string;
+  session_label: string;
+  payment_status: string;
+  created_at: string;
+  location: string;
+}
+
 interface UnifiedContact {
   key: string;
-  source_id: string;
-  member_id?: string | null;
-  type: ContactType;
+  member_id: string | null;
   first_name: string;
   last_name: string;
   email: string;
   location: string;
+  primary_type: ContactType;
+  types: ContactType[];
   status: string;
   tags: string[];
-  source: string;
-  follow_up_date: string | null;
+  sources: string[];
   last_activity: string;
   detail_path?: string;
+  unpaid_reg: RegPayment | null;
+  paid_reg: RegPayment | null;
 }
 
 const TYPE_LABEL: Record<ContactType, string> = {
   member: "Member",
   prospect: "Prospect",
-  registrant: "Fall 2026",
+  registrant: "Registrant",
   popup: "Pop-up",
   waitlist: "Waitlist",
 };
@@ -51,17 +62,36 @@ const TYPE_COLOR: Record<ContactType, string> = {
   waitlist: "bg-slate-500/15 text-slate-700 dark:text-slate-400 border-slate-500/30",
 };
 
+const TYPE_PRIORITY: Record<ContactType, number> = {
+  member: 5, registrant: 4, popup: 3, waitlist: 2, prospect: 1,
+};
+
+const PRESET_AMOUNTS = [120, 135, 150, 175, 200];
+
+type SortKey = "name" | "email" | "location" | "type" | "status" | "activity";
+type SortDir = "asc" | "desc";
+
 const CRM = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
 
   const [contacts, setContacts] = useState<UnifiedContact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState<"all" | "payments">("all");
+
+  // All-contacts filters
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("ALL");
   const [locationFilter, setLocationFilter] = useState<string>("ALL");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
+  const [tagFilter, setTagFilter] = useState<string>("ALL");
+  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  // Payments filters
+  const [payLocation, setPayLocation] = useState<string>("ALL");
+  const [paySearch, setPaySearch] = useState("");
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
@@ -81,135 +111,117 @@ const CRM = () => {
         { data: popups },
         { data: waitlist },
       ] = await Promise.all([
-        supabase.from("members").select("id, first_name, last_name, email, location, status, crm_tags, source, follow_up_date, updated_at, last_session"),
+        supabase.from("members")
+          .select("id, first_name, last_name, email, location, status, crm_tags, source, follow_up_date, updated_at, last_session, archived_at")
+          .is("archived_at", null),
         supabase.from("prospects").select("id, first_name, last_name, email, locations, status, notes, created_at, updated_at"),
-        supabase.from("session_registrations").select("id, member_id, first_name, last_name, email, location, session_label, payment_status, created_at"),
+        supabase.from("session_registrations").select("id, member_id, first_name, last_name, email, location, session_label, payment_status, created_at").order("created_at", { ascending: false }),
         supabase.from("popup_ticket_reservations").select("id, first_name, last_name, email, event_slug, payment_received, ticket_count, created_at"),
         supabase.from("popup_waitlist").select("id, first_name, last_name, email, event_slug, created_at"),
       ]);
 
-      const unified: UnifiedContact[] = [];
-      const memberByEmail = new Map<string, any>();
+      const byEmail = new Map<string, UnifiedContact>();
+      const orphans: UnifiedContact[] = [];
+
+      const upsert = (email: string, patch: (c: UnifiedContact) => void, fallbackKey: string) => {
+        const key = email.toLowerCase();
+        if (!key) {
+          const c: UnifiedContact = blank(fallbackKey);
+          patch(c);
+          orphans.push(c);
+          return;
+        }
+        let c = byEmail.get(key);
+        if (!c) {
+          c = blank(`c:${key}`);
+          c.email = key;
+          byEmail.set(key, c);
+        }
+        patch(c);
+      };
 
       (members || []).forEach((m: any) => {
-        if (m.email) memberByEmail.set(m.email.toLowerCase(), m);
-        unified.push({
-          key: `member:${m.id}`,
-          source_id: m.id,
-          member_id: m.id,
-          type: "member",
-          first_name: m.first_name || "",
-          last_name: m.last_name || "",
-          email: (m.email || "").toLowerCase(),
-          location: m.location || "",
-          status: m.status || "",
-          tags: m.crm_tags || [],
-          source: m.source || "",
-          follow_up_date: m.follow_up_date,
-          last_activity: m.updated_at || m.last_session || "",
-          detail_path: `/manage-members/${m.id}`,
-        });
+        upsert(m.email || "", (c) => {
+          c.member_id = m.id;
+          c.first_name = m.first_name || c.first_name;
+          c.last_name = m.last_name || c.last_name;
+          c.location = m.location || c.location;
+          c.status = m.status || c.status;
+          c.types.push("member");
+          (m.crm_tags || []).forEach((t: string) => c.tags.push(t));
+          if (m.source) c.sources.push(m.source);
+          c.last_activity = laterOf(c.last_activity, m.updated_at || m.last_session);
+          c.detail_path = `/manage-members/${m.id}`;
+        }, `member:${m.id}`);
       });
 
       (prospects || []).forEach((p: any) => {
-        const email = (p.email || "").toLowerCase();
-        if (memberByEmail.has(email)) return; // dedupe with member
-        unified.push({
-          key: `prospect:${p.id}`,
-          source_id: p.id,
-          type: "prospect",
-          first_name: p.first_name || "",
-          last_name: p.last_name || "",
-          email,
-          location: (p.locations || []).join(", "),
-          status: p.status || "prospect",
-          tags: [],
-          source: "prospect",
-          follow_up_date: null,
-          last_activity: p.updated_at || p.created_at || "",
-          detail_path: `/manage-prospects`,
-        });
+        upsert(p.email || "", (c) => {
+          c.first_name = c.first_name || p.first_name || "";
+          c.last_name = c.last_name || p.last_name || "";
+          if (!c.location && (p.locations || []).length) c.location = (p.locations || []).join(", ");
+          c.types.push("prospect");
+          c.sources.push("prospect");
+          c.last_activity = laterOf(c.last_activity, p.updated_at || p.created_at);
+          if (!c.detail_path) c.detail_path = "/manage-prospects";
+        }, `prospect:${p.id}`);
       });
 
       (registrants || []).forEach((r: any) => {
-        const email = (r.email || "").toLowerCase();
-        const label = r.session_label || "";
-        if (memberByEmail.has(email)) {
-          // Merge session tag onto the existing member row
-          const idx = unified.findIndex(u => u.type === "member" && u.email === email);
-          if (idx >= 0 && label) {
-            if (!unified[idx].source.includes(label)) {
-              unified[idx].source = [unified[idx].source, label].filter(Boolean).join(", ");
-            }
-            if (!unified[idx].tags.includes(label)) {
-              unified[idx].tags = [...unified[idx].tags, label];
-            }
+        upsert(r.email || "", (c) => {
+          c.first_name = c.first_name || r.first_name || "";
+          c.last_name = c.last_name || r.last_name || "";
+          if (!c.location) c.location = r.location || "";
+          c.types.push("registrant");
+          if (r.session_label) c.tags.push(r.session_label);
+          if (r.session_label) c.sources.push(r.session_label);
+          c.last_activity = laterOf(c.last_activity, r.created_at);
+          if (r.session_label === "fall-2026") {
+            const reg: RegPayment = { id: r.id, session_label: r.session_label, payment_status: r.payment_status, created_at: r.created_at, location: r.location || "" };
+            if (r.payment_status === "paid") c.paid_reg = c.paid_reg ?? reg;
+            else if (!c.unpaid_reg) c.unpaid_reg = reg;
           }
-          return;
-        }
-        unified.push({
-          key: `reg:${r.id}`,
-          source_id: r.id,
-          member_id: r.member_id,
-          type: "registrant",
-          first_name: r.first_name || "",
-          last_name: r.last_name || "",
-          email,
-          location: r.location || "",
-          status: r.payment_status || "registered",
-          tags: [r.session_label].filter(Boolean),
-          source: r.session_label || "registration",
-          follow_up_date: null,
-          last_activity: r.created_at || "",
-        });
+        }, `reg:${r.id}`);
       });
 
       (popups || []).forEach((p: any) => {
-        const email = (p.email || "").toLowerCase();
-        if (memberByEmail.has(email) || unified.some(u => u.email === email)) {
-          const idx = unified.findIndex(u => u.email === email);
-          if (idx >= 0 && !unified[idx].source.includes(p.event_slug)) {
-            unified[idx].source = [unified[idx].source, p.event_slug].filter(Boolean).join(", ");
-          }
-          return;
-        }
-        unified.push({
-          key: `popup:${p.id}`,
-          source_id: p.id,
-          type: "popup",
-          first_name: p.first_name || "",
-          last_name: p.last_name || "",
-          email,
-          location: "",
-          status: p.payment_received ? "paid" : "reserved",
-          tags: [p.event_slug],
-          source: p.event_slug || "popup",
-          follow_up_date: null,
-          last_activity: p.created_at || "",
-        });
+        upsert(p.email || "", (c) => {
+          c.first_name = c.first_name || p.first_name || "";
+          c.last_name = c.last_name || p.last_name || "";
+          c.types.push("popup");
+          if (p.event_slug) c.tags.push(p.event_slug);
+          if (p.event_slug) c.sources.push(p.event_slug);
+          c.last_activity = laterOf(c.last_activity, p.created_at);
+        }, `popup:${p.id}`);
       });
 
       (waitlist || []).forEach((w: any) => {
-        const email = (w.email || "").toLowerCase();
-        if (unified.some(u => u.email === email)) return;
-        unified.push({
-          key: `wait:${w.id}`,
-          source_id: w.id,
-          type: "waitlist",
-          first_name: w.first_name || "",
-          last_name: w.last_name || "",
-          email,
-          location: "",
-          status: "waiting",
-          tags: [w.event_slug],
-          source: w.event_slug || "waitlist",
-          follow_up_date: null,
-          last_activity: w.created_at || "",
-        });
+        upsert(w.email || "", (c) => {
+          c.first_name = c.first_name || w.first_name || "";
+          c.last_name = c.last_name || w.last_name || "";
+          c.types.push("waitlist");
+          if (w.event_slug) c.tags.push(`waitlist:${w.event_slug}`);
+          c.sources.push("waitlist");
+          c.last_activity = laterOf(c.last_activity, w.created_at);
+        }, `wait:${w.id}`);
       });
 
-      unified.sort((a, b) => a.first_name.localeCompare(b.first_name));
-      setContacts(unified);
+      const all = [...byEmail.values(), ...orphans];
+      all.forEach((c) => {
+        c.types = uniq(c.types);
+        c.tags = uniq(c.tags);
+        c.sources = uniq(c.sources);
+        c.primary_type = c.types.slice().sort((a, b) => TYPE_PRIORITY[b] - TYPE_PRIORITY[a])[0] || "prospect";
+        if (!c.status) {
+          if (c.primary_type === "registrant" && c.unpaid_reg) c.status = "unpaid";
+          else if (c.paid_reg) c.status = "paid";
+          else if (c.primary_type === "waitlist") c.status = "waiting";
+          else if (c.primary_type === "popup") c.status = "reserved";
+          else c.status = c.primary_type.toUpperCase();
+        }
+      });
+
+      setContacts(all);
     } catch (e) {
       console.error("CRM fetch error:", e);
     }
@@ -220,40 +232,76 @@ const CRM = () => {
     () => [...new Set(contacts.map(c => c.location).filter(Boolean))].sort(),
     [contacts]
   );
+  const allTags = useMemo(
+    () => [...new Set(contacts.flatMap(c => c.tags))].sort(),
+    [contacts]
+  );
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return contacts.filter(c => {
-      if (typeFilter === "registrant") {
-        if (!(c.tags.some(t => t.includes("fall-2026")) || c.source.includes("fall-2026"))) return false;
-      } else if (typeFilter === "open-house") {
-        if (!(c.tags.some(t => t.includes("open-house")) || c.source.includes("open-house"))) return false;
-      } else if (typeFilter === "try-a-session") {
-        if (!(c.tags.some(t => t.includes("try-a-session")) || c.source.includes("try-a-session"))) return false;
-      } else if (typeFilter !== "ALL" && c.type !== typeFilter) return false;
+    const list = contacts.filter(c => {
+      if (typeFilter !== "ALL" && !c.types.includes(typeFilter as ContactType)) return false;
       if (locationFilter !== "ALL" && !c.location.includes(locationFilter)) return false;
       if (statusFilter !== "ALL" && c.status.toUpperCase() !== statusFilter.toUpperCase()) return false;
+      if (tagFilter !== "ALL" && !c.tags.includes(tagFilter)) return false;
       if (!q) return true;
       return (
         c.first_name.toLowerCase().includes(q) ||
         c.last_name.toLowerCase().includes(q) ||
         c.email.toLowerCase().includes(q) ||
         c.location.toLowerCase().includes(q) ||
-        c.source.toLowerCase().includes(q) ||
         c.tags.some(t => t.toLowerCase().includes(q))
       );
     });
-  }, [contacts, search, typeFilter, locationFilter, statusFilter]);
+    const dir = sortDir === "asc" ? 1 : -1;
+    list.sort((a, b) => {
+      const getK = (c: UnifiedContact) => {
+        switch (sortKey) {
+          case "name": return `${c.first_name} ${c.last_name}`.toLowerCase();
+          case "email": return c.email;
+          case "location": return c.location.toLowerCase();
+          case "type": return c.primary_type;
+          case "status": return c.status.toLowerCase();
+          case "activity": return c.last_activity || "";
+        }
+      };
+      const va = getK(a), vb = getK(b);
+      if (va < vb) return -1 * dir;
+      if (va > vb) return 1 * dir;
+      return 0;
+    });
+    return list;
+  }, [contacts, search, typeFilter, locationFilter, statusFilter, tagFilter, sortKey, sortDir]);
+
+  const unpaidRegs = useMemo(() => {
+    const list = contacts.filter(c => c.unpaid_reg);
+    return list.filter(c => {
+      if (payLocation !== "ALL" && !(c.unpaid_reg?.location || c.location).includes(payLocation)) return false;
+      const q = paySearch.trim().toLowerCase();
+      if (!q) return true;
+      return (
+        c.first_name.toLowerCase().includes(q) ||
+        c.last_name.toLowerCase().includes(q) ||
+        c.email.toLowerCase().includes(q)
+      );
+    }).sort((a, b) => (a.unpaid_reg?.created_at || "").localeCompare(b.unpaid_reg?.created_at || ""));
+  }, [contacts, payLocation, paySearch]);
 
   const stats = useMemo(() => ({
     total: contacts.length,
-    members: contacts.filter(c => c.type === "member" && c.status.toUpperCase() === "ACTIVE").length,
-    prospects: contacts.filter(c => c.type === "prospect").length,
-    registrants: contacts.filter(c => c.tags.some(t => t.includes("fall-2026")) || c.source.includes("fall-2026")).length,
-    openHouse: contacts.filter(c => c.tags.some(t => t.includes("open-house")) || c.source.includes("open-house")).length,
-    trySession: contacts.filter(c => c.tags.some(t => t.includes("try-a-session")) || c.source.includes("try-a-session")).length,
-    popup: contacts.filter(c => c.type === "popup" || c.source.includes("studio")).length,
+    members: contacts.filter(c => c.types.includes("member") && c.status.toUpperCase() === "ACTIVE").length,
+    prospects: contacts.filter(c => c.types.includes("prospect")).length,
+    fall: contacts.filter(c => c.tags.includes("fall-2026")).length,
+    fallPaid: contacts.filter(c => c.tags.includes("fall-2026") && c.paid_reg).length,
+    openHouse: contacts.filter(c => c.tags.includes("open-house-2026")).length,
+    trySession: contacts.filter(c => c.tags.includes("try-a-session")).length,
+    unpaid: contacts.filter(c => c.unpaid_reg).length,
   }), [contacts]);
+
+  const toggleSort = (k: SortKey) => {
+    if (sortKey === k) setSortDir(sortDir === "asc" ? "desc" : "asc");
+    else { setSortKey(k); setSortDir("asc"); }
+  };
 
   const toggleOne = (key: string) => {
     setSelected(prev => {
@@ -280,34 +328,18 @@ const CRM = () => {
   };
 
   const emailSegment = () => {
-    const emails = contacts
-      .filter(c => selected.has(c.key) && c.email)
-      .map(c => c.email);
+    const emails = contacts.filter(c => selected.has(c.key) && c.email).map(c => c.email);
     if (!emails.length) return;
     navigate(`/send-email?to=${encodeURIComponent(emails.join(","))}`);
   };
 
-  const markPaid = async (c: UnifiedContact) => {
-    if (c.type !== "registrant" || !c.email) return;
-    const raw = window.prompt(
-      `Amount received from ${c.first_name} ${c.last_name} (CAD)?\nLeave blank to skip.`,
-      ""
-    );
-    if (raw === null) return; // user cancelled
-    const trimmed = raw.trim();
-    let amount: number | null = null;
-    if (trimmed !== "") {
-      const parsed = Number(trimmed.replace(/[^0-9.]/g, ""));
-      if (!Number.isFinite(parsed) || parsed < 0) {
-        toast({ title: "Invalid amount", description: "Please enter a positive number.", variant: "destructive" });
-        return;
-      }
-      amount = parsed;
-    }
+  const markPaid = async (c: UnifiedContact, amount: number | null) => {
+    const reg = c.unpaid_reg;
+    if (!reg || !c.email) return;
     const { error: regErr } = await supabase
       .from("session_registrations")
       .update({ payment_status: "paid", amount_paid: amount })
-      .eq("id", c.source_id);
+      .eq("id", reg.id);
     if (regErr) {
       toast({ title: "Could not mark paid", description: regErr.message, variant: "destructive" });
       return;
@@ -317,17 +349,36 @@ const CRM = () => {
       { _email: c.email, _active_until: "2026-12-10" }
     );
     if (rpcErr) {
-      toast({ title: "Marked paid, but activation failed", description: rpcErr.message, variant: "destructive" });
+      toast({ title: "Marked paid, activation failed", description: rpcErr.message, variant: "destructive" });
     } else {
       const activated = Array.isArray(rpc) && rpc[0]?.activated;
       toast({
         title: "Marked paid",
         description: activated
           ? `${c.first_name} now has member access through Dec 10, 2026.`
-          : `${c.first_name} is marked paid. Access will unlock as soon as they sign up.`,
+          : `${c.first_name} is marked paid. Access unlocks when they sign up.`,
       });
     }
     fetchAll();
+  };
+
+  const markPaidPrompt = (c: UnifiedContact) => {
+    const raw = window.prompt(
+      `Amount received from ${c.first_name} ${c.last_name} (CAD)? Leave blank to skip.`,
+      ""
+    );
+    if (raw === null) return;
+    const trimmed = raw.trim();
+    let amount: number | null = null;
+    if (trimmed !== "") {
+      const parsed = Number(trimmed.replace(/[^0-9.]/g, ""));
+      if (!Number.isFinite(parsed) || parsed < 0) {
+        toast({ title: "Invalid amount", variant: "destructive" });
+        return;
+      }
+      amount = parsed;
+    }
+    markPaid(c, amount);
   };
 
   if (adminLoading || loading) {
@@ -337,7 +388,6 @@ const CRM = () => {
       </div>
     );
   }
-
   if (!isAdmin) return null;
 
   const selectedCount = [...selected].filter(k => contacts.find(c => c.key === k)?.email).length;
@@ -352,7 +402,7 @@ const CRM = () => {
               <Users className="w-7 h-7" /> CRM
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              All contacts in one place — members, prospects, registrants, pop-up attendees.
+              One row per person. Members, prospects, registrants and pop-up attendees rolled up.
             </p>
           </div>
           <div className="flex gap-2">
@@ -361,164 +411,275 @@ const CRM = () => {
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-7 gap-3 mb-6">
-          <StatCard icon={<Users className="w-4 h-4" />} label="Total contacts" value={stats.total} onClick={() => setTypeFilter("ALL")} active={typeFilter === "ALL"} />
-          <StatCard icon={<UserCheck className="w-4 h-4" />} label="Active members" value={stats.members} onClick={() => setTypeFilter("member")} active={typeFilter === "member"} />
-          <StatCard icon={<Sparkles className="w-4 h-4" />} label="Prospects" value={stats.prospects} onClick={() => setTypeFilter("prospect")} active={typeFilter === "prospect"} />
-          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Fall 2026" value={stats.registrants} onClick={() => setTypeFilter("registrant")} active={typeFilter === "registrant"} />
-          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Open House" value={stats.openHouse} onClick={() => setTypeFilter("open-house")} active={typeFilter === "open-house"} />
-          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Try a Session" value={stats.trySession} onClick={() => setTypeFilter("try-a-session")} active={typeFilter === "try-a-session"} />
-          <StatCard icon={<TicketIcon className="w-4 h-4" />} label="Pop-up" value={stats.popup} onClick={() => setTypeFilter("popup")} active={typeFilter === "popup"} />
-        </div>
+        <Tabs value={tab} onValueChange={(v) => setTab(v as any)}>
+          <TabsList className="mb-4">
+            <TabsTrigger value="all">All contacts ({stats.total})</TabsTrigger>
+            <TabsTrigger value="payments">
+              <DollarSign className="w-3.5 h-3.5 mr-1" />
+              Payments ({stats.unpaid} unpaid)
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Filters */}
-        <div className="rounded-xl border border-border bg-card p-4 mb-4 space-y-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              placeholder="Search by name, email, location, tag, or source…"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="pl-9"
-            />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger><SelectValue placeholder="Type" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All types</SelectItem>
-                <SelectItem value="member">Members</SelectItem>
-                <SelectItem value="prospect">Prospects</SelectItem>
-                <SelectItem value="registrant">Fall 2026 registrants</SelectItem>
-                <SelectItem value="open-house">Open House signups</SelectItem>
-                <SelectItem value="try-a-session">Try-a-Session signups</SelectItem>
-                <SelectItem value="popup">Pop-up attendees</SelectItem>
-                <SelectItem value="waitlist">Waitlist</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={locationFilter} onValueChange={setLocationFilter}>
-              <SelectTrigger><SelectValue placeholder="Location" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All locations</SelectItem>
-                {locations.map(loc => <SelectItem key={loc} value={loc}>{loc}</SelectItem>)}
-              </SelectContent>
-            </Select>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger><SelectValue placeholder="Status" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All statuses</SelectItem>
-                <SelectItem value="ACTIVE">Active</SelectItem>
-                <SelectItem value="INACTIVE">Inactive</SelectItem>
-                <SelectItem value="PROSPECT">Prospect</SelectItem>
-                <SelectItem value="TRIAL">Trial</SelectItem>
-                <SelectItem value="paid">Paid</SelectItem>
-                <SelectItem value="registered">Registered</SelectItem>
-                <SelectItem value="waiting">Waiting</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Bulk bar */}
-        {selectedCount > 0 && (
-          <div className="sticky top-16 z-30 mb-3 rounded-xl border border-primary bg-primary/5 p-3 flex items-center justify-between gap-3">
-            <span className="text-sm font-medium text-foreground">
-              {selectedCount} selected
-            </span>
-            <div className="flex gap-2">
-              <Button size="sm" variant="ghost" onClick={() => setSelected(new Set())}>Clear</Button>
-              <Button size="sm" onClick={emailSegment}>
-                <Mail className="w-4 h-4 mr-1" /> Email this segment
-              </Button>
+          <TabsContent value="all">
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
+              <StatCard label="Total" value={stats.total} onClick={() => setTypeFilter("ALL")} active={typeFilter === "ALL"} />
+              <StatCard label="Active members" value={stats.members} onClick={() => { setTypeFilter("member"); setStatusFilter("ACTIVE"); }} active={typeFilter === "member"} />
+              <StatCard label="Prospects" value={stats.prospects} onClick={() => setTypeFilter("prospect")} active={typeFilter === "prospect"} />
+              <StatCard label={`Fall 2026 (${stats.fallPaid} paid)`} value={stats.fall} onClick={() => setTagFilter("fall-2026")} active={tagFilter === "fall-2026"} />
+              <StatCard label="Open House" value={stats.openHouse} onClick={() => setTagFilter("open-house-2026")} active={tagFilter === "open-house-2026"} />
+              <StatCard label="Try a Session" value={stats.trySession} onClick={() => setTagFilter("try-a-session")} active={tagFilter === "try-a-session"} />
             </div>
-          </div>
-        )}
 
-        {/* Results */}
-        <div className="rounded-xl border border-border overflow-hidden bg-card">
-          <div className="bg-muted/50 border-b border-border px-3 py-2 flex items-center gap-3 text-xs font-medium text-muted-foreground">
-            <Checkbox
-              checked={filtered.length > 0 && filtered.every(c => selected.has(c.key))}
-              onCheckedChange={toggleAll}
-            />
-            <span>{filtered.length} of {contacts.length} contacts</span>
-          </div>
-          {filtered.length === 0 ? (
-            <p className="p-8 text-center text-sm text-muted-foreground">No contacts match.</p>
-          ) : (
-            <div className="divide-y divide-border">
-              {filtered.map(c => (
-                <div key={c.key} className="px-3 py-2.5 flex items-center gap-3 hover:bg-muted/30 transition-colors">
-                  <Checkbox
-                    checked={selected.has(c.key)}
-                    onCheckedChange={() => toggleOne(c.key)}
-                    disabled={!c.email}
-                  />
+            {/* Filters */}
+            <div className="rounded-xl border border-border bg-card p-4 mb-4 space-y-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input placeholder="Search name, email, location, tag…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9" />
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <Select value={typeFilter} onValueChange={setTypeFilter}>
+                  <SelectTrigger><SelectValue placeholder="Type" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ALL">All types</SelectItem>
+                    <SelectItem value="member">Members</SelectItem>
+                    <SelectItem value="prospect">Prospects</SelectItem>
+                    <SelectItem value="registrant">Registrants</SelectItem>
+                    <SelectItem value="popup">Pop-up</SelectItem>
+                    <SelectItem value="waitlist">Waitlist</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={locationFilter} onValueChange={setLocationFilter}>
+                  <SelectTrigger><SelectValue placeholder="Location" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ALL">All locations</SelectItem>
+                    {locations.map(loc => <SelectItem key={loc} value={loc}>{loc}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger><SelectValue placeholder="Status" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ALL">All statuses</SelectItem>
+                    <SelectItem value="ACTIVE">Active</SelectItem>
+                    <SelectItem value="INACTIVE">Inactive</SelectItem>
+                    <SelectItem value="PROSPECT">Prospect</SelectItem>
+                    <SelectItem value="paid">Paid</SelectItem>
+                    <SelectItem value="unpaid">Unpaid</SelectItem>
+                    <SelectItem value="waiting">Waiting</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={tagFilter} onValueChange={setTagFilter}>
+                  <SelectTrigger><SelectValue placeholder="Tag / session" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ALL">All tags</SelectItem>
+                    {allTags.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Bulk bar */}
+            {selectedCount > 0 && (
+              <div className="sticky top-16 z-30 mb-3 rounded-xl border border-primary bg-primary/5 p-3 flex items-center justify-between gap-3">
+                <span className="text-sm font-medium">{selectedCount} selected</span>
+                <div className="flex gap-2">
+                  <Button size="sm" variant="ghost" onClick={() => setSelected(new Set())}>Clear</Button>
+                  <Button size="sm" onClick={emailSegment}>
+                    <Mail className="w-4 h-4 mr-1" /> Email segment
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Table */}
+            <div className="rounded-xl border border-border overflow-hidden bg-card">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/50 border-b border-border text-xs text-muted-foreground">
+                    <tr>
+                      <th className="p-2 w-8">
+                        <Checkbox
+                          checked={filtered.length > 0 && filtered.every(c => selected.has(c.key))}
+                          onCheckedChange={toggleAll}
+                        />
+                      </th>
+                      <SortHeader label="Name" k="name" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} />
+                      <SortHeader label="Email" k="email" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} className="hidden md:table-cell" />
+                      <SortHeader label="Location" k="location" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} className="hidden sm:table-cell" />
+                      <SortHeader label="Type" k="type" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} />
+                      <SortHeader label="Status" k="status" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} className="hidden lg:table-cell" />
+                      <SortHeader label="Last activity" k="activity" sortKey={sortKey} sortDir={sortDir} onClick={toggleSort} className="hidden xl:table-cell" />
+                      <th className="p-2 w-10"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map(c => (
+                      <tr key={c.key} className="border-b border-border last:border-0 hover:bg-muted/30">
+                        <td className="p-2">
+                          <Checkbox checked={selected.has(c.key)} onCheckedChange={() => toggleOne(c.key)} disabled={!c.email} />
+                        </td>
+                        <td className="p-2">
+                          <div className="font-medium text-foreground">{c.first_name} {c.last_name}</div>
+                          {c.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-0.5">
+                              {c.tags.slice(0, 3).map(t => (
+                                <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                                  <Tag className="w-2.5 h-2.5 inline mr-0.5" />{t}
+                                </span>
+                              ))}
+                              {c.tags.length > 3 && <span className="text-[10px] text-muted-foreground">+{c.tags.length - 3}</span>}
+                            </div>
+                          )}
+                        </td>
+                        <td className="p-2 text-muted-foreground hidden md:table-cell truncate max-w-[220px]">{c.email || "—"}</td>
+                        <td className="p-2 text-muted-foreground hidden sm:table-cell">
+                          {c.location && <span className="inline-flex items-center gap-1"><MapPin className="w-3 h-3" />{c.location}</span>}
+                        </td>
+                        <td className="p-2">
+                          <div className="flex flex-wrap gap-1">
+                            {c.types.map(t => (
+                              <Badge key={t} variant="outline" className={`text-[10px] ${TYPE_COLOR[t]}`}>{TYPE_LABEL[t]}</Badge>
+                            ))}
+                          </div>
+                        </td>
+                        <td className="p-2 hidden lg:table-cell">
+                          <Badge variant="outline" className="text-[10px]">{c.status}</Badge>
+                        </td>
+                        <td className="p-2 text-muted-foreground text-xs hidden xl:table-cell whitespace-nowrap">
+                          {c.last_activity ? new Date(c.last_activity).toLocaleDateString() : "—"}
+                        </td>
+                        <td className="p-2 text-right">
+                          {c.detail_path && (
+                            <Link to={c.detail_path} className="inline-flex text-muted-foreground hover:text-foreground">
+                              <ChevronRight className="w-4 h-4" />
+                            </Link>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                    {filtered.length === 0 && (
+                      <tr><td colSpan={8} className="p-8 text-center text-muted-foreground">No contacts match.</td></tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-3 py-2 text-xs text-muted-foreground border-t border-border">
+                {filtered.length} of {contacts.length} contacts
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="payments">
+            <div className="rounded-xl border border-border bg-card p-4 mb-4">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input placeholder="Search name or email…" value={paySearch} onChange={e => setPaySearch(e.target.value)} className="pl-9" />
+                </div>
+                <Select value={payLocation} onValueChange={setPayLocation}>
+                  <SelectTrigger className="sm:w-56"><SelectValue placeholder="Location" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ALL">All locations</SelectItem>
+                    {locations.map(loc => <SelectItem key={loc} value={loc}>{loc}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Unpaid Fall 2026 registrants, oldest signup first. Marking paid activates their member access through Dec 10, 2026.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-border overflow-hidden bg-card divide-y divide-border">
+              {unpaidRegs.length === 0 && (
+                <p className="p-8 text-center text-sm text-muted-foreground">🎉 No unpaid registrants.</p>
+              )}
+              {unpaidRegs.map(c => (
+                <div key={c.key} className="p-3 flex flex-col sm:flex-row sm:items-center gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-semibold text-sm text-foreground">
-                        {c.first_name} {c.last_name}
-                      </span>
-                      <Badge variant="outline" className={`text-[10px] ${TYPE_COLOR[c.type]}`}>
-                        {TYPE_LABEL[c.type]}
-                      </Badge>
-                      {c.status && c.type === "member" && (
-                        <Badge variant="outline" className="text-[10px]">{c.status}</Badge>
+                    <div className="font-semibold text-foreground">{c.first_name} {c.last_name}</div>
+                    <div className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5">
+                      <span className="truncate">{c.email}</span>
+                      {(c.unpaid_reg?.location || c.location) && (
+                        <span className="inline-flex items-center gap-1"><MapPin className="w-3 h-3" />{c.unpaid_reg?.location || c.location}</span>
                       )}
-                      {c.tags.slice(0, 3).map(t => (
-                        <Badge key={t} variant="secondary" className="text-[10px]">
-                          <Tag className="w-2.5 h-2.5 mr-1" />{t}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5 flex-wrap">
-                      <span className="truncate">{c.email || "no email"}</span>
-                      {c.location && <span className="inline-flex items-center gap-1"><MapPin className="w-3 h-3" />{c.location}</span>}
-                      {c.source && <span>· {c.source}</span>}
+                      <span>Signed up {new Date(c.unpaid_reg!.created_at).toLocaleDateString()}</span>
                     </div>
                   </div>
-                  {c.type === "registrant" && c.status !== "paid" && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 text-xs"
-                      onClick={() => markPaid(c)}
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Mark paid
-                    </Button>
-                  )}
-                  {c.type === "registrant" && c.status === "paid" && (
-                    <Badge variant="outline" className="text-[10px] bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30">
-                      Paid
-                    </Badge>
-                  )}
-                  {c.detail_path && (
-                    <Link to={c.detail_path}>
-                      <Button size="sm" variant="ghost" className="h-8">
-                        <ChevronRight className="w-4 h-4" />
+                  <div className="flex flex-wrap gap-1">
+                    {PRESET_AMOUNTS.map(amt => (
+                      <Button
+                        key={amt}
+                        size="sm"
+                        variant="outline"
+                        className="h-8 text-xs"
+                        onClick={() => markPaid(c, amt)}
+                      >
+                        ${amt}
                       </Button>
-                    </Link>
-                  )}
+                    ))}
+                    <Button size="sm" variant="outline" className="h-8 text-xs" onClick={() => markPaidPrompt(c)}>
+                      Other…
+                    </Button>
+                    <Button size="sm" className="h-8 text-xs" onClick={() => markPaid(c, null)}>
+                      <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Paid (no amount)
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
-          )}
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
 };
 
-const StatCard = ({ icon, label, value, onClick, active }: { icon: React.ReactNode; label: string; value: number; onClick?: () => void; active?: boolean }) => (
+// ---- helpers ----
+
+function blank(key: string): UnifiedContact {
+  return {
+    key,
+    member_id: null,
+    first_name: "",
+    last_name: "",
+    email: "",
+    location: "",
+    primary_type: "prospect",
+    types: [],
+    status: "",
+    tags: [],
+    sources: [],
+    last_activity: "",
+    detail_path: undefined,
+    unpaid_reg: null,
+    paid_reg: null,
+  };
+}
+function uniq<T>(arr: T[]): T[] { return [...new Set(arr)]; }
+function laterOf(a: string, b: string | null | undefined): string {
+  if (!b) return a;
+  if (!a) return b;
+  return a > b ? a : b;
+}
+
+const StatCard = ({ label, value, onClick, active }: { label: string; value: number; onClick: () => void; active: boolean }) => (
   <button
-    type="button"
     onClick={onClick}
-    className={`text-left rounded-xl border p-3 transition-colors ${active ? "border-primary bg-primary/5 ring-1 ring-primary/40" : "border-border bg-card hover:bg-muted/60"} ${onClick ? "cursor-pointer" : "cursor-default"}`}
+    className={`rounded-xl border p-3 text-left transition-colors ${active ? "border-primary bg-primary/5" : "border-border bg-card hover:bg-muted/50"}`}
   >
-    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">{icon}{label}</div>
+    <div className="text-xs text-muted-foreground">{label}</div>
     <div className="text-2xl font-bold text-foreground mt-1">{value}</div>
   </button>
+);
+
+const SortHeader = ({ label, k, sortKey, sortDir, onClick, className = "" }: { label: string; k: SortKey; sortKey: SortKey; sortDir: SortDir; onClick: (k: SortKey) => void; className?: string }) => (
+  <th className={`p-2 text-left font-medium ${className}`}>
+    <button className="inline-flex items-center gap-1 hover:text-foreground" onClick={() => onClick(k)}>
+      {label}
+      <ArrowUpDown className={`w-3 h-3 ${sortKey === k ? "text-foreground" : "opacity-40"}`} />
+      {sortKey === k && <span className="text-[10px]">{sortDir === "asc" ? "↑" : "↓"}</span>}
+    </button>
+  </th>
 );
 
 export default CRM;
