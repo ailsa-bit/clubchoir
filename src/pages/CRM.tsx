@@ -133,11 +133,17 @@ const CRM = () => {
 
       (registrants || []).forEach((r: any) => {
         const email = (r.email || "").toLowerCase();
+        const label = r.session_label || "";
         if (memberByEmail.has(email)) {
-          // Tag member with fall-2026 source if not already
+          // Merge session tag onto the existing member row
           const idx = unified.findIndex(u => u.type === "member" && u.email === email);
-          if (idx >= 0 && !unified[idx].source.includes("fall-2026")) {
-            unified[idx].source = [unified[idx].source, "fall-2026"].filter(Boolean).join(", ");
+          if (idx >= 0 && label) {
+            if (!unified[idx].source.includes(label)) {
+              unified[idx].source = [unified[idx].source, label].filter(Boolean).join(", ");
+            }
+            if (!unified[idx].tags.includes(label)) {
+              unified[idx].tags = [...unified[idx].tags, label];
+            }
           }
           return;
         }
