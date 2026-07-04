@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Users, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Mail, ArrowRight } from "lucide-react";
+import { Users, Calendar, Sparkles, Star, ExternalLink, MessageCircle, Mail, ArrowRight, MapPin } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
@@ -7,18 +8,19 @@ import PhotoGallery from "@/components/PhotoGallery";
 import { choirPhotos } from "@/assets/photos";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import founderPhoto from "@/assets/founder-ailsa.webp";
-import heroStage from "@/assets/photos/hero-choir.jpg";
+import heroStage from "@/assets/photos/hero-choir.webp";
 import whyComeBackPhoto from "@/assets/why-members-come-back.webp";
-import whatWeSingPhoto from "@/assets/photos/what-we-sing.jpg";
+import whatWeSingPhoto from "@/assets/photos/what-we-sing.webp";
 
+// Testimonials — most registration-relevant first (no audition, first choir, welcoming)
 const testimonials = [
-  { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
-  { name: "Sonia Klebanskyj", stars: 5, text: "ClubChoir is so much fun! Ailsa is a wonderful choir director for a novice choir singer or for people who want to rediscover the joy of singing. Join and you won't be disappointed!" },
+  { name: "Lydia Woronchak", stars: 5, text: "You don't have to be a great singer to be in Club Choir and you don't even have to audition. All you have to do is love to sing! You're guaranteed to have fun, meet new people and leave feeling joyful!" },
+  { name: "Lori Cook", stars: 5, text: "Ailsa has made my first choir experience a very positive one. I have met some great people and have gained confidence in my singing abilities." },
   { name: "Claude Aimée Villeneuve", stars: 5, text: "I love the way Ailsa has an interesting way of teaching the songs so that anyone who just loves singing can enjoy themselves right away, no need to know how to read music or have previous choir experience. It's fun, the vibes are upbeat!" },
   { name: "Claudine Turnbull", stars: 5, text: "I'm so thankful to my friend for encouraging me to join Club Choir! Ailsa instantly makes you feel comfortable and brings amazing energy every week. It's truly become my weekly happiness boost!" },
+  { name: "Ron Cole", stars: 5, text: "As a ski instructor, I know the effort and skill required to take charge of a group of beginners and lead them as one unit in a successful and joyous direction. Ailsa is gifted in this capacity. Singing is one of the few activities that light up so many parts of the brain at once... a great way to keep the mind sharp." },
+  { name: "Sonia Klebanskyj", stars: 5, text: "ClubChoir is so much fun! Ailsa is a wonderful choir director for a novice choir singer or for people who want to rediscover the joy of singing. Join and you won't be disappointed!" },
   { name: "Martin Leclerc", stars: 5, text: "Great, contagious energy from Ailsa, leading the choir through fun singing! Very happy with the repertoire, the people, the arrangement and the simple enjoyment of it all." },
-  { name: "Lori Cook", stars: 5, text: "Ailsa has made my first choir experience a very positive one. I have met some great people and have gained confidence in my singing abilities." },
-  { name: "Lydia Woronchak", stars: 5, text: "You don't have to be a great singer to be in Club Choir and you don't even have to audition. All you have to do is love to sing! You're guaranteed to have fun, meet new people and leave feeling joyful!" },
   { name: "Danielle Jasmin", stars: 5, text: "J'ai beaucoup apprécié Ailsa. Une maître choeur dynamique, qui connaît sa musique, ses chansons. Une très bonne approche pédagogique qui fait que tout le monde apprend en s'amusant !" },
   { name: "Kerry Johnson", stars: 5, text: "ClubChoir is awesome! It's a fantastic way to bring people together, celebrate community, and share the love of music in a welcoming space where everyone can sing, no experience required. Every session is filled with laughter and connection. A truly uplifting and fun experience!" },
 ];
@@ -26,25 +28,35 @@ const testimonials = [
 const Index = () => {
   const { language, t } = useLanguage();
   const isFr = language === "fr";
+  const [showAllTestimonials, setShowAllTestimonials] = useState(false);
 
+  // FAQ reordered: registration mindset first (cost, audition, miss, music), then softer questions
   const faqItems = [
     { q: t("home.faq.q.cost"), a: t("home.faq.a.cost") },
+    { q: t("home.faq.q.audition"), a: t("home.faq.a.audition") },
+    { q: t("home.faq.q.miss"), a: t("home.faq.a.miss") },
     { q: t("home.faq.q.music"), a: t("home.faq.a.music") },
     { q: t("home.faq.q.shy"), a: t("home.faq.a.shy") },
-    { q: t("home.faq.q.miss"), a: t("home.faq.a.miss") },
-    { q: t("home.faq.q.audition"), a: t("home.faq.a.audition") },
     { q: t("home.faq.q.kind"), a: t("home.faq.a.kind") },
     { q: t("home.faq.q.bring"), a: t("home.faq.a.bring") },
     { q: t("home.faq.q.bad"), a: t("home.faq.a.bad") },
   ];
 
   const locations = [
-    { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church\n6225 Av. Godfrey, Montréal, QC H4B 1K3", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: "Sept 7 – Dec 7, 2026", isNew: false },
-    { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub\n84 Rue Cameron, Hudson, QC J0P 1H0", color: "bg-orange-light border-orange/20", day: t("day.tuesday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: "Sept 8 – Dec 8, 2026", isNew: true },
-    
-    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert, QC J3Y 2K7", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: "Sept 9 – Dec 9, 2026", isNew: false },
-    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire, QC H9R 4H2", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026", isNew: false },
+    { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church\n6225 Av. Godfrey, Montréal", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: "Sept 7 – Dec 7, 2026", isNew: false },
+    { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub\n84 Rue Cameron, Hudson", color: "bg-orange-light border-orange/20", day: t("day.tuesday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: "Sept 8 – Dec 8, 2026", isNew: true },
+    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: "Sept 9 – Dec 9, 2026", isNew: false },
+    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026", isNew: false },
   ];
+
+  const openHouses = [
+    { name: "Montreal", dot: "bg-pink", bg: "bg-pink-light border-pink/20", date: { en: "Mon, Aug 3 · 7:00 PM", fr: "Lun. 3 août · 19 h" }, venue: "Kensington Presbyterian Church" },
+    { name: "Hudson", dot: "bg-orange", bg: "bg-orange-light border-orange/20", date: { en: "Tue, Aug 4 · 7:00 PM", fr: "Mar. 4 août · 19 h" }, venue: "Kingfisher Pub" },
+    { name: "Saint-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20", date: { en: "Wed, Aug 5 · 7:00 PM", fr: "Mer. 5 août · 19 h" }, venue: "St-Gabriel Catholic Church" },
+    { name: "Pointe-Claire", dot: "bg-purple", bg: "bg-purple-light border-purple/20", date: { en: "Thu, Aug 6 · 7:00 PM", fr: "Jeu. 6 août · 19 h" }, venue: "Valois United Church" },
+  ];
+
+  const visibleTestimonials = showAllTestimonials ? testimonials : testimonials.slice(0, 4);
 
   return (
     <div>
@@ -62,21 +74,20 @@ const Index = () => {
           })),
         }}
       />
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28">
-        {/* Full-bleed background photo */}
+
+      {/* HERO — slim, single overlay, lighter */}
+      <section className="relative overflow-hidden px-4 py-16 lg:py-24">
         <div className="absolute inset-0 z-0">
           <img
             src={heroStage}
             alt="Club Choir members singing outdoors from colorful Club Choir binders at NDG Porchfest"
             className="w-full h-full object-cover"
-            style={{ filter: "brightness(1.15) saturate(1.05)" }}
             loading="eager"
             fetchPriority="high"
+            width={1920}
+            height={1080}
           />
-          {/* Readability overlay — stronger dark gradient so the writing pops */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/55 to-foreground/20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-transparent to-foreground/50" />
-          <div className="absolute inset-0 bg-foreground/15" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/75 via-foreground/50 to-foreground/20" />
         </div>
 
         <div className="container mx-auto max-w-7xl relative z-10">
@@ -90,21 +101,14 @@ const Index = () => {
               loading="eager"
               fetchPriority="high"
             />
-            <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-background mb-5 leading-tight animate-fade-in drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
+            <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-background mb-4 leading-tight animate-fade-in drop-shadow-[0_2px_10px_rgba(0,0,0,0.55)]">
               {t("home.hero.h1")}
             </h1>
-            <p className="text-xl sm:text-xl text-background/95 mb-8 animate-fade-in leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.1s" }}>
+            <p className="text-lg sm:text-xl text-background/95 mb-6 animate-fade-in leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.1s" }}>
               {t("home.hero.subtitle")}
             </p>
-            <p className="text-xl sm:text-xl text-background/90 mb-8 animate-fade-in whitespace-pre-line leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.15s" }}>
-              {t("home.hero.desc")}
-            </p>
 
-            <p className="text-xl sm:text-xl text-background/95 mb-5 leading-loose md:leading-relaxed animate-fade-in drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]" style={{ animationDelay: "0.2s" }}>
-              {t("home.hero.eventsSummary")}
-            </p>
-            <div className="flex flex-col gap-3 animate-fade-in" style={{ animationDelay: "0.22s" }}>
-              {/* Primary CTA */}
+            <div className="flex flex-col gap-3 animate-fade-in" style={{ animationDelay: "0.2s" }}>
               <Link
                 to="/register"
                 className="inline-flex items-center justify-center gap-2 w-full sm:w-auto sm:self-start px-8 py-4 rounded-full bg-primary text-primary-foreground font-semibold text-lg shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
@@ -113,190 +117,50 @@ const Index = () => {
                 {t("home.hero.registerFall")}
               </Link>
 
-              {/* Secondary CTAs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:max-w-xl">
+                <a
+                  href="#sessions"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-background/95 text-foreground font-semibold text-base shadow-sm hover:shadow-md hover:bg-background transition-all"
+                >
+                  <Calendar className="w-4 h-4" />
+                  {t("home.hero.seeSessions")}
+                </a>
                 <Link
                   to="/open-house"
                   className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-background/95 text-foreground font-semibold text-base shadow-sm hover:shadow-md hover:bg-background transition-all"
                 >
                   <Sparkles className="w-4 h-4" />
-                  {language === "fr" ? "Portes ouvertes — Août" : "Open House — August"}
-                </Link>
-                <Link
-                  to="/events"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-background/95 text-foreground font-semibold text-base shadow-sm hover:shadow-md hover:bg-background transition-all"
-                >
-                  <Calendar className="w-4 h-4" />
-                  {t("home.hero.upcomingEvents")}
+                  {t("home.hero.openHouseAugust")}
                 </Link>
               </div>
-            </div>
 
+              <p className="text-sm text-background/85 mt-2 max-w-xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+                {t("home.hero.reassurance")}
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Founder teaser */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
-        {/* Full-bleed background photo */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src={founderPhoto}
-            alt="Ailsa, founder of Club Choir"
-            className="w-full h-full object-cover object-[center_25%]"
-            style={{ filter: "brightness(1.15) saturate(1.05)" }}
-            loading="lazy"
-          />
-          {/* Readability overlay: darker on the right where text sits */}
-          <div className="absolute inset-0 bg-gradient-to-l from-foreground/85 via-foreground/65 to-foreground/25" />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/30" />
-        </div>
-
-        <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="max-w-xl ml-auto text-right">
-            <p className="text-base font-bold uppercase tracking-wider text-background/90 mb-3">{t("home.ourStory.eyebrow")}</p>
-            <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-              {t("home.ourStory.title")}
-            </h2>
-            <p className="text-xl text-background/95 leading-loose md:leading-relaxed mb-6 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-              {t("home.ourStory.body")}
-            </p>
-            <Link
-              to="/about"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
-            >
-              {t("home.ourStory.cta")}
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Members Come Back */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
-        {/* Full-bleed background photo */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src={whyComeBackPhoto}
-            alt="Club Choir members celebrating together"
-            className="w-full h-full object-cover"
-            style={{ filter: "brightness(1.15) saturate(1.05)" }}
-            loading="lazy"
-          />
-          {/* Readability overlay: darker on the left where text sits, lighter on the right to keep the photo bright */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/75 via-foreground/45 to-foreground/15" />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/10 via-transparent to-foreground/25" />
-        </div>
-
-        <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="max-w-xl mr-auto text-left">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-              {t("home.whyComeBack.title")}
-            </h2>
-            <div className="space-y-4 mb-8">
-              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                {t("home.whyComeBack.p1")}
-              </p>
-              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                {t("home.whyComeBack.p2")}
-              </p>
-              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                {t("home.whyComeBack.p3")}
-              </p>
-            </div>
-            <div className="space-y-3 mb-8">
-              <blockquote className="text-xl md:text-lg text-background/95 italic leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                &ldquo;{t("home.whyComeBack.quote1")}&rdquo;
-              </blockquote>
-              <blockquote className="text-xl md:text-lg text-background/95 italic leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                &ldquo;{t("home.whyComeBack.quote2")}&rdquo;
-              </blockquote>
-              <blockquote className="text-xl md:text-lg text-background/95 italic leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                &ldquo;{t("home.whyComeBack.quote3")}&rdquo;
-              </blockquote>
-            </div>
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
-            >
-              {t("home.whyComeBack.cta")}
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* What Do We Sing */}
-      <section className="relative overflow-hidden px-4 py-20 lg:py-28 border-y border-border/60">
-        {/* Full-bleed background photo */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src={whatWeSingPhoto}
-            alt="Club Choir performing at NDG Porchfest"
-            className="w-full h-full object-cover"
-            style={{ filter: "brightness(1.15) saturate(1.05)" }}
-            loading="lazy"
-          />
-          {/* Readability overlay: darker on the right where text sits */}
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/15 via-foreground/60 to-foreground/85" />
-          <div className="absolute inset-0 bg-gradient-to-b from-foreground/5 via-transparent to-foreground/20" />
-
-        </div>
-
-        <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="max-w-xl ml-auto text-right">
-            <h2 className="font-heading font-bold text-3xl md:text-4xl text-background mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-              {t("home.whatWeSing.title")}
-            </h2>
-            <div className="space-y-4 mb-8">
-              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                {t("home.whatWeSing.intro")}
-              </p>
-              <p className="text-xl md:text-lg text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                {t("home.whatWeSing.closing")}
-              </p>
-            </div>
-            <div className="mb-8">
-              <p className="font-heading font-bold text-base text-background mb-3 drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                {t("home.whatWeSing.recent")}
-              </p>
-              <p className="text-lg md:text-base text-background/95 leading-loose md:leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.4)]">
-                {isFr
-                  ? "Valerie, Lemon Tree, Wicked Game, Hélène, Ho Hey, You're The One That I Want, I See Fire, Sweet Child O' Mine, Pretty Woman, Sweet Dreams / Seven Nation Army et Lose It."
-                  : "Valerie, Lemon Tree, Wicked Game, Hélène, Ho Hey, You're The One That I Want, I See Fire, Sweet Child O' Mine, Pretty Woman, Sweet Dreams / Seven Nation Army and Lose It."}
-              </p>
-            </div>
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
-            >
-              {t("home.whatWeSing.cta")}
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Sessions Overview */}
-      <section className="py-16 px-4">
+      {/* SESSIONS — moved up. This is what registration visitors are looking for. */}
+      <section id="sessions" className="py-16 px-4 bg-background scroll-mt-20">
         <div className="container mx-auto max-w-6xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.sessions.title")}
           </h2>
-          <p className="text-lg md:text-base text-muted-foreground text-center mb-2 leading-loose md:leading-relaxed">
+          <p className="text-lg md:text-base text-primary font-semibold text-center mb-2">
             {t("home.sessions.fall2026")}
           </p>
-          <p className="text-base md:text-sm text-muted-foreground text-center mb-8 max-w-2xl mx-auto leading-loose md:leading-relaxed">
+          <p className="text-base text-muted-foreground text-center mb-8 max-w-2xl mx-auto leading-relaxed">
             {isFr
-              ? "Quatre lieux à travers le Québec — Montréal, Hudson, Pointe-Claire et Saint-Hubert — pour des répétitions de chorale hebdomadaires, sans audition, ouvertes à tous les adultes."
-              : "Four locations across Quebec — Montreal, Hudson, Pointe-Claire, and Saint-Hubert — for weekly no-audition adult choir rehearsals open to all skill levels."}
+              ? "Quatre lieux au Québec — Montréal, Hudson, Pointe-Claire et Saint-Hubert. Répétitions hebdomadaires, sans audition, ouvertes à tous les adultes."
+              : "Four locations across Quebec — Montreal, Hudson, Pointe-Claire, and Saint-Hubert. Weekly no-audition adult rehearsals, all skill levels welcome."}
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => (
-              <Link
+              <div
                 key={item.location}
-                to={`/choir/${item.slug}`}
-                className={`relative rounded-2xl border p-5 ${item.color} transition-shadow hover:shadow-md block`}
+                className={`relative rounded-2xl border p-5 ${item.color} flex flex-col`}
               >
                 <div className="flex items-center gap-2 mb-2 flex-wrap">
                   <span className={`w-2.5 h-2.5 rounded-full ${item.dot}`} />
@@ -307,26 +171,227 @@ const Index = () => {
                     </span>
                   )}
                 </div>
-                <p className="text-sm font-semibold text-foreground mb-1">{item.dates}</p>
-                <p className="text-base text-muted-foreground mb-1">
+                <p className="text-sm text-foreground/80 mb-1">
                   {item.day} · {item.time}
                 </p>
-                <p className="text-sm text-muted-foreground whitespace-pre-line mb-2">{item.venue}</p>
-                <p className="text-xs font-semibold text-primary inline-flex items-center gap-1">
-                  {t("home.sessions.learnMore")} <ArrowRight className="w-3 h-3" />
-                </p>
-              </Link>
+                <p className="text-base font-bold text-foreground mb-2">{item.dates}</p>
+                <p className="text-xs text-muted-foreground whitespace-pre-line mb-4 flex-1">{item.venue}</p>
+                <div className="flex items-center justify-between gap-2 mt-auto">
+                  <Link
+                    to={`/choir/${item.slug}`}
+                    className="text-xs font-semibold text-foreground/70 hover:text-foreground inline-flex items-center gap-1"
+                  >
+                    {t("home.sessions.learnMore")}
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="text-xs font-bold px-3 py-1.5 rounded-full bg-foreground text-background hover:opacity-90 transition-opacity inline-flex items-center gap-1"
+                  >
+                    {t("home.sessions.register")}
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
-          <div className="text-center mt-6">
-            <Link
-              to="/register"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
-            >
-              <Sparkles className="w-5 h-5" />
-              {t("home.hero.registerFall")}
-            </Link>
+        </div>
+      </section>
+
+      {/* OPEN HOUSES STRIP — try before registering */}
+      <section className="py-14 px-4 bg-muted/40 border-y border-border/60">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
+            {t("home.openHouse.title")}
+          </h2>
+          <p className="text-base text-muted-foreground text-center mb-8 max-w-2xl mx-auto leading-relaxed">
+            {t("home.openHouse.subtitle")}
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {openHouses.map((oh) => (
+              <div key={oh.name} className={`rounded-2xl border p-4 ${oh.bg}`}>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className={`w-2 h-2 rounded-full ${oh.dot}`} />
+                  <span className="font-heading font-bold text-sm text-foreground">{oh.name}</span>
+                </div>
+                <p className="text-sm font-semibold text-foreground mb-1">{oh.date[isFr ? "fr" : "en"]}</p>
+                <p className="text-xs text-muted-foreground mb-3 flex items-start gap-1">
+                  <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                  <span>{oh.venue}</span>
+                </p>
+                <Link
+                  to="/open-house"
+                  className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1"
+                >
+                  {t("home.openHouse.reserve")}
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* FOUNDER — light band (photo on left, cream background on right) */}
+      <section className="py-14 px-4 bg-card">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="rounded-2xl overflow-hidden shadow-md">
+              <img
+                src={founderPhoto}
+                alt="Ailsa, founder of Club Choir"
+                className="w-full h-full object-cover aspect-[4/5] md:aspect-square"
+                loading="lazy"
+                decoding="async"
+                width={800}
+                height={800}
+              />
+            </div>
+            <div>
+              <p className="text-sm font-bold uppercase tracking-wider text-primary mb-3">{t("home.ourStory.eyebrow")}</p>
+              <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-4">
+                {t("home.ourStory.title")}
+              </h2>
+              <p className="text-lg text-foreground/80 leading-relaxed mb-6">
+                {t("home.ourStory.body")}
+              </p>
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              >
+                {t("home.ourStory.cta")}
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY MEMBERS COME BACK — light band with photo accent */}
+      <section className="py-14 px-4 bg-background">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="md:order-2 rounded-2xl overflow-hidden shadow-md">
+              <img
+                src={whyComeBackPhoto}
+                alt="Club Choir members celebrating together"
+                className="w-full h-full object-cover aspect-[4/5] md:aspect-square"
+                loading="lazy"
+                decoding="async"
+                width={800}
+                height={800}
+              />
+            </div>
+            <div className="md:order-1">
+              <h2 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-5">
+                {t("home.whyComeBack.title")}
+              </h2>
+              <div className="space-y-3 mb-5">
+                <p className="text-base text-foreground/80 leading-relaxed">{t("home.whyComeBack.p1")}</p>
+                <p className="text-base text-foreground/80 leading-relaxed">{t("home.whyComeBack.p2")}</p>
+                <p className="text-base text-foreground/80 leading-relaxed">{t("home.whyComeBack.p3")}</p>
+              </div>
+              <div className="space-y-2 mb-6 pl-4 border-l-2 border-primary/40">
+                <blockquote className="text-base text-foreground/70 italic">&ldquo;{t("home.whyComeBack.quote1")}&rdquo;</blockquote>
+                <blockquote className="text-base text-foreground/70 italic">&ldquo;{t("home.whyComeBack.quote2")}&rdquo;</blockquote>
+                <blockquote className="text-base text-foreground/70 italic">&ldquo;{t("home.whyComeBack.quote3")}&rdquo;</blockquote>
+              </div>
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              >
+                {t("home.whyComeBack.cta")}
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHAT WE SING — compact light band */}
+      <section className="py-14 px-4 bg-card">
+        <div className="container mx-auto max-w-4xl">
+          <div className="grid md:grid-cols-5 gap-6 items-center">
+            <div className="md:col-span-2 rounded-2xl overflow-hidden shadow-md">
+              <img
+                src={whatWeSingPhoto}
+                alt="Club Choir performing"
+                className="w-full h-full object-cover aspect-square"
+                loading="lazy"
+                decoding="async"
+                width={800}
+                height={800}
+              />
+            </div>
+            <div className="md:col-span-3">
+              <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-3">
+                {t("home.whatWeSing.title")}
+              </h2>
+              <p className="text-base text-foreground/80 leading-relaxed mb-3">{t("home.whatWeSing.intro")}</p>
+              <p className="font-heading font-bold text-sm text-foreground mb-1">
+                {t("home.whatWeSing.recent")}
+              </p>
+              <p className="text-sm text-foreground/70 leading-relaxed mb-5">
+                {isFr
+                  ? "Valerie, Lemon Tree, Wicked Game, Hélène, Ho Hey, You're The One That I Want, I See Fire, Sweet Child O' Mine, Pretty Woman, Sweet Dreams / Seven Nation Army et Lose It."
+                  : "Valerie, Lemon Tree, Wicked Game, Hélène, Ho Hey, You're The One That I Want, I See Fire, Sweet Child O' Mine, Pretty Woman, Sweet Dreams / Seven Nation Army and Lose It."}
+              </p>
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all"
+              >
+                {t("home.whatWeSing.cta")}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS — 4 by default, expandable */}
+      <section className="py-16 px-4 bg-background">
+        <div className="container mx-auto max-w-7xl">
+          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
+            {t("home.testimonials.title")}
+          </h2>
+          <p className="text-center text-base text-muted-foreground mb-6 leading-relaxed">{t("home.testimonials.subtitle")}</p>
+          <div className="text-center mb-8">
+            <a
+              href="https://g.page/r/CU1hiLJTYmtXEAE/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
+            >
+              <ExternalLink className="w-4 h-4" />
+              {t("home.testimonials.review")}
+            </a>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {visibleTestimonials.map((tst) => (
+              <div
+                key={tst.name}
+                className="rounded-2xl border border-border bg-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow"
+              >
+                <div className="flex gap-0.5">
+                  {Array.from({ length: tst.stars }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{tst.text}</p>
+                <p className="mt-auto font-heading font-bold text-sm text-foreground">{tst.name}</p>
+              </div>
+            ))}
+          </div>
+          {testimonials.length > 4 && (
+            <div className="text-center mt-6">
+              <button
+                type="button"
+                onClick={() => setShowAllTestimonials((v) => !v)}
+                className="text-sm font-semibold text-primary hover:underline"
+              >
+                {showAllTestimonials ? t("home.testimonials.showLess") : t("home.testimonials.showMore")}
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -336,7 +401,7 @@ const Index = () => {
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.faq.title")}
           </h2>
-          <p className="text-center text-lg md:text-base text-muted-foreground mb-10 leading-loose md:leading-relaxed">{t("home.faq.subtitle")}</p>
+          <p className="text-center text-base text-muted-foreground mb-10 leading-relaxed">{t("home.faq.subtitle")}</p>
           <Accordion type="single" collapsible className="space-y-3">
             {faqItems.map((item, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="rounded-2xl border border-border bg-card px-5">
@@ -350,10 +415,10 @@ const Index = () => {
             ))}
           </Accordion>
           <div className="text-center mt-10">
-            <p className="text-lg md:text-base text-muted-foreground mb-4 leading-loose md:leading-relaxed">{t("home.faq.still")}</p>
+            <p className="text-base text-muted-foreground mb-4 leading-relaxed">{t("home.faq.still")}</p>
             <Link
               to="/try"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
             >
               <MessageCircle className="w-5 h-5" />
               {t("home.faq.touch")}
@@ -362,53 +427,16 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Real moments — choir photo gallery */}
+      {/* Photo gallery */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-7xl">
           <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
             {t("home.moments.title")}
           </h2>
-          <p className="text-center text-lg md:text-base text-muted-foreground mb-10 max-w-2xl mx-auto leading-loose md:leading-relaxed">
+          <p className="text-center text-base text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
             {t("home.moments.subtitle")}
           </p>
           <PhotoGallery photos={choirPhotos} columns={3} />
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 px-4">
-        <div className="container mx-auto max-w-7xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
-            {t("home.testimonials.title")}
-          </h2>
-          <p className="text-center text-lg md:text-base text-muted-foreground mb-6 leading-loose md:leading-relaxed">{t("home.testimonials.subtitle")}</p>
-          <div className="text-center mb-10">
-            <a
-              href="https://g.page/r/CU1hiLJTYmtXEAE/review"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
-            >
-              <ExternalLink className="w-5 h-5" />
-              {t("home.testimonials.review")}
-            </a>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {testimonials.map((tst) => (
-              <div
-                key={tst.name}
-                className="rounded-2xl border border-border bg-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow"
-              >
-                <div className="flex gap-0.5">
-                  {Array.from({ length: tst.stars }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                  ))}
-                </div>
-                <p className="text-lg md:text-base text-muted-foreground leading-loose md:leading-relaxed line-clamp-4">{tst.text}</p>
-                <p className="mt-auto font-heading font-bold text-base text-foreground">{tst.name}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -425,7 +453,7 @@ const Index = () => {
             >
               <Calendar className="w-8 h-8 text-aqua mb-3" />
               <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t("home.community.events")}</h3>
-              <p className="text-lg md:text-base text-muted-foreground leading-loose md:leading-relaxed">{t("home.community.eventsDesc")}</p>
+              <p className="text-base text-muted-foreground leading-relaxed">{t("home.community.eventsDesc")}</p>
             </Link>
             <Link
               to="/corporate"
@@ -433,13 +461,13 @@ const Index = () => {
             >
               <Users className="w-8 h-8 text-purple mb-3" />
               <h3 className="font-heading font-bold text-lg text-foreground mb-1">{t("home.community.corporate")}</h3>
-              <p className="text-lg md:text-base text-muted-foreground leading-loose md:leading-relaxed">{t("home.community.corporateDesc")}</p>
+              <p className="text-base text-muted-foreground leading-relaxed">{t("home.community.corporateDesc")}</p>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Stay in the loop — bottom band */}
+      {/* Stay in the loop */}
       <section className="py-14 px-4">
         <div className="container mx-auto max-w-2xl">
           <div className="rounded-2xl bg-card border border-border p-6 md:p-7 text-center shadow-sm">
@@ -449,7 +477,7 @@ const Index = () => {
             <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground mb-2">
               {t("home.subscribe.title")}
             </h2>
-            <p className="text-base md:text-sm text-muted-foreground mb-5 max-w-xl mx-auto leading-loose md:leading-relaxed">
+            <p className="text-base text-muted-foreground mb-5 max-w-xl mx-auto leading-relaxed">
               {t("home.subscribe.desc")}
             </p>
             <Link
