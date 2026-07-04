@@ -198,8 +198,8 @@ const handler = async (req: Request): Promise<Response> => {
           ? `⚠️ <strong>À noter :</strong> votre place n'est pas officiellement confirmée tant que nous n'avons pas reçu votre virement. Dès que le paiement arrive, nous vous enverrons un courriel de confirmation — c'est là que ce sera officiel !`
           : `⚠️ <strong>Heads up:</strong> your spot isn't officially confirmed until we've received your e-Transfer. As soon as your payment lands, we'll send you a confirmation email — that's when it's a done deal!`;
         const questionsText = lang === "fr"
-          ? `Une question ? Répondez simplement à ce courriel ou écrivez-nous à <a href="mailto:ailsa@clubchoir.ca" style="color:#f97316;">ailsa@clubchoir.ca</a>.`
-          : `Any questions? Just reply to this email or write to <a href="mailto:ailsa@clubchoir.ca" style="color:#f97316;">ailsa@clubchoir.ca</a>.`;
+          ? `Une question ? Envoyez-nous un courriel à <a href="mailto:ailsa@clubchoir.ca" style="color:#f97316;">ailsa@clubchoir.ca</a>.`
+          : `Any questions? Send us an email at <a href="mailto:ailsa@clubchoir.ca" style="color:#f97316;">ailsa@clubchoir.ca</a>.`;
         const sign = lang === "fr" ? "À très bientôt !<br/>— Ailsa et l'équipe Club Choir" : "See you soon!<br/>— Ailsa & the Club Choir team";
 
         await resend.emails.send({
