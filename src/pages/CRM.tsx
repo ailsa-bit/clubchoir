@@ -389,6 +389,36 @@ const CRM = () => {
     markPaid(c, amount);
   };
 
+  const exportCSV = () => {
+    const headers = ["First Name", "Last Name", "Email", "Location", "Types", "Status", "Tags", "Sources", "Last Activity", "Unpaid Reg", "Paid Reg"];
+    const rows = contacts.map(c => [
+      c.first_name,
+      c.last_name,
+      c.email,
+      c.location,
+      c.types.join("; "),
+      c.status,
+      c.tags.join("; "),
+      c.sources.join("; "),
+      c.last_activity ? new Date(c.last_activity).toLocaleDateString() : "",
+      c.unpaid_reg ? `${c.unpaid_reg.session_label} (${c.unpaid_reg.location})` : "",
+      c.paid_reg ? `${c.paid_reg.session_label} (${c.paid_reg.location})` : "",
+    ]);
+    const csv = [headers, ...rows]
+      .map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `club-choir-contacts-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast({ title: "Exported", description: `${contacts.length} contacts downloaded as CSV.` });
+  };
+
   if (adminLoading || loading) {
     return (
       <div className="flex items-center justify-center py-20">
