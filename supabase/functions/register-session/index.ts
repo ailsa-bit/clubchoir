@@ -223,7 +223,7 @@ const handler = async (req: Request): Promise<Response> => {
               <h2 style="font-size: 18px; margin-top: 28px; margin-bottom: 8px;">${payHeading}</h2>
               <div style="background: #f4f4f4; border-radius: 8px; padding: 16px 20px; margin: 8px 0 16px;">
                 <p style="margin: 4px 0; font-size: 15px;"><strong>${sendToLabel}:</strong> ailsa@clubchoir.ca</p>
-                <p style="margin: 4px 0; font-size: 15px;"><strong>${amountLabel}:</strong> $195 CAD</p>
+                <p style="margin: 4px 0; font-size: 15px;"><strong>${amountLabel}:</strong> $280.00 CAD</p>
                 <p style="margin: 4px 0; font-size: 15px;"><strong>${questionLabel}:</strong> ${questionText}</p>
                 <p style="margin: 4px 0; font-size: 15px;"><strong>${answerLabel}:</strong> ${answerText}</p>
               </div>

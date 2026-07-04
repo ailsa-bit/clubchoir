@@ -66,7 +66,7 @@ const TYPE_PRIORITY: Record<ContactType, number> = {
   member: 5, registrant: 4, popup: 3, waitlist: 2, prospect: 1,
 };
 
-const PRESET_AMOUNTS = [120, 135, 150, 175, 200];
+const PRESET_AMOUNTS = [120, 135, 150, 175, 200, 280];
 
 type SortKey = "name" | "email" | "location" | "type" | "status" | "activity";
 type SortDir = "asc" | "desc";
