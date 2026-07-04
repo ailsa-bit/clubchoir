@@ -64,10 +64,15 @@ const SignedUpUsers = () => {
   };
 
   const fetchPending = async () => {
+    // Only show recently-created inactive profiles (last 60 days) so the
+    // list stays actionable now that all members default to inactive.
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 60);
     const { data } = await supabase
       .from("profiles")
       .select("*")
       .eq("status", "inactive")
+      .gte("created_at", cutoff.toISOString())
       .order("created_at", { ascending: false });
     setPendingSignups((data as PendingSignup[]) || []);
     setPendingLoading(false);
