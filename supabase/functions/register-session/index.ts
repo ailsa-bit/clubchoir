@@ -183,10 +183,23 @@ const handler = async (req: Request): Promise<Response> => {
           : (isReturning ? `Welcome back, ${first_name}!` : `Welcome to Club Choir, ${first_name}!`);
 
         const bodyCopy = lang === "fr"
-          ? `Merci de vous être inscrit à la session d'automne 2026 à <strong>${escapeHtml(location)}</strong>. Nous vous enverrons les instructions de virement en juillet pour confirmer votre place. Les places sont limitées et attribuées selon le principe du premier arrivé, premier servi.`
-          : `Thanks for registering for the Fall 2026 session in <strong>${escapeHtml(location)}</strong>. We'll email you e-transfer instructions in July to confirm your spot. Spots are limited and filled on a first-come, first-served basis.`;
+          ? `Merci de vous être inscrit à la session d'automne 2026 à <strong>${escapeHtml(location)}</strong> ! Nous sommes ravis de chanter avec vous. Voici comment réserver votre place :`
+          : `Thanks for registering for the Fall 2026 session in <strong>${escapeHtml(location)}</strong> — we can't wait to sing with you! Here's how to lock in your spot:`;
 
         const sessionLabel = lang === "fr" ? "Détails de la session" : "Session details";
+        const payHeading = lang === "fr" ? "💸 Confirmez votre place (virement Interac)" : "💸 Confirm your spot (Interac e-Transfer)";
+        const sendToLabel = lang === "fr" ? "Envoyer à" : "Send to";
+        const amountLabel = lang === "fr" ? "Montant" : "Amount";
+        const questionLabel = lang === "fr" ? "Question de sécurité" : "Security question";
+        const answerLabel = lang === "fr" ? "Réponse" : "Answer";
+        const questionText = lang === "fr" ? "Quel est le nom de la chorale ?" : "What is the choir name?";
+        const answerText = lang === "fr" ? "clubchoir <em>(en un mot, tout en minuscules)</em>" : "clubchoir <em>(one word, all lowercase)</em>";
+        const noteText = lang === "fr"
+          ? `⚠️ <strong>À noter :</strong> votre place n'est pas officiellement confirmée tant que nous n'avons pas reçu votre virement. Dès que le paiement arrive, nous vous enverrons un courriel de confirmation — c'est là que ce sera officiel !`
+          : `⚠️ <strong>Heads up:</strong> your spot isn't officially confirmed until we've received your e-Transfer. As soon as your payment lands, we'll send you a confirmation email — that's when it's a done deal!`;
+        const questionsText = lang === "fr"
+          ? `Une question ? Répondez simplement à ce courriel ou écrivez-nous à <a href="mailto:ailsa@clubchoir.ca" style="color:#f97316;">ailsa@clubchoir.ca</a>.`
+          : `Any questions? Just reply to this email or write to <a href="mailto:ailsa@clubchoir.ca" style="color:#f97316;">ailsa@clubchoir.ca</a>.`;
         const sign = lang === "fr" ? "À très bientôt !<br/>— Ailsa et l'équipe Club Choir" : "See you soon!<br/>— Ailsa & the Club Choir team";
 
         await resend.emails.send({
@@ -206,6 +219,20 @@ const handler = async (req: Request): Promise<Response> => {
                 <h2 style="margin: 0 0 8px; font-size: 18px; color: #c2410c;">${sessionLabel}</h2>
                 <p style="margin: 4px 0; font-size: 15px;">${escapeHtml(sessionInfo[lang])}</p>
               </div>
+
+              <h2 style="font-size: 18px; margin-top: 28px; margin-bottom: 8px;">${payHeading}</h2>
+              <div style="background: #f4f4f4; border-radius: 8px; padding: 16px 20px; margin: 8px 0 16px;">
+                <p style="margin: 4px 0; font-size: 15px;"><strong>${sendToLabel}:</strong> ailsa@clubchoir.ca</p>
+                <p style="margin: 4px 0; font-size: 15px;"><strong>${amountLabel}:</strong> $195 CAD</p>
+                <p style="margin: 4px 0; font-size: 15px;"><strong>${questionLabel}:</strong> ${questionText}</p>
+                <p style="margin: 4px 0; font-size: 15px;"><strong>${answerLabel}:</strong> ${answerText}</p>
+              </div>
+
+              <div style="background: #fef3c7; border-radius: 8px; padding: 16px 20px; margin: 16px 0;">
+                <p style="margin: 0; font-size: 15px; line-height: 1.6;">${noteText}</p>
+              </div>
+
+              <p style="font-size: 16px; line-height: 1.6; margin-top: 24px;">${questionsText}</p>
               <p style="font-size: 16px; line-height: 1.6; margin-top: 24px;">${sign}</p>
               <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0 16px;" />
               <p style="color: #999; font-size: 12px; text-align: center;">clubchoir.ca</p>
