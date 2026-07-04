@@ -119,6 +119,27 @@ const TryASession = () => {
         body: data,
       });
       if (error) throw error;
+
+      // Record in CRM (best-effort)
+      try {
+        const cityName = (data.location.split("–")[0] || "").trim();
+        const parts = data.name.trim().split(/\s+/);
+        const firstName = parts[0] || data.name.trim();
+        const lastName = parts.slice(1).join(" ") || "-";
+        await supabase.functions.invoke("record-open-house", {
+          body: {
+            first_name: firstName,
+            last_name: lastName,
+            email: data.email,
+            location: cityName,
+            notes: data.message || "",
+            session_label: "try-a-session",
+          },
+        });
+      } catch (recErr) {
+        console.warn("record try-a-session failed:", recErr);
+      }
+
       setSent(true);
       toast({ title: t("try.toast.sent.title"), description: t("try.toast.sent.desc") });
     } catch (err: any) {
