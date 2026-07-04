@@ -218,7 +218,9 @@ const CRM = () => {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return contacts.filter(c => {
-      if (typeFilter !== "ALL" && c.type !== typeFilter) return false;
+      if (typeFilter === "registrant") {
+        if (!(c.tags.some(t => t.includes("fall-2026")) || c.source.includes("fall-2026"))) return false;
+      } else if (typeFilter !== "ALL" && c.type !== typeFilter) return false;
       if (locationFilter !== "ALL" && !c.location.includes(locationFilter)) return false;
       if (statusFilter !== "ALL" && c.status.toUpperCase() !== statusFilter.toUpperCase()) return false;
       if (!q) return true;
