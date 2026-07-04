@@ -12,8 +12,9 @@ import {
 } from "@/components/ui/select";
 import {
   Search, Users, Mail, Loader2, UserCheck, Sparkles,
-  TicketIcon, ListChecks, MapPin, Tag, ChevronRight,
+  TicketIcon, ListChecks, MapPin, Tag, ChevronRight, CheckCircle2,
 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 type ContactType = "member" | "prospect" | "registrant" | "popup" | "waitlist";
 
