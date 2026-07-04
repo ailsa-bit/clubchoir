@@ -8,7 +8,8 @@ const corsHeaders = {
 };
 
 const VALID_LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
-const SESSION_LABEL = "open-house-2026";
+const DEFAULT_SESSION_LABEL = "open-house-2026";
+const ALLOWED_LABELS = new Set(["open-house-2026", "try-a-session"]);
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
