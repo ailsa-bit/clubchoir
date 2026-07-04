@@ -250,16 +250,31 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             </div>
           )}
             {isLoggedIn ? (
-              <Link
-                to="/profile"
-                onClick={() => setMobileOpen(false)}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname === "/profile" ?
-                "bg-primary/10 text-primary" :
-                "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-                }>
-                {t("nav.profile")}
-              </Link>
+              <>
+                <Link
+                  to="/profile"
+                  onClick={() => setMobileOpen(false)}
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === "/profile" ?
+                  "bg-primary/10 text-primary" :
+                  "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                  }>
+                  {t("nav.profile")}
+                </Link>
+                {isAdmin && (
+                  <>
+                    <div className="mt-2 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70 inline-flex items-center gap-1">
+                      <Shield className="w-3 h-3" /> Admin
+                    </div>
+                    <Link to="/crm" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
+                    <Link to="/manage-members" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Manage Members</Link>
+                    <Link to="/send-email" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
+                  </>
+                )}
+                <button onClick={handleLogout} className="w-full text-left block px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted inline-flex items-center gap-2">
+                  <LogOut className="w-4 h-4" /> {t("profile.signOut")}
+                </button>
+              </>
             ) : (
               <>
                 <Link
