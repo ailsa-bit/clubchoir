@@ -387,6 +387,7 @@ const CRM = () => {
                 <SelectItem value="member">Members</SelectItem>
                 <SelectItem value="prospect">Prospects</SelectItem>
                 <SelectItem value="registrant">Fall 2026 registrants</SelectItem>
+                <SelectItem value="open-house">Open House signups</SelectItem>
                 <SelectItem value="popup">Pop-up attendees</SelectItem>
                 <SelectItem value="waitlist">Waitlist</SelectItem>
               </SelectContent>
