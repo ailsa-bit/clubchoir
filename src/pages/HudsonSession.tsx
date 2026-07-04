@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
-import brianaSeijiPhoto from "@/assets/briana-seiji.jpg";
+import brianaSeijiPhoto from "@/assets/briana-seiji.webp";
 
 
 
