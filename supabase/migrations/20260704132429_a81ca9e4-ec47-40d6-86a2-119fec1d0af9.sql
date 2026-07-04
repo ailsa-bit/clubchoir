@@ -1,0 +1,1 @@
+ALTER TABLE public.session_registrations ADD COLUMN IF NOT EXISTS amount_paid numeric(10,2);
