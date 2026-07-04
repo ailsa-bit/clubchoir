@@ -118,6 +118,26 @@ const OpenHouseRegister = () => {
         },
       });
       if (error) throw error;
+
+      // Record in CRM (best-effort; don't block success on this)
+      try {
+        const cityName = (data.location.split("–")[0] || "").trim();
+        const parts = data.name.trim().split(/\s+/);
+        const firstName = parts[0] || data.name.trim();
+        const lastName = parts.slice(1).join(" ") || "-";
+        await supabase.functions.invoke("record-open-house", {
+          body: {
+            first_name: firstName,
+            last_name: lastName,
+            email: data.email,
+            location: cityName,
+            notes: data.message || "",
+          },
+        });
+      } catch (recErr) {
+        console.warn("record-open-house failed:", recErr);
+      }
+
       setSent(true);
       toast({
         title: isFr ? "Inscription reçue !" : "You're on the list!",
