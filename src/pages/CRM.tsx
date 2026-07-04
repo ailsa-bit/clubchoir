@@ -242,7 +242,15 @@ const CRM = () => {
     const list = contacts.filter(c => {
       if (typeFilter !== "ALL" && !c.types.includes(typeFilter as ContactType)) return false;
       if (locationFilter !== "ALL" && !c.location.includes(locationFilter)) return false;
-      if (statusFilter !== "ALL" && c.status.toUpperCase() !== statusFilter.toUpperCase()) return false;
+      if (statusFilter !== "ALL") {
+        const sf = statusFilter.toUpperCase();
+        // Type-like statuses match anyone carrying that role, not just the "primary" one.
+        if (sf === "PROSPECT") {
+          if (!c.types.includes("prospect")) return false;
+        } else if (sf === "WAITING") {
+          if (!c.types.includes("waitlist")) return false;
+        } else if (c.status.toUpperCase() !== sf) return false;
+      }
       if (tagFilter !== "ALL" && !c.tags.includes(tagFilter)) return false;
       if (!q) return true;
       return (
