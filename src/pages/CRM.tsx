@@ -14,7 +14,7 @@ import {
 import {
   Search, Users, Mail, Loader2, UserCheck, Sparkles,
   TicketIcon, MapPin, Tag, ChevronRight, CheckCircle2,
-  ArrowUpDown, DollarSign,
+  ArrowUpDown, DollarSign, Download,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
