@@ -352,6 +352,13 @@ const CRM = () => {
       toast({ title: "Could not mark paid", description: regErr.message, variant: "destructive" });
       return;
     }
+    const { error: memberErr } = await supabase
+      .from("members")
+      .update({ status: "ACTIVE" })
+      .ilike("email", c.email);
+    if (memberErr) {
+      console.warn("Could not activate member row:", memberErr.message);
+    }
     const { data: rpc, error: rpcErr } = await supabase.rpc(
       "activate_member_for_paid_registration",
       { _email: c.email, _active_until: "2026-12-10" }

@@ -175,12 +175,13 @@ const ManageMembers = () => {
       return;
     }
     setSaving(true);
+    const isPaid = form.payment_status.trim().toLowerCase() === "paid";
     const payload = {
       first_name: form.first_name.trim(),
       last_name: form.last_name.trim(),
       email: form.email.trim() || null,
       location: form.location,
-      status: form.status,
+      status: isPaid ? "ACTIVE" : form.status,
       payment_status: form.payment_status.trim(),
       notes: form.notes.trim(),
     };

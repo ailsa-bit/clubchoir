@@ -72,6 +72,7 @@ export function MemberEditForm({ member, onSaved }: MemberEditFormProps) {
       return;
     }
     setSaving(true);
+    const isPaid = form.payment_status.toLowerCase() === "paid";
     const { error } = await supabase
       .from("members")
       .update({
@@ -79,7 +80,7 @@ export function MemberEditForm({ member, onSaved }: MemberEditFormProps) {
         last_name: form.last_name.trim(),
         email: form.email.trim() || null,
         location: form.location.trim(),
-        status: form.status,
+        status: isPaid ? "ACTIVE" : form.status,
         joined: form.joined || null,
         payment_status: form.payment_status,
         notes: form.notes.trim(),
