@@ -248,6 +248,7 @@ const CRM = () => {
     members: contacts.filter(c => c.type === "member" && c.status.toUpperCase() === "ACTIVE").length,
     prospects: contacts.filter(c => c.type === "prospect").length,
     registrants: contacts.filter(c => c.tags.some(t => t.includes("fall-2026")) || c.source.includes("fall-2026")).length,
+    openHouse: contacts.filter(c => c.tags.some(t => t.includes("open-house")) || c.source.includes("open-house")).length,
     popup: contacts.filter(c => c.type === "popup" || c.source.includes("studio")).length,
   }), [contacts]);
 
