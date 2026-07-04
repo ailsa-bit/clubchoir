@@ -368,6 +368,7 @@ const CRM = () => {
           <StatCard icon={<Sparkles className="w-4 h-4" />} label="Prospects" value={stats.prospects} />
           <StatCard icon={<ListChecks className="w-4 h-4" />} label="Fall 2026" value={stats.registrants} />
           <StatCard icon={<ListChecks className="w-4 h-4" />} label="Open House" value={stats.openHouse} />
+          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Try a Session" value={stats.trySession} />
           <StatCard icon={<TicketIcon className="w-4 h-4" />} label="Pop-up" value={stats.popup} />
         </div>
 
