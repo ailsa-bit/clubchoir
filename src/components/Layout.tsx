@@ -36,34 +36,42 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   ];
 
   const publicNavItems = [
-  { label: t("nav.home"), path: "/" },
-  { label: "About", path: "/about" },
-  { label: t("nav.events"), path: "/events", children: eventsChildren },
-  { label: t("nav.corporate"), path: "/corporate" }];
+    { label: t("nav.home"), path: "/" },
+    { label: "About", path: "/about" },
+    { label: t("nav.events"), path: "/events", children: eventsChildren },
+    { label: t("nav.corporate"), path: "/corporate" },
+  ];
 
+  // Logged-in members: trimmed public items (drop About + Corporate — available in footer)
+  const loggedInPublicItems = [
+    { label: t("nav.home"), path: "/" },
+    { label: t("nav.events"), path: "/events", children: eventsChildren },
+  ];
 
-  const thisWeekChildren = [
-    { label: "Montreal", path: "/schedule/montreal" },
-    { label: "Hudson", path: "/schedule/hudson" },
-    
-    { label: "Saint-Hubert", path: "/schedule/saint-hubert" },
-    { label: "Pointe-Claire", path: "/schedule/pointe-claire" },
+  // Consolidated "My Choir" dropdown for member-only day-to-day items
+  const myChoirChildren = [
+    { label: `${t("nav.thisWeek")} — Montreal`, path: "/schedule/montreal" },
+    { label: `${t("nav.thisWeek")} — Hudson`, path: "/schedule/hudson" },
+    { label: `${t("nav.thisWeek")} — Saint-Hubert`, path: "/schedule/saint-hubert" },
+    { label: `${t("nav.thisWeek")} — Pointe-Claire`, path: "/schedule/pointe-claire" },
+    { label: t("nav.community"), path: "/community" },
+    { label: t("nav.chat"), path: "/chat" },
+    { label: t("nav.songs.winter2026"), path: "/resources" },
+    { label: t("nav.songs.fall2026"), path: "/resources/fall-2026" },
   ];
 
   const memberNavItems = [
-  { label: t("nav.thisWeek"), path: "/this-week", children: thisWeekChildren },
-  { label: t("nav.community"), path: "/community" },
-  { label: t("nav.chat"), path: "/chat" },
-  { label: t("nav.songs"), path: "/resources", children: [
-    { label: t("nav.songs.winter2026"), path: "/resources" },
-    { label: t("nav.songs.fall2026"), path: "/resources/fall-2026" },
-  ] }];
-
-
-  const adminNavItems = isAdmin ? [{ label: "CRM", path: "/crm" }] : [];
+    { label: "My Choir", path: "/this-week", children: myChoirChildren },
+  ];
 
   const navItems: Array<{ label: string; path: string; children?: { label: string; path: string }[] }> =
-    isLoggedIn ? [...publicNavItems, ...memberNavItems, ...adminNavItems] : publicNavItems;
+    isLoggedIn ? [...loggedInPublicItems, ...memberNavItems] : publicNavItems;
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setMobileOpen(false);
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
