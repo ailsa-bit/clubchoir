@@ -362,6 +362,7 @@ export type Database = {
       }
       session_registrations: {
         Row: {
+          amount_paid: number | null
           created_at: string
           email: string
           first_name: string
@@ -377,6 +378,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          amount_paid?: number | null
           created_at?: string
           email: string
           first_name: string
@@ -392,6 +394,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          amount_paid?: number | null
           created_at?: string
           email?: string
           first_name?: string
