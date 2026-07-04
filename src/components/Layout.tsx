@@ -158,7 +158,6 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                           <Shield className="w-3 h-3" /> Admin
                         </div>
                         <Link to="/crm" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
-                        <Link to="/manage-members" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Manage Members</Link>
                         <Link to="/send-email" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
                       </>
                     )}
@@ -266,7 +265,6 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                       <Shield className="w-3 h-3" /> Admin
                     </div>
                     <Link to="/crm" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
-                    <Link to="/manage-members" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Manage Members</Link>
                     <Link to="/send-email" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
                   </>
                 )}
