@@ -444,6 +444,9 @@ const CRM = () => {
             </p>
           </div>
           <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={exportCSV}>
+              <Download className="w-4 h-4 mr-1" /> Export
+            </Button>
             <Link to="/manage-members"><Button variant="outline" size="sm"><UserCheck className="w-4 h-4 mr-1" /> Members</Button></Link>
             <Link to="/manage-prospects"><Button variant="outline" size="sm"><Sparkles className="w-4 h-4 mr-1" /> Prospects</Button></Link>
           </div>
