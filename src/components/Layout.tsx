@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, X, User, Mail, Facebook, Bell, ChevronDown } from "lucide-react";
+import { Menu, X, User, Mail, Facebook, Bell, ChevronDown, Globe, Shield, LogOut } from "lucide-react";
 import clubChoirLogo from "@/assets/club-choir-logo.webp";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import { supabase } from "@/integrations/supabase/client";
@@ -36,34 +36,42 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   ];
 
   const publicNavItems = [
-  { label: t("nav.home"), path: "/" },
-  { label: "About", path: "/about" },
-  { label: t("nav.events"), path: "/events", children: eventsChildren },
-  { label: t("nav.corporate"), path: "/corporate" }];
+    { label: t("nav.home"), path: "/" },
+    { label: "About", path: "/about" },
+    { label: t("nav.events"), path: "/events", children: eventsChildren },
+    { label: t("nav.corporate"), path: "/corporate" },
+  ];
 
+  // Logged-in members: trimmed public items (drop About + Corporate — available in footer)
+  const loggedInPublicItems = [
+    { label: t("nav.home"), path: "/" },
+    { label: t("nav.events"), path: "/events", children: eventsChildren },
+  ];
 
-  const thisWeekChildren = [
-    { label: "Montreal", path: "/schedule/montreal" },
-    { label: "Hudson", path: "/schedule/hudson" },
-    
-    { label: "Saint-Hubert", path: "/schedule/saint-hubert" },
-    { label: "Pointe-Claire", path: "/schedule/pointe-claire" },
+  // Consolidated "My Choir" dropdown for member-only day-to-day items
+  const myChoirChildren = [
+    { label: `${t("nav.thisWeek")} — Montreal`, path: "/schedule/montreal" },
+    { label: `${t("nav.thisWeek")} — Hudson`, path: "/schedule/hudson" },
+    { label: `${t("nav.thisWeek")} — Saint-Hubert`, path: "/schedule/saint-hubert" },
+    { label: `${t("nav.thisWeek")} — Pointe-Claire`, path: "/schedule/pointe-claire" },
+    { label: t("nav.community"), path: "/community" },
+    { label: t("nav.chat"), path: "/chat" },
+    { label: t("nav.songs.winter2026"), path: "/resources" },
+    { label: t("nav.songs.fall2026"), path: "/resources/fall-2026" },
   ];
 
   const memberNavItems = [
-  { label: t("nav.thisWeek"), path: "/this-week", children: thisWeekChildren },
-  { label: t("nav.community"), path: "/community" },
-  { label: t("nav.chat"), path: "/chat" },
-  { label: t("nav.songs"), path: "/resources", children: [
-    { label: t("nav.songs.winter2026"), path: "/resources" },
-    { label: t("nav.songs.fall2026"), path: "/resources/fall-2026" },
-  ] }];
-
-
-  const adminNavItems = isAdmin ? [{ label: "CRM", path: "/crm" }] : [];
+    { label: "My Choir", path: "/this-week", children: myChoirChildren },
+  ];
 
   const navItems: Array<{ label: string; path: string; children?: { label: string; path: string }[] }> =
-    isLoggedIn ? [...publicNavItems, ...memberNavItems, ...adminNavItems] : publicNavItems;
+    isLoggedIn ? [...loggedInPublicItems, ...memberNavItems] : publicNavItems;
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setMobileOpen(false);
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -121,21 +129,47 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             )}
             <button
               onClick={() => setLanguage(language === "en" ? "fr" : "en")}
-              className="ml-2 px-2.5 py-1.5 rounded-lg text-xs font-bold border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
-
-              {language === "en" ? "FR" : "EN"}
+              aria-label={language === "en" ? "Switch to French" : "Switch to English"}
+              title={language === "en" ? "Français" : "English"}
+              className="ml-2 inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+              <Globe className="w-4 h-4" />
+              <span>{language === "en" ? "FR" : "EN"}</span>
             </button>
             {isLoggedIn ? (
-              <Link
-                to="/profile"
-                className={`ml-1 px-3 py-1.5 rounded-lg text-base font-medium inline-flex items-center gap-1.5 transition-colors ${
-                location.pathname === "/profile" ?
-                "bg-primary/10 text-primary" :
-                "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-                }>
-                <User className="w-4 h-4" />
-                {t("nav.profile")}
-              </Link>
+              <div className="relative group ml-1">
+                <button
+                  className={`px-3 py-1.5 rounded-lg text-base font-medium inline-flex items-center gap-1.5 transition-colors ${
+                  location.pathname === "/profile" ?
+                  "bg-primary/10 text-primary" :
+                  "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                  }>
+                  <User className="w-4 h-4" />
+                  {t("nav.profile")}
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                <div className="absolute right-0 top-full pt-1 hidden group-hover:block z-50 min-w-[220px]">
+                  <div className="bg-card border border-border rounded-lg shadow-lg py-1">
+                    <Link to="/profile" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">
+                      {t("nav.profile")}
+                    </Link>
+                    {isAdmin && (
+                      <>
+                        <div className="my-1 border-t border-border" />
+                        <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70 inline-flex items-center gap-1">
+                          <Shield className="w-3 h-3" /> Admin
+                        </div>
+                        <Link to="/crm" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
+                        <Link to="/manage-members" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Manage Members</Link>
+                        <Link to="/send-email" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
+                      </>
+                    )}
+                    <div className="my-1 border-t border-border" />
+                    <button onClick={handleLogout} className="w-full text-left px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted inline-flex items-center gap-2">
+                      <LogOut className="w-4 h-4" /> {t("profile.signOut")}
+                    </button>
+                  </div>
+                </div>
+              </div>
             ) : (
               <>
                 <Link
@@ -150,15 +184,17 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                 </Link>
               </>
             )}
+
           </nav>
 
           {/* Mobile toggle */}
           <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={() => setLanguage(language === "en" ? "fr" : "en")}
-              className="px-2.5 py-1.5 rounded-lg text-xs font-bold border border-border text-muted-foreground hover:text-foreground transition-colors">
-
-              {language === "en" ? "FR" : "EN"}
+              aria-label={language === "en" ? "Switch to French" : "Switch to English"}
+              className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-bold text-muted-foreground hover:text-foreground transition-colors">
+              <Globe className="w-4 h-4" />
+              <span>{language === "en" ? "FR" : "EN"}</span>
             </button>
             <button
               className="p-2 text-foreground"
@@ -214,16 +250,31 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             </div>
           )}
             {isLoggedIn ? (
-              <Link
-                to="/profile"
-                onClick={() => setMobileOpen(false)}
-                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname === "/profile" ?
-                "bg-primary/10 text-primary" :
-                "text-muted-foreground hover:text-foreground hover:bg-muted"}`
-                }>
-                {t("nav.profile")}
-              </Link>
+              <>
+                <Link
+                  to="/profile"
+                  onClick={() => setMobileOpen(false)}
+                  className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === "/profile" ?
+                  "bg-primary/10 text-primary" :
+                  "text-muted-foreground hover:text-foreground hover:bg-muted"}`
+                  }>
+                  {t("nav.profile")}
+                </Link>
+                {isAdmin && (
+                  <>
+                    <div className="mt-2 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70 inline-flex items-center gap-1">
+                      <Shield className="w-3 h-3" /> Admin
+                    </div>
+                    <Link to="/crm" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
+                    <Link to="/manage-members" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Manage Members</Link>
+                    <Link to="/send-email" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
+                  </>
+                )}
+                <button onClick={handleLogout} className="w-full text-left block px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted inline-flex items-center gap-2">
+                  <LogOut className="w-4 h-4" /> {t("profile.signOut")}
+                </button>
+              </>
             ) : (
               <>
                 <Link
