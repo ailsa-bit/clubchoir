@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Menu, X, User, Mail, Facebook, Bell, ChevronDown } from "lucide-react";
+import { Menu, X, User, Mail, Facebook, Bell, ChevronDown, Globe, Shield, LogOut } from "lucide-react";
 import clubChoirLogo from "@/assets/club-choir-logo.webp";
 import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import { supabase } from "@/integrations/supabase/client";
