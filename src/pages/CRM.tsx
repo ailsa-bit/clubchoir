@@ -362,7 +362,7 @@ const CRM = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-7 gap-3 mb-6">
           <StatCard icon={<Users className="w-4 h-4" />} label="Total contacts" value={stats.total} />
           <StatCard icon={<UserCheck className="w-4 h-4" />} label="Active members" value={stats.members} />
           <StatCard icon={<Sparkles className="w-4 h-4" />} label="Prospects" value={stats.prospects} />
