@@ -191,9 +191,10 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
           <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={() => setLanguage(language === "en" ? "fr" : "en")}
-              className="px-2.5 py-1.5 rounded-lg text-xs font-bold border border-border text-muted-foreground hover:text-foreground transition-colors">
-
-              {language === "en" ? "FR" : "EN"}
+              aria-label={language === "en" ? "Switch to French" : "Switch to English"}
+              className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-bold text-muted-foreground hover:text-foreground transition-colors">
+              <Globe className="w-4 h-4" />
+              <span>{language === "en" ? "FR" : "EN"}</span>
             </button>
             <button
               className="p-2 text-foreground"
