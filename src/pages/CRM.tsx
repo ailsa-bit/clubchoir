@@ -228,6 +228,8 @@ const CRM = () => {
         if (!(c.tags.some(t => t.includes("fall-2026")) || c.source.includes("fall-2026"))) return false;
       } else if (typeFilter === "open-house") {
         if (!(c.tags.some(t => t.includes("open-house")) || c.source.includes("open-house"))) return false;
+      } else if (typeFilter === "try-a-session") {
+        if (!(c.tags.some(t => t.includes("try-a-session")) || c.source.includes("try-a-session"))) return false;
       } else if (typeFilter !== "ALL" && c.type !== typeFilter) return false;
       if (locationFilter !== "ALL" && !c.location.includes(locationFilter)) return false;
       if (statusFilter !== "ALL" && c.status.toUpperCase() !== statusFilter.toUpperCase()) return false;
