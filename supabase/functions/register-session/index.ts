@@ -167,7 +167,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <p style="margin: 0; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(notes)}</p>
               </div>` : ""}
               <p style="color: #333; font-size: 14px; line-height: 1.6;">
-                Next step: send them e-transfer instructions in July to confirm their spot.
+                They've been sent e-Transfer instructions. Mark them as paid in the CRM once payment arrives to confirm their spot.
               </p>
             </div>
           `,
