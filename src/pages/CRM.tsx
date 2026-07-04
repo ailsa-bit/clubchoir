@@ -251,6 +251,7 @@ const CRM = () => {
     prospects: contacts.filter(c => c.type === "prospect").length,
     registrants: contacts.filter(c => c.tags.some(t => t.includes("fall-2026")) || c.source.includes("fall-2026")).length,
     openHouse: contacts.filter(c => c.tags.some(t => t.includes("open-house")) || c.source.includes("open-house")).length,
+    trySession: contacts.filter(c => c.tags.some(t => t.includes("try-a-session")) || c.source.includes("try-a-session")).length,
     popup: contacts.filter(c => c.type === "popup" || c.source.includes("studio")).length,
   }), [contacts]);
 
