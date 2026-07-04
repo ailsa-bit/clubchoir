@@ -71,12 +71,10 @@ const handler = async (req: Request): Promise<Response> => {
     if (existing) {
       memberId = existing.id;
       isReturning = true;
-      // Reactivate if needed; update location if changed
-      const updates: Record<string, unknown> = {};
-      if (existing.status !== "ACTIVE") updates.status = "ACTIVE";
-      if (existing.location !== location) updates.location = location;
-      if (Object.keys(updates).length > 0) {
-        await supabase.from("members").update(updates).eq("id", existing.id);
+      // Do NOT auto-activate on registration — activation happens only after payment
+      // (via the CRM "Mark paid" action). Just update location if it changed.
+      if (existing.location !== location) {
+        await supabase.from("members").update({ location }).eq("id", existing.id);
       }
     } else {
       // Create new member with PENDING status
