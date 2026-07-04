@@ -363,13 +363,13 @@ const CRM = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-7 gap-3 mb-6">
-          <StatCard icon={<Users className="w-4 h-4" />} label="Total contacts" value={stats.total} />
-          <StatCard icon={<UserCheck className="w-4 h-4" />} label="Active members" value={stats.members} />
-          <StatCard icon={<Sparkles className="w-4 h-4" />} label="Prospects" value={stats.prospects} />
-          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Fall 2026" value={stats.registrants} />
-          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Open House" value={stats.openHouse} />
-          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Try a Session" value={stats.trySession} />
-          <StatCard icon={<TicketIcon className="w-4 h-4" />} label="Pop-up" value={stats.popup} />
+          <StatCard icon={<Users className="w-4 h-4" />} label="Total contacts" value={stats.total} onClick={() => setTypeFilter("ALL")} active={typeFilter === "ALL"} />
+          <StatCard icon={<UserCheck className="w-4 h-4" />} label="Active members" value={stats.members} onClick={() => setTypeFilter("member")} active={typeFilter === "member"} />
+          <StatCard icon={<Sparkles className="w-4 h-4" />} label="Prospects" value={stats.prospects} onClick={() => setTypeFilter("prospect")} active={typeFilter === "prospect"} />
+          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Fall 2026" value={stats.registrants} onClick={() => setTypeFilter("registrant")} active={typeFilter === "registrant"} />
+          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Open House" value={stats.openHouse} onClick={() => setTypeFilter("open-house")} active={typeFilter === "open-house"} />
+          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Try a Session" value={stats.trySession} onClick={() => setTypeFilter("try-a-session")} active={typeFilter === "try-a-session"} />
+          <StatCard icon={<TicketIcon className="w-4 h-4" />} label="Pop-up" value={stats.popup} onClick={() => setTypeFilter("popup")} active={typeFilter === "popup"} />
         </div>
 
         {/* Filters */}
