@@ -8,7 +8,8 @@ const corsHeaders = {
 };
 
 const VALID_LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
-const SESSION_LABEL = "open-house-2026";
+const DEFAULT_SESSION_LABEL = "open-house-2026";
+const ALLOWED_LABELS = new Set(["open-house-2026", "try-a-session"]);
 
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -22,6 +23,8 @@ const handler = async (req: Request): Promise<Response> => {
     const email = String(body.email || "").trim().toLowerCase().slice(0, 255);
     const location = String(body.location || "").trim();
     const notes = String(body.notes || body.message || "").trim().slice(0, 2000);
+    const requestedLabel = String(body.session_label || "").trim();
+    const SESSION_LABEL = ALLOWED_LABELS.has(requestedLabel) ? requestedLabel : DEFAULT_SESSION_LABEL;
 
     if (!first_name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return new Response(JSON.stringify({ error: "Missing name or valid email." }), {

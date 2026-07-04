@@ -228,6 +228,8 @@ const CRM = () => {
         if (!(c.tags.some(t => t.includes("fall-2026")) || c.source.includes("fall-2026"))) return false;
       } else if (typeFilter === "open-house") {
         if (!(c.tags.some(t => t.includes("open-house")) || c.source.includes("open-house"))) return false;
+      } else if (typeFilter === "try-a-session") {
+        if (!(c.tags.some(t => t.includes("try-a-session")) || c.source.includes("try-a-session"))) return false;
       } else if (typeFilter !== "ALL" && c.type !== typeFilter) return false;
       if (locationFilter !== "ALL" && !c.location.includes(locationFilter)) return false;
       if (statusFilter !== "ALL" && c.status.toUpperCase() !== statusFilter.toUpperCase()) return false;
@@ -249,6 +251,7 @@ const CRM = () => {
     prospects: contacts.filter(c => c.type === "prospect").length,
     registrants: contacts.filter(c => c.tags.some(t => t.includes("fall-2026")) || c.source.includes("fall-2026")).length,
     openHouse: contacts.filter(c => c.tags.some(t => t.includes("open-house")) || c.source.includes("open-house")).length,
+    trySession: contacts.filter(c => c.tags.some(t => t.includes("try-a-session")) || c.source.includes("try-a-session")).length,
     popup: contacts.filter(c => c.type === "popup" || c.source.includes("studio")).length,
   }), [contacts]);
 
@@ -359,12 +362,13 @@ const CRM = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-7 gap-3 mb-6">
           <StatCard icon={<Users className="w-4 h-4" />} label="Total contacts" value={stats.total} />
           <StatCard icon={<UserCheck className="w-4 h-4" />} label="Active members" value={stats.members} />
           <StatCard icon={<Sparkles className="w-4 h-4" />} label="Prospects" value={stats.prospects} />
           <StatCard icon={<ListChecks className="w-4 h-4" />} label="Fall 2026" value={stats.registrants} />
           <StatCard icon={<ListChecks className="w-4 h-4" />} label="Open House" value={stats.openHouse} />
+          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Try a Session" value={stats.trySession} />
           <StatCard icon={<TicketIcon className="w-4 h-4" />} label="Pop-up" value={stats.popup} />
         </div>
 
@@ -388,6 +392,7 @@ const CRM = () => {
                 <SelectItem value="prospect">Prospects</SelectItem>
                 <SelectItem value="registrant">Fall 2026 registrants</SelectItem>
                 <SelectItem value="open-house">Open House signups</SelectItem>
+                <SelectItem value="try-a-session">Try-a-Session signups</SelectItem>
                 <SelectItem value="popup">Pop-up attendees</SelectItem>
                 <SelectItem value="waitlist">Waitlist</SelectItem>
               </SelectContent>
