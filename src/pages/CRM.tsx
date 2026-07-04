@@ -510,11 +510,15 @@ const CRM = () => {
   );
 };
 
-const StatCard = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: number }) => (
-  <div className="rounded-xl border border-border bg-card p-3">
+const StatCard = ({ icon, label, value, onClick, active }: { icon: React.ReactNode; label: string; value: number; onClick?: () => void; active?: boolean }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={`text-left rounded-xl border p-3 transition-colors ${active ? "border-primary bg-primary/5 ring-1 ring-primary/40" : "border-border bg-card hover:bg-muted/60"} ${onClick ? "cursor-pointer" : "cursor-default"}`}
+  >
     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">{icon}{label}</div>
     <div className="text-2xl font-bold text-foreground mt-1">{value}</div>
-  </div>
+  </button>
 );
 
 export default CRM;
