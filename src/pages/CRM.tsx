@@ -359,11 +359,12 @@ const CRM = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
           <StatCard icon={<Users className="w-4 h-4" />} label="Total contacts" value={stats.total} />
           <StatCard icon={<UserCheck className="w-4 h-4" />} label="Active members" value={stats.members} />
           <StatCard icon={<Sparkles className="w-4 h-4" />} label="Prospects" value={stats.prospects} />
           <StatCard icon={<ListChecks className="w-4 h-4" />} label="Fall 2026" value={stats.registrants} />
+          <StatCard icon={<ListChecks className="w-4 h-4" />} label="Open House" value={stats.openHouse} />
           <StatCard icon={<TicketIcon className="w-4 h-4" />} label="Pop-up" value={stats.popup} />
         </div>
 
