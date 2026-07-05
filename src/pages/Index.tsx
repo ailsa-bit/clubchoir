@@ -49,12 +49,6 @@ const Index = () => {
     { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026", isNew: false, openHouse: { en: "Thu, Aug 6 · 7:00 PM", fr: "Jeu. 6 août · 19 h" } },
   ];
 
-  const openHouses = [
-    { name: "Montreal", dot: "bg-pink", bg: "bg-pink-light border-pink/20", date: { en: "Mon, Aug 3 · 7:00 PM", fr: "Lun. 3 août · 19 h" }, venue: "Kensington Presbyterian Church" },
-    { name: "Hudson", dot: "bg-orange", bg: "bg-orange-light border-orange/20", date: { en: "Tue, Aug 4 · 7:00 PM", fr: "Mar. 4 août · 19 h" }, venue: "Kingfisher Pub" },
-    { name: "Saint-Hubert", dot: "bg-lime", bg: "bg-lime-light border-lime/20", date: { en: "Wed, Aug 5 · 7:00 PM", fr: "Mer. 5 août · 19 h" }, venue: "St-Gabriel Catholic Church" },
-    { name: "Pointe-Claire", dot: "bg-purple", bg: "bg-purple-light border-purple/20", date: { en: "Thu, Aug 6 · 7:00 PM", fr: "Jeu. 6 août · 19 h" }, venue: "Valois United Church" },
-  ];
 
   const visibleTestimonials = showAllTestimonials ? testimonials : testimonials.slice(0, 4);
 
@@ -238,40 +232,6 @@ const Index = () => {
                     <ArrowRight className="w-3 h-3" />
                   </Link>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* OPEN HOUSES STRIP — try before registering */}
-      <section className="py-14 px-4 bg-muted/40 border-y border-border/60">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
-            {t("home.openHouse.title")}
-          </h2>
-          <p className="text-base text-muted-foreground text-center mb-8 max-w-2xl mx-auto leading-relaxed">
-            {t("home.openHouse.subtitle")}
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {openHouses.map((oh) => (
-              <div key={oh.name} className={`rounded-2xl border p-4 ${oh.bg}`}>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className={`w-2 h-2 rounded-full ${oh.dot}`} />
-                  <span className="font-heading font-bold text-sm text-foreground">{oh.name}</span>
-                </div>
-                <p className="text-sm font-semibold text-foreground mb-1">{oh.date[isFr ? "fr" : "en"]}</p>
-                <p className="text-xs text-muted-foreground mb-3 flex items-start gap-1">
-                  <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                  <span>{oh.venue}</span>
-                </p>
-                <Link
-                  to="/open-house"
-                  className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1"
-                >
-                  {t("home.openHouse.reserve")}
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
               </div>
             ))}
           </div>
