@@ -650,6 +650,45 @@ const CRM = () => {
               </p>
             </div>
 
+            {/* Location payment totals */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-4">
+              <button
+                onClick={() => setPayLocation("ALL")}
+                className={`rounded-xl border p-3 text-left transition-colors ${payLocation === "ALL" ? "border-primary bg-primary/5" : "border-border bg-card hover:bg-muted/50"}`}
+              >
+                <div className="text-xs font-medium text-muted-foreground">All locations</div>
+                <div className="flex gap-3 mt-1">
+                  <div>
+                    <span className="text-xl font-bold text-foreground">{stats.unpaid}</span>
+                    <span className="text-[10px] text-muted-foreground ml-1">unpaid</span>
+                  </div>
+                  <div>
+                    <span className="text-xl font-bold text-foreground">{stats.fallPaid}</span>
+                    <span className="text-[10px] text-muted-foreground ml-1">paid</span>
+                  </div>
+                </div>
+              </button>
+              {payStats.map(([loc, s]) => (
+                <button
+                  key={loc}
+                  onClick={() => setPayLocation(payLocation === loc ? "ALL" : loc)}
+                  className={`rounded-xl border p-3 text-left transition-colors ${payLocation === loc ? "border-primary bg-primary/5" : "border-border bg-card hover:bg-muted/50"}`}
+                >
+                  <div className="text-xs font-medium text-muted-foreground truncate">{loc}</div>
+                  <div className="flex gap-3 mt-1">
+                    <div>
+                      <span className="text-xl font-bold text-foreground">{s.unpaid}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">unpaid</span>
+                    </div>
+                    <div>
+                      <span className="text-xl font-bold text-foreground">{s.paid}</span>
+                      <span className="text-[10px] text-muted-foreground ml-1">paid</span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+
             <div className="rounded-xl border border-border overflow-hidden bg-card divide-y divide-border">
               {unpaidRegs.length === 0 && (
                 <p className="p-8 text-center text-sm text-muted-foreground">🎉 No unpaid registrants.</p>
