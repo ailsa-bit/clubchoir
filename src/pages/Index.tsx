@@ -238,40 +238,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* OPEN HOUSES STRIP — try before registering */}
-      <section className="py-14 px-4 bg-muted/40 border-y border-border/60">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-foreground mb-2 text-center">
-            {t("home.openHouse.title")}
-          </h2>
-          <p className="text-base text-muted-foreground text-center mb-8 max-w-2xl mx-auto leading-relaxed">
-            {t("home.openHouse.subtitle")}
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {openHouses.map((oh) => (
-              <div key={oh.name} className={`rounded-2xl border p-4 ${oh.bg}`}>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span className={`w-2 h-2 rounded-full ${oh.dot}`} />
-                  <span className="font-heading font-bold text-sm text-foreground">{oh.name}</span>
-                </div>
-                <p className="text-sm font-semibold text-foreground mb-1">{oh.date[isFr ? "fr" : "en"]}</p>
-                <p className="text-xs text-muted-foreground mb-3 flex items-start gap-1">
-                  <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
-                  <span>{oh.venue}</span>
-                </p>
-                <Link
-                  to="/open-house"
-                  className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1"
-                >
-                  {t("home.openHouse.reserve")}
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* FOUNDER — light band (photo on left, cream background on right) */}
       <section className="py-14 px-4 bg-card">
         <div className="container mx-auto max-w-5xl">
