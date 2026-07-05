@@ -306,6 +306,19 @@ const CRM = () => {
     unpaid: contacts.filter(c => c.unpaid_reg).length,
   }), [contacts]);
 
+  const payStats = useMemo(() => {
+    const byLoc = new Map<string, { unpaid: number; paid: number }>();
+    contacts.forEach(c => {
+      const loc = c.unpaid_reg?.location || c.paid_reg?.location;
+      if (!loc) return;
+      if (!byLoc.has(loc)) byLoc.set(loc, { unpaid: 0, paid: 0 });
+      const s = byLoc.get(loc)!;
+      if (c.unpaid_reg) s.unpaid++;
+      if (c.paid_reg) s.paid++;
+    });
+    return [...byLoc.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+  }, [contacts]);
+
   const toggleSort = (k: SortKey) => {
     if (sortKey === k) setSortDir(sortDir === "asc" ? "desc" : "asc");
     else { setSortKey(k); setSortDir("asc"); }
