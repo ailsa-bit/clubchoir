@@ -43,10 +43,10 @@ const Index = () => {
   ];
 
   const locations = [
-    { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church\n6225 Av. Godfrey, Montréal", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: "Sept 7 – Dec 7, 2026", isNew: false },
-    { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub\n84 Rue Cameron, Hudson", color: "bg-orange-light border-orange/20", day: t("day.tuesday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: "Sept 8 – Dec 8, 2026", isNew: true },
-    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: "Sept 9 – Dec 9, 2026", isNew: false },
-    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026", isNew: false },
+    { location: "Montreal", slug: "montreal", venue: "Kensington Presbyterian Church\n6225 Av. Godfrey, Montréal", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: "Sept 7 – Dec 7, 2026", isNew: false, openHouse: { en: "Mon, Aug 3 · 7:00 PM", fr: "Lun. 3 août · 19 h" } },
+    { location: "Hudson", slug: "hudson", venue: "Kingfisher Pub\n84 Rue Cameron, Hudson", color: "bg-orange-light border-orange/20", day: t("day.tuesday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: "Sept 8 – Dec 8, 2026", isNew: true, openHouse: { en: "Tue, Aug 4 · 7:00 PM", fr: "Mar. 4 août · 19 h" } },
+    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: "Sept 9 – Dec 9, 2026", isNew: false, openHouse: { en: "Wed, Aug 5 · 7:00 PM", fr: "Mer. 5 août · 19 h" } },
+    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026", isNew: false, openHouse: { en: "Thu, Aug 6 · 7:00 PM", fr: "Jeu. 6 août · 19 h" } },
   ];
 
   const openHouses = [
@@ -207,7 +207,22 @@ const Index = () => {
                   {item.day} · {item.time}
                 </p>
                 <p className="text-base font-bold text-foreground mb-2">{item.dates}</p>
-                <p className="text-xs text-muted-foreground whitespace-pre-line mb-4 flex-1">{item.venue}</p>
+                <p className="text-xs text-muted-foreground whitespace-pre-line mb-3 flex-1">{item.venue}</p>
+                <div className="mb-3 rounded-lg bg-background/60 border border-foreground/10 p-2">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/60 mb-0.5">
+                    {isFr ? "Portes ouvertes" : "Open House"}
+                  </p>
+                  <p className="text-xs font-semibold text-foreground mb-1">
+                    {isFr ? item.openHouse.fr : item.openHouse.en}
+                  </p>
+                  <Link
+                    to="/open-house"
+                    className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1"
+                  >
+                    {isFr ? "Réserver ma place" : "Reserve your spot"}
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
                 <div className="flex items-center justify-between gap-2 mt-auto">
                   <Link
                     to={`/choir/${item.slug}`}
