@@ -376,16 +376,35 @@ const CRM = () => {
       "activate_member_for_paid_registration",
       { _email: c.email, _active_until: "2026-12-10" }
     );
+    const activated = !rpcErr && Array.isArray(rpc) && rpc[0]?.activated;
     if (rpcErr) {
       toast({ title: "Marked paid, activation failed", description: rpcErr.message, variant: "destructive" });
     } else {
-      const activated = Array.isArray(rpc) && rpc[0]?.activated;
       toast({
         title: "Marked paid",
         description: activated
           ? `${c.first_name} now has member access through Dec 10, 2026.`
           : `${c.first_name} is marked paid. Access unlocks when they sign up.`,
       });
+    }
+    // Send payment confirmation email
+    try {
+      const { error: emailErr } = await supabase.functions.invoke("notify-payment-confirmed", {
+        body: {
+          email: c.email,
+          first_name: c.first_name,
+          amount,
+          location: reg.location,
+          has_account: activated,
+        },
+      });
+      if (emailErr) {
+        toast({ title: "Payment email failed", description: emailErr.message, variant: "destructive" });
+      } else {
+        toast({ title: "Confirmation email sent", description: `Emailed ${c.email}` });
+      }
+    } catch (e: any) {
+      toast({ title: "Payment email failed", description: e?.message || "Unknown error", variant: "destructive" });
     }
     fetchAll();
   };
