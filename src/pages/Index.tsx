@@ -207,7 +207,22 @@ const Index = () => {
                   {item.day} · {item.time}
                 </p>
                 <p className="text-base font-bold text-foreground mb-2">{item.dates}</p>
-                <p className="text-xs text-muted-foreground whitespace-pre-line mb-4 flex-1">{item.venue}</p>
+                <p className="text-xs text-muted-foreground whitespace-pre-line mb-3 flex-1">{item.venue}</p>
+                <div className="mb-3 rounded-lg bg-background/60 border border-foreground/10 p-2">
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/60 mb-0.5">
+                    {isFr ? "Portes ouvertes" : "Open House"}
+                  </p>
+                  <p className="text-xs font-semibold text-foreground mb-1">
+                    {isFr ? item.openHouse.fr : item.openHouse.en}
+                  </p>
+                  <Link
+                    to="/open-house"
+                    className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1"
+                  >
+                    {isFr ? "Réserver ma place" : "Reserve your spot"}
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
                 <div className="flex items-center justify-between gap-2 mt-auto">
                   <Link
                     to={`/choir/${item.slug}`}
