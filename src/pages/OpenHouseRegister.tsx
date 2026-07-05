@@ -58,6 +58,7 @@ const LOCATIONS: Loc[] = [
     dot: "bg-lime",
     ring: "ring-lime",
     day: { en: "Wednesday, August 5 · 7:00 PM", fr: "Mercredi 5 août · 19 h" },
+    venue: { en: "St-Gabriel Catholic Church, 5070 Rue Gilbert", fr: "Église catholique St-Gabriel, 5070 rue Gilbert" },
   },
   {
     value: "Pointe-Claire – Thursday August 6, 7PM",
@@ -67,6 +68,7 @@ const LOCATIONS: Loc[] = [
     dot: "bg-purple",
     ring: "ring-purple",
     day: { en: "Thursday, August 6 · 7:00 PM", fr: "Jeudi 6 août · 19 h" },
+    venue: { en: "Valois United Church, 70 Av. Belmont", fr: "Église unie Valois, 70 av. Belmont" },
   },
 ];
 
