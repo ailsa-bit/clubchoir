@@ -8,6 +8,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+const escapeHtml = (s: string) =>
+  String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
@@ -35,6 +39,13 @@ serve(async (req) => {
     const qrDataUrl = await QRCode.toDataURL(checkinUrl, { width: 400, margin: 2 });
     const base64 = qrDataUrl.split(",")[1];
 
+    const safeFirst = escapeHtml(r.first_name);
+    const safeLast = escapeHtml(r.last_name);
+    const safeEmail = escapeHtml(r.email);
+    const safeTicketCount = escapeHtml(String(r.ticket_count ?? ""));
+    const safeEventSlug = escapeHtml(r.event_slug);
+    const attachName = `ticket-${String(r.first_name ?? "").replace(/[^a-zA-Z0-9_-]/g, "_")}-${String(r.last_name ?? "").replace(/[^a-zA-Z0-9_-]/g, "_")}.png`;
+
     const resend = new Resend(Deno.env.get("RESEND_API_KEY")!);
     await resend.emails.send({
       from: "Club Choir <noreply@clubchoir.ca>",
@@ -42,14 +53,14 @@ serve(async (req) => {
       subject: `QR ticket for ${r.first_name} ${r.last_name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px;">
-          <h2>Ticket QR for ${r.first_name} ${r.last_name}</h2>
-          <p>Email: ${r.email}<br/>Tickets: ${r.ticket_count}<br/>Event: ${r.event_slug}</p>
+          <h2>Ticket QR for ${safeFirst} ${safeLast}</h2>
+          <p>Email: ${safeEmail}<br/>Tickets: ${safeTicketCount}<br/>Event: ${safeEventSlug}</p>
           <p>QR code (also attached):</p>
           <img src="${qrDataUrl}" alt="QR" style="width:280px;height:280px;border:1px solid #eee;padding:8px;background:#fff;" />
-          <p style="font-size:12px;color:#666;word-break:break-all;">Link: <a href="${checkinUrl}">${checkinUrl}</a></p>
+          <p style="font-size:12px;color:#666;word-break:break-all;">Link: <a href="${checkinUrl}">${escapeHtml(checkinUrl)}</a></p>
         </div>
       `,
-      attachments: [{ filename: `ticket-${r.first_name}-${r.last_name}.png`, content: base64 }],
+      attachments: [{ filename: attachName, content: base64 }],
     });
 
     return new Response(JSON.stringify({ success: true, checkinUrl }), {

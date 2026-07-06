@@ -8,13 +8,48 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const escapeHtml = (s: string) =>
+  String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // Require an authenticated caller — this endpoint is invoked client-side
+    // right after a signup, so the just-created user has a valid session.
+    const authHeader = req.headers.get("Authorization") || "";
+    if (!authHeader.startsWith("Bearer ")) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } },
+    );
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     const { email, display_name, location, status } = await req.json();
+
+    // Ensure the caller can only trigger a notification about their own account.
+    if (!email || String(email).trim().toLowerCase() !== String(user.email ?? "").trim().toLowerCase()) {
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
 
     // Only notify for inactive (pending) signups
     if (status !== "inactive") {
@@ -35,6 +70,10 @@ const handler = async (req: Request): Promise<Response> => {
 
     const resend = new Resend(resendKey);
 
+    const safeName = escapeHtml(display_name || "Not provided");
+    const safeEmail = escapeHtml(email);
+    const safeLocation = escapeHtml(location || "Not specified");
+
     await resend.emails.send({
       from: "Club Choir <noreply@clubchoir.ca>",
       to: ["ailsa@clubchoir.ca"],
@@ -46,9 +85,9 @@ const handler = async (req: Request): Promise<Response> => {
             A new person has signed up and is waiting for approval:
           </p>
           <div style="background: #f4f4f4; border-radius: 8px; padding: 16px; margin: 16px 0;">
-            <p style="margin: 4px 0;"><strong>Name:</strong> ${display_name || "Not provided"}</p>
-            <p style="margin: 4px 0;"><strong>Email:</strong> ${email}</p>
-            <p style="margin: 4px 0;"><strong>Location:</strong> ${location || "Not specified"}</p>
+            <p style="margin: 4px 0;"><strong>Name:</strong> ${safeName}</p>
+            <p style="margin: 4px 0;"><strong>Email:</strong> ${safeEmail}</p>
+            <p style="margin: 4px 0;"><strong>Location:</strong> ${safeLocation}</p>
           </div>
           <p style="color: #333; font-size: 16px; line-height: 1.6;">
             Log in to the app and go to <strong>Manage Members</strong> → <strong>Pending Signups</strong> to approve or reject this registration.

@@ -60,6 +60,10 @@ function getLocationInfo(location: string) {
   return null;
 }
 
+const escapeHtml = (s: string) =>
+  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -86,11 +90,11 @@ const handler = async (req: Request): Promise<Response> => {
       replyTo: email,
       html: `
         <h2>Try a Session Request</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Preferred Location:</strong> ${location}</p>
+        <p><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Preferred Location:</strong> ${escapeHtml(location)}</p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>
       `,
     });
 
@@ -99,17 +103,17 @@ const handler = async (req: Request): Promise<Response> => {
     const sessionBlock = info
       ? `
         <h3 style="font-family: 'Quicksand', Arial, sans-serif; color:#1a1a1a; margin: 24px 0 8px;">
-          Club Choir ${info.city} — session details
+          Club Choir ${escapeHtml(info.city)} — session details
         </h3>
         <ul style="font-family: 'Nunito', Arial, sans-serif; color:#333; line-height:1.6; padding-left: 18px;">
-          <li><strong>When:</strong> ${info.day}, ${info.time}</li>
-          <li><strong>Dates:</strong> ${info.dates}</li>
-          <li><strong>Where:</strong> ${info.venue}</li>
+          <li><strong>When:</strong> ${escapeHtml(info.day)}, ${escapeHtml(info.time)}</li>
+          <li><strong>Dates:</strong> ${escapeHtml(info.dates)}</li>
+          <li><strong>Where:</strong> ${escapeHtml(info.venue)}</li>
         </ul>
       `
       : `
         <p style="font-family: 'Nunito', Arial, sans-serif; color:#333;">
-          You picked: <strong>${location}</strong>. We'll be in touch with the details.
+          You picked: <strong>${escapeHtml(location)}</strong>. We'll be in touch with the details.
         </p>
       `;
 
@@ -123,7 +127,7 @@ const handler = async (req: Request): Promise<Response> => {
       html: `
         <div style="font-family: 'Nunito', Arial, sans-serif; color:#1a1a1a; max-width: 560px; margin: 0 auto; padding: 24px;">
           <h1 style="font-family: 'Quicksand', Arial, sans-serif; font-size: 22px; margin: 0 0 12px;">
-            Hi ${firstName}, thanks for reaching out!
+            Hi ${escapeHtml(firstName)}, thanks for reaching out!
           </h1>
           <p style="line-height:1.6; color:#333;">
             We're so glad you want to come try a session with us. Here are the details for the choir you picked:
