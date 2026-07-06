@@ -58,21 +58,6 @@
           "$schema": "http://json-schema.org/draft-07/schema#"
         },
         "outputSchema": null
-      },
-      {
-        "name": "list_upcoming_events",
-        "title": "List upcoming events",
-        "description": "List Club Choir's upcoming public events (themed events, pop-ups, showcases) with date, title, and location.",
-        "annotations": {
-          "readOnlyHint": true,
-          "openWorldHint": false
-        },
-        "inputSchema": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
-          "type": "object",
-          "properties": {}
-        },
-        "outputSchema": null
       }
     ]
   }
