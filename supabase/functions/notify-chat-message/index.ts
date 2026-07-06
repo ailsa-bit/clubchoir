@@ -8,12 +8,29 @@ const corsHeaders = {
 
 const ADMIN_EMAILS = ["ailsa@clubchoir.ca"];
 
+const escapeHtml = (s: string) =>
+  String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // Only allow the DB trigger / service role to invoke this function.
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const authHeader = req.headers.get("Authorization") || "";
+    const bearer = authHeader.startsWith("Bearer ")
+      ? authHeader.slice("Bearer ".length).trim()
+      : "";
+    if (!serviceRoleKey || !bearer || bearer !== serviceRoleKey) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     const payload = await req.json();
 
     // Support both direct calls and database webhook trigger format
@@ -32,14 +49,18 @@ serve(async (req) => {
       throw new Error("RESEND_API_KEY not configured");
     }
 
+    const safeName = escapeHtml(display_name);
+    const safeMessage = escapeHtml(message);
+    const safeLocation = escapeHtml(location);
+
     const subject = `💬 New chat message in ${location}`;
     const htmlBody = `
       <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px;">
         <h2 style="color: #333; margin-bottom: 4px;">New Chat Message</h2>
-        <p style="color: #888; font-size: 14px; margin-top: 0;">Location: <strong>${location}</strong></p>
+        <p style="color: #888; font-size: 14px; margin-top: 0;">Location: <strong>${safeLocation}</strong></p>
         <div style="background: #f5f5f5; border-radius: 8px; padding: 16px; margin: 16px 0;">
-          <p style="color: #333; font-weight: 600; margin: 0 0 4px 0;">${display_name}</p>
-          <p style="color: #555; margin: 0; white-space: pre-wrap;">${message}</p>
+          <p style="color: #333; font-weight: 600; margin: 0 0 4px 0;">${safeName}</p>
+          <p style="color: #555; margin: 0; white-space: pre-wrap;">${safeMessage}</p>
         </div>
         <p style="font-size: 13px; color: #999;">
           <a href="https://clubchoir.ca/chat" style="color: #6366f1;">Open Chat</a>
