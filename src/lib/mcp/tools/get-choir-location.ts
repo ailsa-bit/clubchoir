@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { choirLocations, type LocationSlug } from "@/data/choirLocations";
+import { choirLocations, type LocationSlug } from "../../../data/choirLocations";
 
 export default defineTool({
   name: "get_choir_location",

@@ -1,5 +1,5 @@
 import { defineTool } from "@lovable.dev/mcp-js";
-import { choirLocations } from "@/data/choirLocations";
+import { choirLocations } from "../../../data/choirLocations";
 
 export default defineTool({
   name: "list_choir_locations",
