@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "club-choir-mcp",
+      "version": "0.1.0",
+      "title": "Club Choir"
+    },
+    "tools": [
+      {
+        "name": "list_choir_locations",
+        "title": "List choir locations",
+        "description": "List all Club Choir locations (city, day, time, venue) so an assistant can help members and prospects find a nearby choir.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_choir_location",
+        "title": "Get choir location details",
+        "description": "Get full details for one Club Choir location (schedule, venue, address, about text) by slug: montreal, hudson, saint-hubert, or pointe-claire.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "enum": [
+                "montreal",
+                "hudson",
+                "saint-hubert",
+                "pointe-claire"
+              ],
+              "description": "Location slug"
+            }
+          },
+          "required": [
+            "slug"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_upcoming_events",
+        "title": "List upcoming events",
+        "description": "List Club Choir's upcoming public events (themed events, pop-ups, showcases) with date, title, and location.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
