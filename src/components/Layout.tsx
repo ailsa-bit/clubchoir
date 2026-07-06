@@ -42,10 +42,12 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
     { label: t("nav.corporate"), path: "/corporate" },
   ];
 
-  // Logged-in members: trimmed public items (drop About + Corporate — available in footer)
+  // Logged-in members: keep About + Corporate accessible from top nav
   const loggedInPublicItems = [
     { label: t("nav.home"), path: "/" },
+    { label: "About", path: "/about" },
     { label: t("nav.events"), path: "/events", children: eventsChildren },
+    { label: t("nav.corporate"), path: "/corporate" },
   ];
 
   // Consolidated "My Choir" dropdown for member-only day-to-day items
