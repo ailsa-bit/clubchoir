@@ -117,7 +117,7 @@ const CRM = () => {
           .select("id, first_name, last_name, email, location, status, crm_tags, source, follow_up_date, updated_at, last_session, archived_at")
           .is("archived_at", null),
         supabase.from("prospects").select("id, first_name, last_name, email, locations, status, notes, created_at, updated_at"),
-        supabase.from("session_registrations").select("id, member_id, first_name, last_name, email, location, session_label, payment_status, created_at").order("created_at", { ascending: false }),
+        supabase.from("session_registrations").select("id, member_id, first_name, last_name, email, location, session_label, payment_status, is_returning_member, created_at").order("created_at", { ascending: false }),
         supabase.from("popup_ticket_reservations").select("id, first_name, last_name, email, event_slug, payment_received, ticket_count, created_at"),
         supabase.from("popup_waitlist").select("id, first_name, last_name, email, event_slug, created_at"),
       ]);
