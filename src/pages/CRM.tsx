@@ -26,7 +26,9 @@ interface RegPayment {
   payment_status: string;
   created_at: string;
   location: string;
+  is_returning_member: boolean;
 }
+
 
 interface UnifiedContact {
   key: string;
