@@ -26,7 +26,9 @@ interface RegPayment {
   payment_status: string;
   created_at: string;
   location: string;
+  is_returning_member: boolean;
 }
+
 
 interface UnifiedContact {
   key: string;
@@ -115,7 +117,7 @@ const CRM = () => {
           .select("id, first_name, last_name, email, location, status, crm_tags, source, follow_up_date, updated_at, last_session, archived_at")
           .is("archived_at", null),
         supabase.from("prospects").select("id, first_name, last_name, email, locations, status, notes, created_at, updated_at"),
-        supabase.from("session_registrations").select("id, member_id, first_name, last_name, email, location, session_label, payment_status, created_at").order("created_at", { ascending: false }),
+        supabase.from("session_registrations").select("id, member_id, first_name, last_name, email, location, session_label, payment_status, is_returning_member, created_at").order("created_at", { ascending: false }),
         supabase.from("popup_ticket_reservations").select("id, first_name, last_name, email, event_slug, payment_received, ticket_count, created_at"),
         supabase.from("popup_waitlist").select("id, first_name, last_name, email, event_slug, created_at"),
       ]);
@@ -177,10 +179,11 @@ const CRM = () => {
           if (r.session_label) c.sources.push(r.session_label);
           c.last_activity = laterOf(c.last_activity, r.created_at);
           if (r.session_label === "fall-2026") {
-            const reg: RegPayment = { id: r.id, session_label: r.session_label, payment_status: r.payment_status, created_at: r.created_at, location: r.location || "" };
+            const reg: RegPayment = { id: r.id, session_label: r.session_label, payment_status: r.payment_status, created_at: r.created_at, location: r.location || "", is_returning_member: r.is_returning_member === true };
             if (r.payment_status === "paid") c.paid_reg = c.paid_reg ?? reg;
             else if (!c.unpaid_reg) c.unpaid_reg = reg;
           }
+
         }, `reg:${r.id}`);
       });
 
@@ -722,6 +725,10 @@ const CRM = () => {
                         <span className="inline-flex items-center gap-1"><MapPin className="w-3 h-3" />{c.unpaid_reg?.location || c.location}</span>
                       )}
                       <span>Signed up {new Date(c.unpaid_reg!.created_at).toLocaleDateString()}</span>
+                      {c.unpaid_reg && !c.unpaid_reg.is_returning_member && (
+                        <Badge variant="secondary" className="text-[10px]">First time</Badge>
+                      )}
+
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-1">
