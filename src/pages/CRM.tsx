@@ -179,10 +179,11 @@ const CRM = () => {
           if (r.session_label) c.sources.push(r.session_label);
           c.last_activity = laterOf(c.last_activity, r.created_at);
           if (r.session_label === "fall-2026") {
-            const reg: RegPayment = { id: r.id, session_label: r.session_label, payment_status: r.payment_status, created_at: r.created_at, location: r.location || "" };
+            const reg: RegPayment = { id: r.id, session_label: r.session_label, payment_status: r.payment_status, created_at: r.created_at, location: r.location || "", is_returning_member: r.is_returning_member === true };
             if (r.payment_status === "paid") c.paid_reg = c.paid_reg ?? reg;
             else if (!c.unpaid_reg) c.unpaid_reg = reg;
           }
+
         }, `reg:${r.id}`);
       });
 
