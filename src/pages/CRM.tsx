@@ -725,6 +725,10 @@ const CRM = () => {
                         <span className="inline-flex items-center gap-1"><MapPin className="w-3 h-3" />{c.unpaid_reg?.location || c.location}</span>
                       )}
                       <span>Signed up {new Date(c.unpaid_reg!.created_at).toLocaleDateString()}</span>
+                      {c.unpaid_reg && !c.unpaid_reg.is_returning_member && (
+                        <Badge variant="secondary" className="text-[10px]">First time</Badge>
+                      )}
+
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-1">
