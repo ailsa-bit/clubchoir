@@ -112,8 +112,8 @@ const HudsonSession = () => {
           <div className="rounded-2xl border border-border bg-card p-5">
             <MapPin className="w-5 h-5 text-orange mb-2" />
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">{t("hudson.where")}</p>
-            <p className="text-sm font-medium text-foreground">Kingfisher Pub</p>
-            <p className="text-xs text-muted-foreground">84 Cameron, Hudson, QC J0P 1H0</p>
+            <p className="text-sm font-medium text-foreground">The Hudson Legion</p>
+            <p className="text-xs text-muted-foreground">57 Beach Road, Hudson, QC J0P 1H0</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
             <Clock className="w-5 h-5 text-orange mb-2" />
