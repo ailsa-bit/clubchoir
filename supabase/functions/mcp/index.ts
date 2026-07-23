@@ -50,36 +50,36 @@ var choirLocations = {
   hudson: {
     slug: "hudson",
     city: "Hudson",
-    pageTitle: "Hudson Choir \u2013 Club Choir | NEW No-Audition Community Choir at the Kingfisher Pub",
-    metaDescription: "Club Choir Hudson is coming September 2026 \u2014 a brand-new no-audition community choir meeting Tuesday nights at the Kingfisher Pub in Hudson, QC. Register your interest now.",
+    pageTitle: "Hudson Choir \u2013 Club Choir | NEW No-Audition Community Choir at The Hudson Legion",
+    metaDescription: "Club Choir Hudson is coming September 2026 \u2014 a brand-new no-audition community choir meeting Tuesday nights at The Hudson Legion on Beach Road. Register your interest now.",
     heroHeadline: {
       en: "Hudson Choir \u2013 Coming September 2026",
       fr: "Chorale Hudson \u2013 D\xE8s septembre 2026"
     },
     heroBlurb: {
-      en: "A brand-new no-audition adult choir is coming to Hudson, upstairs at the Kingfisher Pub \u2014 a resilient gathering place with live music, string lights, and a story worth singing about.",
-      fr: "Une toute nouvelle chorale sans audition pour adultes arrive \xE0 Hudson, \xE0 l'\xE9tage du Kingfisher Pub \u2014 un lieu r\xE9silient avec musique en direct, guirlandes lumineuses et une histoire qui m\xE9rite d'\xEAtre chant\xE9e."
+      en: "A brand-new no-audition adult choir is coming to Hudson at The Hudson Legion on Beach Road \u2014 a warm, welcoming community hall built for singing together.",
+      fr: "Une toute nouvelle chorale sans audition pour adultes arrive \xE0 Hudson, au Hudson Legion sur Beach Road \u2014 une salle communautaire chaleureuse et accueillante, parfaite pour chanter ensemble."
     },
     about: {
       en: [
-        "In May 2024, Hudson adopted the kingfisher as its official bird \u2014 tireless, patient yet swift, cool yet industrious, and above all, resilient. When the ownership team learned this, they knew immediately it was the right name for the pub they were bringing back to life on Rue Cameron. Like the bird, the building had nearly vanished; now, a new story is about to begin.",
-        "Club Choir Hudson will launch in September 2026, meeting every Tuesday night upstairs at the Kingfisher Pub \u2014 one of the warmest, most atmospheric spaces in town. It will be a no-audition community choir for adults, so whether you've sung your whole life or never set foot in a rehearsal, you'll be welcome to pull up a chair. Director Ailsa will lead the group through pop, folk, and feel-good harmonies, with live instrumental accompaniment at every rehearsal. The Hudson session will be known for its laughter, its end-of-term showcase, and the friendships that spill out into the village long after rehearsal ends."
+        "Club Choir Hudson will launch in September 2026 at The Hudson Legion \u2014 a much-loved community gathering place on Beach Road, right in the heart of the village. It's a warm, welcoming space with plenty of room to sing, laugh, and make new friends.",
+        "The session will meet every Tuesday night, led by director Ailsa through pop, folk, and feel-good harmonies with live instrumental accompaniment at every rehearsal. It's a no-audition community choir for adults, so whether you've sung your whole life or never set foot in a rehearsal, you'll be welcome to pull up a chair. Expect laughter, an end-of-term showcase, and friendships that spill out into the village long after rehearsal ends."
       ],
       fr: [
-        "En mai 2024, Hudson a adopt\xE9 le martin-p\xEAcheur comme oiseau officiel \u2014 infatigable, patient mais rapide, calme mais industrieux, et surtout, r\xE9silient. Quand l'\xE9quipe de propri\xE9taires a appris cela, ils ont su imm\xE9diatement que c'\xE9tait le bon nom pour le pub qu'ils faisaient revivre sur la rue Cameron. Comme l'oiseau, le b\xE2timent avait presque disparu ; aujourd'hui, une nouvelle histoire est sur le point de commencer.",
-        "Club Choir Hudson sera lanc\xE9e en septembre 2026, se r\xE9unissant chaque mardi soir \xE0 l'\xE9tage du Kingfisher Pub \u2014 l'un des endroits les plus chaleureux du village. Ce sera une chorale communautaire sans audition pour les adultes : que vous chantiez depuis toujours ou jamais, vous serez les bienvenus. La directrice Ailsa guidera le groupe \xE0 travers la pop, le folk et des harmonies entra\xEEnantes, avec un accompagnement instrumental live \xE0 chaque r\xE9p\xE9tition. La session de Hudson sera connue pour ses rires, son spectacle de fin de session et les amiti\xE9s qui se prolongeront bien apr\xE8s les r\xE9p\xE9titions."
+        "Club Choir Hudson sera lanc\xE9e en septembre 2026 au Hudson Legion \u2014 un lieu de rassemblement communautaire tr\xE8s aim\xE9, sur Beach Road, au c\u0153ur du village. C'est un espace chaleureux et accueillant, avec beaucoup de place pour chanter, rire et faire de nouvelles rencontres.",
+        "La session aura lieu chaque mardi soir, dirig\xE9e par Ailsa \xE0 travers la pop, le folk et des harmonies entra\xEEnantes, avec un accompagnement instrumental live \xE0 chaque r\xE9p\xE9tition. C'est une chorale communautaire sans audition pour les adultes : que vous chantiez depuis toujours ou jamais, vous serez les bienvenus. Attendez-vous \xE0 des rires, un spectacle de fin de session, et des amiti\xE9s qui se prolongeront bien apr\xE8s les r\xE9p\xE9titions."
       ]
     },
     day: { en: "Tuesdays", fr: "Mardis" },
     time: "7:00\u20138:30 PM",
     dates: { en: "Sept 8 \u2013 Dec 8, 2026", fr: "8 sept. \u2013 8 d\xE9c. 2026" },
-    venueName: "Kingfisher Pub",
-    venueAddress: "84 Rue Cameron",
+    venueName: "The Hudson Legion",
+    venueAddress: "57 Beach Road",
     venueCity: "Hudson",
     postalCode: "J0P 1H0",
     region: "QC",
     country: "CA",
-    mapsUrl: "https://maps.google.com/?q=Kingfisher+Pub+Hudson+QC",
+    mapsUrl: "https://maps.google.com/?q=Hudson+Legion+57+Beach+Road+Hudson+QC",
     theme: { bg: "bg-orange-light", border: "border-orange/30", dot: "bg-orange" },
     photoIds: ["pub-conducting", "pub-singing", "hudson-lyrics"],
     openHouse: { en: "Tuesday, August 4, 2026", fr: "Mardi 4 ao\xFBt 2026", time: "7:00 PM" },

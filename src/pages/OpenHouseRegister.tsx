@@ -48,7 +48,7 @@ const LOCATIONS: Loc[] = [
     dot: "bg-orange",
     ring: "ring-orange",
     day: { en: "Tuesday, August 4 · 7:00 PM", fr: "Mardi 4 août · 19 h" },
-    venue: { en: "Kingfisher Pub", fr: "Kingfisher Pub" },
+    venue: { en: "The Hudson Legion, 57 Beach Road", fr: "The Hudson Legion, 57 Beach Road" },
   },
   {
     value: "Saint-Hubert – Wednesday August 5, 7PM",

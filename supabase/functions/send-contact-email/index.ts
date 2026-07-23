@@ -32,7 +32,7 @@ const LOCATION_INFO: Record<
     day: "Tuesdays",
     time: "7:00–8:30 PM",
     dates: "Sept 8 – Dec 8, 2026",
-    venue: "Kingfisher Pub (upstairs), 84 Rue Cameron, Hudson",
+    venue: "The Hudson Legion, 57 Beach Road, Hudson",
   },
   "Saint-Hubert": {
     city: "Saint-Hubert",

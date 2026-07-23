@@ -35,7 +35,7 @@ const LOCATIONS: Loc[] = [
     dot: "bg-orange",
     ring: "ring-orange",
     dates: { en: "Tuesdays · Sept 8 – Dec 8, 2026 · 7:00–8:30 PM", fr: "Mardis · 8 sept. – 8 déc. 2026 · 19 h – 20 h 30" },
-    venue: { en: "Kingfisher Pub", fr: "Kingfisher Pub" },
+    venue: { en: "The Hudson Legion, 57 Beach Road", fr: "The Hudson Legion, 57 Beach Road" },
   },
   {
     name: "Saint-Hubert",
