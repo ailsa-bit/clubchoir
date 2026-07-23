@@ -12,7 +12,7 @@ const FallRegistration = () => {
   const isFr = language === "fr";
 
   const t = {
-    heroTitle: isFr ? "À la recherche d'une chorale d'adultes cet automne ?" : "Looking for an adult choir this fall?",
+    heroTitle: isFr ? "À la recherche d'une chorale cet automne ?" : "Looking for a choir this fall?",
     heroSub: isFr
       ? "Club Choir accueille de nouveaux chanteurs à Montréal, Hudson, Saint-Hubert et Pointe-Claire."
       : "Club Choir is welcoming new singers in Montreal, Hudson, Saint-Hubert, and Pointe-Claire.",
