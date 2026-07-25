@@ -116,7 +116,8 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
       <p>Fall registration is open now — <a href="${SITE_URL}/fall-registration" style="color:#f472b6;text-decoration:underline;">register here for the full 14-week session</a>.</p>
       <div style="text-align:center;margin:16px 0;">
         <a href="${SITE_URL}/fall-registration" style="display:inline-block;background:#f472b6;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold;">Register for Fall 2026</a>
-      </div>`;
+      </div>
+      <p>Need payment instructions? Simply register and the full instructions will be sent to you during the registration process.</p>`;
   }
 
   const memberLine = segment === "paid" ? `
