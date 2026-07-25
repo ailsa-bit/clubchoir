@@ -85,7 +85,7 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
   const bringAFriend = `
     <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;">
       <strong style="color:#9a3412;">Bring a friend 💛</strong><br/>
-      <span style="color:#7c2d12;font-size:14px;">Know someone who'd love to sing? Forward this email or bring them along — friends, neighbours, or anyone curious is warmly welcome at the open house. No experience needed. No audition. Just show up and sing.</span>
+      <span style="color:#7c2d12;font-size:14px;">Know someone who'd love to sing? Forward this email or bring them along — friends, neighbours, or anyone curious is welcome at the open house. No experience needed. No audition. Just show up and sing.</span>
     </div>`;
 
   let opener = "";
