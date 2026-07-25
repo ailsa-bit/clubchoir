@@ -42,6 +42,7 @@ import SingForTheHerd from "./pages/SingForTheHerd";
 import FallRegistration from "./pages/FallRegistration";
 import Campaigns from "./pages/Campaigns";
 import RsvpConfirm from "./pages/RsvpConfirm";
+import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
 
