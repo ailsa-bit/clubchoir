@@ -113,7 +113,7 @@ const Login = () => {
       if (error) {
         setError(error.message);
       } else {
-        navigate("/community");
+        navigate(postAuthRedirect);
       }
     }
     setLoading(false);
