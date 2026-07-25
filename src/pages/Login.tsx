@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,12 @@ const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as con
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const rawNext = searchParams.get("next") ?? "";
+  // Only allow same-origin relative paths
+  const nextPath = /^\/[^\/].*/.test(rawNext) && !rawNext.startsWith("//") ? rawNext : "";
+  const postAuthRedirect = nextPath || "/community";
+  const postAuthAbsolute = `${window.location.origin}${postAuthRedirect}`;
   const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -77,7 +83,7 @@ const Login = () => {
         email,
         password,
         options: {
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: postAuthAbsolute,
           data: { location, display_name: trimmedName },
         },
       });
@@ -107,7 +113,7 @@ const Login = () => {
       if (error) {
         setError(error.message);
       } else {
-        navigate("/community");
+        navigate(postAuthRedirect);
       }
     }
     setLoading(false);
@@ -161,7 +167,7 @@ const Login = () => {
               onClick={async () => {
                 setError(""); setMessage(""); setLoading(true);
                 const result = await lovable.auth.signInWithOAuth("google", {
-                  redirect_uri: window.location.origin,
+                  redirect_uri: postAuthAbsolute,
                 });
                 if (result.error) {
                   setError(result.error.message || "Google sign-in failed");
@@ -169,7 +175,7 @@ const Login = () => {
                   return;
                 }
                 if (result.redirected) return;
-                navigate("/community");
+                navigate(postAuthRedirect);
               }}
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
