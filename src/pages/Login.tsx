@@ -19,6 +19,12 @@ const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as con
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const rawNext = searchParams.get("next") ?? "";
+  // Only allow same-origin relative paths
+  const nextPath = /^\/[^\/].*/.test(rawNext) && !rawNext.startsWith("//") ? rawNext : "";
+  const postAuthRedirect = nextPath || "/community";
+  const postAuthAbsolute = `${window.location.origin}${postAuthRedirect}`;
   const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
