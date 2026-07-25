@@ -163,9 +163,20 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
     .eq("session_label", "fall-2026")
     .eq("payment_status", "paid");
 
+  // Build suppression set: members tagged 'no-email' should never receive campaigns
+  const { data: suppressedRows } = await supabase
+    .from("members")
+    .select("email, crm_tags");
+  const suppressed = new Set<string>();
+  for (const m of suppressedRows || []) {
+    if (m.email && Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) {
+      suppressed.add(m.email.toLowerCase());
+    }
+  }
+
   const paidSet = new Set<string>((paidRegs || []).map((r: any) => r.email.toLowerCase()));
   const paidRecipients: Recipient[] = (paidRegs || [])
-    .filter((r: any) => r.email)
+    .filter((r: any) => r.email && !suppressed.has(r.email.toLowerCase()))
     .map((r: any) => ({ email: r.email.toLowerCase(), first_name: r.first_name || "", last_name: r.last_name || "" }));
 
   // Registered (any label, not paid) minus paid
@@ -180,23 +191,23 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
     if (!r.email) continue;
     const key = r.email.toLowerCase();
     if (paidSet.has(key)) continue;
+    if (suppressed.has(key)) continue;
     if (!regMap.has(key)) regMap.set(key, { email: key, first_name: r.first_name || "", last_name: r.last_name || "" });
   }
   const registeredRecipients = Array.from(regMap.values());
   const registeredSet = new Set(regMap.keys());
 
   if (segment === "paid") {
-    // Dedupe
     const uniq = new Map<string, Recipient>();
     for (const r of paidRecipients) if (!uniq.has(r.email)) uniq.set(r.email, r);
     return Array.from(uniq.values());
   }
   if (segment === "registered") return registeredRecipients;
 
-  // Everyone: members not in paid or registered, not archived, with email
+  // Everyone: members not in paid or registered, not archived, not suppressed, with email
   const { data: memberRows } = await supabase
     .from("members")
-    .select("email, first_name, last_name, archived_at")
+    .select("email, first_name, last_name, archived_at, crm_tags")
     .is("archived_at", null);
 
   const everyone: Recipient[] = [];
@@ -205,6 +216,8 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
     if (!m.email || !m.email.includes("@")) continue;
     const key = m.email.toLowerCase();
     if (paidSet.has(key) || registeredSet.has(key)) continue;
+    if (suppressed.has(key)) continue;
+    if (Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) continue;
     if (seen.has(key)) continue;
     seen.add(key);
     everyone.push({ email: key, first_name: m.first_name || "", last_name: m.last_name || "" });
