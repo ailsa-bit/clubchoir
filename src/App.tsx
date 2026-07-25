@@ -90,6 +90,7 @@ const App = () => (
             <Route path="/fall-registration" element={<FallRegistration />} />
             <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/rsvp" element={<RsvpConfirm />} />
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
 
             {/* SEO redirects for legacy indexed URLs */}
             <Route path="/website-about-us" element={<Navigate to="/about" replace />} />
