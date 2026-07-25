@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_sends: {
+        Row: {
+          campaign_key: string
+          created_at: string
+          error: string | null
+          id: string
+          recipient_email: string
+          segment: string
+          status: string
+          subject: string
+        }
+        Insert: {
+          campaign_key: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          recipient_email: string
+          segment: string
+          status?: string
+          subject: string
+        }
+        Update: {
+          campaign_key?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          recipient_email?: string
+          segment?: string
+          status?: string
+          subject?: string
+        }
+        Relationships: []
+      }
       chat_messages: {
         Row: {
           created_at: string
@@ -219,6 +252,36 @@ export type Database = {
           source?: string
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      open_house_rsvps: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          location: string
+          source_campaign: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          location: string
+          source_campaign?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          location?: string
+          source_campaign?: string | null
         }
         Relationships: []
       }

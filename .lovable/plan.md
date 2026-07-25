@@ -1,69 +1,62 @@
-## Goal
 
-A member's profile is `active` **only** when they have a paid registration for the current session. Access auto-expires when the session ends.
+# Fall 2026 Email Campaign Plan
 
-## Important finding first
+Send three bilingual campaigns from Lovable, each with one-click open house RSVP buttons and a "bring a friend" nudge.
 
-Fall 2026 registration in this app is **e-transfer, not Stripe**. The `Register` page collects info and emails e-transfer instructions; you mark someone "paid" manually in the admin. There is a `session_registrations.payment_status` field ('unpaid' / 'paid') that already tracks this. Right now: **21 unpaid registrations, 0 paid**.
+## Segments (built from existing CRM data)
 
-So "paid in Stripe" isn't the trigger we can use — the trigger is `session_registrations.payment_status = 'paid'` for `session_label = 'fall-2026'`. Everything below is built on that.
+1. **Paid & confirmed** — profiles active OR members with a `session_registrations` row for `fall-2026` marked `paid`. Tone: thank you + open house reminder + bring a friend.
+2. **Registered, not yet paid** — `session_registrations` rows for `fall-2026`, `open-house-2026`, or `try-a-session` where `payment_status != 'paid'` AND email is not in segment 1. Tone: gentle payment nudge + open house reminder + bring a friend.
+3. **Everyone else** — every email in `members` NOT in segment 1 or 2, excluding archived members and rows without a valid email. Tone: invitation, open house dates, session info, bring a friend.
 
-If you're planning to switch Fall registration to Stripe checkout instead of e-transfer, that's a separate (bigger) change — flag it and I'll plan it separately.
+Dedupe by lowercased email across segments (paid wins, then registered, then everyone else).
 
-## The activation rule
+## Email content (bilingual EN/FR, one template per segment)
 
-A profile becomes `active` when:
-- The user's email has a row in `session_registrations` with `session_label = 'fall-2026'` **and** `payment_status = 'paid'`
-- AND today is on or before **Dec 10, 2026**
+Each email includes:
+- Personal greeting (first name)
+- Segment-specific opener (thank you / payment nudge / invitation)
+- **Open house block**: all 4 locations with date, time, venue, address
+- **Fall session block**: rehearsal day/time per location (segment 3 gets more prominence)
+- **Bring a friend line**: "Know someone who'd love to sing? Forward this email or bring them along — friends, neighbours, anyone curious is welcome."
+- **One-click RSVP buttons**: 4 buttons, one per open house location. Clicking records the RSVP and shows a thank-you page.
+- Contact line: ailsa@clubchoir.ca
 
-Otherwise the profile is `inactive`. Admin role is unaffected (admins keep admin powers regardless).
+For paid members, also link to the members-only login and song resources.
 
-## What changes
+## One-click RSVP mechanism
 
-### 1. Database
+- New table `open_house_rsvps` (email, first_name, last_name, location, token, created_at, source_campaign).
+- Each email generates a signed token per recipient. Buttons link to `/rsvp?token=…&location=…`.
+- New public page `/rsvp` calls a new edge function `record-open-house-rsvp` which validates the token, upserts into `open_house_rsvps`, tags the member with `open-house-2026` in the CRM, and shows a friendly confirmation.
+- RSVPs appear as a new stat card + filter in the CRM.
 
-- Add `profiles.active_until DATE` (nullable). Stores the expiry date for paid access.
-- Update `is_active_member(uuid)` function to also check `active_until >= current_date` when set. Existing gated pages already call this — no page code changes needed.
-- New DB function `activate_member_for_paid_registration(email TEXT, until DATE)` (SECURITY DEFINER): finds the profile by email via `auth.users`, sets `status = 'active'` and `active_until`, bypassing the admin-only status guard.
-- New DB function `expire_stale_members()`: sets `status = 'inactive'` for profiles where `active_until < current_date`. Callable by cron or on demand.
+## Admin campaign UI
 
-### 2. Payment-marks-paid flow (admin action)
+New page `/campaigns` (admin only), reachable from Profile dropdown:
+- Three cards, one per segment, showing recipient count.
+- Preview button (renders the exact email in a modal with a sample name).
+- "Send test to me" button before the big send.
+- "Send campaign" button with confirmation dialog showing final recipient count.
+- After send: shows success/failed counts and a downloadable CSV of failures.
 
-When you mark a registration paid in the admin (Manage Prospects / Manage Members), we call `activate_member_for_paid_registration` with the registrant's email and `2026-12-10`. If they've already signed up with that email, they flip to active immediately. If they haven't signed up yet, nothing happens now — the next step covers that.
+## Sending infrastructure
 
-### 3. Sign-up after paying
+- Reuse the existing `send-member-email` edge function pattern (Resend, batches of 10, admin JWT verification).
+- New edge function `send-campaign` accepts `{ segment: 'paid' | 'registered' | 'everyone', testEmail?: string }`, builds the recipient list server-side (never trusts client), renders the correct bilingual template with per-recipient RSVP tokens, and sends via Resend from `Club Choir <noreply@clubchoir.ca>`.
+- Rate-limited to stay well under Resend limits; logs each send to a new `campaign_sends` table for audit and to prevent accidental double-sends (per-recipient uniqueness per campaign).
 
-Change `handle_new_user` trigger so new sign-ups are:
-- `active` (with `active_until = 2026-12-10`) if their email has a **paid** `session_registrations` row for fall-2026
-- `inactive` otherwise (current behavior of matching against `members.status = 'ACTIVE'` is removed for activation — that table stays as a roster/CRM, but no longer grants access)
+## Technical summary
 
-### 4. Backfill "existing paid" members
+- New DB: `open_house_rsvps`, `campaign_sends` tables + RLS + grants.
+- New edge functions: `send-campaign`, `record-open-house-rsvp`.
+- New pages: `/campaigns` (admin), `/rsvp` (public).
+- CRM updates: new "Open House RSVPs" stat card + filter, and a "Campaign history" panel showing last send per segment.
+- All copy stored in the edge function (bilingual) so you can edit wording easily before sending.
 
-- Reactivate `ailsa@clubchoir.ca` immediately (`status='active'`, `active_until='2026-12-10'`).
-- For every profile whose email is in `session_registrations` with `session_label='fall-2026' AND payment_status='paid'`: set `status='active'`, `active_until='2026-12-10'`. (Currently 0 rows match — will grow as you mark people paid.)
-- All 156 other profiles stay inactive.
+## What you'll do
 
-### 5. Auto-expire on Dec 10
-
-Two options — I'll pick one based on your call:
-- **(a) Passive:** `is_active_member` already checks `active_until >= today`, so on Dec 11 gated pages just start returning inactive. No cron needed. Simplest and reliable.
-- **(b) Active:** run `expire_stale_members()` nightly via pg_cron so `profiles.status` also flips to 'inactive' visibly in admin lists.
-
-Recommendation: **(a)** for now, add (b) later if you want the admin table to visibly reflect expiry.
-
-### 6. Admin UX
-
-In `ManageProspects` / `ManageMembers`, the "mark paid" action already exists on `session_registrations` (or will — flag if you want me to add/verify the toggle). When toggled to paid, it also calls the activation function. Add a small "Access until: Dec 10, 2026" label on the member's row when active_until is set.
-
-## Files touched
-
-- **New migration** (schema + functions + backfill in one)
-- `supabase/functions/register-session/index.ts` — no change (still handles registration + e-transfer email)
-- `src/pages/ManageProspects.tsx` and/or `ManageMembers.tsx` — wire "mark paid" toggle to also call activation RPC (I'll read these first and confirm exact location)
-- No changes needed on Resources / This Week / Location Chat pages — they already gate through `is_active_member`
-
-## Out of scope (flag for later)
-
-- Switching Fall 2026 registration itself to Stripe Checkout
-- Winter/Spring 2027 sessions (add another `session_label` when the time comes)
-- Drop-in / try-a-session temporary access
+1. Approve this plan.
+2. I build everything.
+3. You visit `/campaigns`, preview each of the 3 emails, send a test to yourself.
+4. When happy, click Send on each segment.
