@@ -3,12 +3,16 @@
   "sdk_version": "0.20.1",
   "path": "/functions/v1/mcp",
   "auth": {
-    "type": "none"
+    "type": "oauth",
+    "issuer": "https://vbbfpzszmtwhydhpgtgj.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
   },
   "mcp": {
     "server": {
       "name": "club-choir-mcp",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "title": "Club Choir"
     },
     "tools": [

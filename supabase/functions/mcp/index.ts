@@ -3,7 +3,7 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { defineMcp } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.20.1";
 
 // src/lib/mcp/tools/list-choir-locations.ts
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.1";
@@ -213,11 +213,16 @@ var get_choir_location_default = defineTool2({
 });
 
 // src/lib/mcp/index.ts
+var projectRef = "vbbfpzszmtwhydhpgtgj";
 var mcp_default = defineMcp({
   name: "club-choir-mcp",
   title: "Club Choir",
-  version: "0.1.0",
+  version: "0.2.0",
   instructions: "Tools for Club Choir \u2014 a no-audition community choir in the Montreal area. Use these tools to answer questions about choir locations, schedules, and venues.",
+  auth: auth.oauth.issuer({
+    issuer: `https://${projectRef}.supabase.co/auth/v1`,
+    acceptedAudiences: "authenticated"
+  }),
   tools: [list_choir_locations_default, get_choir_location_default]
 });
 
