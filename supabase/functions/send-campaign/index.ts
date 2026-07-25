@@ -100,8 +100,14 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
     subject = "A gentle reminder — send your payment to lock in your Fall 2026 spot";
     opener = `
       <p>Hi ${first},</p>
-      <p>So happy you've signed up for the Fall 2026 season! Just a <strong>friendly nudge</strong>: your spot is confirmed once payment is received. You can send it by e-transfer to <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a>.</p>
-      <p>Whether you've paid yet or not — please come to the <strong>free open house</strong> in your city on the dates below. It's the perfect way to meet the choir before the session begins.</p>`;
+      <p>So happy you've signed up for the Fall 2026 season! Just a <strong>friendly nudge</strong>: your spot is confirmed once we receive your payment. Here are the quick Interac e-Transfer details:</p>
+      <div style="background:#fff5ec;border-left:4px solid #f97316;border-radius:8px;padding:14px 18px;margin:12px 0;">
+        <p style="margin:4px 0;font-size:15px;"><strong>Send to:</strong> ailsa@clubchoir.ca</p>
+        <p style="margin:4px 0;font-size:15px;"><strong>Amount:</strong> $280.00 CAD</p>
+        <p style="margin:4px 0;font-size:15px;"><strong>Security question:</strong> What is the name of the choir?</p>
+        <p style="margin:4px 0;font-size:15px;"><strong>Answer:</strong> clubchoir <em>(one word, all lowercase)</em></p>
+      </div>
+      <p>If you haven't decided yet whether you're joining — that's okay! We hope to see you at one of our <strong>free open houses</strong> below. It's the perfect no-commitment way to meet the choir before the session begins.</p>`;
   } else {
     subject = "You're invited — Club Choir Fall 2026 open houses 🎤";
     opener = `
