@@ -107,7 +107,10 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
     opener = `
       <p>Hi ${first},</p>
       <p>We're gearing up for our <strong>Fall 2026 season</strong> and we'd love to see you back! Whether you sang with us before or you're just curious, we're hosting four <strong>free open houses</strong> in early August — no commitment, just come and sing.</p>
-      <p>Fall registration is open now — full location details below.</p>`;
+      <p>Fall registration is open now — <a href="${SITE_URL}/fall-registration" style="color:#f472b6;text-decoration:underline;">register here for the full 14-week session</a>.</p>
+      <div style="text-align:center;margin:16px 0;">
+        <a href="${SITE_URL}/fall-registration" style="display:inline-block;background:#f472b6;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold;">Register for Fall 2026</a>
+      </div>`;
   }
 
   const memberLine = segment === "paid" ? `
