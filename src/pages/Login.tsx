@@ -83,7 +83,7 @@ const Login = () => {
         email,
         password,
         options: {
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: postAuthAbsolute,
           data: { location, display_name: trimmedName },
         },
       });
