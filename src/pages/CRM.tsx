@@ -76,11 +76,14 @@ type SortDir = "asc" | "desc";
 // Mutually exclusive buckets — a person is counted once, in their highest-commitment bucket.
 const bucketOf = (c: UnifiedContact): string => {
   if (c.tags.includes("fall-2026") || c.paid_reg || c.unpaid_reg) return "registered";
-  if (c.tags.includes("open-house-2026")) return "openhouse";
-  if (c.tags.includes("try-a-session")) return "try";
-  if (c.types.includes("prospect")) return "prospect";
+  if (
+    c.tags.includes("open-house-2026") ||
+    c.tags.includes("try-a-session") ||
+    c.types.includes("prospect")
+  ) return "interested";
   return "other";
 };
+
 
 const CRM = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
