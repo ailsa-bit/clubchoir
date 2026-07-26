@@ -272,6 +272,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                     </div>
                     <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Dashboard</Link>
                     <Link to="/crm" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
+                    <Link to="/open-house-rsvps" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Open House RSVPs</Link>
                     <Link to="/send-email" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
                     <Link to="/campaigns" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Email Campaigns</Link>
                   </>
