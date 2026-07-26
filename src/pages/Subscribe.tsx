@@ -219,7 +219,7 @@ const Subscribe = () => {
                   <p className="text-xs text-muted-foreground mb-3">{t.locationsHelp}</p>
                   <div className="grid sm:grid-cols-2 gap-2">
                     {LOCATIONS.map((loc) => {
-                      const checked = selected.includes(loc);
+                      const checked = selected === loc;
                       return (
                         <label
                           key={loc}
@@ -230,9 +230,11 @@ const Subscribe = () => {
                           }`}
                         >
                           <input
-                            type="checkbox"
+                            type="radio"
+                            name="location"
+                            required
                             checked={checked}
-                            onChange={() => toggleLocation(loc)}
+                            onChange={() => setSelected(loc)}
                             className="w-4 h-4 accent-primary"
                           />
                           <span className="text-sm font-medium text-foreground">{loc}</span>
@@ -240,6 +242,7 @@ const Subscribe = () => {
                       );
                     })}
                   </div>
+
                 </div>
 
                 <button
