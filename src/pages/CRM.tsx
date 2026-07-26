@@ -73,6 +73,15 @@ const PRESET_AMOUNTS = [120, 135, 150, 175, 200, 280];
 type SortKey = "name" | "email" | "location" | "type" | "status" | "activity";
 type SortDir = "asc" | "desc";
 
+// Mutually exclusive buckets — a person is counted once, in their highest-commitment bucket.
+const bucketOf = (c: UnifiedContact): string => {
+  if (c.tags.includes("fall-2026") || c.paid_reg || c.unpaid_reg) return "registered";
+  if (c.tags.includes("open-house-2026")) return "openhouse";
+  if (c.tags.includes("try-a-session")) return "try";
+  if (c.types.includes("prospect")) return "prospect";
+  return "other";
+};
+
 const CRM = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
