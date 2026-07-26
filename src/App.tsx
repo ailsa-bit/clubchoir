@@ -30,6 +30,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SignedUpUsers from "./pages/SignedUpUsers";
 import Subscribe from "./pages/Subscribe";
 import CRM from "./pages/CRM";
+import Dashboard from "./pages/Dashboard";
 
 import PopupStudio77 from "./pages/PopupStudio77";
 import PopupReservations from "./pages/PopupReservations";
