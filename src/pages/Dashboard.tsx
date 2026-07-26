@@ -207,7 +207,7 @@ const Dashboard = () => {
           <StatCard icon={TrendingUp} label={`New signups (${range}d)`} value={data.newInRange}
             sub={data.delta === null ? "no prior-period data" : `${data.delta >= 0 ? "+" : ""}${data.delta}% vs previous ${range}d`}
             tone={data.delta !== null && data.delta < 0 ? "warn" : "good"} />
-          <StatCard icon={CalendarCheck} label="Open house RSVPs" value={rsvps.length} sub="all time" />
+          <StatCard icon={CalendarCheck} label="Open house RSVPs" value={rsvps.length} sub="all time" to="/open-house-rsvps" />
           <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
           <StatCard icon={MessageSquare} label="Engagement (30d)" value={chatCount} sub={`${campaignCount} campaign emails sent`} to="/campaigns" />
         </div>
