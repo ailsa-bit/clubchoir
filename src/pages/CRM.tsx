@@ -265,6 +265,14 @@ const CRM = () => {
         } else if (c.status.toUpperCase() !== sf) return false;
       }
       if (tagFilter !== "ALL" && !c.tags.includes(tagFilter)) return false;
+      if (bucketFilter !== "ALL") {
+        const b = bucketOf(c);
+        if (bucketFilter === "registered-paid") {
+          if (b !== "registered" || !c.paid_reg) return false;
+        } else if (bucketFilter === "registered-unpaid") {
+          if (b !== "registered" || c.paid_reg) return false;
+        } else if (b !== bucketFilter) return false;
+      }
       if (!q) return true;
       return (
         c.first_name.toLowerCase().includes(q) ||
