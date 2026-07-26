@@ -529,14 +529,32 @@ const CRM = () => {
 
           <TabsContent value="all">
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-              <StatCard label="Total" value={stats.total} onClick={() => setTypeFilter("ALL")} active={typeFilter === "ALL"} />
-              <StatCard label="Active members" value={stats.members} onClick={() => { setTypeFilter("member"); setStatusFilter("ACTIVE"); }} active={typeFilter === "member"} />
-              <StatCard label="Prospects" value={stats.prospects} onClick={() => setTypeFilter("prospect")} active={typeFilter === "prospect"} />
-              <StatCard label={`Fall 2026 (${stats.fallPaid} paid)`} value={stats.fall} onClick={() => setTagFilter("fall-2026")} active={tagFilter === "fall-2026"} />
-              <StatCard label="Open House" value={stats.openHouse} onClick={() => setTagFilter("open-house-2026")} active={tagFilter === "open-house-2026"} />
-              <StatCard label="Try a Session" value={stats.trySession} onClick={() => setTagFilter("try-a-session")} active={tagFilter === "try-a-session"} />
-            </div>
+            {/* Stats — mutually exclusive buckets (each person counted once) */}
+            {(() => {
+              const pick = (b: string) => {
+                setBucketFilter(b);
+                setTypeFilter("ALL"); setStatusFilter("ALL"); setTagFilter("ALL");
+              };
+              return (
+                <div className="space-y-3 mb-6">
+                  <div className="grid grid-cols-3 gap-3">
+                    <StatCard label="Fall 2026 registered" value={stats.registered} onClick={() => pick("registered")} active={bucketFilter === "registered"} />
+                    <StatCard label="→ Paid" value={stats.regPaid} onClick={() => pick("registered-paid")} active={bucketFilter === "registered-paid"} />
+                    <StatCard label="→ Not paid" value={stats.regUnpaid} onClick={() => pick("registered-unpaid")} active={bucketFilter === "registered-unpaid"} />
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <StatCard label="Open house only" value={stats.openHouse} onClick={() => pick("openhouse")} active={bucketFilter === "openhouse"} />
+                    <StatCard label="Try a session only" value={stats.trySession} onClick={() => pick("try")} active={bucketFilter === "try"} />
+                    <StatCard label="Prospects only" value={stats.prospects} onClick={() => pick("prospect")} active={bucketFilter === "prospect"} />
+                    <StatCard label="All contacts" value={stats.total} onClick={() => pick("ALL")} active={bucketFilter === "ALL"} />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Each person is counted once, in their highest-commitment group: registered people never appear in open house, try-a-session or prospects.
+                  </p>
+                </div>
+              );
+            })()}
+
 
             {/* Filters */}
             <div className="rounded-xl border border-border bg-card p-4 mb-4 space-y-3">
