@@ -300,7 +300,7 @@ const CRM = () => {
       return 0;
     });
     return list;
-  }, [contacts, search, typeFilter, locationFilter, statusFilter, tagFilter, sortKey, sortDir]);
+  }, [contacts, search, typeFilter, locationFilter, statusFilter, tagFilter, bucketFilter, sortKey, sortDir]);
 
   const unpaidRegs = useMemo(() => {
     const list = contacts.filter(c => c.unpaid_reg);
