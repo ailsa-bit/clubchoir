@@ -30,6 +30,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SignedUpUsers from "./pages/SignedUpUsers";
 import Subscribe from "./pages/Subscribe";
 import CRM from "./pages/CRM";
+import Dashboard from "./pages/Dashboard";
 
 import PopupStudio77 from "./pages/PopupStudio77";
 import PopupReservations from "./pages/PopupReservations";
@@ -80,7 +81,8 @@ const App = () => (
             <Route path="/signed-up-users" element={<SignedUpUsers />} />
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/crm" element={<CRM />} />
-            
+            <Route path="/dashboard" element={<Dashboard />} />
+
             <Route path="/popup/studio-77" element={<PopupStudio77 />} />
             <Route path="/popup-reservations" element={<PopupReservations />} />
             <Route path="/checkin/:token" element={<CheckIn />} />

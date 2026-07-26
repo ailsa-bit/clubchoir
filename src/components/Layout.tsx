@@ -160,6 +160,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                         <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70 inline-flex items-center gap-1">
                           <Shield className="w-3 h-3" /> Admin
                         </div>
+                        <Link to="/dashboard" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Dashboard</Link>
                         <Link to="/crm" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
                         <Link to="/send-email" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
                         <Link to="/campaigns" className="block px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Email Campaigns</Link>
@@ -268,6 +269,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                     <div className="mt-2 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70 inline-flex items-center gap-1">
                       <Shield className="w-3 h-3" /> Admin
                     </div>
+                    <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Dashboard</Link>
                     <Link to="/crm" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">CRM</Link>
                     <Link to="/send-email" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Send Email</Link>
                     <Link to="/campaigns" onClick={() => setMobileOpen(false)} className="block px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">Email Campaigns</Link>
