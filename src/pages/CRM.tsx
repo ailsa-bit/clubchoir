@@ -76,11 +76,14 @@ type SortDir = "asc" | "desc";
 // Mutually exclusive buckets — a person is counted once, in their highest-commitment bucket.
 const bucketOf = (c: UnifiedContact): string => {
   if (c.tags.includes("fall-2026") || c.paid_reg || c.unpaid_reg) return "registered";
-  if (c.tags.includes("open-house-2026")) return "openhouse";
-  if (c.tags.includes("try-a-session")) return "try";
-  if (c.types.includes("prospect")) return "prospect";
+  if (
+    c.tags.includes("open-house-2026") ||
+    c.tags.includes("try-a-session") ||
+    c.types.includes("prospect")
+  ) return "interested";
   return "other";
 };
+
 
 const CRM = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -324,9 +327,8 @@ const CRM = () => {
       registered: reg.length,
       regPaid: reg.filter(c => !!c.paid_reg).length,
       regUnpaid: reg.filter(c => !c.paid_reg).length,
-      openHouse: b("openhouse").length,
-      trySession: b("try").length,
-      prospects: b("prospect").length,
+      interested: b("interested").length,
+
       unpaid: contacts.filter(c => c.unpaid_reg).length,
       fallPaid: contacts.filter(c => !!c.paid_reg).length,
     };
@@ -542,15 +544,14 @@ const CRM = () => {
                     <StatCard label="→ Paid" value={stats.regPaid} onClick={() => pick("registered-paid")} active={bucketFilter === "registered-paid"} />
                     <StatCard label="→ Not paid" value={stats.regUnpaid} onClick={() => pick("registered-unpaid")} active={bucketFilter === "registered-unpaid"} />
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <StatCard label="Open house only" value={stats.openHouse} onClick={() => pick("openhouse")} active={bucketFilter === "openhouse"} />
-                    <StatCard label="Try a session only" value={stats.trySession} onClick={() => pick("try")} active={bucketFilter === "try"} />
-                    <StatCard label="Prospects only" value={stats.prospects} onClick={() => pick("prospect")} active={bucketFilter === "prospect"} />
+                  <div className="grid grid-cols-2 gap-3">
+                    <StatCard label="Interested Fall 2026" value={stats.interested} onClick={() => pick("interested")} active={bucketFilter === "interested"} />
                     <StatCard label="All contacts" value={stats.total} onClick={() => pick("ALL")} active={bucketFilter === "ALL"} />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Each person is counted once, in their highest-commitment group: registered people never appear in open house, try-a-session or prospects.
+                    Each person is counted once. "Interested Fall 2026" combines open house, try-a-session and prospects — as soon as someone registers they move into Fall 2026 registered.
                   </p>
+
                 </div>
               );
             })()}
