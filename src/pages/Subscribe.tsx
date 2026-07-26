@@ -14,7 +14,7 @@ const makeSchema = (tr: (k: string) => string) =>
     first_name: z.string().trim().min(1, tr("subscribe.firstNameRequired")).max(100),
     last_name: z.string().trim().max(100).optional(),
     email: z.string().trim().email(tr("subscribe.validEmail")).max(255),
-    locations: z.array(z.string()).min(1, tr("subscribe.selectLocation")).max(10),
+    locations: z.array(z.string()).length(1, tr("subscribe.selectLocation")),
   });
 
 const Subscribe = () => {
@@ -23,7 +23,7 @@ const Subscribe = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -49,18 +49,15 @@ const Subscribe = () => {
     privacy: tr("subscribe.privacy"),
   };
 
-  const toggleLocation = (loc: string) => {
-    setSelected((prev) => (prev.includes(loc) ? prev.filter((l) => l !== loc) : [...prev, loc]));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = schema.safeParse({
       first_name: firstName,
       last_name: lastName || undefined,
       email,
-      locations: selected,
+      locations: selected ? [selected] : [],
     });
+
 
     if (!result.success) {
       toast({
@@ -222,7 +219,7 @@ const Subscribe = () => {
                   <p className="text-xs text-muted-foreground mb-3">{t.locationsHelp}</p>
                   <div className="grid sm:grid-cols-2 gap-2">
                     {LOCATIONS.map((loc) => {
-                      const checked = selected.includes(loc);
+                      const checked = selected === loc;
                       return (
                         <label
                           key={loc}
@@ -233,9 +230,11 @@ const Subscribe = () => {
                           }`}
                         >
                           <input
-                            type="checkbox"
+                            type="radio"
+                            name="location"
+                            required
                             checked={checked}
-                            onChange={() => toggleLocation(loc)}
+                            onChange={() => setSelected(loc)}
                             className="w-4 h-4 accent-primary"
                           />
                           <span className="text-sm font-medium text-foreground">{loc}</span>
@@ -243,6 +242,7 @@ const Subscribe = () => {
                       );
                     })}
                   </div>
+
                 </div>
 
                 <button

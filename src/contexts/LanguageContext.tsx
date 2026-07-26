@@ -604,8 +604,9 @@ const translations: Record<string, Record<Language, string>> = {
   "subscribe.firstName": { en: "First name", fr: "Prénom" },
   "subscribe.lastName": { en: "Last name (optional)", fr: "Nom (facultatif)" },
   "subscribe.email": { en: "Email address", fr: "Adresse courriel" },
-  "subscribe.locations": { en: "Locations you're interested in", fr: "Lieux qui vous intéressent" },
-  "subscribe.locationsHelp": { en: "Select all that apply", fr: "Sélectionnez tous ceux qui s'appliquent" },
+  "subscribe.locations": { en: "Choir location", fr: "Lieu de la chorale" },
+  "subscribe.locationsHelp": { en: "Choose one location", fr: "Choisissez un seul lieu" },
+
   "subscribe.submit": { en: "Add me to the list", fr: "M'inscrire à la liste" },
   "subscribe.submitting": { en: "Submitting...", fr: "Envoi en cours..." },
   "subscribe.success.title": { en: "You're on the list! 🎉", fr: "Bienvenue à bord ! 🎉" },
