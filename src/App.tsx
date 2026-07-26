@@ -81,7 +81,8 @@ const App = () => (
             <Route path="/signed-up-users" element={<SignedUpUsers />} />
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/crm" element={<CRM />} />
-            
+            <Route path="/dashboard" element={<Dashboard />} />
+
             <Route path="/popup/studio-77" element={<PopupStudio77 />} />
             <Route path="/popup-reservations" element={<PopupReservations />} />
             <Route path="/checkin/:token" element={<CheckIn />} />
