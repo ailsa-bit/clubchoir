@@ -14,7 +14,7 @@ const makeSchema = (tr: (k: string) => string) =>
     first_name: z.string().trim().min(1, tr("subscribe.firstNameRequired")).max(100),
     last_name: z.string().trim().max(100).optional(),
     email: z.string().trim().email(tr("subscribe.validEmail")).max(255),
-    locations: z.array(z.string()).min(1, tr("subscribe.selectLocation")).max(10),
+    locations: z.array(z.string()).length(1, tr("subscribe.selectLocation")),
   });
 
 const Subscribe = () => {
