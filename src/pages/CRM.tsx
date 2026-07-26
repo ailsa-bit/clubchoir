@@ -298,16 +298,22 @@ const CRM = () => {
     }).sort((a, b) => (a.unpaid_reg?.created_at || "").localeCompare(b.unpaid_reg?.created_at || ""));
   }, [contacts, payLocation, paySearch]);
 
-  const stats = useMemo(() => ({
-    total: contacts.length,
-    members: contacts.filter(c => c.types.includes("member") && c.status.toUpperCase() === "ACTIVE").length,
-    prospects: contacts.filter(c => c.types.includes("prospect")).length,
-    fall: contacts.filter(c => c.tags.includes("fall-2026")).length,
-    fallPaid: contacts.filter(c => c.tags.includes("fall-2026") && c.paid_reg).length,
-    openHouse: contacts.filter(c => c.tags.includes("open-house-2026")).length,
-    trySession: contacts.filter(c => c.tags.includes("try-a-session")).length,
-    unpaid: contacts.filter(c => c.unpaid_reg).length,
-  }), [contacts]);
+  const stats = useMemo(() => {
+    const b = (name: string) => contacts.filter(c => bucketOf(c) === name);
+    const reg = b("registered");
+    return {
+      total: contacts.length,
+      registered: reg.length,
+      regPaid: reg.filter(c => !!c.paid_reg).length,
+      regUnpaid: reg.filter(c => !c.paid_reg).length,
+      openHouse: b("openhouse").length,
+      trySession: b("try").length,
+      prospects: b("prospect").length,
+      unpaid: contacts.filter(c => c.unpaid_reg).length,
+      fallPaid: contacts.filter(c => !!c.paid_reg).length,
+    };
+  }, [contacts]);
+
 
   const payStats = useMemo(() => {
     const byLoc = new Map<string, { unpaid: number; paid: number }>();
