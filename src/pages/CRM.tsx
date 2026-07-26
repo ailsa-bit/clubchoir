@@ -73,6 +73,15 @@ const PRESET_AMOUNTS = [120, 135, 150, 175, 200, 280];
 type SortKey = "name" | "email" | "location" | "type" | "status" | "activity";
 type SortDir = "asc" | "desc";
 
+// Mutually exclusive buckets — a person is counted once, in their highest-commitment bucket.
+const bucketOf = (c: UnifiedContact): string => {
+  if (c.tags.includes("fall-2026") || c.paid_reg || c.unpaid_reg) return "registered";
+  if (c.tags.includes("open-house-2026")) return "openhouse";
+  if (c.tags.includes("try-a-session")) return "try";
+  if (c.types.includes("prospect")) return "prospect";
+  return "other";
+};
+
 const CRM = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
@@ -87,6 +96,7 @@ const CRM = () => {
   const [locationFilter, setLocationFilter] = useState<string>("ALL");
   const [statusFilter, setStatusFilter] = useState<string>("ALL");
   const [tagFilter, setTagFilter] = useState<string>("ALL");
+  const [bucketFilter, setBucketFilter] = useState<string>("ALL");
   const [sortKey, setSortKey] = useState<SortKey>("name");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -255,6 +265,14 @@ const CRM = () => {
         } else if (c.status.toUpperCase() !== sf) return false;
       }
       if (tagFilter !== "ALL" && !c.tags.includes(tagFilter)) return false;
+      if (bucketFilter !== "ALL") {
+        const b = bucketOf(c);
+        if (bucketFilter === "registered-paid") {
+          if (b !== "registered" || !c.paid_reg) return false;
+        } else if (bucketFilter === "registered-unpaid") {
+          if (b !== "registered" || c.paid_reg) return false;
+        } else if (b !== bucketFilter) return false;
+      }
       if (!q) return true;
       return (
         c.first_name.toLowerCase().includes(q) ||
@@ -282,7 +300,7 @@ const CRM = () => {
       return 0;
     });
     return list;
-  }, [contacts, search, typeFilter, locationFilter, statusFilter, tagFilter, sortKey, sortDir]);
+  }, [contacts, search, typeFilter, locationFilter, statusFilter, tagFilter, bucketFilter, sortKey, sortDir]);
 
   const unpaidRegs = useMemo(() => {
     const list = contacts.filter(c => c.unpaid_reg);
@@ -298,16 +316,22 @@ const CRM = () => {
     }).sort((a, b) => (a.unpaid_reg?.created_at || "").localeCompare(b.unpaid_reg?.created_at || ""));
   }, [contacts, payLocation, paySearch]);
 
-  const stats = useMemo(() => ({
-    total: contacts.length,
-    members: contacts.filter(c => c.types.includes("member") && c.status.toUpperCase() === "ACTIVE").length,
-    prospects: contacts.filter(c => c.types.includes("prospect")).length,
-    fall: contacts.filter(c => c.tags.includes("fall-2026")).length,
-    fallPaid: contacts.filter(c => c.tags.includes("fall-2026") && c.paid_reg).length,
-    openHouse: contacts.filter(c => c.tags.includes("open-house-2026")).length,
-    trySession: contacts.filter(c => c.tags.includes("try-a-session")).length,
-    unpaid: contacts.filter(c => c.unpaid_reg).length,
-  }), [contacts]);
+  const stats = useMemo(() => {
+    const b = (name: string) => contacts.filter(c => bucketOf(c) === name);
+    const reg = b("registered");
+    return {
+      total: contacts.length,
+      registered: reg.length,
+      regPaid: reg.filter(c => !!c.paid_reg).length,
+      regUnpaid: reg.filter(c => !c.paid_reg).length,
+      openHouse: b("openhouse").length,
+      trySession: b("try").length,
+      prospects: b("prospect").length,
+      unpaid: contacts.filter(c => c.unpaid_reg).length,
+      fallPaid: contacts.filter(c => !!c.paid_reg).length,
+    };
+  }, [contacts]);
+
 
   const payStats = useMemo(() => {
     const byLoc = new Map<string, { unpaid: number; paid: number }>();
@@ -505,14 +529,32 @@ const CRM = () => {
 
           <TabsContent value="all">
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-              <StatCard label="Total" value={stats.total} onClick={() => setTypeFilter("ALL")} active={typeFilter === "ALL"} />
-              <StatCard label="Active members" value={stats.members} onClick={() => { setTypeFilter("member"); setStatusFilter("ACTIVE"); }} active={typeFilter === "member"} />
-              <StatCard label="Prospects" value={stats.prospects} onClick={() => setTypeFilter("prospect")} active={typeFilter === "prospect"} />
-              <StatCard label={`Fall 2026 (${stats.fallPaid} paid)`} value={stats.fall} onClick={() => setTagFilter("fall-2026")} active={tagFilter === "fall-2026"} />
-              <StatCard label="Open House" value={stats.openHouse} onClick={() => setTagFilter("open-house-2026")} active={tagFilter === "open-house-2026"} />
-              <StatCard label="Try a Session" value={stats.trySession} onClick={() => setTagFilter("try-a-session")} active={tagFilter === "try-a-session"} />
-            </div>
+            {/* Stats — mutually exclusive buckets (each person counted once) */}
+            {(() => {
+              const pick = (b: string) => {
+                setBucketFilter(b);
+                setTypeFilter("ALL"); setStatusFilter("ALL"); setTagFilter("ALL");
+              };
+              return (
+                <div className="space-y-3 mb-6">
+                  <div className="grid grid-cols-3 gap-3">
+                    <StatCard label="Fall 2026 registered" value={stats.registered} onClick={() => pick("registered")} active={bucketFilter === "registered"} />
+                    <StatCard label="→ Paid" value={stats.regPaid} onClick={() => pick("registered-paid")} active={bucketFilter === "registered-paid"} />
+                    <StatCard label="→ Not paid" value={stats.regUnpaid} onClick={() => pick("registered-unpaid")} active={bucketFilter === "registered-unpaid"} />
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <StatCard label="Open house only" value={stats.openHouse} onClick={() => pick("openhouse")} active={bucketFilter === "openhouse"} />
+                    <StatCard label="Try a session only" value={stats.trySession} onClick={() => pick("try")} active={bucketFilter === "try"} />
+                    <StatCard label="Prospects only" value={stats.prospects} onClick={() => pick("prospect")} active={bucketFilter === "prospect"} />
+                    <StatCard label="All contacts" value={stats.total} onClick={() => pick("ALL")} active={bucketFilter === "ALL"} />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Each person is counted once, in their highest-commitment group: registered people never appear in open house, try-a-session or prospects.
+                  </p>
+                </div>
+              );
+            })()}
+
 
             {/* Filters */}
             <div className="rounded-xl border border-border bg-card p-4 mb-4 space-y-3">
