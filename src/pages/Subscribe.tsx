@@ -49,18 +49,15 @@ const Subscribe = () => {
     privacy: tr("subscribe.privacy"),
   };
 
-  const toggleLocation = (loc: string) => {
-    setSelected((prev) => (prev.includes(loc) ? prev.filter((l) => l !== loc) : [...prev, loc]));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = schema.safeParse({
       first_name: firstName,
       last_name: lastName || undefined,
       email,
-      locations: selected,
+      locations: selected ? [selected] : [],
     });
+
 
     if (!result.success) {
       toast({
