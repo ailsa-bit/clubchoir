@@ -327,9 +327,8 @@ const CRM = () => {
       registered: reg.length,
       regPaid: reg.filter(c => !!c.paid_reg).length,
       regUnpaid: reg.filter(c => !c.paid_reg).length,
-      openHouse: b("openhouse").length,
-      trySession: b("try").length,
-      prospects: b("prospect").length,
+      interested: b("interested").length,
+
       unpaid: contacts.filter(c => c.unpaid_reg).length,
       fallPaid: contacts.filter(c => !!c.paid_reg).length,
     };
