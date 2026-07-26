@@ -544,15 +544,14 @@ const CRM = () => {
                     <StatCard label="→ Paid" value={stats.regPaid} onClick={() => pick("registered-paid")} active={bucketFilter === "registered-paid"} />
                     <StatCard label="→ Not paid" value={stats.regUnpaid} onClick={() => pick("registered-unpaid")} active={bucketFilter === "registered-unpaid"} />
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <StatCard label="Open house only" value={stats.openHouse} onClick={() => pick("openhouse")} active={bucketFilter === "openhouse"} />
-                    <StatCard label="Try a session only" value={stats.trySession} onClick={() => pick("try")} active={bucketFilter === "try"} />
-                    <StatCard label="Prospects only" value={stats.prospects} onClick={() => pick("prospect")} active={bucketFilter === "prospect"} />
+                  <div className="grid grid-cols-2 gap-3">
+                    <StatCard label="Interested Fall 2026" value={stats.interested} onClick={() => pick("interested")} active={bucketFilter === "interested"} />
                     <StatCard label="All contacts" value={stats.total} onClick={() => pick("ALL")} active={bucketFilter === "ALL"} />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Each person is counted once, in their highest-commitment group: registered people never appear in open house, try-a-session or prospects.
+                    Each person is counted once. "Interested Fall 2026" combines open house, try-a-session and prospects — as soon as someone registers they move into Fall 2026 registered.
                   </p>
+
                 </div>
               );
             })()}
