@@ -47,6 +47,9 @@ interface UnifiedContact {
   detail_path?: string;
   unpaid_reg: RegPayment | null;
   paid_reg: RegPayment | null;
+  // A shared email can carry more than one registration (couples).
+  unpaid_reg_count: number;
+  paid_reg_count: number;
 }
 
 const TYPE_LABEL: Record<ContactType, string> = {
@@ -197,8 +200,8 @@ const CRM = () => {
           c.last_activity = laterOf(c.last_activity, r.created_at);
           if (r.session_label === "fall-2026") {
             const reg: RegPayment = { id: r.id, session_label: r.session_label, payment_status: r.payment_status, created_at: r.created_at, location: r.location || "", is_returning_member: r.is_returning_member === true };
-            if (r.payment_status === "paid") c.paid_reg = c.paid_reg ?? reg;
-            else if (!c.unpaid_reg) c.unpaid_reg = reg;
+            if (r.payment_status === "paid") { c.paid_reg = c.paid_reg ?? reg; c.paid_reg_count++; }
+            else { c.unpaid_reg = c.unpaid_reg ?? reg; c.unpaid_reg_count++; }
           }
 
         }, `reg:${r.id}`);
@@ -330,15 +333,18 @@ const CRM = () => {
   const stats = useMemo(() => {
     const b = (name: string) => contacts.filter(c => bucketOf(c) === name);
     const reg = b("registered");
+    const sum = (list: typeof contacts, pick: (c: typeof contacts[number]) => number) =>
+      list.reduce((n, c) => n + pick(c), 0);
     return {
       total: contacts.length,
-      registered: reg.length,
-      regPaid: reg.filter(c => !!c.paid_reg).length,
-      regUnpaid: reg.filter(c => !c.paid_reg).length,
+      // Count registrations, not emails — couples can share one email.
+      registered: sum(reg, c => c.paid_reg_count + c.unpaid_reg_count) || reg.length,
+      regPaid: sum(reg, c => c.paid_reg_count),
+      regUnpaid: sum(reg, c => c.unpaid_reg_count),
       interested: b("interested").length,
 
-      unpaid: contacts.filter(c => c.unpaid_reg).length,
-      fallPaid: contacts.filter(c => !!c.paid_reg).length,
+      unpaid: sum(contacts, c => c.unpaid_reg_count),
+      fallPaid: sum(contacts, c => c.paid_reg_count),
     };
   }, [contacts]);
 
@@ -350,8 +356,8 @@ const CRM = () => {
       if (!loc) return;
       if (!byLoc.has(loc)) byLoc.set(loc, { unpaid: 0, paid: 0 });
       const s = byLoc.get(loc)!;
-      if (c.unpaid_reg) s.unpaid++;
-      if (c.paid_reg) s.paid++;
+      s.unpaid += c.unpaid_reg_count;
+      s.paid += c.paid_reg_count;
     });
     return [...byLoc.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   }, [contacts]);
@@ -834,6 +840,8 @@ function blank(key: string): UnifiedContact {
     detail_path: undefined,
     unpaid_reg: null,
     paid_reg: null,
+    unpaid_reg_count: 0,
+    paid_reg_count: 0,
   };
 }
 function uniq<T>(arr: T[]): T[] { return [...new Set(arr)]; }
