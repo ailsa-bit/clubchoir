@@ -43,6 +43,7 @@ interface UnifiedContact {
   tags: string[];
   sources: string[];
   last_activity: string;
+  people: string[];
   detail_path?: string;
   unpaid_reg: RegPayment | null;
   paid_reg: RegPayment | null;
@@ -163,6 +164,7 @@ const CRM = () => {
           c.location = m.location || c.location;
           c.status = m.status || c.status;
           c.types.push("member");
+          addPerson(c, m.first_name, m.last_name);
           (m.crm_tags || []).forEach((t: string) => c.tags.push(t));
           if (m.source) c.sources.push(m.source);
           c.last_activity = laterOf(c.last_activity, m.updated_at || m.last_session);
@@ -176,6 +178,7 @@ const CRM = () => {
           c.last_name = c.last_name || p.last_name || "";
           if (!c.location && (p.locations || []).length) c.location = (p.locations || []).join(", ");
           c.types.push("prospect");
+          addPerson(c, p.first_name, p.last_name);
           c.sources.push("prospect");
           c.last_activity = laterOf(c.last_activity, p.updated_at || p.created_at);
           if (!c.detail_path) c.detail_path = "/manage-prospects";
@@ -188,6 +191,7 @@ const CRM = () => {
           c.last_name = c.last_name || r.last_name || "";
           if (!c.location) c.location = r.location || "";
           c.types.push("registrant");
+          addPerson(c, r.first_name, r.last_name);
           if (r.session_label) c.tags.push(r.session_label);
           if (r.session_label) c.sources.push(r.session_label);
           c.last_activity = laterOf(c.last_activity, r.created_at);
@@ -205,6 +209,7 @@ const CRM = () => {
           c.first_name = c.first_name || p.first_name || "";
           c.last_name = c.last_name || p.last_name || "";
           c.types.push("popup");
+          addPerson(c, p.first_name, p.last_name);
           if (p.event_slug) c.tags.push(p.event_slug);
           if (p.event_slug) c.sources.push(p.event_slug);
           c.last_activity = laterOf(c.last_activity, p.created_at);
@@ -216,6 +221,7 @@ const CRM = () => {
           c.first_name = c.first_name || w.first_name || "";
           c.last_name = c.last_name || w.last_name || "";
           c.types.push("waitlist");
+          addPerson(c, w.first_name, w.last_name);
           if (w.event_slug) c.tags.push(`waitlist:${w.event_slug}`);
           c.sources.push("waitlist");
           c.last_activity = laterOf(c.last_activity, w.created_at);
@@ -819,12 +825,20 @@ function blank(key: string): UnifiedContact {
     tags: [],
     sources: [],
     last_activity: "",
+    people: [],
     detail_path: undefined,
     unpaid_reg: null,
     paid_reg: null,
   };
 }
 function uniq<T>(arr: T[]): T[] { return [...new Set(arr)]; }
+// Several people can share one email (couples). Track every distinct name seen.
+function addPerson(c: UnifiedContact, first?: string | null, last?: string | null) {
+  const name = `${(first || "").trim()} ${(last || "").trim()}`.trim();
+  if (!name) return;
+  const exists = c.people.some(p => p.toLowerCase() === name.toLowerCase());
+  if (!exists) c.people.push(name);
+}
 function laterOf(a: string, b: string | null | undefined): string {
   if (!b) return a;
   if (!a) return b;
