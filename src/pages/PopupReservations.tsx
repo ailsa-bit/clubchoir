@@ -336,6 +336,9 @@ const PopupReservations = () => {
                               Send payment info
                             </Button>
                           )}
+                        </div>
+                      </td>
+
 
                       <td className="p-3 text-right">
                         <AlertDialog>
