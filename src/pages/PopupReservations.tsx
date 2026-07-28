@@ -325,8 +325,18 @@ const PopupReservations = () => {
                               {r.paid_email_sent_at ? "Resend" : "Send ticket"}
                             </Button>
                           )}
-                        </div>
-                      </td>
+                          {!r.payment_received && (
+                            <Button
+                              size="sm" variant="ghost" className="h-7 text-[11px]"
+                              disabled={busyId === r.id}
+                              onClick={() => sendPaymentInfo(r)}
+                              title="Resend e-Transfer payment instructions"
+                            >
+                              <Mail className="w-3 h-3 mr-1" />
+                              Send payment info
+                            </Button>
+                          )}
+
                       <td className="p-3 text-right">
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
