@@ -99,7 +99,8 @@ const Dashboard = () => {
     const uniqueRegs = [...regByEmail.values()];
     const paid = uniqueRegs.filter((x) => x.payment_status === "paid");
     const unpaid = uniqueRegs.filter((x) => x.payment_status !== "paid");
-    const revenue = regs.reduce((s, x) => s + (x.payment_status === "paid" ? Number(x.amount_paid || 0) : 0), 0);
+    // Fall back to the standard $280 session fee if an amount wasn't recorded.
+    const revenue = regs.reduce((s, x) => s + (x.payment_status === "paid" ? Number(x.amount_paid ?? 280) : 0), 0);
 
     const rsvpEmails = new Set(rsvps.map((x) => norm(x.email)));
     const prospectEmails = new Set(prospects.map((x) => norm(x.email)));
