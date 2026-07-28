@@ -837,6 +837,8 @@ function blank(key: string): UnifiedContact {
     detail_path: undefined,
     unpaid_reg: null,
     paid_reg: null,
+    unpaid_reg_count: 0,
+    paid_reg_count: 0,
   };
 }
 function uniq<T>(arr: T[]): T[] { return [...new Set(arr)]; }
