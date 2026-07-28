@@ -139,6 +139,20 @@ const PopupReservations = () => {
     setBusyId(null);
   };
 
+  const sendPaymentInfo = async (r: Reservation) => {
+    setBusyId(r.id);
+    const { data, error } = await supabase.functions.invoke("resend-popup-payment-instructions", {
+      body: { reservation_id: r.id },
+    });
+    if (error || data?.error) {
+      toast({ title: "Email failed", description: data?.error || error?.message, variant: "destructive" });
+    } else {
+      toast({ title: "Payment info sent 💸", description: `Sent to ${r.email}` });
+    }
+    setBusyId(null);
+  };
+
+
   const toggleCheckIn = async (r: Reservation) => {
     setBusyId(r.id);
     const newVal = r.checked_in_at ? null : new Date().toISOString();
