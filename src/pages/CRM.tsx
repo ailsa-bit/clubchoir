@@ -286,6 +286,7 @@ const CRM = () => {
       return (
         c.first_name.toLowerCase().includes(q) ||
         c.last_name.toLowerCase().includes(q) ||
+        c.people.some(p => p.toLowerCase().includes(q)) ||
         c.email.toLowerCase().includes(q) ||
         c.location.toLowerCase().includes(q) ||
         c.tags.some(t => t.toLowerCase().includes(q))
@@ -651,7 +652,10 @@ const CRM = () => {
                           <Checkbox checked={selected.has(c.key)} onCheckedChange={() => toggleOne(c.key)} disabled={!c.email} />
                         </td>
                         <td className="p-2">
-                          <div className="font-medium text-foreground">{c.first_name} {c.last_name}</div>
+                          <div className="font-medium text-foreground">{c.people.length > 1 ? c.people.join(" + ") : `${c.first_name} ${c.last_name}`}</div>
+                          {c.people.length > 1 && (
+                            <div className="text-[10px] text-muted-foreground">{c.people.length} people share this email</div>
+                          )}
                           {c.tags.length > 0 && (
                             <div className="flex flex-wrap gap-1 mt-0.5">
                               {c.tags.slice(0, 3).map(t => (
