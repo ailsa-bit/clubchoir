@@ -47,6 +47,9 @@ interface UnifiedContact {
   detail_path?: string;
   unpaid_reg: RegPayment | null;
   paid_reg: RegPayment | null;
+  // A shared email can carry more than one registration (couples).
+  unpaid_reg_count: number;
+  paid_reg_count: number;
 }
 
 const TYPE_LABEL: Record<ContactType, string> = {
