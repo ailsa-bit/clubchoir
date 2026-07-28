@@ -10,7 +10,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "paid" | "registered" | "everyone";
+type Segment = "paid" | "registered" | "everyone" | "herd-reminder";
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
@@ -31,14 +31,20 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Warm invitation to open houses and Fall 2026 registration for the rest of the community.",
     color: "bg-blue-50 border-blue-200",
   },
+  {
+    key: "herd-reminder",
+    title: "Sing for the Herd — Reminder (EN/FR)",
+    description: "Event reminder for Sunday, August 2 at A Horse Tale Rescue. Sent to all CRM contacts except anyone who already paid for a Sing for the Herd ticket (and no-email / archived contacts).",
+    color: "bg-amber-50 border-amber-200",
+  },
 ];
 
 const Campaigns = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [counts, setCounts] = useState<Record<Segment, number | null>>({ paid: null, registered: null, everyone: null });
-  const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ paid: 0, registered: 0, everyone: 0 });
+  const [counts, setCounts] = useState<Record<Segment, number | null>>({ paid: null, registered: null, everyone: null, "herd-reminder": null });
+  const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ paid: 0, registered: 0, everyone: 0, "herd-reminder": 0 });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
   const [previewHtml, setPreviewHtml] = useState<string>("");
   const [previewSubject, setPreviewSubject] = useState<string>("");
@@ -66,7 +72,7 @@ const Campaigns = () => {
       .from("campaign_sends")
       .select("segment, status")
       .eq("status", "sent");
-    const grouped: any = { paid: 0, registered: 0, everyone: 0 };
+    const grouped: any = { paid: 0, registered: 0, everyone: 0, "herd-reminder": 0 };
     for (const row of sent || []) grouped[row.segment] = (grouped[row.segment] || 0) + 1;
     setSentCounts(grouped);
   };
