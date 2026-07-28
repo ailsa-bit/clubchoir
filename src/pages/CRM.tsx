@@ -771,7 +771,7 @@ const CRM = () => {
               {unpaidRegs.map(c => (
                 <div key={c.key} className="p-3 flex flex-col sm:flex-row sm:items-center gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-foreground">{c.first_name} {c.last_name}</div>
+                    <div className="font-semibold text-foreground">{c.people.length > 1 ? c.people.join(" + ") : `${c.first_name} ${c.last_name}`}</div>
                     <div className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5">
                       <span className="truncate">{c.email}</span>
                       {(c.unpaid_reg?.location || c.location) && (
