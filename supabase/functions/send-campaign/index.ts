@@ -12,7 +12,8 @@ const SIGNING_SECRET = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SITE_URL = "https://clubchoir.ca";
 const CAMPAIGN_KEY = "fall-2026-openhouse-v1";
 
-type Segment = "paid" | "registered" | "everyone";
+type Segment = "paid" | "registered" | "everyone" | "herd-reminder";
+const HERD_CAMPAIGN_KEY = "sing-for-the-herd-reminder-v1";
 
 interface Recipient {
   email: string;
@@ -88,6 +89,8 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
       <span style="color:#7c2d12;font-size:14px;">Know someone who'd love to sing? Forward this email or bring them along — friends, neighbours, or anyone curious is welcome at the open house. No experience needed. No audition. Just show up and sing.</span>
     </div>`;
 
+  if (segment === "herd-reminder") return renderHerdEmail(r);
+
   let opener = "";
   let subject = "";
   if (segment === "paid") {
@@ -155,7 +158,116 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
   return { subject, html };
 }
 
+function renderHerdEmail(r: Recipient): { subject: string; html: string } {
+  const first = esc(r.first_name || "there");
+  const ticketUrl = `${SITE_URL}/tickets/sing-for-the-herd`;
+  const schedule = (rows: string[]) => rows.map((t) => `<li style="margin:4px 0;">${t}</li>`).join("");
+  const html = `
+  <div style="font-family:Nunito,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;background:#fff;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <h1 style="margin:0;color:#f472b6;font-family:Quicksand,Arial,sans-serif;font-size:26px;">Club Choir</h1>
+    </div>
+
+    <p>Hello Club Choir family,</p>
+    <p>Just a friendly reminder that our <strong>Sing for the Herd</strong> fundraiser is coming up on <strong>Sunday, August 2</strong>, at A Horse Tale Rescue in Vaudreuil-Dorion!</p>
+    <p>Thank you so much to everyone who has already registered or purchased tickets. We are looking forward to spending a wonderful afternoon together, meeting the horses and singing in support of this very special organization.</p>
+
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Schedule</h2>
+    <ul style="padding-left:20px;color:#333;font-size:15px;">${schedule([
+      "<strong>2:45–3:45 PM:</strong> Meet the Herd",
+      "<strong>3:45 PM:</strong> Head to the barn",
+      "<strong>4:00–5:30 PM:</strong> Club Choir event",
+    ])}</ul>
+
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Location</h2>
+    <p style="margin:4px 0;color:#333;">A Horse Tale Rescue<br/>27 Chemin Murphy<br/>Vaudreuil-Dorion, QC J7V 4L2</p>
+
+    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;">
+      Please remember to <strong>bring your own chair</strong> for the event in the barn.
+    </div>
+
+    <p>Tickets and registration are available here:</p>
+    <div style="text-align:center;margin:16px 0;">
+      <a href="${ticketUrl}" style="display:inline-block;background:#f472b6;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold;">Get your tickets</a>
+    </div>
+    <p style="text-align:center;font-size:13px;"><a href="${ticketUrl}" style="color:#f472b6;">${ticketUrl}</a></p>
+
+    <p>To those who have already sent me a message to let me know that you are unable to attend, you will be missed!</p>
+    <p>Please email me at <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a> with any questions.</p>
+    <p>I look forward to singing with you and meeting the herd!</p>
+    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
+
+    <hr style="border:none;border-top:1px solid #eee;margin:28px 0;"/>
+
+    <p>Bonjour à toute la famille Club Choir,</p>
+    <p>Voici un petit rappel amical concernant notre activité-bénéfice <strong>Chantez pour le troupeau</strong>, qui aura lieu le <strong>dimanche 2 août</strong> au refuge A Horse Tale Rescue, à Vaudreuil-Dorion!</p>
+    <p>Un grand merci à toutes les personnes qui se sont déjà inscrites ou qui ont acheté leurs billets. Nous avons très hâte de passer un merveilleux après-midi ensemble, de rencontrer les chevaux et de chanter afin de soutenir cet organisme exceptionnel.</p>
+
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Horaire</h2>
+    <ul style="padding-left:20px;color:#333;font-size:15px;">${schedule([
+      "<strong>14 h 45 à 15 h 45 :</strong> Rencontre avec le troupeau",
+      "<strong>15 h 45 :</strong> Direction la grange",
+      "<strong>16 h à 17 h 30 :</strong> Activité Club Choir",
+    ])}</ul>
+
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Lieu</h2>
+    <p style="margin:4px 0;color:#333;">A Horse Tale Rescue<br/>27, chemin Murphy<br/>Vaudreuil-Dorion (Québec) J7V 4L2</p>
+
+    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;">
+      N’oubliez pas d’apporter <strong>votre propre chaise</strong> pour l’activité dans la grange.
+    </div>
+
+    <p>Vous pouvez vous inscrire et acheter vos billets ici :</p>
+    <div style="text-align:center;margin:16px 0;">
+      <a href="${ticketUrl}" style="display:inline-block;background:#f472b6;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold;">Obtenir vos billets</a>
+    </div>
+
+    <p>À toutes les personnes qui m’ont déjà écrit pour me dire qu’elles ne pourront malheureusement pas être présentes, vous allez nous manquer!</p>
+    <p>Pour toute question, écrivez-moi à <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a>.</p>
+    <p>Au plaisir de chanter avec vous et de rencontrer le troupeau!</p>
+    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
+
+    <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
+    <p style="color:#999;font-size:11px;text-align:center;">
+      You're receiving this because you're part of the Club Choir community.<br/>
+      <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">Unsubscribe</a> · <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
+    </p>
+  </div>`;
+  return {
+    subject: "Reminder: Sing for the Herd — Sunday, August 2 🐴🎶",
+    html,
+  };
+}
+
+async function loadHerdRecipients(supabase: any): Promise<Recipient[]> {
+  const { data: paidTickets } = await supabase
+    .from("popup_ticket_reservations")
+    .select("email, payment_received")
+    .eq("event_slug", "sing-for-the-herd")
+    .eq("payment_received", true);
+  const paidTicketSet = new Set<string>((paidTickets || []).map((t: any) => String(t.email).toLowerCase()));
+
+  const { data: memberRows } = await supabase
+    .from("members")
+    .select("email, first_name, last_name, archived_at, crm_tags")
+    .is("archived_at", null);
+
+  const out: Recipient[] = [];
+  const seen = new Set<string>();
+  for (const m of memberRows || []) {
+    if (!m.email || !m.email.includes("@")) continue;
+    const key = m.email.toLowerCase();
+    if (seen.has(key)) continue;
+    if (paidTicketSet.has(key)) continue;
+    if (Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) continue;
+    seen.add(key);
+    out.push({ email: key, first_name: m.first_name || "", last_name: m.last_name || "" });
+  }
+  return out;
+}
+
 async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
+  if (segment === "herd-reminder") return loadHerdRecipients(supabase);
   // Paid: session_registrations for fall-2026 with payment_status='paid'
   const { data: paidRegs } = await supabase
     .from("session_registrations")
@@ -251,7 +363,7 @@ serve(async (req) => {
     const previewOnly: boolean = !!body.previewOnly;
     const countOnly: boolean = !!body.countOnly;
 
-    if (!["paid", "registered", "everyone"].includes(segment)) {
+    if (!["paid", "registered", "everyone", "herd-reminder"].includes(segment)) {
       throw new Error("Invalid segment");
     }
 
@@ -296,9 +408,10 @@ serve(async (req) => {
     }
 
     // Real send — check campaign_sends to skip already-sent
+    const key = segment === "herd-reminder" ? HERD_CAMPAIGN_KEY : `${CAMPAIGN_KEY}:${segment}`;
     const { data: sentRows } = await supabase
       .from("campaign_sends").select("recipient_email")
-      .eq("campaign_key", `${CAMPAIGN_KEY}:${segment}`);
+      .eq("campaign_key", key);
     const alreadySent = new Set<string>((sentRows || []).map((r: any) => r.recipient_email.toLowerCase()));
     const toSend = recipients.filter((r) => !alreadySent.has(r.email));
 
@@ -319,7 +432,7 @@ serve(async (req) => {
           });
           results.success.push(r.email);
           await supabase.from("campaign_sends").insert({
-            campaign_key: `${CAMPAIGN_KEY}:${segment}`,
+            campaign_key: key,
             segment,
             recipient_email: r.email,
             subject,
@@ -328,7 +441,7 @@ serve(async (req) => {
         } catch (err: any) {
           results.failed.push(r.email);
           await supabase.from("campaign_sends").insert({
-            campaign_key: `${CAMPAIGN_KEY}:${segment}`,
+            campaign_key: key,
             segment,
             recipient_email: r.email,
             subject: "(failed)",
