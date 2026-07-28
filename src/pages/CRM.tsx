@@ -202,6 +202,7 @@ const CRM = () => {
             const reg: RegPayment = { id: r.id, session_label: r.session_label, payment_status: r.payment_status, created_at: r.created_at, location: r.location || "", is_returning_member: r.is_returning_member === true };
             if (r.payment_status === "paid") { c.paid_reg = c.paid_reg ?? reg; c.paid_reg_count++; }
             else { c.unpaid_reg = c.unpaid_reg ?? reg; c.unpaid_reg_count++; }
+          }
 
         }, `reg:${r.id}`);
       });
