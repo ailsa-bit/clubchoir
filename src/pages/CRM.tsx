@@ -43,6 +43,7 @@ interface UnifiedContact {
   tags: string[];
   sources: string[];
   last_activity: string;
+  people: string[];
   detail_path?: string;
   unpaid_reg: RegPayment | null;
   paid_reg: RegPayment | null;
@@ -163,6 +164,7 @@ const CRM = () => {
           c.location = m.location || c.location;
           c.status = m.status || c.status;
           c.types.push("member");
+          addPerson(c, m.first_name, m.last_name);
           (m.crm_tags || []).forEach((t: string) => c.tags.push(t));
           if (m.source) c.sources.push(m.source);
           c.last_activity = laterOf(c.last_activity, m.updated_at || m.last_session);
@@ -176,6 +178,7 @@ const CRM = () => {
           c.last_name = c.last_name || p.last_name || "";
           if (!c.location && (p.locations || []).length) c.location = (p.locations || []).join(", ");
           c.types.push("prospect");
+          addPerson(c, p.first_name, p.last_name);
           c.sources.push("prospect");
           c.last_activity = laterOf(c.last_activity, p.updated_at || p.created_at);
           if (!c.detail_path) c.detail_path = "/manage-prospects";
@@ -188,6 +191,7 @@ const CRM = () => {
           c.last_name = c.last_name || r.last_name || "";
           if (!c.location) c.location = r.location || "";
           c.types.push("registrant");
+          addPerson(c, r.first_name, r.last_name);
           if (r.session_label) c.tags.push(r.session_label);
           if (r.session_label) c.sources.push(r.session_label);
           c.last_activity = laterOf(c.last_activity, r.created_at);
@@ -205,6 +209,7 @@ const CRM = () => {
           c.first_name = c.first_name || p.first_name || "";
           c.last_name = c.last_name || p.last_name || "";
           c.types.push("popup");
+          addPerson(c, p.first_name, p.last_name);
           if (p.event_slug) c.tags.push(p.event_slug);
           if (p.event_slug) c.sources.push(p.event_slug);
           c.last_activity = laterOf(c.last_activity, p.created_at);
@@ -216,6 +221,7 @@ const CRM = () => {
           c.first_name = c.first_name || w.first_name || "";
           c.last_name = c.last_name || w.last_name || "";
           c.types.push("waitlist");
+          addPerson(c, w.first_name, w.last_name);
           if (w.event_slug) c.tags.push(`waitlist:${w.event_slug}`);
           c.sources.push("waitlist");
           c.last_activity = laterOf(c.last_activity, w.created_at);
@@ -280,6 +286,7 @@ const CRM = () => {
       return (
         c.first_name.toLowerCase().includes(q) ||
         c.last_name.toLowerCase().includes(q) ||
+        c.people.some(p => p.toLowerCase().includes(q)) ||
         c.email.toLowerCase().includes(q) ||
         c.location.toLowerCase().includes(q) ||
         c.tags.some(t => t.toLowerCase().includes(q))
@@ -645,7 +652,10 @@ const CRM = () => {
                           <Checkbox checked={selected.has(c.key)} onCheckedChange={() => toggleOne(c.key)} disabled={!c.email} />
                         </td>
                         <td className="p-2">
-                          <div className="font-medium text-foreground">{c.first_name} {c.last_name}</div>
+                          <div className="font-medium text-foreground">{c.people.length > 1 ? c.people.join(" + ") : `${c.first_name} ${c.last_name}`}</div>
+                          {c.people.length > 1 && (
+                            <div className="text-[10px] text-muted-foreground">{c.people.length} people share this email</div>
+                          )}
                           {c.tags.length > 0 && (
                             <div className="flex flex-wrap gap-1 mt-0.5">
                               {c.tags.slice(0, 3).map(t => (
@@ -761,7 +771,7 @@ const CRM = () => {
               {unpaidRegs.map(c => (
                 <div key={c.key} className="p-3 flex flex-col sm:flex-row sm:items-center gap-3">
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-foreground">{c.first_name} {c.last_name}</div>
+                    <div className="font-semibold text-foreground">{c.people.length > 1 ? c.people.join(" + ") : `${c.first_name} ${c.last_name}`}</div>
                     <div className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-0.5 mt-0.5">
                       <span className="truncate">{c.email}</span>
                       {(c.unpaid_reg?.location || c.location) && (
@@ -819,12 +829,20 @@ function blank(key: string): UnifiedContact {
     tags: [],
     sources: [],
     last_activity: "",
+    people: [],
     detail_path: undefined,
     unpaid_reg: null,
     paid_reg: null,
   };
 }
 function uniq<T>(arr: T[]): T[] { return [...new Set(arr)]; }
+// Several people can share one email (couples). Track every distinct name seen.
+function addPerson(c: UnifiedContact, first?: string | null, last?: string | null) {
+  const name = `${(first || "").trim()} ${(last || "").trim()}`.trim();
+  if (!name) return;
+  const exists = c.people.some(p => p.toLowerCase() === name.toLowerCase());
+  if (!exists) c.people.push(name);
+}
 function laterOf(a: string, b: string | null | undefined): string {
   if (!b) return a;
   if (!a) return b;
