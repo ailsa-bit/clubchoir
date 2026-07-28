@@ -321,6 +321,7 @@ const CRM = () => {
       return (
         c.first_name.toLowerCase().includes(q) ||
         c.last_name.toLowerCase().includes(q) ||
+        c.people.some(p => p.toLowerCase().includes(q)) ||
         c.email.toLowerCase().includes(q)
       );
     }).sort((a, b) => (a.unpaid_reg?.created_at || "").localeCompare(b.unpaid_reg?.created_at || ""));
