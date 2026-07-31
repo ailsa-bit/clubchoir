@@ -58,8 +58,6 @@ const Dashboard = () => {
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [members, setMembers] = useState<MemberRow[]>([]);
-  const [chatCount, setChatCount] = useState(0);
-  const [campaignCount, setCampaignCount] = useState(0);
   const [range, setRange] = useState<14 | 30>(14);
 
   useEffect(() => {
@@ -69,23 +67,19 @@ const Dashboard = () => {
 
   const fetchAll = async () => {
     setLoading(true);
-    const since30 = daysAgo(30).toISOString();
-    const [r, p, o, m, c, cs] = await Promise.all([
+    const [r, p, o, m] = await Promise.all([
       supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label"),
       supabase.from("prospects").select("email,locations,created_at,first_name,last_name"),
       supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name"),
       supabase.from("members").select("email,location,status,created_at,crm_tags,archived_at"),
-      supabase.from("chat_messages").select("id", { count: "exact", head: true }).gte("created_at", since30),
-      supabase.from("campaign_sends").select("id", { count: "exact", head: true }).gte("created_at", since30),
     ]);
     setRegs((r.data as any) || []);
     setProspects((p.data as any) || []);
     setRsvps((o.data as any) || []);
     setMembers((m.data as any) || []);
-    setChatCount(c.count || 0);
-    setCampaignCount(cs.count || 0);
     setLoading(false);
   };
+
 
   const data = useMemo(() => {
     const norm = (e?: string | null) => (e || "").trim().toLowerCase();
