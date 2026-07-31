@@ -12,7 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Loader2, Users, UserPlus, DollarSign, CalendarCheck, TrendingUp,
-  AlertTriangle, MapPin, Sparkles, MessageSquare, ArrowRight, RefreshCw,
+  AlertTriangle, MapPin, ArrowRight, RefreshCw,
+
 } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
@@ -57,8 +58,6 @@ const Dashboard = () => {
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [members, setMembers] = useState<MemberRow[]>([]);
-  const [chatCount, setChatCount] = useState(0);
-  const [campaignCount, setCampaignCount] = useState(0);
   const [range, setRange] = useState<14 | 30>(14);
 
   useEffect(() => {
@@ -68,23 +67,19 @@ const Dashboard = () => {
 
   const fetchAll = async () => {
     setLoading(true);
-    const since30 = daysAgo(30).toISOString();
-    const [r, p, o, m, c, cs] = await Promise.all([
+    const [r, p, o, m] = await Promise.all([
       supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label"),
       supabase.from("prospects").select("email,locations,created_at,first_name,last_name"),
       supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name"),
       supabase.from("members").select("email,location,status,created_at,crm_tags,archived_at"),
-      supabase.from("chat_messages").select("id", { count: "exact", head: true }).gte("created_at", since30),
-      supabase.from("campaign_sends").select("id", { count: "exact", head: true }).gte("created_at", since30),
     ]);
     setRegs((r.data as any) || []);
     setProspects((p.data as any) || []);
     setRsvps((o.data as any) || []);
     setMembers((m.data as any) || []);
-    setChatCount(c.count || 0);
-    setCampaignCount(cs.count || 0);
     setLoading(false);
   };
+
 
   const data = useMemo(() => {
     const norm = (e?: string | null) => (e || "").trim().toLowerCase();
@@ -162,10 +157,9 @@ const Dashboard = () => {
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
       byLoc, staleUnpaid, feed,
-      conversion: interested.size + uniqueRegs.length > 0
-        ? Math.round((uniqueRegs.length / (interested.size + uniqueRegs.length)) * 100) : 0,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
+
   }, [regs, prospects, rsvps, members, range]);
 
   if (adminLoading || loading) {
@@ -198,20 +192,19 @@ const Dashboard = () => {
         </div>
 
         {/* KPIs */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
           <StatCard icon={UserPlus} label="Fall 2026 registered" value={data.uniqueRegs.length} sub={`${data.payRate}% have paid`} tone="accent" to="/crm" />
           <StatCard icon={DollarSign} label="Paid" value={data.paid.length} sub={`$${data.revenue.toFixed(0)} collected`} tone="good" to="/crm" />
           <StatCard icon={AlertTriangle} label="Awaiting payment" value={data.unpaid.length} sub={`${data.staleUnpaid.length} over 5 days old`} tone="warn" to="/crm" />
-          <StatCard icon={Sparkles} label="Interested (not registered)" value={data.interested.size} sub={`${data.conversion}% converted to date`} />
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
           <StatCard icon={TrendingUp} label={`New signups (${range}d)`} value={data.newInRange}
             sub={data.delta === null ? "no prior-period data" : `${data.delta >= 0 ? "+" : ""}${data.delta}% vs previous ${range}d`}
             tone={data.delta !== null && data.delta < 0 ? "warn" : "good"} />
           <StatCard icon={CalendarCheck} label="Open house RSVPs" value={rsvps.length} sub="all time" to="/open-house-rsvps" />
           <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
-          <StatCard icon={MessageSquare} label="Engagement (30d)" value={chatCount} sub={`${campaignCount} campaign emails sent`} to="/campaigns" />
         </div>
+
 
         {/* Trend */}
         <div className="bg-card border border-border rounded-xl p-4 md:p-6 mb-6">
@@ -281,15 +274,6 @@ const Dashboard = () => {
                   <span>
                     <strong>{data.staleUnpaid.length}</strong> registrations unpaid for 5+ days — send a payment reminder.{" "}
                     <Link to="/campaigns" className="text-primary hover:underline">Run reminder campaign</Link>
-                  </span>
-                </li>
-              )}
-              {data.interested.size > 0 && (
-                <li className="flex items-start gap-3">
-                  <Sparkles className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span>
-                    <strong>{data.interested.size}</strong> interested contacts haven't registered — invite them to an open house.{" "}
-                    <Link to="/campaigns" className="text-primary hover:underline">Email them</Link>
                   </span>
                 </li>
               )}
