@@ -284,15 +284,6 @@ const Dashboard = () => {
                   </span>
                 </li>
               )}
-              {data.interested.size > 0 && (
-                <li className="flex items-start gap-3">
-                  <Sparkles className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                  <span>
-                    <strong>{data.interested.size}</strong> interested contacts haven't registered — invite them to an open house.{" "}
-                    <Link to="/campaigns" className="text-primary hover:underline">Email them</Link>
-                  </span>
-                </li>
-              )}
               {data.byLoc.filter((l) => l.Registered < 10).map((l) => (
                 <li key={l.location} className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
