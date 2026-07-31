@@ -157,10 +157,9 @@ const Dashboard = () => {
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
       byLoc, staleUnpaid, feed,
-      conversion: interested.size + uniqueRegs.length > 0
-        ? Math.round((uniqueRegs.length / (interested.size + uniqueRegs.length)) * 100) : 0,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
+
   }, [regs, prospects, rsvps, members, range]);
 
   if (adminLoading || loading) {
