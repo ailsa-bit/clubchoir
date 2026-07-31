@@ -199,20 +199,19 @@ const Dashboard = () => {
         </div>
 
         {/* KPIs */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
           <StatCard icon={UserPlus} label="Fall 2026 registered" value={data.uniqueRegs.length} sub={`${data.payRate}% have paid`} tone="accent" to="/crm" />
           <StatCard icon={DollarSign} label="Paid" value={data.paid.length} sub={`$${data.revenue.toFixed(0)} collected`} tone="good" to="/crm" />
           <StatCard icon={AlertTriangle} label="Awaiting payment" value={data.unpaid.length} sub={`${data.staleUnpaid.length} over 5 days old`} tone="warn" to="/crm" />
-          <StatCard icon={Sparkles} label="Interested (not registered)" value={data.interested.size} sub={`${data.conversion}% converted to date`} />
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
           <StatCard icon={TrendingUp} label={`New signups (${range}d)`} value={data.newInRange}
             sub={data.delta === null ? "no prior-period data" : `${data.delta >= 0 ? "+" : ""}${data.delta}% vs previous ${range}d`}
             tone={data.delta !== null && data.delta < 0 ? "warn" : "good"} />
           <StatCard icon={CalendarCheck} label="Open house RSVPs" value={rsvps.length} sub="all time" to="/open-house-rsvps" />
           <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
-          <StatCard icon={MessageSquare} label="Engagement (30d)" value={chatCount} sub={`${campaignCount} campaign emails sent`} to="/campaigns" />
         </div>
+
 
         {/* Trend */}
         <div className="bg-card border border-border rounded-xl p-4 md:p-6 mb-6">
