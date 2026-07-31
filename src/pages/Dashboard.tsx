@@ -12,7 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Loader2, Users, UserPlus, DollarSign, CalendarCheck, TrendingUp,
-  AlertTriangle, MapPin, Sparkles, MessageSquare, ArrowRight, RefreshCw,
+  AlertTriangle, MapPin, ArrowRight, RefreshCw,
+
 } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
