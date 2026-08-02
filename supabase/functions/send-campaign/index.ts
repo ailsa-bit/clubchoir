@@ -12,8 +12,9 @@ const SIGNING_SECRET = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SITE_URL = "https://clubchoir.ca";
 const CAMPAIGN_KEY = "fall-2026-openhouse-v1";
 
-type Segment = "paid" | "registered" | "everyone" | "herd-reminder";
+type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees";
 const HERD_CAMPAIGN_KEY = "sing-for-the-herd-reminder-v1";
+const HERD_TODAY_CAMPAIGN_KEY = "sing-for-the-herd-day-of-v1";
 
 interface Recipient {
   email: string;
@@ -90,6 +91,7 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
     </div>`;
 
   if (segment === "herd-reminder") return renderHerdEmail(r);
+  if (segment === "herd-attendees") return renderHerdTodayEmail(r);
 
   let opener = "";
   let subject = "";
@@ -239,6 +241,78 @@ function renderHerdEmail(r: Recipient): { subject: string; html: string } {
   };
 }
 
+function renderHerdTodayEmail(r: Recipient): { subject: string; html: string } {
+  const first = esc(r.first_name || "there");
+  const box = `background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;`;
+  const html = `
+  <div style="font-family:Nunito,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;background:#fff;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <h1 style="margin:0;color:#f472b6;font-family:Quicksand,Arial,sans-serif;font-size:26px;">Club Choir</h1>
+    </div>
+
+    <p>Hello ${first},</p>
+    <p>Thank you for purchasing tickets or reserving your place for today\u2019s <strong>Sing for the Herd</strong> event at A Horse Tale Rescue.</p>
+    <p>We wanted to confirm that the event is <strong>still on, rain or shine!</strong> The barn is spic and span, ready for Club Choir, and will keep us dry and comfortable while we sing together.</p>
+
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Today\u2019s schedule</h2>
+    <ul style="padding-left:20px;color:#333;font-size:15px;">
+      <li style="margin:4px 0;"><strong>2:45\u20133:45 PM:</strong> Meet the Herd</li>
+      <li style="margin:4px 0;"><strong>3:45 PM:</strong> Head to the barn</li>
+      <li style="margin:4px 0;"><strong>4:00\u20135:30 PM:</strong> Club Choir singalong</li>
+    </ul>
+
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Location</h2>
+    <p style="margin:4px 0;color:#333;">A Horse Tale Rescue<br/>27 Chemin Murphy<br/>Vaudreuil-Dorion, QC J7V 4L2</p>
+
+    <div style="${box}">Please remember to <strong>bring your own chair</strong> for the barn.</div>
+
+    <p>We are looking forward to seeing you for a joyful afternoon of music, community and horses!</p>
+    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
+
+    <hr style="border:none;border-top:1px solid #eee;margin:28px 0;"/>
+
+    <p>Bonjour \u00e0 toutes et \u00e0 tous,</p>
+    <p>Merci d\u2019avoir achet\u00e9 vos billets ou r\u00e9serv\u00e9 votre place pour l\u2019\u00e9v\u00e9nement <strong>Sing for the Herd</strong> d\u2019aujourd\u2019hui \u00e0 A Horse Tale Rescue.</p>
+    <p>Nous souhaitons vous confirmer que l\u2019\u00e9v\u00e9nement aura bien lieu, <strong>beau temps, mauvais temps!</strong> La grange est impeccable, pr\u00eate \u00e0 accueillir Club Choir, et elle nous gardera bien au sec et confortables pendant que nous chanterons ensemble.</p>
+
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Horaire de la journ\u00e9e</h2>
+    <ul style="padding-left:20px;color:#333;font-size:15px;">
+      <li style="margin:4px 0;"><strong>14 h 45 \u00e0 15 h 45 :</strong> Rencontre avec les chevaux</li>
+      <li style="margin:4px 0;"><strong>15 h 45 :</strong> Direction la grange</li>
+      <li style="margin:4px 0;"><strong>16 h \u00e0 17 h 30 :</strong> Activit\u00e9 musicale avec Club Choir</li>
+    </ul>
+
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Adresse</h2>
+    <p style="margin:4px 0;color:#333;">A Horse Tale Rescue<br/>27, chemin Murphy<br/>Vaudreuil-Dorion (Qu\u00e9bec) J7V 4L2</p>
+
+    <div style="${box}">N\u2019oubliez pas d\u2019apporter <strong>votre propre chaise</strong> pour vous installer dans la grange.</div>
+
+    <p>Nous avons tr\u00e8s h\u00e2te de vous retrouver pour un bel apr\u00e8s-midi de musique, de communaut\u00e9 et de rencontres avec les chevaux!</p>
+    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
+
+    <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
+    <p style="color:#999;font-size:11px;text-align:center;">
+      You\u2019re receiving this because you reserved or purchased a ticket for Sing for the Herd.<br/>
+      <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">Contact us</a> \u00b7 <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
+    </p>
+  </div>`;
+  return { subject: "Today: Sing for the Herd is ON \u2014 rain or shine \ud83d\udc34\ud83c\udfb6", html };
+}
+
+async function loadHerdAttendees(supabase: any): Promise<Recipient[]> {
+  const { data: rows } = await supabase
+    .from("popup_ticket_reservations")
+    .select("email, first_name, last_name")
+    .eq("event_slug", "sing-for-the-herd");
+  const map = new Map<string, Recipient>();
+  for (const t of rows || []) {
+    const email = String(t.email || "").trim().toLowerCase();
+    if (!email.includes("@")) continue;
+    if (!map.has(email)) map.set(email, { email, first_name: t.first_name || "", last_name: t.last_name || "" });
+  }
+  return Array.from(map.values());
+}
+
 async function loadHerdRecipients(supabase: any): Promise<Recipient[]> {
   const { data: paidTickets } = await supabase
     .from("popup_ticket_reservations")
@@ -268,6 +342,7 @@ async function loadHerdRecipients(supabase: any): Promise<Recipient[]> {
 
 async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
   if (segment === "herd-reminder") return loadHerdRecipients(supabase);
+  if (segment === "herd-attendees") return loadHerdAttendees(supabase);
   // Paid: session_registrations for fall-2026 with payment_status='paid'
   const { data: paidRegs } = await supabase
     .from("session_registrations")
@@ -363,7 +438,7 @@ serve(async (req) => {
     const previewOnly: boolean = !!body.previewOnly;
     const countOnly: boolean = !!body.countOnly;
 
-    if (!["paid", "registered", "everyone", "herd-reminder"].includes(segment)) {
+    if (!["paid", "registered", "everyone", "herd-reminder", "herd-attendees"].includes(segment)) {
       throw new Error("Invalid segment");
     }
 
@@ -408,7 +483,11 @@ serve(async (req) => {
     }
 
     // Real send — check campaign_sends to skip already-sent
-    const key = segment === "herd-reminder" ? HERD_CAMPAIGN_KEY : `${CAMPAIGN_KEY}:${segment}`;
+    const key = segment === "herd-reminder"
+      ? HERD_CAMPAIGN_KEY
+      : segment === "herd-attendees"
+        ? HERD_TODAY_CAMPAIGN_KEY
+        : `${CAMPAIGN_KEY}:${segment}`;
     const { data: sentRows } = await supabase
       .from("campaign_sends").select("recipient_email")
       .eq("campaign_key", key);
