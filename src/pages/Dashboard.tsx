@@ -156,11 +156,45 @@ const Dashboard = () => {
       ...prospects.map((x) => ({ kind: "Interest signup", who: `${x.first_name} ${x.last_name || ""}`.trim(), where: (x.locations || [])[0] || "—", at: x.created_at, tone: "amber" })),
     ].sort((a, b) => +new Date(b.at) - +new Date(a.at)).slice(0, 15);
 
+    // New signups within the selected range (detail drill-down)
+    const rangeStart = daysAgo(range - 1);
+    rangeStart.setHours(0, 0, 0, 0);
+    const inRange = (d: string) => new Date(d) >= rangeStart;
+    const recent = [
+      ...uniqueRegs.filter((x) => inRange(x.created_at)).map((x) => ({
+        kind: "Registration", who: `${x.first_name} ${x.last_name}`.trim(), email: x.email,
+        where: x.location || "—", at: x.created_at, extra: x.payment_status === "paid" ? "Paid" : "Unpaid",
+      })),
+      ...rsvps.filter((x) => inRange(x.created_at)).map((x) => ({
+        kind: "Open house RSVP", who: `${x.first_name || ""} ${x.last_name || ""}`.trim() || x.email, email: x.email,
+        where: x.location || "—", at: x.created_at, extra: "",
+      })),
+      ...prospects.filter((x) => inRange(x.created_at)).map((x) => ({
+        kind: "Interest signup", who: `${x.first_name} ${x.last_name || ""}`.trim(), email: x.email,
+        where: (x.locations || [])[0] || "—", at: x.created_at, extra: "",
+      })),
+    ].sort((a, b) => +new Date(b.at) - +new Date(a.at));
+
+    const recentByLoc = [...LOCATIONS, "Other"].map((loc) => {
+      const l = loc.toLowerCase();
+      const rows = loc === "Other"
+        ? recent.filter((x) => !LOCATIONS.some((v) => v.toLowerCase() === (x.where || "").toLowerCase()))
+        : recent.filter((x) => (x.where || "").toLowerCase() === l);
+      return {
+        location: loc,
+        total: rows.length,
+        registrations: rows.filter((x) => x.kind === "Registration").length,
+        rsvps: rows.filter((x) => x.kind === "Open house RSVP").length,
+        interest: rows.filter((x) => x.kind === "Interest signup").length,
+      };
+    }).filter((x) => x.total > 0);
+
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
-      byLoc, staleUnpaid, feed,
+      byLoc, staleUnpaid, feed, recent, recentByLoc,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
+
 
   }, [regs, prospects, rsvps, members, range]);
 
