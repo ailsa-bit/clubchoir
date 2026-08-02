@@ -31,15 +31,15 @@ const fmtDay = (k: string) => new Date(k + "T12:00:00").toLocaleDateString("en-C
 const daysAgo = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return d; };
 
 const StatCard = ({
-  icon: Icon, label, value, sub, tone = "default", to,
-}: { icon: any; label: string; value: string | number; sub?: string; tone?: "default" | "good" | "warn" | "accent"; to?: string }) => {
+  icon: Icon, label, value, sub, tone = "default", to, onClick, active,
+}: { icon: any; label: string; value: string | number; sub?: string; tone?: "default" | "good" | "warn" | "accent"; to?: string; onClick?: () => void; active?: boolean }) => {
   const toneCls =
     tone === "good" ? "text-green-600 dark:text-green-400"
     : tone === "warn" ? "text-amber-600 dark:text-amber-400"
     : tone === "accent" ? "text-primary"
     : "text-foreground";
   const inner = (
-    <div className="bg-card border border-border rounded-xl p-4 h-full hover:shadow-md transition-shadow">
+    <div className={`bg-card border rounded-xl p-4 h-full hover:shadow-md transition-shadow text-left ${active ? "border-primary ring-1 ring-primary" : "border-border"}`}>
       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
         <Icon className="w-4 h-4" /> {label}
       </div>
@@ -47,8 +47,10 @@ const StatCard = ({
       {sub && <div className="text-xs text-muted-foreground mt-1">{sub}</div>}
     </div>
   );
+  if (onClick) return <button type="button" onClick={onClick} className="block h-full w-full">{inner}</button>;
   return to ? <Link to={to} className="block h-full">{inner}</Link> : inner;
 };
+
 
 const Dashboard = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
