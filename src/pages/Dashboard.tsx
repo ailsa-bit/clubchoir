@@ -61,6 +61,8 @@ const Dashboard = () => {
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [range, setRange] = useState<14 | 30>(14);
+  const [showNew, setShowNew] = useState(false);
+
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) { navigate("/"); return; }
