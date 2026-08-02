@@ -233,13 +233,74 @@ const Dashboard = () => {
           <StatCard icon={DollarSign} label="Paid" value={data.paid.length} sub={`$${data.revenue.toFixed(0)} collected`} tone="good" to="/crm" />
           <StatCard icon={AlertTriangle} label="Awaiting payment" value={data.unpaid.length} sub={`${data.staleUnpaid.length} over 5 days old`} tone="warn" to="/crm" />
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
           <StatCard icon={TrendingUp} label={`New signups (${range}d)`} value={data.newInRange}
-            sub={data.delta === null ? "no prior-period data" : `${data.delta >= 0 ? "+" : ""}${data.delta}% vs previous ${range}d`}
-            tone={data.delta !== null && data.delta < 0 ? "warn" : "good"} />
+            sub={data.delta === null ? "click for details" : `${data.delta >= 0 ? "+" : ""}${data.delta}% vs previous ${range}d · click for details`}
+            tone={data.delta !== null && data.delta < 0 ? "warn" : "good"}
+            onClick={() => setShowNew((v) => !v)} active={showNew} />
           <StatCard icon={CalendarCheck} label="Open house RSVPs" value={rsvps.length} sub="all time" to="/open-house-rsvps" />
           <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
         </div>
+
+        {showNew && (
+          <div className="bg-card border border-border rounded-xl p-4 md:p-6 mb-8">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="font-heading font-bold text-lg">New signups — last {range} days ({data.newInRange})</h2>
+              <Button variant="ghost" size="sm" onClick={() => setShowNew(false)}>Hide</Button>
+            </div>
+
+            {data.recentByLoc.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No new signups in this period.</p>
+            ) : (
+              <>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+                  {data.recentByLoc.map((l) => (
+                    <div key={l.location} className="border border-border rounded-lg p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold"><MapPin className="w-3.5 h-3.5" />{l.location}</span>
+                        <span className="font-heading font-bold text-xl text-primary">{l.total}</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {l.registrations} registration{l.registrations === 1 ? "" : "s"} · {l.rsvps} RSVP{l.rsvps === 1 ? "" : "s"} · {l.interest} interest
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-left text-xs uppercase tracking-wide text-muted-foreground border-b border-border">
+                        <th className="py-2 pr-3 font-semibold">Name</th>
+                        <th className="py-2 pr-3 font-semibold">Email</th>
+                        <th className="py-2 pr-3 font-semibold">Location</th>
+                        <th className="py-2 pr-3 font-semibold">Type</th>
+                        <th className="py-2 font-semibold text-right">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {data.recent.map((x, i) => (
+                        <tr key={i}>
+                          <td className="py-2 pr-3 font-medium">{x.who || "—"}</td>
+                          <td className="py-2 pr-3 text-muted-foreground truncate max-w-[220px]">{x.email}</td>
+                          <td className="py-2 pr-3">{x.where}</td>
+                          <td className="py-2 pr-3">
+                            <Badge variant="outline">{x.kind}</Badge>
+                            {x.extra && <Badge variant="outline" className="ml-1">{x.extra}</Badge>}
+                          </td>
+                          <td className="py-2 text-right text-xs text-muted-foreground whitespace-nowrap">
+                            {new Date(x.at).toLocaleDateString("en-CA", { month: "short", day: "numeric" })}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
 
 
         {/* Trend */}
