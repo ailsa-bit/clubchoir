@@ -10,7 +10,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees";
+type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight";
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
@@ -43,14 +43,20 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Rain-or-shine confirmation with today's schedule, address and chair reminder. Sent only to people who reserved or purchased Sing for the Herd tickets.",
     color: "bg-emerald-50 border-emerald-200",
   },
+  {
+    key: "mtl-openhouse-tonight",
+    title: "Montreal Open House — Tonight (EN/FR)",
+    description: "Reminder that the Montreal open house starts tonight at 7 PM at Kensington Presbyterian, 6225 Godfrey. Sent to all Montreal contacts — members, fall/try-a-session registrants, open house RSVPs and prospects.",
+    color: "bg-pink-50 border-pink-200",
+  },
 ];
 
 const Campaigns = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [counts, setCounts] = useState<Record<Segment, number | null>>({ paid: null, registered: null, everyone: null, "herd-reminder": null, "herd-attendees": null });
-  const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ paid: 0, registered: 0, everyone: 0, "herd-reminder": 0, "herd-attendees": 0 });
+  const [counts, setCounts] = useState<Record<Segment, number | null>>({ paid: null, registered: null, everyone: null, "herd-reminder": null, "herd-attendees": null, "mtl-openhouse-tonight": null });
+  const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ paid: 0, registered: 0, everyone: 0, "herd-reminder": 0, "herd-attendees": 0, "mtl-openhouse-tonight": 0 });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
   const [previewHtml, setPreviewHtml] = useState<string>("");
   const [previewSubject, setPreviewSubject] = useState<string>("");
@@ -78,7 +84,7 @@ const Campaigns = () => {
       .from("campaign_sends")
       .select("segment, status")
       .eq("status", "sent");
-    const grouped: any = { paid: 0, registered: 0, everyone: 0, "herd-reminder": 0, "herd-attendees": 0 };
+    const grouped: any = { paid: 0, registered: 0, everyone: 0, "herd-reminder": 0, "herd-attendees": 0, "mtl-openhouse-tonight": 0 };
     for (const row of sent || []) grouped[row.segment] = (grouped[row.segment] || 0) + 1;
     setSentCounts(grouped);
   };
