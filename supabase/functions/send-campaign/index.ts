@@ -12,10 +12,50 @@ const SIGNING_SECRET = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SITE_URL = "https://clubchoir.ca";
 const CAMPAIGN_KEY = "fall-2026-openhouse-v1";
 
-type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight";
+type Segment =
+  | "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees"
+  | "mtl-openhouse-tonight" | "hudson-openhouse-tonight"
+  | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight";
 const HERD_CAMPAIGN_KEY = "sing-for-the-herd-reminder-v1";
 const HERD_TODAY_CAMPAIGN_KEY = "sing-for-the-herd-day-of-v1";
-const MTL_TONIGHT_CAMPAIGN_KEY = "montreal-openhouse-tonight-v1";
+
+interface TonightConfig {
+  location: string;
+  labelEn: string;
+  labelFrPhrase: string;
+  venueEn: string;
+  addressEn: string;
+  venueFr: string;
+  addressFr: string;
+  campaignKey: string;
+}
+
+const TONIGHT_CONFIGS: Record<string, TonightConfig> = {
+  "mtl-openhouse-tonight": {
+    location: "Montreal", labelEn: "Montreal", labelFrPhrase: "de Montr\u00e9al",
+    venueEn: "Kensington Presbyterian Church", addressEn: "6225 Av. Godfrey, Montr\u00e9al",
+    venueFr: "\u00c9glise Kensington Presbyterian", addressFr: "6225, av. Godfrey, Montr\u00e9al",
+    campaignKey: "montreal-openhouse-tonight-v1",
+  },
+  "hudson-openhouse-tonight": {
+    location: "Hudson", labelEn: "Hudson", labelFrPhrase: "de Hudson",
+    venueEn: "The Hudson Legion", addressEn: "57 Beach Road, Hudson",
+    venueFr: "The Hudson Legion", addressFr: "57 Beach Road, Hudson",
+    campaignKey: "hudson-openhouse-tonight-v1",
+  },
+  "sthubert-openhouse-tonight": {
+    location: "Saint-Hubert", labelEn: "Saint-Hubert", labelFrPhrase: "de Saint-Hubert",
+    venueEn: "St-Gabriel Catholic Church", addressEn: "5070 Rue Gilbert, Saint-Hubert",
+    venueFr: "\u00c9glise catholique St-Gabriel", addressFr: "5070, rue Gilbert, Saint-Hubert",
+    campaignKey: "sthubert-openhouse-tonight-v1",
+  },
+  "pointeclaire-openhouse-tonight": {
+    location: "Pointe-Claire", labelEn: "Pointe-Claire", labelFrPhrase: "de Pointe-Claire",
+    venueEn: "Valois United Church", addressEn: "70 Av. Belmont, Pointe-Claire",
+    venueFr: "\u00c9glise Valois United", addressFr: "70, av. Belmont, Pointe-Claire",
+    campaignKey: "pointeclaire-openhouse-tonight-v1",
+  },
+};
 
 interface Recipient {
   email: string;
@@ -342,7 +382,7 @@ async function loadHerdRecipients(supabase: any): Promise<Recipient[]> {
   return out;
 }
 
-function renderMtlTonightEmail(r: Recipient): { subject: string; html: string } {
+function renderTonightEmail(r: Recipient, cfg: TonightConfig): { subject: string; html: string } {
   const first = esc(r.first_name || "there");
   const box = `background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;`;
   const html = `
@@ -352,11 +392,11 @@ function renderMtlTonightEmail(r: Recipient): { subject: string; html: string } 
     </div>
 
     <p>Hello ${first},</p>
-    <p>Just a quick reminder \u2014 <strong>tonight is our Montreal Open House</strong> and we start at <strong>7:00 PM</strong>. It runs about an hour, and there\u2019s nothing you need to bring.</p>
+    <p>Just a quick reminder \u2014 <strong>tonight is our ${esc(cfg.labelEn)} Open House</strong> and we start at <strong>7:00 PM</strong>. It runs about an hour, and there\u2019s nothing you need to bring.</p>
 
     <div style="border:1px solid #eee;border-radius:12px;padding:14px 16px;margin:16px 0;">
       <div style="font-weight:800;font-size:16px;color:#111;">Tonight \u00b7 7:00 PM</div>
-      <div style="color:#555;font-size:14px;margin-top:4px;">Kensington Presbyterian Church<br/>6225 Av. Godfrey, Montr\u00e9al</div>
+      <div style="color:#555;font-size:14px;margin-top:4px;">${esc(cfg.venueEn)}<br/>${esc(cfg.addressEn)}</div>
     </div>
 
     <div style="${box}">
@@ -371,11 +411,11 @@ function renderMtlTonightEmail(r: Recipient): { subject: string; html: string } 
     <hr style="border:none;border-top:1px solid #eee;margin:28px 0;"/>
 
     <p>Bonjour ${first},</p>
-    <p>Petit rappel \u2014 <strong>notre porte ouverte de Montr\u00e9al a lieu ce soir</strong> et nous commen\u00e7ons \u00e0 <strong>19 h</strong>. L\u2019activit\u00e9 dure environ une heure et vous n\u2019avez rien \u00e0 apporter.</p>
+    <p>Petit rappel \u2014 <strong>notre porte ouverte ${esc(cfg.labelFrPhrase)} a lieu ce soir</strong> et nous commen\u00e7ons \u00e0 <strong>19 h</strong>. L\u2019activit\u00e9 dure environ une heure et vous n\u2019avez rien \u00e0 apporter.</p>
 
     <div style="border:1px solid #eee;border-radius:12px;padding:14px 16px;margin:16px 0;">
       <div style="font-weight:800;font-size:16px;color:#111;">Ce soir \u00b7 19 h</div>
-      <div style="color:#555;font-size:14px;margin-top:4px;">\u00c9glise Kensington Presbyterian<br/>6225, av. Godfrey, Montr\u00e9al</div>
+      <div style="color:#555;font-size:14px;margin-top:4px;">${esc(cfg.venueFr)}<br/>${esc(cfg.addressFr)}</div>
     </div>
 
     <div style="${box}">
@@ -389,15 +429,16 @@ function renderMtlTonightEmail(r: Recipient): { subject: string; html: string } 
 
     <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
     <p style="color:#999;font-size:11px;text-align:center;">
-      You\u2019re receiving this because you\u2019re part of the Club Choir Montreal community.<br/>
+      You\u2019re receiving this because you\u2019re part of the Club Choir ${esc(cfg.labelEn)} community.<br/>
       <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">Contact us</a> \u00b7 <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
     </p>
   </div>`;
-  return { subject: "Tonight at 7 PM \u2014 Montreal Open House \ud83c\udfb6 / Ce soir \u00e0 19 h", html };
+  return { subject: `Tonight at 7 PM \u2014 ${cfg.labelEn} Open House \ud83c\udfb6 / Ce soir \u00e0 19 h`, html };
 }
 
-async function loadMontrealRecipients(supabase: any): Promise<Recipient[]> {
-  const isMtl = (l: any) => String(l || "").trim().toLowerCase() === "montreal";
+async function loadLocationRecipients(supabase: any, locationName: string): Promise<Recipient[]> {
+  const target = locationName.trim().toLowerCase();
+  const isMtl = (l: any) => String(l || "").trim().toLowerCase() === target;
 
   const { data: suppressedRows } = await supabase.from("members").select("email, crm_tags");
   const suppressed = new Set<string>();
