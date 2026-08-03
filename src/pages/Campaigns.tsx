@@ -10,7 +10,14 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight";
+type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight" | "hudson-openhouse-tonight" | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight";
+
+const EMPTY_COUNTS = {
+  paid: 0, registered: 0, everyone: 0,
+  "herd-reminder": 0, "herd-attendees": 0,
+  "mtl-openhouse-tonight": 0, "hudson-openhouse-tonight": 0,
+  "sthubert-openhouse-tonight": 0, "pointeclaire-openhouse-tonight": 0,
+} as Record<Segment, number>;
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
