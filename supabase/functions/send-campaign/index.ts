@@ -12,9 +12,10 @@ const SIGNING_SECRET = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SITE_URL = "https://clubchoir.ca";
 const CAMPAIGN_KEY = "fall-2026-openhouse-v1";
 
-type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees";
+type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight";
 const HERD_CAMPAIGN_KEY = "sing-for-the-herd-reminder-v1";
 const HERD_TODAY_CAMPAIGN_KEY = "sing-for-the-herd-day-of-v1";
+const MTL_TONIGHT_CAMPAIGN_KEY = "montreal-openhouse-tonight-v1";
 
 interface Recipient {
   email: string;
@@ -92,6 +93,7 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
 
   if (segment === "herd-reminder") return renderHerdEmail(r);
   if (segment === "herd-attendees") return renderHerdTodayEmail(r);
+  if (segment === "mtl-openhouse-tonight") return renderMtlTonightEmail(r);
 
   let opener = "";
   let subject = "";
@@ -340,9 +342,105 @@ async function loadHerdRecipients(supabase: any): Promise<Recipient[]> {
   return out;
 }
 
+function renderMtlTonightEmail(r: Recipient): { subject: string; html: string } {
+  const first = esc(r.first_name || "there");
+  const box = `background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;`;
+  const html = `
+  <div style="font-family:Nunito,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;background:#fff;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <h1 style="margin:0;color:#f472b6;font-family:Quicksand,Arial,sans-serif;font-size:26px;">Club Choir</h1>
+    </div>
+
+    <p>Hello ${first},</p>
+    <p>Just a quick reminder \u2014 <strong>tonight is our Montreal Open House</strong> and we start at <strong>7:00 PM</strong>. It runs about an hour, and there\u2019s nothing you need to bring.</p>
+
+    <div style="border:1px solid #eee;border-radius:12px;padding:14px 16px;margin:16px 0;">
+      <div style="font-weight:800;font-size:16px;color:#111;">Tonight \u00b7 7:00 PM</div>
+      <div style="color:#555;font-size:14px;margin-top:4px;">Kensington Presbyterian Church<br/>6225 Av. Godfrey, Montr\u00e9al</div>
+    </div>
+
+    <div style="${box}">
+      <strong>Bring someone with you \ud83d\udc9b</strong><br/>
+      This is the perfect opportunity to bring along someone who showed interest last session \u2014 a friend, a neighbour, anyone curious. Everyone is welcome.
+    </div>
+
+    <p>And if you\u2019re new to Club Choir, this is a great chance to meet members and ask any questions on your mind. No experience needed, no audition \u2014 just come and sing.</p>
+    <p>I hope to see you there!</p>
+    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
+
+    <hr style="border:none;border-top:1px solid #eee;margin:28px 0;"/>
+
+    <p>Bonjour ${first},</p>
+    <p>Petit rappel \u2014 <strong>notre porte ouverte de Montr\u00e9al a lieu ce soir</strong> et nous commen\u00e7ons \u00e0 <strong>19 h</strong>. L\u2019activit\u00e9 dure environ une heure et vous n\u2019avez rien \u00e0 apporter.</p>
+
+    <div style="border:1px solid #eee;border-radius:12px;padding:14px 16px;margin:16px 0;">
+      <div style="font-weight:800;font-size:16px;color:#111;">Ce soir \u00b7 19 h</div>
+      <div style="color:#555;font-size:14px;margin-top:4px;">\u00c9glise Kensington Presbyterian<br/>6225, av. Godfrey, Montr\u00e9al</div>
+    </div>
+
+    <div style="${box}">
+      <strong>Amenez quelqu\u2019un avec vous \ud83d\udc9b</strong><br/>
+      C\u2019est le moment id\u00e9al pour amener une personne qui avait montr\u00e9 de l\u2019int\u00e9r\u00eat la session derni\u00e8re \u2014 un ami, un voisin, toute personne curieuse. Tout le monde est le bienvenu.
+    </div>
+
+    <p>Et si vous \u00eates nouveau ou nouvelle chez Club Choir, c\u2019est une belle occasion de rencontrer les membres et de poser toutes vos questions. Aucune exp\u00e9rience requise, aucune audition \u2014 venez simplement chanter.</p>
+    <p>J\u2019esp\u00e8re vous y voir!</p>
+    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
+
+    <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
+    <p style="color:#999;font-size:11px;text-align:center;">
+      You\u2019re receiving this because you\u2019re part of the Club Choir Montreal community.<br/>
+      <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">Contact us</a> \u00b7 <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
+    </p>
+  </div>`;
+  return { subject: "Tonight at 7 PM \u2014 Montreal Open House \ud83c\udfb6 / Ce soir \u00e0 19 h", html };
+}
+
+async function loadMontrealRecipients(supabase: any): Promise<Recipient[]> {
+  const isMtl = (l: any) => String(l || "").trim().toLowerCase() === "montreal";
+
+  const { data: suppressedRows } = await supabase.from("members").select("email, crm_tags");
+  const suppressed = new Set<string>();
+  for (const m of suppressedRows || []) {
+    if (m.email && Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) {
+      suppressed.add(String(m.email).toLowerCase());
+    }
+  }
+
+  const out = new Map<string, Recipient>();
+  const add = (email: any, first: any, last: any) => {
+    const e = String(email || "").trim().toLowerCase();
+    if (!e.includes("@")) return;
+    if (suppressed.has(e)) return;
+    if (!out.has(e)) out.set(e, { email: e, first_name: first || "", last_name: last || "" });
+  };
+
+  const { data: members } = await supabase
+    .from("members").select("email, first_name, last_name, location, crm_tags")
+    .is("archived_at", null);
+  for (const m of members || []) if (isMtl(m.location)) add(m.email, m.first_name, m.last_name);
+
+  const { data: regs } = await supabase
+    .from("session_registrations").select("email, first_name, last_name, location");
+  for (const g of regs || []) if (isMtl(g.location)) add(g.email, g.first_name, g.last_name);
+
+  const { data: rsvps } = await supabase
+    .from("open_house_rsvps").select("email, first_name, last_name, location");
+  for (const g of rsvps || []) if (isMtl(g.location)) add(g.email, g.first_name, g.last_name);
+
+  const { data: prospects } = await supabase
+    .from("prospects").select("email, first_name, last_name, locations");
+  for (const p of prospects || []) {
+    if ((p.locations || []).some(isMtl)) add(p.email, p.first_name, p.last_name);
+  }
+
+  return Array.from(out.values());
+}
+
 async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
   if (segment === "herd-reminder") return loadHerdRecipients(supabase);
   if (segment === "herd-attendees") return loadHerdAttendees(supabase);
+  if (segment === "mtl-openhouse-tonight") return loadMontrealRecipients(supabase);
   // Paid: session_registrations for fall-2026 with payment_status='paid'
   const { data: paidRegs } = await supabase
     .from("session_registrations")
@@ -438,7 +536,7 @@ serve(async (req) => {
     const previewOnly: boolean = !!body.previewOnly;
     const countOnly: boolean = !!body.countOnly;
 
-    if (!["paid", "registered", "everyone", "herd-reminder", "herd-attendees"].includes(segment)) {
+    if (!["paid", "registered", "everyone", "herd-reminder", "herd-attendees", "mtl-openhouse-tonight"].includes(segment)) {
       throw new Error("Invalid segment");
     }
 
@@ -487,7 +585,9 @@ serve(async (req) => {
       ? HERD_CAMPAIGN_KEY
       : segment === "herd-attendees"
         ? HERD_TODAY_CAMPAIGN_KEY
-        : `${CAMPAIGN_KEY}:${segment}`;
+        : segment === "mtl-openhouse-tonight"
+          ? MTL_TONIGHT_CAMPAIGN_KEY
+          : `${CAMPAIGN_KEY}:${segment}`;
     const { data: sentRows } = await supabase
       .from("campaign_sends").select("recipient_email")
       .eq("campaign_key", key);
