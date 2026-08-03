@@ -10,7 +10,14 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight";
+type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight" | "hudson-openhouse-tonight" | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight";
+
+const EMPTY_COUNTS = {
+  paid: 0, registered: 0, everyone: 0,
+  "herd-reminder": 0, "herd-attendees": 0,
+  "mtl-openhouse-tonight": 0, "hudson-openhouse-tonight": 0,
+  "sthubert-openhouse-tonight": 0, "pointeclaire-openhouse-tonight": 0,
+} as Record<Segment, number>;
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
@@ -49,14 +56,32 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Reminder that the Montreal open house starts tonight at 7 PM at Kensington Presbyterian, 6225 Godfrey. Sent to all Montreal contacts — members, fall/try-a-session registrants, open house RSVPs and prospects.",
     color: "bg-pink-50 border-pink-200",
   },
+  {
+    key: "hudson-openhouse-tonight",
+    title: "Hudson Open House — Tonight (EN/FR)",
+    description: "Same reminder for Hudson (Tuesday) — 7 PM at The Hudson Legion, 57 Beach Road. Sent to all Hudson contacts.",
+    color: "bg-pink-50 border-pink-200",
+  },
+  {
+    key: "sthubert-openhouse-tonight",
+    title: "Saint-Hubert Open House — Tonight (EN/FR)",
+    description: "Same reminder for Saint-Hubert (Wednesday) — 7 PM at St-Gabriel Catholic Church, 5070 Rue Gilbert. Sent to all Saint-Hubert contacts.",
+    color: "bg-pink-50 border-pink-200",
+  },
+  {
+    key: "pointeclaire-openhouse-tonight",
+    title: "Pointe-Claire Open House — Tonight (EN/FR)",
+    description: "Same reminder for Pointe-Claire (Thursday) — 7 PM at Valois United Church, 70 Av. Belmont. Sent to all Pointe-Claire contacts.",
+    color: "bg-pink-50 border-pink-200",
+  },
 ];
 
 const Campaigns = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [counts, setCounts] = useState<Record<Segment, number | null>>({ paid: null, registered: null, everyone: null, "herd-reminder": null, "herd-attendees": null, "mtl-openhouse-tonight": null });
-  const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ paid: 0, registered: 0, everyone: 0, "herd-reminder": 0, "herd-attendees": 0, "mtl-openhouse-tonight": 0 });
+  const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
+  const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
   const [previewHtml, setPreviewHtml] = useState<string>("");
   const [previewSubject, setPreviewSubject] = useState<string>("");
@@ -84,7 +109,7 @@ const Campaigns = () => {
       .from("campaign_sends")
       .select("segment, status")
       .eq("status", "sent");
-    const grouped: any = { paid: 0, registered: 0, everyone: 0, "herd-reminder": 0, "herd-attendees": 0, "mtl-openhouse-tonight": 0 };
+    const grouped: any = { ...EMPTY_COUNTS };
     for (const row of sent || []) grouped[row.segment] = (grouped[row.segment] || 0) + 1;
     setSentCounts(grouped);
   };
