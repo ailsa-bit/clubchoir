@@ -133,7 +133,7 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
 
   if (segment === "herd-reminder") return renderHerdEmail(r);
   if (segment === "herd-attendees") return renderHerdTodayEmail(r);
-  if (segment === "mtl-openhouse-tonight") return renderMtlTonightEmail(r);
+  if (TONIGHT_CONFIGS[segment]) return renderTonightEmail(r, TONIGHT_CONFIGS[segment]);
 
   let opener = "";
   let subject = "";
@@ -481,7 +481,7 @@ async function loadLocationRecipients(supabase: any, locationName: string): Prom
 async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
   if (segment === "herd-reminder") return loadHerdRecipients(supabase);
   if (segment === "herd-attendees") return loadHerdAttendees(supabase);
-  if (segment === "mtl-openhouse-tonight") return loadMontrealRecipients(supabase);
+  if (TONIGHT_CONFIGS[segment]) return loadLocationRecipients(supabase, TONIGHT_CONFIGS[segment].location);
   // Paid: session_registrations for fall-2026 with payment_status='paid'
   const { data: paidRegs } = await supabase
     .from("session_registrations")
@@ -577,7 +577,7 @@ serve(async (req) => {
     const previewOnly: boolean = !!body.previewOnly;
     const countOnly: boolean = !!body.countOnly;
 
-    if (!["paid", "registered", "everyone", "herd-reminder", "herd-attendees", "mtl-openhouse-tonight"].includes(segment)) {
+    if (!["paid", "registered", "everyone", "herd-reminder", "herd-attendees", ...Object.keys(TONIGHT_CONFIGS)].includes(segment)) {
       throw new Error("Invalid segment");
     }
 
@@ -626,8 +626,8 @@ serve(async (req) => {
       ? HERD_CAMPAIGN_KEY
       : segment === "herd-attendees"
         ? HERD_TODAY_CAMPAIGN_KEY
-        : segment === "mtl-openhouse-tonight"
-          ? MTL_TONIGHT_CAMPAIGN_KEY
+        : TONIGHT_CONFIGS[segment]
+          ? TONIGHT_CONFIGS[segment].campaignKey
           : `${CAMPAIGN_KEY}:${segment}`;
     const { data: sentRows } = await supabase
       .from("campaign_sends").select("recipient_email")
