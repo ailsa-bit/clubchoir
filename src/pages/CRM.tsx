@@ -562,11 +562,58 @@ const CRM = () => {
                     <StatCard label="Interested Fall 2026" value={stats.interested} onClick={() => pick("interested")} active={bucketFilter === "interested"} />
                     <StatCard label="All contacts" value={stats.total} onClick={() => pick("ALL")} active={bucketFilter === "ALL"} />
                   </div>
+                  {bucketFilter !== "ALL" && (() => {
+                    const isReg = bucketFilter.startsWith("registered");
+                    const byLoc = new Map<string, number>();
+                    filtered.forEach(c => {
+                      const loc =
+                        (isReg && (c.paid_reg?.location || c.unpaid_reg?.location)) ||
+                        c.location ||
+                        "Unspecified";
+                      const n = isReg
+                        ? (bucketFilter === "registered-paid"
+                            ? c.paid_reg_count
+                            : bucketFilter === "registered-unpaid"
+                            ? c.unpaid_reg_count
+                            : c.paid_reg_count + c.unpaid_reg_count) || 1
+                        : 1;
+                      byLoc.set(loc, (byLoc.get(loc) || 0) + n);
+                    });
+                    const rows = [...byLoc.entries()].sort((a, b) => b[1] - a[1]);
+                    const total = rows.reduce((n, r) => n + r[1], 0);
+                    return (
+                      <div className="rounded-xl border border-border bg-card p-4">
+                        <p className="text-xs font-medium text-muted-foreground mb-3">
+                          By location · {total} total
+                        </p>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                          {rows.map(([loc, n]) => (
+                            <button
+                              key={loc}
+                              onClick={() => setLocationFilter(locationFilter === loc ? "ALL" : loc)}
+                              className={`rounded-lg border p-3 text-left transition-colors ${
+                                locationFilter === loc
+                                  ? "border-primary bg-primary/10"
+                                  : "border-border hover:bg-muted/50"
+                              }`}
+                            >
+                              <div className="text-xl font-bold text-foreground">{n}</div>
+                              <div className="text-xs text-muted-foreground">{loc}</div>
+                            </button>
+                          ))}
+                          {rows.length === 0 && (
+                            <p className="text-sm text-muted-foreground">No contacts in this bucket.</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()}
                   <p className="text-xs text-muted-foreground">
                     Each person is counted once. "Interested Fall 2026" combines open house, try-a-session and prospects — as soon as someone registers they move into Fall 2026 registered.
                   </p>
 
                 </div>
+
               );
             })()}
 
