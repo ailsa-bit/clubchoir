@@ -564,8 +564,15 @@ const CRM = () => {
                   </div>
                   {bucketFilter !== "ALL" && (() => {
                     const isReg = bucketFilter.startsWith("registered");
+                    const inBucket = contacts.filter(c => {
+                      const b = bucketOf(c);
+                      if (bucketFilter === "registered-paid") return b === "registered" && !!c.paid_reg;
+                      if (bucketFilter === "registered-unpaid") return b === "registered" && !c.paid_reg;
+                      return b === bucketFilter;
+                    });
                     const byLoc = new Map<string, number>();
-                    filtered.forEach(c => {
+                    inBucket.forEach(c => {
+
                       const loc =
                         (isReg && (c.paid_reg?.location || c.unpaid_reg?.location)) ||
                         c.location ||
