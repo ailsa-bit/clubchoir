@@ -104,14 +104,19 @@ const Campaigns = () => {
       });
       setCounts((c) => ({ ...c, [s.key]: data?.count ?? 0 }));
     }
-    // Sent counts
-    const { data: sent } = await supabase
-      .from("campaign_sends")
-      .select("segment, status")
-      .eq("status", "sent");
-    const grouped: any = { ...EMPTY_COUNTS };
-    for (const row of sent || []) grouped[row.segment] = (grouped[row.segment] || 0) + 1;
-    setSentCounts(grouped);
+    // Sent counts — count per segment (a single unfiltered select is capped at 1000 rows)
+    const grouped: Record<string, number> = { ...EMPTY_COUNTS };
+    await Promise.all(
+      SEGMENTS.map(async (s) => {
+        const { count } = await supabase
+          .from("campaign_sends")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "sent")
+          .eq("segment", s.key);
+        grouped[s.key] = count ?? 0;
+      })
+    );
+    setSentCounts(grouped as Record<Segment, number>);
   };
 
   useEffect(() => {
