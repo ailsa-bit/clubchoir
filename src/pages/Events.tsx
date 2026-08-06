@@ -226,6 +226,11 @@ const Events = () => {
           </CardContent>
         </Card>
 
+        {/* Past Events */}
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center mt-10">
+          {language === "fr" ? "Événements passés" : "Past Events"}
+        </h2>
+
         {/* Sing for the Herd — thank you (past event) */}
         <Card className="mb-8 border-purple/30 bg-purple-light">
           <CardHeader className="pb-3">
@@ -265,12 +270,6 @@ const Events = () => {
             </div>
           </CardContent>
         </Card>
-
-
-        {/* Past Events */}
-        <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center mt-10">
-          {language === "fr" ? "Événements passés" : "Past Events"}
-        </h2>
 
 
         <Card className="mb-6 border-orange/30 bg-orange-light">
