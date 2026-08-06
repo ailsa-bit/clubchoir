@@ -32,8 +32,9 @@ const FallRegistration = () => {
     ],
     questionTitle: isFr ? "Une question avant de vous inscrire ?" : "Have a question before registering?",
     questionText: isFr
-      ? "Si vous ne savez pas quel emplacement vous convient, ou si vous souhaitez en savoir plus sur les portes ouvertes, écrivez-nous."
-      : "If you're not sure which location is right for you, or you want to ask about the open house, send us a note.",
+      ? "Si vous ne savez pas quel emplacement vous convient, écrivez-nous."
+      : "If you're not sure which location is right for you, send us a note.",
+
     contactBtn: isFr ? "Contacter Club Choir" : "Contact Club Choir",
     finalTitle: isFr ? "Prêt(e) à chanter avec nous cet automne ?" : "Ready to sing with us this fall?",
     viewOpenHouse: isFr ? "Voir les portes ouvertes" : "View Open House Details",
