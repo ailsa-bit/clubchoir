@@ -32,8 +32,9 @@ const FallRegistration = () => {
     ],
     questionTitle: isFr ? "Une question avant de vous inscrire ?" : "Have a question before registering?",
     questionText: isFr
-      ? "Si vous ne savez pas quel emplacement vous convient, ou si vous souhaitez en savoir plus sur les portes ouvertes, écrivez-nous."
-      : "If you're not sure which location is right for you, or you want to ask about the open house, send us a note.",
+      ? "Si vous ne savez pas quel emplacement vous convient, écrivez-nous."
+      : "If you're not sure which location is right for you, send us a note.",
+
     contactBtn: isFr ? "Contacter Club Choir" : "Contact Club Choir",
     finalTitle: isFr ? "Prêt(e) à chanter avec nous cet automne ?" : "Ready to sing with us this fall?",
     viewOpenHouse: isFr ? "Voir les portes ouvertes" : "View Open House Details",
@@ -70,10 +71,8 @@ const FallRegistration = () => {
                 {t.register} <ArrowRight className="w-4 h-4 ml-1" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="text-base">
-              <Link to="/open-house">{t.openHouse}</Link>
-            </Button>
           </div>
+
         </div>
       </section>
 
@@ -121,27 +120,14 @@ const FallRegistration = () => {
                       </div>
                     </div>
 
-                    {loc.openHouse && (
-                      <div className="bg-white/70 rounded-lg px-3 py-2 border border-border">
-                        <div className="text-xs uppercase tracking-wide font-bold text-muted-foreground mb-0.5">
-                          {t.openHouseLabel}
-                        </div>
-                        <div className="font-semibold">
-                          {isFr ? loc.openHouse.fr : loc.openHouse.en}
-                        </div>
-                        <div className="text-xs text-muted-foreground">{loc.openHouse.time}</div>
-                      </div>
-                    )}
                   </div>
 
                   <div className="mt-5 flex flex-col gap-2">
                     <Button asChild size="sm" className="w-full">
                       <Link to="/register">{t.registerBtn}</Link>
                     </Button>
-                    <Button asChild size="sm" variant="outline" className="w-full">
-                      <Link to="/open-house">{t.openHouseBtn}</Link>
-                    </Button>
                   </div>
+
                 </div>
               );
             })}
@@ -199,10 +185,8 @@ const FallRegistration = () => {
                 {t.register} <ArrowRight className="w-4 h-4 ml-1" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="text-base">
-              <Link to="/open-house">{t.viewOpenHouse}</Link>
-            </Button>
           </div>
+
         </div>
       </section>
     </div>

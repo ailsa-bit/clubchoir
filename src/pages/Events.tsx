@@ -199,32 +199,33 @@ const Events = () => {
           </CardContent>
         </Card>
 
-        {/* Sing for the Herd — Fundraiser */}
+        {/* Sing for the Herd — thank you (past event) */}
         <Card className="mb-8 border-purple/30 bg-purple-light">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-purple mb-1">
               <Heart className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.herdBadge")}</span>
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Merci !" : "Thank You!"}
+              </span>
             </div>
             <CardTitle className="text-xl font-heading">
-              {t("events.herdTitle")}
+              {language === "fr"
+                ? "Chanter pour le troupeau — merci à tous"
+                : "Sing for the Herd — Thank You"}
             </CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">{t("events.herdSubtitle")}</p>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
-              <Calendar className="w-4 h-4" />
-              <span>{t("events.herdDate")}</span>
-            </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc1")}</p>
-            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc2")}</p>
-            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc3")}</p>
-            <p className="text-muted-foreground leading-relaxed">{t("events.herdDesc4")}</p>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Quelle journée ! La pluie s'est invitée, mais elle n'a rien enlevé au plaisir. Un immense merci à tous les bénévoles, aux chanteurs et à l'équipe d'A Horse Tale Rescue pour cet événement pluvieux mais joyeux."
+                : "What a day! The rain showed up, but it didn't dampen the fun one bit. A huge thank you to all the volunteers, singers, and everyone at A Horse Tale Rescue for a rainy but wonderful event."}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Votre générosité et votre bonne humeur ont fait toute la différence pour les chevaux. Merci d'avoir chanté sous la pluie avec nous."
+                : "Your generosity and good spirits made a real difference for the horses. Thank you for singing in the rain with us."}
+            </p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-purple" />
-                <span className="font-medium">{t("events.herdVenue")}</span>
-              </div>
               <a
                 href="https://www.ahtrescue.org/"
                 target="_blank"
@@ -235,16 +236,9 @@ const Events = () => {
                 {t("events.herdLink")}
               </a>
             </div>
-            <div className="pt-3">
-              <Button asChild className="bg-purple text-purple-foreground hover:bg-purple/90 rounded-full font-semibold">
-                <Link to="/tickets/sing-for-the-herd">
-                  <Ticket className="w-4 h-4 mr-1.5" />
-                  {language === "fr" ? "Obtenir des billets" : "Get Tickets"}
-                </Link>
-              </Button>
-            </div>
           </CardContent>
         </Card>
+
 
         {/* Past Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center mt-10">
@@ -408,52 +402,33 @@ const Events = () => {
 
 
 
-        {/* Open House Dates */}
-        <h2 id="open-house" className="font-heading font-bold text-2xl text-foreground mb-2 text-center scroll-mt-24">
-          {language === "fr" ? "Portes ouvertes — Août 2026" : "Open House — August 2026"}
-        </h2>
-        <p className="text-center text-muted-foreground mb-6 max-w-lg mx-auto">
-          {language === "fr"
-            ? "Une soirée gratuite et détendue pour venir chanter, rencontrer le groupe et découvrir Club Choir."
-            : "A free, relaxed evening to come sing, meet the group, and see what Club Choir is all about."}
-        </p>
-        <div className="grid sm:grid-cols-2 gap-5 mb-12">
-          {[
-            { day: { en: "Monday, August 3", fr: "Lundi 3 août" }, location: "Montreal", color: "border-pink/30 bg-pink-light", dot: "bg-pink", text: "text-pink" },
-            { day: { en: "Tuesday, August 4", fr: "Mardi 4 août" }, location: "Hudson", color: "border-orange/30 bg-orange-light", dot: "bg-orange", text: "text-orange" },
-            { day: { en: "Wednesday, August 5", fr: "Mercredi 5 août" }, location: "Saint-Hubert", color: "border-lime/30 bg-lime-light", dot: "bg-lime", text: "text-lime" },
-            { day: { en: "Thursday, August 6", fr: "Jeudi 6 août" }, location: "Pointe-Claire", color: "border-purple/30 bg-purple-light", dot: "bg-purple", text: "text-purple" },
-          ].map((oh, i) => (
-            <Link
-              key={i}
-              to={`/open-house?location=${encodeURIComponent(oh.location)}`}
-              className={`group rounded-2xl border p-6 ${oh.color} transition-shadow hover:shadow-md block`}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <span className={`w-2.5 h-2.5 rounded-full ${oh.dot}`} />
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                  {oh.location}
-                </span>
-              </div>
-              <h3 className="font-heading font-bold text-lg text-foreground mb-2">
-                {language === "fr" ? `Portes ouvertes — ${oh.location}` : `Open House — ${oh.location}`}
-              </h3>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                <Calendar className="w-3.5 h-3.5" />
-                <span>{getText(oh.day, language)}</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                <Clock className="w-3.5 h-3.5" />
-                <span>7:00 PM</span>
-              </div>
-              <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${oh.text} group-hover:underline`}>
-                {language === "fr" ? "S'inscrire" : "Register"}
-                <ArrowRight className="w-3.5 h-3.5" />
+        {/* Open Houses — recap */}
+        <Card className="mb-12 border-lime/30 bg-lime-light">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-lime mb-1">
+              <CheckCircle2 className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Un grand succès" : "A Huge Success"}
               </span>
-            </Link>
-          ))}
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {language === "fr" ? "Portes ouvertes — Août 2026" : "Open Houses — August 2026"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Nos portes ouvertes ont été un immense succès dans nos quatre lieux. Merci à toutes les personnes venues chanter avec nous — l'énergie dans les salles était incroyable."
+                : "Our open houses were a huge success across all four locations. Thank you to everyone who came out to sing with us — the energy in every room was incredible."}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Nous avons hâte d'accueillir nos membres cet automne, les nouveaux comme les anciens. On se revoit en septembre !"
+                : "We can't wait to welcome our members back this fall — new faces and familiar ones alike. See you in September!"}
+            </p>
+          </CardContent>
+        </Card>
 
-        </div>
 
         {/* Community Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">

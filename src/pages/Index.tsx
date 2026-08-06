@@ -113,14 +113,8 @@ const Index = () => {
                   </a>
                 </div>
 
-                <Link
-                  to="/open-house"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-lime text-lime-foreground font-bold shadow-lg shadow-lime/25 hover:shadow-xl hover:scale-[1.02] transition-all w-fit"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  {t("home.hero.openHouseAugust")}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+
+
 
                 <div className="pt-5 border-t border-orange/20">
                   <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -202,21 +196,8 @@ const Index = () => {
                 </p>
                 <p className="text-base font-bold text-foreground mb-2">{item.dates}</p>
                 <p className="text-xs text-muted-foreground whitespace-pre-line mb-3 flex-1">{item.venue}</p>
-                <div className="mb-3 rounded-lg bg-background/60 border border-foreground/10 p-2">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-foreground/60 mb-0.5">
-                    {isFr ? "Portes ouvertes" : "Open House"}
-                  </p>
-                  <p className="text-xs font-semibold text-foreground mb-1">
-                    {isFr ? item.openHouse.fr : item.openHouse.en}
-                  </p>
-                  <Link
-                    to="/open-house"
-                    className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1"
-                  >
-                    {isFr ? "Réserver ma place" : "Reserve your spot"}
-                    <ArrowRight className="w-3 h-3" />
-                  </Link>
-                </div>
+
+
                 <div className="flex items-center justify-between gap-2 mt-auto">
                   <Link
                     to={`/choir/${item.slug}`}
