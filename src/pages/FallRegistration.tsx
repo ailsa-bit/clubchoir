@@ -70,10 +70,8 @@ const FallRegistration = () => {
                 {t.register} <ArrowRight className="w-4 h-4 ml-1" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="text-base">
-              <Link to="/open-house">{t.openHouse}</Link>
-            </Button>
           </div>
+
         </div>
       </section>
 
