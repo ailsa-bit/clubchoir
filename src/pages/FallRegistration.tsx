@@ -121,27 +121,14 @@ const FallRegistration = () => {
                       </div>
                     </div>
 
-                    {loc.openHouse && (
-                      <div className="bg-white/70 rounded-lg px-3 py-2 border border-border">
-                        <div className="text-xs uppercase tracking-wide font-bold text-muted-foreground mb-0.5">
-                          {t.openHouseLabel}
-                        </div>
-                        <div className="font-semibold">
-                          {isFr ? loc.openHouse.fr : loc.openHouse.en}
-                        </div>
-                        <div className="text-xs text-muted-foreground">{loc.openHouse.time}</div>
-                      </div>
-                    )}
                   </div>
 
                   <div className="mt-5 flex flex-col gap-2">
                     <Button asChild size="sm" className="w-full">
                       <Link to="/register">{t.registerBtn}</Link>
                     </Button>
-                    <Button asChild size="sm" variant="outline" className="w-full">
-                      <Link to="/open-house">{t.openHouseBtn}</Link>
-                    </Button>
                   </div>
+
                 </div>
               );
             })}
