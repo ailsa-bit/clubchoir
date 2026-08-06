@@ -151,26 +151,8 @@ const ChoirLocation = () => {
             </div>
           </div>
 
-          {data.openHouse && (
-            <div className={`rounded-2xl border-2 ${data.theme.border} bg-background/80 p-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3`}>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-foreground/70 mb-1">
-                  {isFr ? "Portes ouvertes — Gratuit" : "Open House — Free"}
-                </p>
-                <p className="text-base font-semibold text-foreground">
-                  {data.openHouse[isFr ? "fr" : "en"]} · {data.openHouse.time}
-                </p>
-                <p className="text-sm text-muted-foreground">{data.venueName}</p>
-              </div>
-              <Link
-                to={`/open-house?location=${encodeURIComponent(data.city)}`}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground font-semibold text-sm shadow hover:shadow-lg hover:bg-primary/90 transition-all whitespace-nowrap"
-              >
-                <Sparkles className="w-4 h-4" />
-                {isFr ? "S'inscrire aux portes ouvertes" : "Register for open house"}
-              </Link>
-            </div>
-          )}
+
+
 
           <div className="flex flex-wrap gap-3">
             <Link
