@@ -72,7 +72,7 @@ const Dashboard = () => {
   const fetchAll = async () => {
     setLoading(true);
     const [r, p, o, m] = await Promise.all([
-      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label"),
+      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").eq("session_label", "fall-2026"),
       supabase.from("prospects").select("email,locations,created_at,first_name,last_name"),
       supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name"),
       supabase.from("members").select("email,location,status,created_at,crm_tags,archived_at"),
