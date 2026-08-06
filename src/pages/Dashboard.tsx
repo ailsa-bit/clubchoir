@@ -57,6 +57,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [regs, setRegs] = useState<Reg[]>([]);
+  const [tryRegs, setTryRegs] = useState<Reg[]>([]);
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [members, setMembers] = useState<MemberRow[]>([]);
@@ -71,13 +72,15 @@ const Dashboard = () => {
 
   const fetchAll = async () => {
     setLoading(true);
-    const [r, p, o, m] = await Promise.all([
+    const [r, t, p, o, m] = await Promise.all([
       supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").eq("session_label", "fall-2026"),
+      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").eq("session_label", "try-a-session"),
       supabase.from("prospects").select("email,locations,created_at,first_name,last_name"),
       supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name"),
       supabase.from("members").select("email,location,status,created_at,crm_tags,archived_at"),
     ]);
     setRegs((r.data as any) || []);
+    setTryRegs((t.data as any) || []);
     setProspects((p.data as any) || []);
     setRsvps((o.data as any) || []);
     setMembers((m.data as any) || []);
@@ -191,14 +194,17 @@ const Dashboard = () => {
       };
     }).filter((x) => x.total > 0);
 
+    const trySessionEmails = new Set(tryRegs.map((x) => norm(x.email)).filter(Boolean));
+
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
       byLoc, staleUnpaid, feed, recent, recentByLoc,
+      trySessionCount: trySessionEmails.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
 
 
-  }, [regs, prospects, rsvps, members, range]);
+  }, [regs, tryRegs, prospects, rsvps, members, range]);
 
   if (adminLoading || loading) {
     return <div className="py-24 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div>;
@@ -240,7 +246,7 @@ const Dashboard = () => {
             sub={data.delta === null ? "click for details" : `${data.delta >= 0 ? "+" : ""}${data.delta}% vs previous ${range}d · click for details`}
             tone={data.delta !== null && data.delta < 0 ? "warn" : "good"}
             onClick={() => setShowNew((v) => !v)} active={showNew} />
-          <StatCard icon={CalendarCheck} label="Open house RSVPs" value={rsvps.length} sub="all time" to="/open-house-rsvps" />
+          <StatCard icon={CalendarCheck} label="Try a Session" value={data.trySessionCount} sub="all time" to="/crm" />
           <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
         </div>
 
