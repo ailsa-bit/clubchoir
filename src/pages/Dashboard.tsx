@@ -74,7 +74,7 @@ const Dashboard = () => {
     setLoading(true);
     const [r, t, p, o, m] = await Promise.all([
       supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").eq("session_label", "fall-2026"),
-      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").eq("session_label", "try-a-session"),
+      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").in("session_label", ["try-a-session", "open-house-2026"]),
       supabase.from("prospects").select("email,locations,created_at,first_name,last_name"),
       supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name"),
       supabase.from("members").select("email,location,status,created_at,crm_tags,archived_at"),
@@ -106,10 +106,12 @@ const Dashboard = () => {
 
     const rsvpEmails = new Set(rsvps.map((x) => norm(x.email)));
     const prospectEmails = new Set(prospects.map((x) => norm(x.email)));
+    // Open-house / try-a-session registrations count as "interested" too (matches CRM buckets)
+    const softRegEmails = new Set(tryRegs.map((x) => norm(x.email)));
     const memberTagged = new Set(
       members.filter((x) => !x.archived_at && (x.crm_tags || []).some((t) => t === "open-house-2026" || t === "try-a-session")).map((x) => norm(x.email)),
     );
-    const interested = new Set<string>([...rsvpEmails, ...prospectEmails, ...memberTagged].filter((e) => e && !regByEmail.has(e)));
+    const interested = new Set<string>([...rsvpEmails, ...prospectEmails, ...softRegEmails, ...memberTagged].filter((e) => e && !regByEmail.has(e)));
 
     // Trend series
     const days: string[] = [];
@@ -142,9 +144,11 @@ const Dashboard = () => {
         location: loc,
         Registered: regsL.length,
         Paid: regsL.filter((x) => x.payment_status === "paid").length,
-        Interested:
-          rsvps.filter((x) => (x.location || "").toLowerCase() === l && interested.has(norm(x.email))).length +
-          prospects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l) && interested.has(norm(x.email))).length,
+        Interested: new Set([
+          ...rsvps.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+          ...tryRegs.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+          ...prospects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l)).map((x) => norm(x.email)),
+        ].filter((e) => interested.has(e))).size,
       };
     });
 
@@ -194,12 +198,10 @@ const Dashboard = () => {
       };
     }).filter((x) => x.total > 0);
 
-    const trySessionEmails = new Set(tryRegs.map((x) => norm(x.email)).filter(Boolean));
-
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
       byLoc, staleUnpaid, feed, recent, recentByLoc,
-      trySessionCount: trySessionEmails.size,
+      interestedCount: interested.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
 
@@ -246,7 +248,7 @@ const Dashboard = () => {
             sub={data.delta === null ? "click for details" : `${data.delta >= 0 ? "+" : ""}${data.delta}% vs previous ${range}d · click for details`}
             tone={data.delta !== null && data.delta < 0 ? "warn" : "good"}
             onClick={() => setShowNew((v) => !v)} active={showNew} />
-          <StatCard icon={CalendarCheck} label="Try a Session" value={data.trySessionCount} sub="all time" to="/crm" />
+          <StatCard icon={CalendarCheck} label="Interested Fall 2026" value={data.interestedCount} sub="open house · try a session · prospects" to="/crm" />
           <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
         </div>
 
