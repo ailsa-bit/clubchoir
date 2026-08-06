@@ -29,17 +29,10 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const eventsChildren = [
-    { label: "Fall Registration", path: "/fall-registration" },
-    
-    { label: "Register for Fall 2026", path: "/register" },
-    { label: "More...", path: "/events" },
-  ];
-
   const publicNavItems = [
     { label: t("nav.home"), path: "/" },
     { label: "About", path: "/about" },
-    { label: t("nav.events"), path: "/events", children: eventsChildren },
+    { label: t("nav.events"), path: "/events" },
     { label: t("nav.corporate"), path: "/corporate" },
   ];
 
@@ -47,7 +40,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   const loggedInPublicItems = [
     { label: t("nav.home"), path: "/" },
     { label: "About", path: "/about" },
-    { label: t("nav.events"), path: "/events", children: eventsChildren },
+    { label: t("nav.events"), path: "/events" },
     { label: t("nav.corporate"), path: "/corporate" },
   ];
 
