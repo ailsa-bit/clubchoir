@@ -194,14 +194,17 @@ const Dashboard = () => {
       };
     }).filter((x) => x.total > 0);
 
+    const trySessionEmails = new Set(tryRegs.map((x) => norm(x.email)).filter(Boolean));
+
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
       byLoc, staleUnpaid, feed, recent, recentByLoc,
+      trySessionCount: trySessionEmails.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
 
 
-  }, [regs, prospects, rsvps, members, range]);
+  }, [regs, tryRegs, prospects, rsvps, members, range]);
 
   if (adminLoading || loading) {
     return <div className="py-24 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div>;
