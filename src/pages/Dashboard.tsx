@@ -57,6 +57,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [regs, setRegs] = useState<Reg[]>([]);
+  const [tryRegs, setTryRegs] = useState<Reg[]>([]);
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [rsvps, setRsvps] = useState<Rsvp[]>([]);
   const [members, setMembers] = useState<MemberRow[]>([]);
@@ -71,13 +72,15 @@ const Dashboard = () => {
 
   const fetchAll = async () => {
     setLoading(true);
-    const [r, p, o, m] = await Promise.all([
+    const [r, t, p, o, m] = await Promise.all([
       supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").eq("session_label", "fall-2026"),
+      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").eq("session_label", "try-a-session"),
       supabase.from("prospects").select("email,locations,created_at,first_name,last_name"),
       supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name"),
       supabase.from("members").select("email,location,status,created_at,crm_tags,archived_at"),
     ]);
     setRegs((r.data as any) || []);
+    setTryRegs((t.data as any) || []);
     setProspects((p.data as any) || []);
     setRsvps((o.data as any) || []);
     setMembers((m.data as any) || []);
