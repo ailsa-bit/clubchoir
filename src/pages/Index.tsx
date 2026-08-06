@@ -113,14 +113,8 @@ const Index = () => {
                   </a>
                 </div>
 
-                <Link
-                  to="/open-house"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-lime text-lime-foreground font-bold shadow-lg shadow-lime/25 hover:shadow-xl hover:scale-[1.02] transition-all w-fit"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  {t("home.hero.openHouseAugust")}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+
+
 
                 <div className="pt-5 border-t border-orange/20">
                   <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
