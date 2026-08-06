@@ -132,6 +132,33 @@ const Events = () => {
           {t("events.subtitle")}
         </p>
 
+        {/* Open Houses — recap */}
+        <Card className="mb-12 border-lime/30 bg-lime-light">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-lime mb-1">
+              <CheckCircle2 className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Un grand succès" : "A Huge Success"}
+              </span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {language === "fr" ? "Portes ouvertes — Août 2026" : "Open Houses — August 2026"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Nos portes ouvertes ont été un immense succès dans nos quatre lieux. Merci à toutes les personnes venues chanter avec nous — l'énergie dans les salles était incroyable."
+                : "Our open houses were a huge success across all four locations. Thank you to everyone who came out to sing with us — the energy in every room was incredible."}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Nous avons hâte d'accueillir nos membres cet automne, les nouveaux comme les anciens. On se revoit en septembre !"
+                : "We can't wait to welcome our members back this fall — new faces and familiar ones alike. See you in September!"}
+            </p>
+          </CardContent>
+        </Card>
+
         {/* Upcoming Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
           {language === "fr" ? "Événements à venir" : "Upcoming Events"}
@@ -397,35 +424,6 @@ const Events = () => {
             <div className="pt-2">
               <PhotoGallery photos={victoriaVillagePhotos} columns={2} />
             </div>
-          </CardContent>
-        </Card>
-
-
-
-        {/* Open Houses — recap */}
-        <Card className="mb-12 border-lime/30 bg-lime-light">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-lime mb-1">
-              <CheckCircle2 className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">
-                {language === "fr" ? "Un grand succès" : "A Huge Success"}
-              </span>
-            </div>
-            <CardTitle className="text-xl font-heading">
-              {language === "fr" ? "Portes ouvertes — Août 2026" : "Open Houses — August 2026"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-muted-foreground leading-relaxed">
-              {language === "fr"
-                ? "Nos portes ouvertes ont été un immense succès dans nos quatre lieux. Merci à toutes les personnes venues chanter avec nous — l'énergie dans les salles était incroyable."
-                : "Our open houses were a huge success across all four locations. Thank you to everyone who came out to sing with us — the energy in every room was incredible."}
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              {language === "fr"
-                ? "Nous avons hâte d'accueillir nos membres cet automne, les nouveaux comme les anciens. On se revoit en septembre !"
-                : "We can't wait to welcome our members back this fall — new faces and familiar ones alike. See you in September!"}
-            </p>
           </CardContent>
         </Card>
 
