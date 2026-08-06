@@ -144,9 +144,11 @@ const Dashboard = () => {
         location: loc,
         Registered: regsL.length,
         Paid: regsL.filter((x) => x.payment_status === "paid").length,
-        Interested:
-          rsvps.filter((x) => (x.location || "").toLowerCase() === l && interested.has(norm(x.email))).length +
-          prospects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l) && interested.has(norm(x.email))).length,
+        Interested: new Set([
+          ...rsvps.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+          ...tryRegs.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+          ...prospects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l)).map((x) => norm(x.email)),
+        ].filter((e) => interested.has(e))).size,
       };
     });
 
