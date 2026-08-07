@@ -15,9 +15,7 @@ const CAMPAIGN_KEY = "fall-2026-openhouse-v1";
 type Segment =
   | "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees"
   | "mtl-openhouse-tonight" | "hudson-openhouse-tonight"
-  | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight"
-  | "openhouse-thankyou";
-const THANKYOU_CAMPAIGN_KEY = "openhouse-thankyou-v1";
+  | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight";
 const HERD_CAMPAIGN_KEY = "sing-for-the-herd-reminder-v1";
 const HERD_TODAY_CAMPAIGN_KEY = "sing-for-the-herd-day-of-v1";
 
@@ -133,7 +131,7 @@ async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: s
       <span style="color:#7c2d12;font-size:14px;">Know someone who'd love to sing? Forward this email or bring them along — friends, neighbours, or anyone curious is welcome at the open house. No experience needed. No audition. Just show up and sing.</span>
     </div>`;
 
-  if (segment === "openhouse-thankyou") return renderThankYouEmail(r);
+  
   if (segment === "herd-reminder") return renderHerdEmail(r);
   if (segment === "herd-attendees") return renderHerdTodayEmail(r);
   if (TONIGHT_CONFIGS[segment]) return renderTonightEmail(r, TONIGHT_CONFIGS[segment]);
@@ -581,7 +579,6 @@ async function loadLocationRecipients(supabase: any, locationName: string): Prom
 }
 
 async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
-  if (segment === "openhouse-thankyou") return loadAllContacts(supabase);
   if (segment === "herd-reminder") return loadHerdRecipients(supabase);
   if (segment === "herd-attendees") return loadHerdAttendees(supabase);
   if (TONIGHT_CONFIGS[segment]) return loadLocationRecipients(supabase, TONIGHT_CONFIGS[segment].location);
@@ -680,7 +677,7 @@ serve(async (req) => {
     const previewOnly: boolean = !!body.previewOnly;
     const countOnly: boolean = !!body.countOnly;
 
-    if (!["paid", "registered", "everyone", "openhouse-thankyou", "herd-reminder", "herd-attendees", ...Object.keys(TONIGHT_CONFIGS)].includes(segment)) {
+    if (!["paid", "registered", "everyone", "herd-reminder", "herd-attendees", ...Object.keys(TONIGHT_CONFIGS)].includes(segment)) {
       throw new Error("Invalid segment");
     }
 
@@ -725,9 +722,7 @@ serve(async (req) => {
     }
 
     // Real send — check campaign_sends to skip already-sent
-    const key = segment === "openhouse-thankyou"
-      ? THANKYOU_CAMPAIGN_KEY
-      : segment === "herd-reminder"
+    const key = segment === "herd-reminder"
       ? HERD_CAMPAIGN_KEY
       : segment === "herd-attendees"
         ? HERD_TODAY_CAMPAIGN_KEY
