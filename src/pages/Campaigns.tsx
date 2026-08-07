@@ -155,7 +155,8 @@ const Campaigns = () => {
         <div className="text-center mb-8">
           <Mail className="w-10 h-10 text-primary mx-auto mb-3" />
           <h1 className="font-heading font-bold text-3xl mb-2">Fall 2026 Email Campaigns</h1>
-          <p className="text-muted-foreground">Three targeted emails with one-click open house RSVPs.</p>
+          <p className="text-muted-foreground">Three bilingual follow-ups after the open houses.</p>
+
         </div>
 
         <div className="space-y-4">
