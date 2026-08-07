@@ -257,31 +257,55 @@ export type Database = {
       }
       open_house_rsvps: {
         Row: {
+          attribution_captured_at: string | null
           created_at: string
           email: string
           first_name: string | null
           id: string
+          landing_page: string | null
           last_name: string | null
           location: string
+          referrer: string | null
           source_campaign: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
+          attribution_captured_at?: string | null
           created_at?: string
           email: string
           first_name?: string | null
           id?: string
+          landing_page?: string | null
           last_name?: string | null
           location: string
+          referrer?: string | null
           source_campaign?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
+          attribution_captured_at?: string | null
           created_at?: string
           email?: string
           first_name?: string | null
           id?: string
+          landing_page?: string | null
           last_name?: string | null
           location?: string
+          referrer?: string | null
           source_campaign?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: []
       }
@@ -392,88 +416,136 @@ export type Database = {
       }
       prospects: {
         Row: {
+          attribution_captured_at: string | null
           created_at: string
           email: string
           first_name: string
           id: string
+          landing_page: string | null
           last_name: string | null
           locations: string[]
           notes: string
+          referrer: string | null
           status: string
           updated_at: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
+          attribution_captured_at?: string | null
           created_at?: string
           email: string
           first_name: string
           id?: string
+          landing_page?: string | null
           last_name?: string | null
           locations?: string[]
           notes?: string
+          referrer?: string | null
           status?: string
           updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
+          attribution_captured_at?: string | null
           created_at?: string
           email?: string
           first_name?: string
           id?: string
+          landing_page?: string | null
           last_name?: string | null
           locations?: string[]
           notes?: string
+          referrer?: string | null
           status?: string
           updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: []
       }
       session_registrations: {
         Row: {
           amount_paid: number | null
+          attribution_captured_at: string | null
           created_at: string
           email: string
           first_name: string
           id: string
           is_returning_member: boolean
+          landing_page: string | null
           last_name: string
           location: string
           member_id: string | null
           notes: string | null
           payment_link_sent_at: string | null
           payment_status: string
+          referrer: string | null
           session_label: string
           updated_at: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           amount_paid?: number | null
+          attribution_captured_at?: string | null
           created_at?: string
           email: string
           first_name: string
           id?: string
           is_returning_member?: boolean
+          landing_page?: string | null
           last_name: string
           location: string
           member_id?: string | null
           notes?: string | null
           payment_link_sent_at?: string | null
           payment_status?: string
+          referrer?: string | null
           session_label: string
           updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           amount_paid?: number | null
+          attribution_captured_at?: string | null
           created_at?: string
           email?: string
           first_name?: string
           id?: string
           is_returning_member?: boolean
+          landing_page?: string | null
           last_name?: string
           location?: string
           member_id?: string | null
           notes?: string | null
           payment_link_sent_at?: string | null
           payment_status?: string
+          referrer?: string | null
           session_label?: string
           updated_at?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: [
           {
