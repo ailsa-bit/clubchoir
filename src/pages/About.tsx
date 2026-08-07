@@ -1,16 +1,34 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Sparkles, Calendar, Users, Heart } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import founderPhoto from "@/assets/founder-ailsa.webp";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const About = () => {
   const { t } = useLanguage();
+  const [stats, setStats] = useState<{ singers: number; locations: number }>({ singers: 296, locations: 4 });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.rpc("get_public_choir_stats");
+      const row = Array.isArray(data) ? data[0] : data;
+      if (!cancelled && !error && row) {
+        setStats({ singers: Number(row.singers) || 0, locations: Number(row.locations) || 4 });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div className="py-12 px-4">
       <PageMeta
         title="Our Story – Club Choir | Founder Ailsa"
-        description="Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to a regional family of 390 singers — sing together, laugh together, learn together."
+        description="Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to hundreds of adult singers across four Quebec locations — sing together, laugh together, learn together."
         path="/about"
       />
 
@@ -80,7 +98,7 @@ const About = () => {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
               {t("about.stat.members")}
             </p>
-            <p className="font-heading font-bold text-3xl text-foreground">390</p>
+            <p className="font-heading font-bold text-3xl text-foreground">{stats.singers}+</p>
             <p className="text-xs text-muted-foreground">{t("about.stat.membersSub")}</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
@@ -88,7 +106,7 @@ const About = () => {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
               {t("about.stat.locations")}
             </p>
-            <p className="font-heading font-bold text-3xl text-foreground">5</p>
+            <p className="font-heading font-bold text-3xl text-foreground">{stats.locations}</p>
             <p className="text-xs text-muted-foreground">{t("about.stat.locationsSub")}</p>
           </div>
         </div>

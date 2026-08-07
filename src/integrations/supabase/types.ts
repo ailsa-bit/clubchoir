@@ -549,6 +549,13 @@ export type Database = {
         }[]
       }
       expire_stale_members: { Args: never; Returns: number }
+      get_public_choir_stats: {
+        Args: never
+        Returns: {
+          locations: number
+          singers: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
