@@ -7,6 +7,7 @@ import {
 } from "recharts";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
+import SourceReport from "@/components/SourceReport";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -425,6 +426,8 @@ const Dashboard = () => {
             )}
           </div>
         </div>
+
+        <SourceReport />
 
         {/* Activity feed */}
         <div className="bg-card border border-border rounded-xl p-4 md:p-6">
