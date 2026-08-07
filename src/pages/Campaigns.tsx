@@ -10,9 +10,10 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight" | "hudson-openhouse-tonight" | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight";
+type Segment = "openhouse-thankyou" | "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight" | "hudson-openhouse-tonight" | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight";
 
 const EMPTY_COUNTS = {
+  "openhouse-thankyou": 0,
   paid: 0, registered: 0, everyone: 0,
   "herd-reminder": 0, "herd-attendees": 0,
   "mtl-openhouse-tonight": 0, "hudson-openhouse-tonight": 0,
@@ -20,6 +21,12 @@ const EMPTY_COUNTS = {
 } as Record<Segment, number>;
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
+  {
+    key: "openhouse-thankyou",
+    title: "Open House Thank-You + Registration Nudge (EN/FR)",
+    description: "Bilingual thank-you for this week's open houses, with a thank-you to those already paid, a register/pay prompt with e-Transfer details, and an offer of help. Sent to every contact across all locations.",
+    color: "bg-purple-50 border-purple-200",
+  },
   {
     key: "paid",
     title: "Paid & Confirmed",
