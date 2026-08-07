@@ -12,7 +12,7 @@
   "mcp": {
     "server": {
       "name": "club-choir-mcp",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "title": "Club Choir"
     },
     "tools": [
@@ -58,6 +58,83 @@
           "required": [
             "slug"
           ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_membership_overview",
+        "title": "Membership overview",
+        "description": "Admin dashboard snapshot: registrations, paid vs unpaid, revenue and per-location breakdown for a session (defaults to fall-2026).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "session_label": {
+              "type": "string",
+              "minLength": 1,
+              "default": "fall-2026",
+              "description": "Session label, e.g. fall-2026."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_signup_trend",
+        "title": "Signup trend",
+        "description": "Daily new registrations and new contacts over the last N days (default 14) so trends can be analyzed.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 180,
+              "default": 14,
+              "description": "Number of days to look back."
+            },
+            "session_label": {
+              "type": "string",
+              "minLength": 1,
+              "default": "fall-2026"
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_prospect_pipeline",
+        "title": "Prospect pipeline",
+        "description": "Counts of interested-but-not-registered contacts (prospects, open-house RSVPs, try-a-session tags) broken down by location, plus opt-out counts.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "session_label": {
+              "type": "string",
+              "minLength": 1,
+              "default": "fall-2026"
+            }
+          },
           "additionalProperties": false,
           "$schema": "http://json-schema.org/draft-07/schema#"
         },

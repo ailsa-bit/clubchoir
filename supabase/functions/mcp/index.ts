@@ -212,18 +212,257 @@ var get_choir_location_default = defineTool2({
   }
 });
 
+// src/lib/mcp/tools/get-membership-overview.ts
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { z as z2 } from "npm:zod@^3.25.76";
+
+// src/lib/mcp/supabase.ts
+import { createClient } from "npm:@supabase/supabase-js@^2.97.0";
+function runtimeEnv(name) {
+  const runtime = globalThis;
+  return runtime.Deno?.env?.get?.(name) ?? runtime.process?.env?.[name];
+}
+function configuredEnv(names) {
+  for (const name of names) {
+    const value = runtimeEnv(name)?.trim();
+    if (value) return value;
+  }
+  return void 0;
+}
+function supabaseProjectUrl() {
+  const url = configuredEnv(["SUPABASE_URL", "VITE_SUPABASE_URL"]);
+  if (!url) throw new Error("SUPABASE_URL (or VITE_SUPABASE_URL) is required");
+  return url;
+}
+function supabasePublishableKey() {
+  const direct = configuredEnv([
+    "SUPABASE_PUBLISHABLE_KEY",
+    "VITE_SUPABASE_PUBLISHABLE_KEY"
+  ]);
+  if (direct) return direct;
+  const keyset = runtimeEnv("SUPABASE_PUBLISHABLE_KEYS");
+  if (keyset) {
+    try {
+      const parsed = JSON.parse(keyset);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        const keys = parsed;
+        const key = [keys.default, ...Object.values(keys)].find((v) => typeof v === "string" && v.trim().startsWith("sb_publishable_"))?.trim();
+        if (key) return key;
+      }
+    } catch {
+    }
+  }
+  const legacy = configuredEnv(["SUPABASE_ANON_KEY", "VITE_SUPABASE_ANON_KEY"]);
+  if (legacy) return legacy;
+  throw new Error("SUPABASE_PUBLISHABLE_KEY, SUPABASE_PUBLISHABLE_KEYS, or SUPABASE_ANON_KEY is required");
+}
+function supabaseForUser(ctx) {
+  const token = ctx.getToken();
+  if (!token) throw new Error("supabaseForUser requires a verified OAuth token");
+  return createClient(supabaseProjectUrl(), supabasePublishableKey(), {
+    global: { headers: { Authorization: `Bearer ${token}` } },
+    auth: { persistSession: false, autoRefreshToken: false }
+  });
+}
+var EXCLUDED_LOCATIONS = ["arundel"];
+function isExcludedLocation(location) {
+  return EXCLUDED_LOCATIONS.includes((location ?? "").trim().toLowerCase());
+}
+
+// src/lib/mcp/tools/get-membership-overview.ts
+var get_membership_overview_default = defineTool3({
+  name: "get_membership_overview",
+  title: "Membership overview",
+  description: "Admin dashboard snapshot: registrations, paid vs unpaid, revenue and per-location breakdown for a session (defaults to fall-2026).",
+  inputSchema: {
+    session_label: z2.string().trim().min(1).default("fall-2026").describe("Session label, e.g. fall-2026.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ session_label }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
+    const { data, error } = await supabase.from("session_registrations").select("location, payment_status, amount_paid, email, created_at").eq("session_label", session_label);
+    if (error) {
+      return {
+        content: [{ type: "text", text: `${error.message} (admin access required)` }],
+        isError: true
+      };
+    }
+    const rows = (data ?? []).filter((r) => !isExcludedLocation(r.location));
+    const byLocation = {};
+    let revenue = 0;
+    let paid = 0;
+    for (const r of rows) {
+      const loc = (r.location ?? "unknown").trim() || "unknown";
+      byLocation[loc] ??= { registered: 0, paid: 0, unpaid: 0, revenue: 0 };
+      byLocation[loc].registered += 1;
+      const amount = Number(r.amount_paid ?? 0) || 0;
+      if (r.payment_status === "paid") {
+        paid += 1;
+        byLocation[loc].paid += 1;
+        byLocation[loc].revenue += amount;
+        revenue += amount;
+      } else {
+        byLocation[loc].unpaid += 1;
+      }
+    }
+    const summary = {
+      session_label,
+      total_registered: rows.length,
+      paid,
+      unpaid: rows.length - paid,
+      revenue,
+      by_location: byLocation
+    };
+    return {
+      content: [{ type: "text", text: JSON.stringify(summary, null, 2) }],
+      structuredContent: summary
+    };
+  }
+});
+
+// src/lib/mcp/tools/get-signup-trend.ts
+import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { z as z3 } from "npm:zod@^3.25.76";
+var get_signup_trend_default = defineTool4({
+  name: "get_signup_trend",
+  title: "Signup trend",
+  description: "Daily new registrations and new contacts over the last N days (default 14) so trends can be analyzed.",
+  inputSchema: {
+    days: z3.number().int().min(1).max(180).default(14).describe("Number of days to look back."),
+    session_label: z3.string().trim().min(1).default("fall-2026")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ days, session_label }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1e3).toISOString();
+    const [regs, members] = await Promise.all([
+      supabase.from("session_registrations").select("created_at, location, payment_status").eq("session_label", session_label).gte("created_at", since),
+      supabase.from("members").select("created_at, location, status").gte("created_at", since)
+    ]);
+    if (regs.error || members.error) {
+      const message = regs.error?.message ?? members.error?.message ?? "Query failed";
+      return { content: [{ type: "text", text: `${message} (admin access required)` }], isError: true };
+    }
+    const byDay = {};
+    for (let i = days - 1; i >= 0; i--) {
+      const key = new Date(Date.now() - i * 864e5).toISOString().slice(0, 10);
+      byDay[key] = { registrations: 0, new_contacts: 0 };
+    }
+    for (const r of regs.data ?? []) {
+      if (isExcludedLocation(r.location)) continue;
+      const key = String(r.created_at).slice(0, 10);
+      if (byDay[key]) byDay[key].registrations += 1;
+    }
+    for (const m of members.data ?? []) {
+      if (isExcludedLocation(m.location)) continue;
+      const key = String(m.created_at).slice(0, 10);
+      if (byDay[key]) byDay[key].new_contacts += 1;
+    }
+    const result = {
+      days,
+      session_label,
+      totals: {
+        registrations: Object.values(byDay).reduce((a, d) => a + d.registrations, 0),
+        new_contacts: Object.values(byDay).reduce((a, d) => a + d.new_contacts, 0)
+      },
+      by_day: byDay
+    };
+    return {
+      content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      structuredContent: result
+    };
+  }
+});
+
+// src/lib/mcp/tools/get-prospect-pipeline.ts
+import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { z as z4 } from "npm:zod@^3.25.76";
+var get_prospect_pipeline_default = defineTool5({
+  name: "get_prospect_pipeline",
+  title: "Prospect pipeline",
+  description: "Counts of interested-but-not-registered contacts (prospects, open-house RSVPs, try-a-session tags) broken down by location, plus opt-out counts.",
+  inputSchema: {
+    session_label: z4.string().trim().min(1).default("fall-2026")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ session_label }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
+    const [regs, members, prospects] = await Promise.all([
+      supabase.from("session_registrations").select("email").eq("session_label", session_label),
+      supabase.from("members").select("email, location, status, crm_tags, archived_at"),
+      supabase.from("prospects").select("email, locations, status")
+    ]);
+    if (regs.error || members.error || prospects.error) {
+      const message = regs.error?.message ?? members.error?.message ?? prospects.error?.message ?? "Query failed";
+      return { content: [{ type: "text", text: `${message} (admin access required)` }], isError: true };
+    }
+    const registered = new Set((regs.data ?? []).map((r) => (r.email ?? "").toLowerCase()).filter(Boolean));
+    const interested = /* @__PURE__ */ new Map();
+    let optedOut = 0;
+    let archived = 0;
+    for (const m of members.data ?? []) {
+      const email = (m.email ?? "").toLowerCase();
+      const tags = m.crm_tags ?? [];
+      if (tags.includes("no-email") || tags.includes("unsubscribed")) optedOut += 1;
+      if (m.archived_at) {
+        archived += 1;
+        continue;
+      }
+      if (!email || registered.has(email)) continue;
+      const isInterested = tags.includes("open-house-2026") || tags.includes("try-a-session") || m.status === "PROSPECT";
+      if (isInterested && !isExcludedLocation(m.location)) {
+        interested.set(email, (m.location ?? "unknown").trim() || "unknown");
+      }
+    }
+    for (const p of prospects.data ?? []) {
+      const email = (p.email ?? "").toLowerCase();
+      const loc = (p.locations ?? [])[0] ?? "unknown";
+      if (!email || registered.has(email) || isExcludedLocation(loc)) continue;
+      if (!interested.has(email)) interested.set(email, loc);
+    }
+    const byLocation = {};
+    for (const loc of interested.values()) byLocation[loc] = (byLocation[loc] ?? 0) + 1;
+    const result = {
+      session_label,
+      interested_not_registered: interested.size,
+      by_location: byLocation,
+      opted_out_contacts: optedOut,
+      archived_contacts: archived
+    };
+    return {
+      content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      structuredContent: result
+    };
+  }
+});
+
 // src/lib/mcp/index.ts
 var projectRef = "vbbfpzszmtwhydhpgtgj";
 var mcp_default = defineMcp({
   name: "club-choir-mcp",
   title: "Club Choir",
-  version: "0.2.0",
-  instructions: "Tools for Club Choir \u2014 a no-audition community choir in the Montreal area. Use these tools to answer questions about choir locations, schedules, and venues.",
+  version: "0.3.0",
+  instructions: "Tools for Club Choir \u2014 a no-audition community choir in the Montreal area. Public tools answer questions about choir locations, schedules and venues. Admin tools (membership overview, signup trend, prospect pipeline) return CRM and dashboard numbers and require an admin account; they exclude Arundel.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated"
   }),
-  tools: [list_choir_locations_default, get_choir_location_default]
+  tools: [
+    list_choir_locations_default,
+    get_choir_location_default,
+    get_membership_overview_default,
+    get_signup_trend_default,
+    get_prospect_pipeline_default
+  ]
 });
 
 // lovable-mcp-supabase-entry.ts
