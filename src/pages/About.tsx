@@ -98,7 +98,7 @@ const About = () => {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
               {t("about.stat.members")}
             </p>
-            <p className="font-heading font-bold text-3xl text-foreground">390</p>
+            <p className="font-heading font-bold text-3xl text-foreground">{stats.singers}+</p>
             <p className="text-xs text-muted-foreground">{t("about.stat.membersSub")}</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5">
