@@ -141,8 +141,8 @@ const Dashboard = () => {
     const inPrev = (d: string) => { const t = new Date(d); return t >= prevStart && t < prevEnd; };
     const prevCount =
       uniqueRegs.filter((x) => inPrev(x.created_at)).length +
-      prospects.filter((x) => inPrev(x.created_at)).length +
-      rsvps.filter((x) => inPrev(x.created_at)).length;
+      includedProspects.filter((x) => inPrev(x.created_at)).length +
+      includedRsvps.filter((x) => inPrev(x.created_at)).length;
     const delta = prevCount === 0 ? null : Math.round(((newInRange - prevCount) / prevCount) * 100);
 
     // Per-location
@@ -154,9 +154,9 @@ const Dashboard = () => {
         Registered: regsL.length,
         Paid: regsL.filter((x) => x.payment_status === "paid").length,
         Interested: new Set([
-          ...rsvps.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
-          ...tryRegs.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
-          ...prospects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l)).map((x) => norm(x.email)),
+          ...includedRsvps.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+          ...includedTryRegs.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+          ...includedProspects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l)).map((x) => norm(x.email)),
         ].filter((e) => interested.has(e))).size,
       };
     });
@@ -170,8 +170,8 @@ const Dashboard = () => {
     // Activity feed
     const feed = [
       ...uniqueRegs.map((x) => ({ kind: "Registered", who: `${x.first_name} ${x.last_name}`, where: x.location, at: x.created_at, tone: "blue" })),
-      ...rsvps.map((x) => ({ kind: "Open house RSVP", who: `${x.first_name || ""} ${x.last_name || ""}`.trim() || x.email, where: x.location, at: x.created_at, tone: "lime" })),
-      ...prospects.map((x) => ({ kind: "Interest signup", who: `${x.first_name} ${x.last_name || ""}`.trim(), where: (x.locations || [])[0] || "—", at: x.created_at, tone: "amber" })),
+      ...includedRsvps.map((x) => ({ kind: "Open house RSVP", who: `${x.first_name || ""} ${x.last_name || ""}`.trim() || x.email, where: x.location, at: x.created_at, tone: "lime" })),
+      ...includedProspects.map((x) => ({ kind: "Interest signup", who: `${x.first_name} ${x.last_name || ""}`.trim(), where: (x.locations || [])[0] || "—", at: x.created_at, tone: "amber" })),
     ].sort((a, b) => +new Date(b.at) - +new Date(a.at)).slice(0, 15);
 
     // New signups within the selected range (detail drill-down)
@@ -183,21 +183,19 @@ const Dashboard = () => {
         kind: "Registration", who: `${x.first_name} ${x.last_name}`.trim(), email: x.email,
         where: x.location || "—", at: x.created_at, extra: x.payment_status === "paid" ? "Paid" : "Unpaid",
       })),
-      ...rsvps.filter((x) => inRange(x.created_at)).map((x) => ({
+      ...includedRsvps.filter((x) => inRange(x.created_at)).map((x) => ({
         kind: "Open house RSVP", who: `${x.first_name || ""} ${x.last_name || ""}`.trim() || x.email, email: x.email,
         where: x.location || "—", at: x.created_at, extra: "",
       })),
-      ...prospects.filter((x) => inRange(x.created_at)).map((x) => ({
+      ...includedProspects.filter((x) => inRange(x.created_at)).map((x) => ({
         kind: "Interest signup", who: `${x.first_name} ${x.last_name || ""}`.trim(), email: x.email,
         where: (x.locations || [])[0] || "—", at: x.created_at, extra: "",
       })),
     ].sort((a, b) => +new Date(b.at) - +new Date(a.at));
 
-    const recentByLoc = [...LOCATIONS, "Other"].map((loc) => {
+    const recentByLoc = [...LOCATIONS].map((loc) => {
       const l = loc.toLowerCase();
-      const rows = loc === "Other"
-        ? recent.filter((x) => !LOCATIONS.some((v) => v.toLowerCase() === (x.where || "").toLowerCase()))
-        : recent.filter((x) => (x.where || "").toLowerCase() === l);
+      const rows = recent.filter((x) => (x.where || "").toLowerCase() === l);
       return {
         location: loc,
         total: rows.length,
