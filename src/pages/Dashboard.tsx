@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
+const EXCLUDED_LOCATIONS = new Set(["arundel"]);
+const isExcludedLocation = (location?: string | null) => EXCLUDED_LOCATIONS.has((location || "").trim().toLowerCase());
 
 interface Reg {
   email: string; location: string; payment_status: string; created_at: string;
