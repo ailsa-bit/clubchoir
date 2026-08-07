@@ -256,7 +256,7 @@ const Dashboard = () => {
             tone={data.delta !== null && data.delta < 0 ? "warn" : "good"}
             onClick={() => setShowNew((v) => !v)} active={showNew} />
           <StatCard icon={CalendarCheck} label="Interested Fall 2026" value={data.interestedCount} sub="open house · try a session · prospects" to="/crm" />
-          <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
+          <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at && !isExcludedLocation(m.location)).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
         </div>
 
         {showNew && (
