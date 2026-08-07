@@ -284,8 +284,10 @@ const Campaigns = () => {
             <DialogTitle>Send this campaign?</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">
-            This will email <strong>{confirmSegment ? Math.max(0, (counts[confirmSegment] ?? 0) - sentCounts[confirmSegment]) : 0}</strong> people in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment. Recipients already sent will be skipped.
+            This will email up to <strong>{confirmSegment ? (audienceFor(confirmSegment) ?? 0) : 0}</strong> people in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
+            {confirmSegment && locFilter[confirmSegment] !== "all" ? <> — <strong>{locFilter[confirmSegment]}</strong> only</> : " — all locations"}. Anyone who already received this campaign will be skipped.
           </p>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmSegment(null)}>Cancel</Button>
             <Button onClick={() => confirmSegment && handleSend(confirmSegment)}>
