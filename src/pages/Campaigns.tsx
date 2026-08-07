@@ -108,7 +108,7 @@ const Campaigns = () => {
     setBusy(seg);
     try {
       const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg, previewOnly: true },
+        body: { segment: seg, previewOnly: true, location: locFilter[seg] },
       });
       if (error) throw error;
       setPreviewSubject(data.subject);
@@ -126,7 +126,7 @@ const Campaigns = () => {
     setBusy(seg);
     try {
       const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg, testEmail: userEmail },
+        body: { segment: seg, testEmail: userEmail, location: locFilter[seg] },
       });
       if (error) throw error;
       toast({ title: "Test sent!", description: `Check ${userEmail}` });
@@ -142,7 +142,7 @@ const Campaigns = () => {
     setConfirmSegment(null);
     try {
       const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg },
+        body: { segment: seg, location: locFilter[seg] },
       });
       if (error) throw error;
       toast({
@@ -156,6 +156,7 @@ const Campaigns = () => {
       setSending(null);
     }
   };
+
 
   if (adminLoading) return <div className="py-20 text-center text-muted-foreground">Loading…</div>;
   if (!isAdmin) {
