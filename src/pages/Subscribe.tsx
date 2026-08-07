@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Mail, Sparkles, Calendar, Music, PartyPopper, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
+import { getAttribution } from "@/lib/attribution";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import PageMeta from "@/components/PageMeta";
@@ -75,6 +76,7 @@ const Subscribe = () => {
         last_name: result.data.last_name || null,
         email: result.data.email.toLowerCase(),
         locations: result.data.locations,
+        ...getAttribution(),
       };
 
       const { error } = await supabase.from("prospects").insert(payload);

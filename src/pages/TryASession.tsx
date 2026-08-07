@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowLeft, Calendar, MapPin, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getAttribution } from "@/lib/attribution";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -133,6 +134,7 @@ const TryASession = () => {
             email: data.email,
             location: cityName,
             notes: data.message || "",
+            attribution: getAttribution(),
             session_label: "try-a-session",
           },
         });

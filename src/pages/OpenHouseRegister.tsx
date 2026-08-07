@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowLeft, Calendar, MapPin, Send, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { getAttribution } from "@/lib/attribution";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -134,6 +135,7 @@ const OpenHouseRegister = () => {
             email: data.email,
             location: cityName,
             notes: data.message || "",
+            attribution: getAttribution(),
           },
         });
       } catch (recErr) {
