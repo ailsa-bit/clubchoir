@@ -11,6 +11,22 @@ const VALID_LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
 const DEFAULT_SESSION_LABEL = "open-house-2026";
 const ALLOWED_LABELS = new Set(["open-house-2026", "try-a-session"]);
 
+
+// Optional first-touch marketing attribution captured in the browser (see src/lib/attribution.ts).
+// Never required — flows must work when it is absent.
+const ATTR_KEYS = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","landing_page","referrer"] as const;
+function pickAttribution(raw: any): Record<string, string | null> {
+  const out: Record<string, string | null> = {};
+  const a = raw && typeof raw === "object" ? raw : {};
+  for (const k of ATTR_KEYS) {
+    const v = a[k];
+    out[k] = typeof v === "string" && v.trim() ? v.trim().slice(0, 300) : null;
+  }
+  const ts = a.attribution_captured_at;
+  out.attribution_captured_at = typeof ts === "string" && !isNaN(Date.parse(ts)) ? new Date(ts).toISOString() : null;
+  return out;
+}
+
 const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -25,6 +41,7 @@ const handler = async (req: Request): Promise<Response> => {
     const notes = String(body.notes || body.message || "").trim().slice(0, 2000);
     const requestedLabel = String(body.session_label || "").trim();
     const SESSION_LABEL = ALLOWED_LABELS.has(requestedLabel) ? requestedLabel : DEFAULT_SESSION_LABEL;
+    const attribution = pickAttribution(body.attribution);
 
     if (!first_name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return new Response(JSON.stringify({ error: "Missing name or valid email." }), {
@@ -80,6 +97,7 @@ const handler = async (req: Request): Promise<Response> => {
         email,
         notes: notes || null,
         payment_status: "free",
+        ...attribution,
       });
       if (regErr) {
         console.error("open house reg insert err:", regErr);

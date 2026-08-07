@@ -3,6 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
+import { getAttribution } from "@/lib/attribution";
 
 const FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/record-open-house-rsvp`;
 
@@ -23,7 +24,7 @@ const RsvpConfirm = () => {
             "Content-Type": "application/json",
             "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
           },
-          body: JSON.stringify({ token, location }),
+          body: JSON.stringify({ token, location, attribution: getAttribution() }),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data?.error || "Something went wrong");

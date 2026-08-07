@@ -18,6 +18,22 @@ const SESSION_DETAILS: Record<string, { en: string; fr: string }> = {
   "Pointe-Claire": { en: "Thursdays, Sept 10 – Dec 10, 2026", fr: "Jeudis, 10 sept. – 10 déc. 2026" },
 };
 
+
+// Optional first-touch marketing attribution captured in the browser (see src/lib/attribution.ts).
+// Never required — flows must work when it is absent.
+const ATTR_KEYS = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","landing_page","referrer"] as const;
+function pickAttribution(raw: any): Record<string, string | null> {
+  const out: Record<string, string | null> = {};
+  const a = raw && typeof raw === "object" ? raw : {};
+  for (const k of ATTR_KEYS) {
+    const v = a[k];
+    out[k] = typeof v === "string" && v.trim() ? v.trim().slice(0, 300) : null;
+  }
+  const ts = a.attribution_captured_at;
+  out.attribution_captured_at = typeof ts === "string" && !isNaN(Date.parse(ts)) ? new Date(ts).toISOString() : null;
+  return out;
+}
+
 const escapeHtml = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -34,6 +50,7 @@ const handler = async (req: Request): Promise<Response> => {
     const location = String(body.location || "").trim();
     const notes = String(body.notes || "").trim().slice(0, 2000);
     const lang = body.language === "fr" ? "fr" : "en";
+    const attribution = pickAttribution(body.attribution);
 
     if (!first_name || !last_name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return new Response(JSON.stringify({ error: "Please provide first name, last name, and a valid email." }), {
@@ -128,6 +145,7 @@ const handler = async (req: Request): Promise<Response> => {
         email,
         notes: notes || null,
         is_returning_member: isReturning,
+        ...attribution,
       });
 
     if (regError) {

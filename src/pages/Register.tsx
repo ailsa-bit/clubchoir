@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle2, AlertCircle, Calendar, MapPin } from "lucide-r
 import PageMeta from "@/components/PageMeta";
 import ChoirFaq from "@/components/ChoirFaq";
 import { supabase } from "@/integrations/supabase/client";
+import { getAttribution } from "@/lib/attribution";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -124,6 +125,7 @@ const Register = () => {
           location,
           notes: notes.trim(),
           language,
+          attribution: getAttribution(),
         },
       });
       if (error) throw error;
