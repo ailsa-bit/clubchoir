@@ -92,10 +92,17 @@ const Dashboard = () => {
 
   const data = useMemo(() => {
     const norm = (e?: string | null) => (e || "").trim().toLowerCase();
+    const included = <T extends { location?: string | null }>(rows: T[]) => rows.filter((x) => !isExcludedLocation(x.location));
+    const includedProspects = prospects.filter((x) => !x.locations.some(isExcludedLocation));
+
+    // Exclude legacy locations from dashboard metrics while preserving their records in the database.
+    const includedRegs = included(regs);
+    const includedTryRegs = included(tryRegs);
+    const includedRsvps = included(rsvps);
 
     // Dedupe registrations by email (keep paid over unpaid)
     const regByEmail = new Map<string, Reg>();
-    regs.forEach((x) => {
+    includedRegs.forEach((x) => {
       const k = norm(x.email);
       const prev = regByEmail.get(k);
       if (!prev || (prev.payment_status !== "paid" && x.payment_status === "paid")) regByEmail.set(k, x);
