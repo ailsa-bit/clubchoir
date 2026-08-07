@@ -106,7 +106,7 @@ const About = () => {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
               {t("about.stat.locations")}
             </p>
-            <p className="font-heading font-bold text-3xl text-foreground">5</p>
+            <p className="font-heading font-bold text-3xl text-foreground">{stats.locations}</p>
             <p className="text-xs text-muted-foreground">{t("about.stat.locationsSub")}</p>
           </div>
         </div>
