@@ -175,15 +175,17 @@ const Campaigns = () => {
         <div className="text-center mb-8">
           <Mail className="w-10 h-10 text-primary mx-auto mb-3" />
           <h1 className="font-heading font-bold text-3xl mb-2">Fall 2026 Email Campaigns</h1>
-          <p className="text-muted-foreground">Three bilingual follow-ups after the open houses.</p>
+          <p className="text-muted-foreground">Three bilingual follow-ups after the open houses — send to everyone or one location at a time.</p>
 
         </div>
 
         <div className="space-y-4">
           {SEGMENTS.map((s) => {
-            const count = counts[s.key];
+            const total = counts[s.key];
             const sent = sentCounts[s.key];
-            const remaining = count === null ? null : Math.max(0, count - sent);
+            const audience = audienceFor(s.key);
+            const filter = locFilter[s.key];
+            const buckets = byLocation[s.key] || {};
             return (
               <div key={s.key} className={`rounded-2xl border p-6 ${s.color}`}>
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
@@ -194,7 +196,7 @@ const Campaigns = () => {
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1.5 text-foreground">
                       <Users className="w-4 h-4" />
-                      {count === null ? "…" : `${count} recipients`}
+                      {total === null ? "…" : `${total} total`}
                     </div>
                     {sent > 0 && (
                       <div className="flex items-center gap-1.5 text-green-700">
@@ -203,6 +205,28 @@ const Campaigns = () => {
                       </div>
                     )}
                   </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {(["all", ...LOCATIONS, "unknown"] as LocationFilter[]).map((loc) => {
+                    const n = loc === "all" ? (total ?? 0) : (buckets[loc] ?? 0);
+                    if (loc === "unknown" && n === 0) return null;
+                    const active = filter === loc;
+                    return (
+                      <button
+                        key={loc}
+                        type="button"
+                        onClick={() => setLocFilter((f) => ({ ...f, [s.key]: loc }))}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+                          active
+                            ? "bg-foreground text-background border-foreground"
+                            : "bg-white/70 text-foreground border-border hover:bg-white"
+                        }`}
+                      >
+                        {loc === "all" ? "All locations" : loc === "unknown" ? "No location" : loc} ({n})
+                      </button>
+                    );
+                  })}
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-4">
@@ -215,13 +239,13 @@ const Campaigns = () => {
                   <Button
                     size="sm"
                     onClick={() => setConfirmSegment(s.key)}
-                    disabled={sending === s.key || !remaining}
+                    disabled={sending === s.key || !audience}
                     className="bg-primary text-primary-foreground"
                   >
                     {sending === s.key ? (
                       <><Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> Sending…</>
                     ) : (
-                      <><Send className="w-4 h-4 mr-1.5" /> Send to {remaining ?? "…"}</>
+                      <><Send className="w-4 h-4 mr-1.5" /> Send to {audience ?? "…"} {filter === "all" ? "(all)" : filter === "unknown" ? "(no location)" : `(${filter})`}</>
                     )}
                   </Button>
                 </div>
@@ -229,6 +253,7 @@ const Campaigns = () => {
             );
           })}
         </div>
+
 
         <div className="mt-8 p-4 rounded-xl bg-muted/40 border border-border text-sm text-muted-foreground">
           <div className="flex gap-2">
