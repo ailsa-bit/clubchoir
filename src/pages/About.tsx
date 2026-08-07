@@ -28,7 +28,7 @@ const About = () => {
     <div className="py-12 px-4">
       <PageMeta
         title="Our Story – Club Choir | Founder Ailsa"
-        description="Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to a regional family of 390 singers — sing together, laugh together, learn together."
+        description="Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to hundreds of adult singers across four Quebec locations — sing together, laugh together, learn together."
         path="/about"
       />
 
