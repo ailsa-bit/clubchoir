@@ -10,71 +10,33 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees" | "mtl-openhouse-tonight" | "hudson-openhouse-tonight" | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering";
 
 const EMPTY_COUNTS = {
-  paid: 0, registered: 0, everyone: 0,
-  "herd-reminder": 0, "herd-attendees": 0,
-  "mtl-openhouse-tonight": 0, "hudson-openhouse-tonight": 0,
-  "sthubert-openhouse-tonight": 0, "pointeclaire-openhouse-tonight": 0,
+  "fall-paid": 0, "fall-unpaid": 0, "fall-considering": 0,
 } as Record<Segment, number>;
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
-    key: "paid",
-    title: "Paid & Confirmed",
-    description: "Thank-you note + open house reminder + bring-a-friend nudge for members already registered & paid for Fall 2026.",
+    key: "fall-paid",
+    title: "Registered & Paid",
+    description: "Confirmation that registration and payment were received, plus a sign-in button for the choir schedule. Bilingual EN/FR.",
     color: "bg-green-50 border-green-200",
   },
   {
-    key: "registered",
-    title: "Registered, Not Yet Paid",
-    description: "Gentle payment reminder for anyone signed up for a session, try-out, or open house who hasn't paid yet.",
+    key: "fall-unpaid",
+    title: "Registered — Payment Outstanding",
+    description: "Friendly nudge with full Interac e-Transfer details ($280) for anyone registered for the fall session, a try-a-session, or an open house who hasn't paid. Bilingual EN/FR.",
     color: "bg-yellow-50 border-yellow-200",
   },
   {
-    key: "everyone",
-    title: "Everyone Else",
-    description: "Warm invitation to open houses and Fall 2026 registration for the rest of the community.",
+    key: "fall-considering",
+    title: "Still Considering Joining",
+    description: "Warm invitation with a Register button for every other contact — prospects, open house RSVPs and past members with no fall registration. Bilingual EN/FR.",
     color: "bg-blue-50 border-blue-200",
   },
-  {
-    key: "herd-reminder",
-    title: "Sing for the Herd — Reminder (EN/FR)",
-    description: "Event reminder for Sunday, August 2 at A Horse Tale Rescue. Sent to all CRM contacts except anyone who already paid for a Sing for the Herd ticket (and no-email / archived contacts).",
-    color: "bg-amber-50 border-amber-200",
-  },
-  {
-    key: "herd-attendees",
-    title: "Sing for the Herd — Day-of Confirmation (EN/FR)",
-    description: "Rain-or-shine confirmation with today's schedule, address and chair reminder. Sent only to people who reserved or purchased Sing for the Herd tickets.",
-    color: "bg-emerald-50 border-emerald-200",
-  },
-  {
-    key: "mtl-openhouse-tonight",
-    title: "Montreal Open House — Tonight (EN/FR)",
-    description: "Reminder that the Montreal open house starts tonight at 7 PM at Kensington Presbyterian, 6225 Godfrey. Sent to all Montreal contacts — members, fall/try-a-session registrants, open house RSVPs and prospects.",
-    color: "bg-pink-50 border-pink-200",
-  },
-  {
-    key: "hudson-openhouse-tonight",
-    title: "Hudson Open House — Tonight (EN/FR)",
-    description: "Same reminder for Hudson (Tuesday) — 7 PM at The Hudson Legion, 57 Beach Road. Sent to all Hudson contacts.",
-    color: "bg-pink-50 border-pink-200",
-  },
-  {
-    key: "sthubert-openhouse-tonight",
-    title: "Saint-Hubert Open House — Tonight (EN/FR)",
-    description: "Same reminder for Saint-Hubert (Wednesday) — 7 PM at St-Gabriel Catholic Church, 5070 Rue Gilbert. Sent to all Saint-Hubert contacts.",
-    color: "bg-pink-50 border-pink-200",
-  },
-  {
-    key: "pointeclaire-openhouse-tonight",
-    title: "Pointe-Claire Open House — Tonight (EN/FR)",
-    description: "Same reminder for Pointe-Claire (Thursday) — 7 PM at Valois United Church, 70 Av. Belmont. Sent to all Pointe-Claire contacts.",
-    color: "bg-pink-50 border-pink-200",
-  },
 ];
+
 
 const Campaigns = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -193,7 +155,8 @@ const Campaigns = () => {
         <div className="text-center mb-8">
           <Mail className="w-10 h-10 text-primary mx-auto mb-3" />
           <h1 className="font-heading font-bold text-3xl mb-2">Fall 2026 Email Campaigns</h1>
-          <p className="text-muted-foreground">Three targeted emails with one-click open house RSVPs.</p>
+          <p className="text-muted-foreground">Three bilingual follow-ups after the open houses.</p>
+
         </div>
 
         <div className="space-y-4">
@@ -251,7 +214,7 @@ const Campaigns = () => {
           <div className="flex gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <div>
-              Recipients who've already received this campaign are automatically skipped (safe to click Send again). Each email includes one-click RSVP buttons that record in the CRM under Open House sign-ups.
+              Recipients who've already received this campaign are automatically skipped (safe to click Send again). Contacts tagged <strong>no-email</strong> are never included, and each person appears in only one segment.
             </div>
           </div>
         </div>

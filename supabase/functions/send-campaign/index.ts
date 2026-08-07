@@ -8,53 +8,14 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const SIGNING_SECRET = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SITE_URL = "https://clubchoir.ca";
-const CAMPAIGN_KEY = "fall-2026-openhouse-v1";
 
-type Segment =
-  | "paid" | "registered" | "everyone" | "herd-reminder" | "herd-attendees"
-  | "mtl-openhouse-tonight" | "hudson-openhouse-tonight"
-  | "sthubert-openhouse-tonight" | "pointeclaire-openhouse-tonight";
-const HERD_CAMPAIGN_KEY = "sing-for-the-herd-reminder-v1";
-const HERD_TODAY_CAMPAIGN_KEY = "sing-for-the-herd-day-of-v1";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering";
 
-interface TonightConfig {
-  location: string;
-  labelEn: string;
-  labelFrPhrase: string;
-  venueEn: string;
-  addressEn: string;
-  venueFr: string;
-  addressFr: string;
-  campaignKey: string;
-}
-
-const TONIGHT_CONFIGS: Record<string, TonightConfig> = {
-  "mtl-openhouse-tonight": {
-    location: "Montreal", labelEn: "Montreal", labelFrPhrase: "de Montr\u00e9al",
-    venueEn: "Kensington Presbyterian Church", addressEn: "6225 Av. Godfrey, Montr\u00e9al",
-    venueFr: "\u00c9glise Kensington Presbyterian", addressFr: "6225, av. Godfrey, Montr\u00e9al",
-    campaignKey: "montreal-openhouse-tonight-v1",
-  },
-  "hudson-openhouse-tonight": {
-    location: "Hudson", labelEn: "Hudson", labelFrPhrase: "de Hudson",
-    venueEn: "The Hudson Legion", addressEn: "57 Beach Road, Hudson",
-    venueFr: "The Hudson Legion", addressFr: "57 Beach Road, Hudson",
-    campaignKey: "hudson-openhouse-tonight-v1",
-  },
-  "sthubert-openhouse-tonight": {
-    location: "Saint-Hubert", labelEn: "Saint-Hubert", labelFrPhrase: "de Saint-Hubert",
-    venueEn: "St-Gabriel Catholic Church", addressEn: "5070 Rue Gilbert, Saint-Hubert",
-    venueFr: "\u00c9glise catholique St-Gabriel", addressFr: "5070, rue Gilbert, Saint-Hubert",
-    campaignKey: "sthubert-openhouse-tonight-v1",
-  },
-  "pointeclaire-openhouse-tonight": {
-    location: "Pointe-Claire", labelEn: "Pointe-Claire", labelFrPhrase: "de Pointe-Claire",
-    venueEn: "Valois United Church", addressEn: "70 Av. Belmont, Pointe-Claire",
-    venueFr: "\u00c9glise Valois United", addressFr: "70, av. Belmont, Pointe-Claire",
-    campaignKey: "pointeclaire-openhouse-tonight-v1",
-  },
+const CAMPAIGN_KEYS: Record<Segment, string> = {
+  "fall-paid": "fall-2026-confirmed-v1",
+  "fall-unpaid": "fall-2026-payment-outstanding-v1",
+  "fall-considering": "fall-2026-still-considering-v1",
 };
 
 interface Recipient {
@@ -63,385 +24,151 @@ interface Recipient {
   last_name: string;
 }
 
-const LOCATIONS = [
-  { name: "Montreal",      date: "Monday, August 3, 2026",    dateFr: "Lundi 3 août 2026",    time: "7:00 PM", venue: "Kensington Presbyterian Church, 6225 Av. Godfrey, Montréal", session: "Mondays 7:00–8:30 PM · Sept 7 – Dec 7, 2026", sessionFr: "Lundis 19h00–20h30 · 7 sept. – 7 déc. 2026" },
-  { name: "Hudson",        date: "Tuesday, August 4, 2026",   dateFr: "Mardi 4 août 2026",    time: "7:00 PM", venue: "The Hudson Legion, 57 Beach Road, Hudson",                       session: "Tuesdays 7:00–8:30 PM · Sept 8 – Dec 8, 2026",  sessionFr: "Mardis 19h00–20h30 · 8 sept. – 8 déc. 2026" },
-  { name: "Saint-Hubert",  date: "Wednesday, August 5, 2026", dateFr: "Mercredi 5 août 2026", time: "7:00 PM", venue: "St-Gabriel Catholic Church, 5070 Rue Gilbert, Saint-Hubert",   session: "Wednesdays 7:00–8:30 PM · Sept 9 – Dec 9, 2026", sessionFr: "Mercredis 19h00–20h30 · 9 sept. – 9 déc. 2026" },
-  { name: "Pointe-Claire", date: "Thursday, August 6, 2026",  dateFr: "Jeudi 6 août 2026",    time: "7:00 PM", venue: "Valois United Church, 70 Av. Belmont, Pointe-Claire",          session: "Thursdays 7:00–8:30 PM · Sept 10 – Dec 10, 2026", sessionFr: "Jeudis 19h00–20h30 · 10 sept. – 10 déc. 2026" },
-];
-
-function b64urlEncode(s: string): string {
-  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
-
-async function hmac(msg: string): Promise<string> {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(SIGNING_SECRET),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"],
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(msg));
-  return btoa(String.fromCharCode(...new Uint8Array(sig)))
-    .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
-
-async function makeToken(r: Recipient, campaign: string): Promise<string> {
-  const payload = b64urlEncode(JSON.stringify({
-    email: r.email.toLowerCase(),
-    first_name: r.first_name,
-    last_name: r.last_name,
-    campaign,
-    ts: Date.now(),
-  }));
-  const sig = await hmac(payload);
-  return `${payload}.${sig}`;
-}
-
 function esc(s: string): string {
   return String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 }
 
-async function renderEmail(segment: Segment, r: Recipient): Promise<{ subject: string; html: string }> {
-  const first = esc(r.first_name || "there");
-  const token = await makeToken(r, CAMPAIGN_KEY);
+// ---------- shared layout ----------
 
-  const rsvpButtons = LOCATIONS.map((l) => {
-    const url = `${SITE_URL}/rsvp?token=${token}&location=${encodeURIComponent(l.name)}`;
-    return `
-      <tr><td style="padding:6px 0;">
-        <a href="${url}" style="display:block;background:#f472b6;color:#fff;text-decoration:none;font-weight:700;padding:12px 16px;border-radius:12px;text-align:center;font-family:Nunito,Arial,sans-serif;">
-          I'll be there — ${esc(l.name)} · ${esc(l.date)}
-        </a>
-      </td></tr>`;
-  }).join("");
-
-  const locationCards = LOCATIONS.map((l) => `
-    <div style="border:1px solid #eee;border-radius:12px;padding:14px 16px;margin:10px 0;">
-      <div style="font-weight:800;font-size:16px;color:#111;">${esc(l.name)}</div>
-      <div style="color:#555;font-size:14px;margin-top:2px;"><strong>Open House:</strong> ${esc(l.date)} at ${esc(l.time)}</div>
-      <div style="color:#555;font-size:14px;">${esc(l.venue)}</div>
-      <div style="color:#777;font-size:13px;margin-top:6px;"><strong>Fall session:</strong> ${esc(l.session)}</div>
-    </div>`).join("");
-
-  const bringAFriend = `
-    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;">
-      <strong style="color:#9a3412;">Bring a friend 💛</strong><br/>
-      <span style="color:#7c2d12;font-size:14px;">Know someone who'd love to sing? Forward this email or bring them along — friends, neighbours, or anyone curious is welcome at the open house. No experience needed. No audition. Just show up and sing.</span>
-    </div>`;
-
-  
-  if (segment === "herd-reminder") return renderHerdEmail(r);
-  if (segment === "herd-attendees") return renderHerdTodayEmail(r);
-  if (TONIGHT_CONFIGS[segment]) return renderTonightEmail(r, TONIGHT_CONFIGS[segment]);
-
-  let opener = "";
-  let subject = "";
-  if (segment === "paid") {
-    subject = "You're all set for Fall 2026 — open house reminder 🎶";
-    opener = `
-      <p>Hi ${first},</p>
-      <p><strong>Thank you</strong> for registering and paying for the Fall 2026 session — you're officially on the list, and we can't wait to sing with you! 🎉</p>
-      <p>Before rehearsals begin, we have four <strong>free open houses</strong> in early August — pop by any location for a taste of what's ahead, meet new choir friends, and sing a song or two together.</p>`;
-  } else if (segment === "registered") {
-    subject = "A gentle reminder — send your payment to lock in your Fall 2026 spot";
-    opener = `
-      <p>Hi ${first},</p>
-      <p>So happy you've signed up for the Fall 2026 season! Just a <strong>friendly nudge</strong>: your spot is confirmed once we receive your payment. Here are the quick Interac e-Transfer details:</p>
-      <div style="background:#fff5ec;border-left:4px solid #f97316;border-radius:8px;padding:14px 18px;margin:12px 0;">
-        <p style="margin:4px 0;font-size:15px;"><strong>Send to:</strong> ailsa@clubchoir.ca</p>
-        <p style="margin:4px 0;font-size:15px;"><strong>Amount:</strong> $280.00 CAD</p>
-        <p style="margin:4px 0;font-size:15px;"><strong>Security question:</strong> What is the name of the choir?</p>
-        <p style="margin:4px 0;font-size:15px;"><strong>Answer:</strong> clubchoir <em>(one word, all lowercase)</em></p>
-      </div>
-      <p>If you haven't decided yet whether you're joining — that's okay! We hope to see you at one of our <strong>free open houses</strong> below. It's the perfect no-commitment way to meet the choir before the session begins.</p>`;
-  } else {
-    subject = "You're invited — Club Choir Fall 2026 open houses 🎤";
-    opener = `
-      <p>Hi ${first},</p>
-      <p>We're gearing up for our <strong>Fall 2026 season</strong> and we'd love to see you back! Whether you sang with us before or you're just curious, we're hosting four <strong>free open houses</strong> in early August — no commitment, just come and sing.</p>
-      <p>Fall registration is open now — <a href="${SITE_URL}/fall-registration" style="color:#f472b6;text-decoration:underline;">register here for the full 14-week session</a>.</p>
-      <div style="text-align:center;margin:16px 0;">
-        <a href="${SITE_URL}/fall-registration" style="display:inline-block;background:#f472b6;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold;">Register for Fall 2026</a>
-      </div>
-      <p>Need payment instructions? Simply register and the full instructions will be sent to you during the registration process.</p>`;
-  }
-
-  const memberLine = segment === "paid" ? `
-    <p style="color:#555;font-size:14px;">Ready to start prepping? Log in to the <a href="${SITE_URL}/login">members' area</a> to see this session's songs and rehearsal tracks.</p>` : "";
-
-  const html = `
-  <div style="font-family:Nunito,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;background:#fff;">
-    <div style="text-align:center;margin-bottom:20px;">
-      <h1 style="margin:0;color:#f472b6;font-family:Quicksand,Arial,sans-serif;font-size:26px;">Club Choir</h1>
-    </div>
-
-    ${opener}
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;color:#111;font-size:20px;margin-top:24px;">✨ Open Houses (Free)</h2>
-    ${locationCards}
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;color:#111;font-size:20px;margin-top:24px;">Let us know you're coming 👇</h2>
-    <p style="color:#555;font-size:14px;">Tap the button for the location you'll attend — it takes one click and helps us plan the space.</p>
-    <table role="presentation" style="width:100%;border-collapse:collapse;">${rsvpButtons}</table>
-
-    ${bringAFriend}
-
-    ${memberLine}
-
-    <p style="color:#555;font-size:14px;">Questions? Just reply or write to <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a>.</p>
-    <p style="color:#555;font-size:14px;">With love,<br/>Ailsa &amp; the Club Choir team</p>
-
-    <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
-    <p style="color:#999;font-size:11px;text-align:center;">
-      You're receiving this because you're part of the Club Choir community.<br/>
-      <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">Unsubscribe</a> · <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
-    </p>
+const P = `margin:0 0 14px;color:#111;font-size:15px;line-height:1.65;`;
+const BTN = (href: string, label: string) => `
+  <div style="text-align:center;margin:22px 0;">
+    <a href="${href}" style="display:inline-block;background:#f472b6;color:#ffffff;padding:13px 28px;border-radius:999px;text-decoration:none;font-weight:700;font-family:Quicksand,Arial,sans-serif;font-size:15px;">${label}</a>
   </div>`;
 
-  return { subject, html };
+const PAYMENT_BOX_EN = `
+  <div style="background:#fff5ec;border-left:4px solid #f97316;border-radius:10px;padding:14px 18px;margin:18px 0;">
+    <div style="font-weight:700;color:#9a3412;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Interac e-Transfer details</div>
+    <p style="margin:3px 0;font-size:15px;color:#7c2d12;"><strong>Send to:</strong> ailsa@clubchoir.ca</p>
+    <p style="margin:3px 0;font-size:15px;color:#7c2d12;"><strong>Amount:</strong> $280.00 CAD</p>
+    <p style="margin:3px 0;font-size:15px;color:#7c2d12;"><strong>Security question:</strong> What is the name of the choir?</p>
+    <p style="margin:3px 0;font-size:15px;color:#7c2d12;"><strong>Answer:</strong> clubchoir <em>(one word, all lowercase)</em></p>
+  </div>`;
+
+const PAYMENT_BOX_FR = `
+  <div style="background:#fff5ec;border-left:4px solid #f97316;border-radius:10px;padding:14px 18px;margin:18px 0;">
+    <div style="font-weight:700;color:#9a3412;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Détails du virement Interac</div>
+    <p style="margin:3px 0;font-size:15px;color:#7c2d12;"><strong>Envoyer à :</strong> ailsa@clubchoir.ca</p>
+    <p style="margin:3px 0;font-size:15px;color:#7c2d12;"><strong>Montant :</strong> 280,00 $ CAD</p>
+    <p style="margin:3px 0;font-size:15px;color:#7c2d12;"><strong>Question de sécurité :</strong> What is the name of the choir?</p>
+    <p style="margin:3px 0;font-size:15px;color:#7c2d12;"><strong>Réponse :</strong> clubchoir <em>(un seul mot, en minuscules)</em></p>
+  </div>`;
+
+function wrap(inner: string): string {
+  return `
+  <div style="font-family:Nunito,Arial,sans-serif;max-width:620px;margin:0 auto;padding:28px 24px;color:#111;background:#ffffff;">
+    <div style="text-align:center;margin-bottom:24px;">
+      <h1 style="margin:0;color:#f472b6;font-family:Quicksand,Arial,sans-serif;font-size:26px;">Club Choir</h1>
+    </div>
+    ${inner}
+    <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
+    <p style="color:#999;font-size:11px;text-align:center;line-height:1.6;">
+      You're receiving this because you're part of the Club Choir community.<br/>
+      <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">ailsa@clubchoir.ca</a> · <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
+    </p>
+  </div>`;
 }
 
+const SIGN_EN = `<p style="${P}">Tra-la-la,<br/>Ailsa<br/><span style="color:#777;font-size:14px;">Club Choir</span></p>`;
+const SIGN_FR = SIGN_EN;
+const DIVIDER = `<hr style="border:none;border-top:1px solid #eee;margin:30px 0;"/>`;
 
-function renderHerdEmail(r: Recipient): { subject: string; html: string } {
+// ---------- templates ----------
+
+function renderPaid(r: Recipient) {
   const first = esc(r.first_name || "there");
-  const ticketUrl = `${SITE_URL}/tickets/sing-for-the-herd`;
-  const schedule = (rows: string[]) => rows.map((t) => `<li style="margin:4px 0;">${t}</li>`).join("");
-  const html = `
-  <div style="font-family:Nunito,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;background:#fff;">
-    <div style="text-align:center;margin-bottom:20px;">
-      <h1 style="margin:0;color:#f472b6;font-family:Quicksand,Arial,sans-serif;font-size:26px;">Club Choir</h1>
-    </div>
-
-    <p>Hello Club Choir family,</p>
-    <p>Just a friendly reminder that our <strong>Sing for the Herd</strong> fundraiser is coming up on <strong>Sunday, August 2</strong>, at A Horse Tale Rescue in Vaudreuil-Dorion!</p>
-    <p>Thank you so much to everyone who has already registered or purchased tickets. We are looking forward to spending a wonderful afternoon together, meeting the horses and singing in support of this very special organization.</p>
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Schedule</h2>
-    <ul style="padding-left:20px;color:#333;font-size:15px;">${schedule([
-      "<strong>2:45–3:45 PM:</strong> Meet the Herd",
-      "<strong>3:45 PM:</strong> Head to the barn",
-      "<strong>4:00–5:30 PM:</strong> Club Choir event",
-    ])}</ul>
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Location</h2>
-    <p style="margin:4px 0;color:#333;">A Horse Tale Rescue<br/>27 Chemin Murphy<br/>Vaudreuil-Dorion, QC J7V 4L2</p>
-
-    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;">
-      Please remember to <strong>bring your own chair</strong> for the event in the barn.
-    </div>
-
-    <p>Tickets and registration are available here:</p>
-    <div style="text-align:center;margin:16px 0;">
-      <a href="${ticketUrl}" style="display:inline-block;background:#f472b6;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold;">Get your tickets</a>
-    </div>
-    <p style="text-align:center;font-size:13px;"><a href="${ticketUrl}" style="color:#f472b6;">${ticketUrl}</a></p>
-
-    <p>To those who have already sent me a message to let me know that you are unable to attend, you will be missed!</p>
-    <p>Please email me at <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a> with any questions.</p>
-    <p>I look forward to singing with you and meeting the herd!</p>
-    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
-
-    <hr style="border:none;border-top:1px solid #eee;margin:28px 0;"/>
-
-    <p>Bonjour à toute la famille Club Choir,</p>
-    <p>Voici un petit rappel amical concernant notre activité-bénéfice <strong>Chantez pour le troupeau</strong>, qui aura lieu le <strong>dimanche 2 août</strong> au refuge A Horse Tale Rescue, à Vaudreuil-Dorion!</p>
-    <p>Un grand merci à toutes les personnes qui se sont déjà inscrites ou qui ont acheté leurs billets. Nous avons très hâte de passer un merveilleux après-midi ensemble, de rencontrer les chevaux et de chanter afin de soutenir cet organisme exceptionnel.</p>
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Horaire</h2>
-    <ul style="padding-left:20px;color:#333;font-size:15px;">${schedule([
-      "<strong>14 h 45 à 15 h 45 :</strong> Rencontre avec le troupeau",
-      "<strong>15 h 45 :</strong> Direction la grange",
-      "<strong>16 h à 17 h 30 :</strong> Activité Club Choir",
-    ])}</ul>
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Lieu</h2>
-    <p style="margin:4px 0;color:#333;">A Horse Tale Rescue<br/>27, chemin Murphy<br/>Vaudreuil-Dorion (Québec) J7V 4L2</p>
-
-    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;">
-      N’oubliez pas d’apporter <strong>votre propre chaise</strong> pour l’activité dans la grange.
-    </div>
-
-    <p>Vous pouvez vous inscrire et acheter vos billets ici :</p>
-    <div style="text-align:center;margin:16px 0;">
-      <a href="${ticketUrl}" style="display:inline-block;background:#f472b6;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold;">Obtenir vos billets</a>
-    </div>
-
-    <p>À toutes les personnes qui m’ont déjà écrit pour me dire qu’elles ne pourront malheureusement pas être présentes, vous allez nous manquer!</p>
-    <p>Pour toute question, écrivez-moi à <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a>.</p>
-    <p>Au plaisir de chanter avec vous et de rencontrer le troupeau!</p>
-    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
-
-    <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
-    <p style="color:#999;font-size:11px;text-align:center;">
-      You're receiving this because you're part of the Club Choir community.<br/>
-      <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">Unsubscribe</a> · <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
-    </p>
-  </div>`;
+  const firstFr = esc(r.first_name || "");
+  const inner = `
+    <p style="${P}">Hi ${first},</p>
+    <p style="${P}">I hope you had a chance to stop by one of our open houses this week. It was wonderful to meet new members and reconnect with so many familiar faces. If you weren't able to join us, we'll have plenty of time to catch up this fall!</p>
+    <p style="${P}">I'm happy to confirm that your <strong>registration and payment have been received</strong>. You're all set for the upcoming Club Choir season, and you already have access to the choir schedule.</p>
+    ${BTN(`${SITE_URL}/login`, "Sign in & view the schedule")}
+    <p style="${P}">If you have any trouble activating your account, signing in, or accessing the schedule, please let me know. I'll be happy to guide you through the process.</p>
+    <p style="${P}">Our first rehearsal is officially only <strong>one month away</strong>! I'm so pleased to welcome you—or welcome you back—to the Club Choir family. It's because of members like you that I get to do what I love, and Club Choir truly wouldn't exist without you.</p>
+    <p style="${P}">I can't wait to sing with you this fall!</p>
+    ${SIGN_EN}
+    ${DIVIDER}
+    <p style="${P}">Bonjour ${firstFr || "à vous"},</p>
+    <p style="${P}">J'espère que vous avez eu l'occasion de passer à l'une de nos journées portes ouvertes cette semaine. Ce fut un réel plaisir de rencontrer de nouveaux membres et de revoir autant de visages familiers. Si vous n'avez pas pu vous joindre à nous, nous aurons tout le temps de nous retrouver cet automne!</p>
+    <p style="${P}">Je suis heureuse de vous confirmer que <strong>votre inscription et votre paiement ont bien été reçus</strong>. Tout est prêt pour votre prochaine saison avec Club Choir, et vous avez déjà accès à l'horaire de la chorale.</p>
+    ${BTN(`${SITE_URL}/login`, "Se connecter et voir l'horaire")}
+    <p style="${P}">Si vous éprouvez des difficultés à activer votre compte, à vous connecter ou à consulter l'horaire, n'hésitez pas à communiquer avec moi. Il me fera plaisir de vous guider.</p>
+    <p style="${P}">Notre première répétition aura lieu dans seulement <strong>un mois</strong>! Je suis ravie de vous accueillir—ou de vous retrouver—dans la grande famille de Club Choir. C'est grâce à des membres comme vous que j'ai la chance de faire ce que j'aime, et Club Choir n'existerait tout simplement pas sans vous.</p>
+    <p style="${P}">J'ai très hâte de chanter avec vous cet automne!</p>
+    ${SIGN_FR}`;
   return {
-    subject: "Reminder: Sing for the Herd — Sunday, August 2 🐴🎶",
-    html,
+    subject: "You're all set for the fall season 🎶 / Tout est prêt pour l'automne",
+    html: wrap(inner),
   };
 }
 
-function renderHerdTodayEmail(r: Recipient): { subject: string; html: string } {
+function renderUnpaid(r: Recipient) {
   const first = esc(r.first_name || "there");
-  const box = `background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;`;
-  const html = `
-  <div style="font-family:Nunito,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;background:#fff;">
-    <div style="text-align:center;margin-bottom:20px;">
-      <h1 style="margin:0;color:#f472b6;font-family:Quicksand,Arial,sans-serif;font-size:26px;">Club Choir</h1>
-    </div>
-
-    <p>Hello ${first},</p>
-    <p>Thank you for purchasing tickets or reserving your place for today\u2019s <strong>Sing for the Herd</strong> event at A Horse Tale Rescue.</p>
-    <p>We wanted to confirm that the event is <strong>still on, rain or shine!</strong> The barn is spic and span, ready for Club Choir, and will keep us dry and comfortable while we sing together.</p>
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Today\u2019s schedule</h2>
-    <ul style="padding-left:20px;color:#333;font-size:15px;">
-      <li style="margin:4px 0;"><strong>2:45\u20133:45 PM:</strong> Meet the Herd</li>
-      <li style="margin:4px 0;"><strong>3:45 PM:</strong> Head to the barn</li>
-      <li style="margin:4px 0;"><strong>4:00\u20135:30 PM:</strong> Club Choir singalong</li>
-    </ul>
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Location</h2>
-    <p style="margin:4px 0;color:#333;">A Horse Tale Rescue<br/>27 Chemin Murphy<br/>Vaudreuil-Dorion, QC J7V 4L2</p>
-
-    <div style="${box}">Please remember to <strong>bring your own chair</strong> for the barn.</div>
-
-    <p>We are looking forward to seeing you for a joyful afternoon of music, community and horses!</p>
-    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
-
-    <hr style="border:none;border-top:1px solid #eee;margin:28px 0;"/>
-
-    <p>Bonjour \u00e0 toutes et \u00e0 tous,</p>
-    <p>Merci d\u2019avoir achet\u00e9 vos billets ou r\u00e9serv\u00e9 votre place pour l\u2019\u00e9v\u00e9nement <strong>Sing for the Herd</strong> d\u2019aujourd\u2019hui \u00e0 A Horse Tale Rescue.</p>
-    <p>Nous souhaitons vous confirmer que l\u2019\u00e9v\u00e9nement aura bien lieu, <strong>beau temps, mauvais temps!</strong> La grange est impeccable, pr\u00eate \u00e0 accueillir Club Choir, et elle nous gardera bien au sec et confortables pendant que nous chanterons ensemble.</p>
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Horaire de la journ\u00e9e</h2>
-    <ul style="padding-left:20px;color:#333;font-size:15px;">
-      <li style="margin:4px 0;"><strong>14 h 45 \u00e0 15 h 45 :</strong> Rencontre avec les chevaux</li>
-      <li style="margin:4px 0;"><strong>15 h 45 :</strong> Direction la grange</li>
-      <li style="margin:4px 0;"><strong>16 h \u00e0 17 h 30 :</strong> Activit\u00e9 musicale avec Club Choir</li>
-    </ul>
-
-    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:18px;margin-top:22px;">Adresse</h2>
-    <p style="margin:4px 0;color:#333;">A Horse Tale Rescue<br/>27, chemin Murphy<br/>Vaudreuil-Dorion (Qu\u00e9bec) J7V 4L2</p>
-
-    <div style="${box}">N\u2019oubliez pas d\u2019apporter <strong>votre propre chaise</strong> pour vous installer dans la grange.</div>
-
-    <p>Nous avons tr\u00e8s h\u00e2te de vous retrouver pour un bel apr\u00e8s-midi de musique, de communaut\u00e9 et de rencontres avec les chevaux!</p>
-    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
-
-    <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
-    <p style="color:#999;font-size:11px;text-align:center;">
-      You\u2019re receiving this because you reserved or purchased a ticket for Sing for the Herd.<br/>
-      <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">Contact us</a> \u00b7 <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
-    </p>
-  </div>`;
-  return { subject: "Today: Sing for the Herd is ON \u2014 rain or shine \ud83d\udc34\ud83c\udfb6", html };
+  const firstFr = esc(r.first_name || "");
+  const inner = `
+    <p style="${P}">Hi ${first},</p>
+    <p style="${P}">I hope you had a chance to stop by one of our open houses this week. It was wonderful to meet new members and reconnect with so many familiar faces. If you weren't able to join us, I hope we'll have the opportunity to see each other this fall!</p>
+    <p style="${P}">I'm happy to see that you've registered for the upcoming Club Choir season. There's just one step remaining: please send in your payment so I can ensure everything is ready for you.</p>
+    ${PAYMENT_BOX_EN}
+    <p style="${P}">With our first rehearsal only <strong>one month away</strong>, I encourage you to complete your payment soon. Once it has been received, I'll be able to finalize your registration and make sure you have access to the choir schedule and everything you'll need for the season.</p>
+    ${BTN(`${SITE_URL}/fall-registration`, "Registration details")}
+    <p style="${P}">If you have any questions about the payment or registration process, please let me know. I'm always happy to help.</p>
+    <p style="${P}">I'm so pleased to welcome you—or welcome you back—to the Club Choir family. It's because of members like you that I get to do what I love, and Club Choir truly wouldn't exist without you.</p>
+    <p style="${P}">I look forward to singing with you this fall!</p>
+    ${SIGN_EN}
+    ${DIVIDER}
+    <p style="${P}">Bonjour ${firstFr || "à vous"},</p>
+    <p style="${P}">J'espère que vous avez eu l'occasion de passer à l'une de nos journées portes ouvertes cette semaine. Ce fut un réel plaisir de rencontrer de nouveaux membres et de revoir autant de visages familiers. Si vous n'avez pas pu vous joindre à nous, j'espère que nous aurons l'occasion de nous retrouver cet automne!</p>
+    <p style="${P}">Je suis heureuse de voir que vous vous êtes inscrit(e) à la prochaine saison de Club Choir. Il ne reste qu'une seule étape : veuillez faire parvenir votre paiement afin que je puisse m'assurer que tout est prêt pour vous.</p>
+    ${PAYMENT_BOX_FR}
+    <p style="${P}">Puisque notre première répétition aura lieu dans seulement <strong>un mois</strong>, je vous encourage à effectuer votre paiement prochainement. Dès sa réception, je pourrai finaliser votre inscription et m'assurer que vous avez accès à l'horaire de la chorale ainsi qu'à tout ce dont vous aurez besoin pour la saison.</p>
+    ${BTN(`${SITE_URL}/fall-registration`, "Détails de l'inscription")}
+    <p style="${P}">Si vous avez des questions concernant le paiement ou le processus d'inscription, n'hésitez pas à communiquer avec moi. Il me fera plaisir de vous aider.</p>
+    <p style="${P}">Je suis ravie de vous accueillir—ou de vous retrouver—dans la grande famille de Club Choir. C'est grâce à des membres comme vous que j'ai la chance de faire ce que j'aime, et Club Choir n'existerait tout simplement pas sans vous.</p>
+    <p style="${P}">Au plaisir de chanter avec vous cet automne!</p>
+    ${SIGN_FR}`;
+  return {
+    subject: "One step left to confirm your fall spot / Une dernière étape pour confirmer votre place",
+    html: wrap(inner),
+  };
 }
 
-async function loadHerdAttendees(supabase: any): Promise<Recipient[]> {
-  const { data: rows } = await supabase
-    .from("popup_ticket_reservations")
-    .select("email, first_name, last_name")
-    .eq("event_slug", "sing-for-the-herd");
-  const map = new Map<string, Recipient>();
-  for (const t of rows || []) {
-    const email = String(t.email || "").trim().toLowerCase();
-    if (!email.includes("@")) continue;
-    if (!map.has(email)) map.set(email, { email, first_name: t.first_name || "", last_name: t.last_name || "" });
-  }
-  return Array.from(map.values());
-}
-
-async function loadHerdRecipients(supabase: any): Promise<Recipient[]> {
-  const { data: paidTickets } = await supabase
-    .from("popup_ticket_reservations")
-    .select("email, payment_received")
-    .eq("event_slug", "sing-for-the-herd")
-    .eq("payment_received", true);
-  const paidTicketSet = new Set<string>((paidTickets || []).map((t: any) => String(t.email).toLowerCase()));
-
-  const { data: memberRows } = await supabase
-    .from("members")
-    .select("email, first_name, last_name, archived_at, crm_tags")
-    .is("archived_at", null);
-
-  const out: Recipient[] = [];
-  const seen = new Set<string>();
-  for (const m of memberRows || []) {
-    if (!m.email || !m.email.includes("@")) continue;
-    const key = m.email.toLowerCase();
-    if (seen.has(key)) continue;
-    if (paidTicketSet.has(key)) continue;
-    if (Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) continue;
-    seen.add(key);
-    out.push({ email: key, first_name: m.first_name || "", last_name: m.last_name || "" });
-  }
-  return out;
-}
-
-function renderTonightEmail(r: Recipient, cfg: TonightConfig): { subject: string; html: string } {
+function renderConsidering(r: Recipient) {
   const first = esc(r.first_name || "there");
-  const box = `background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;margin:18px 0;color:#7c2d12;`;
-  const html = `
-  <div style="font-family:Nunito,Arial,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;background:#fff;">
-    <div style="text-align:center;margin-bottom:20px;">
-      <h1 style="margin:0;color:#f472b6;font-family:Quicksand,Arial,sans-serif;font-size:26px;">Club Choir</h1>
-    </div>
-
-    <p>Hello ${first},</p>
-    <p>Just a quick reminder \u2014 <strong>tonight is our ${esc(cfg.labelEn)} Open House</strong> and we start at <strong>7:00 PM</strong>. It runs about an hour, and there\u2019s nothing you need to bring.</p>
-
-    <div style="border:1px solid #eee;border-radius:12px;padding:14px 16px;margin:16px 0;">
-      <div style="font-weight:800;font-size:16px;color:#111;">Tonight \u00b7 7:00 PM</div>
-      <div style="color:#555;font-size:14px;margin-top:4px;">${esc(cfg.venueEn)}<br/>${esc(cfg.addressEn)}</div>
-    </div>
-
-    <div style="${box}">
-      <strong>Bring someone with you \ud83d\udc9b</strong><br/>
-      This is the perfect opportunity to bring along someone who showed interest last session \u2014 a friend, a neighbour, anyone curious. Everyone is welcome.
-    </div>
-
-    <p>And if you\u2019re new to Club Choir, this is a great chance to meet members and ask any questions on your mind. No experience needed, no audition \u2014 just come and sing.</p>
-    <p>I hope to see you there!</p>
-    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
-
-    <hr style="border:none;border-top:1px solid #eee;margin:28px 0;"/>
-
-    <p>Bonjour ${first},</p>
-    <p>Petit rappel \u2014 <strong>notre porte ouverte ${esc(cfg.labelFrPhrase)} a lieu ce soir</strong> et nous commen\u00e7ons \u00e0 <strong>19 h</strong>. L\u2019activit\u00e9 dure environ une heure et vous n\u2019avez rien \u00e0 apporter.</p>
-
-    <div style="border:1px solid #eee;border-radius:12px;padding:14px 16px;margin:16px 0;">
-      <div style="font-weight:800;font-size:16px;color:#111;">Ce soir \u00b7 19 h</div>
-      <div style="color:#555;font-size:14px;margin-top:4px;">${esc(cfg.venueFr)}<br/>${esc(cfg.addressFr)}</div>
-    </div>
-
-    <div style="${box}">
-      <strong>Amenez quelqu\u2019un avec vous \ud83d\udc9b</strong><br/>
-      C\u2019est le moment id\u00e9al pour amener une personne qui avait montr\u00e9 de l\u2019int\u00e9r\u00eat la session derni\u00e8re \u2014 un ami, un voisin, toute personne curieuse. Tout le monde est le bienvenu.
-    </div>
-
-    <p>Et si vous \u00eates nouveau ou nouvelle chez Club Choir, c\u2019est une belle occasion de rencontrer les membres et de poser toutes vos questions. Aucune exp\u00e9rience requise, aucune audition \u2014 venez simplement chanter.</p>
-    <p>J\u2019esp\u00e8re vous y voir!</p>
-    <p>Tra-la-la,<br/>Ailsa<br/>Club Choir</p>
-
-    <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;"/>
-    <p style="color:#999;font-size:11px;text-align:center;">
-      You\u2019re receiving this because you\u2019re part of the Club Choir ${esc(cfg.labelEn)} community.<br/>
-      <a href="mailto:ailsa@clubchoir.ca" style="color:#999;">Contact us</a> \u00b7 <a href="${SITE_URL}" style="color:#999;">clubchoir.ca</a>
-    </p>
-  </div>`;
-  return { subject: `Tonight at 7 PM \u2014 ${cfg.labelEn} Open House \ud83c\udfb6 / Ce soir \u00e0 19 h`, html };
+  const firstFr = esc(r.first_name || "");
+  const inner = `
+    <p style="${P}">Hi ${first},</p>
+    <p style="${P}">I hope you had a chance to stop by one of our open houses this week. It was wonderful to meet new members and reconnect with so many familiar faces. If you weren't able to join us, I hope we'll have the opportunity to see each other this fall!</p>
+    <p style="${P}">If you're still thinking about joining Club Choir, I encourage you to register. Our first rehearsal is officially only <strong>one month away</strong>, and we would be delighted to welcome you to the Club Choir family.</p>
+    ${BTN(`${SITE_URL}/fall-registration`, "Register for the fall session")}
+    <p style="${P}">You may still have questions before making your decision, and that's completely understandable. I'm available to answer anything you'd like to know about registration, fees, rehearsals, the choir, or what to expect during the season — just write to <a href="mailto:ailsa@clubchoir.ca" style="color:#f472b6;">ailsa@clubchoir.ca</a>.</p>
+    <p style="${P}">If you decide to join us, registering soon will give us time to make sure everything is in place for you before our first rehearsal.</p>
+    <p style="${P}">Club Choir wouldn't exist without the wonderful people who share their voices and enthusiasm with us. I hope you'll be one of them this fall!</p>
+    ${SIGN_EN}
+    ${DIVIDER}
+    <p style="${P}">Bonjour ${firstFr || "à vous"},</p>
+    <p style="${P}">J'espère que vous avez eu l'occasion de passer à l'une de nos journées portes ouvertes cette semaine. Ce fut un réel plaisir de rencontrer de nouveaux membres et de revoir autant de visages familiers. Si vous n'avez pas pu vous joindre à nous, j'espère que nous aurons l'occasion de nous retrouver cet automne!</p>
+    <p style="${P}">Si vous songez encore à vous joindre à Club Choir, je vous encourage à vous inscrire. Notre première répétition aura lieu dans seulement <strong>un mois</strong>, et nous serions ravis de vous accueillir dans la grande famille de Club Choir.</p>
+    ${BTN(`${SITE_URL}/fall-registration`, "S'inscrire à la session d'automne")}
+    <p style="${P}">Il est tout à fait normal d'avoir encore quelques questions avant de prendre votre décision. Je suis disponible pour répondre à toutes vos questions concernant l'inscription, les frais, les répétitions, la chorale ou le déroulement de la saison — écrivez-moi à <a href="mailto:ailsa@clubchoir.ca" style="color:#f472b6;">ailsa@clubchoir.ca</a>.</p>
+    <p style="${P}">Si vous décidez de vous joindre à nous, je vous invite à vous inscrire prochainement afin que nous ayons suffisamment de temps pour nous assurer que tout est en place avant notre première répétition.</p>
+    <p style="${P}">Club Choir n'existerait pas sans toutes les merveilleuses personnes qui partagent avec nous leur voix et leur enthousiasme. J'espère que vous en ferez partie cet automne!</p>
+    ${SIGN_FR}`;
+  return {
+    subject: "Still thinking about joining us this fall? / Vous songez à vous joindre à nous?",
+    html: wrap(inner),
+  };
 }
 
-async function loadLocationRecipients(supabase: any, locationName: string): Promise<Recipient[]> {
-  const target = locationName.trim().toLowerCase();
-  const isMtl = (l: any) => String(l || "").trim().toLowerCase() === target;
+function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
+  if (segment === "fall-paid") return renderPaid(r);
+  if (segment === "fall-unpaid") return renderUnpaid(r);
+  return renderConsidering(r);
+}
 
+// ---------- recipients ----------
+
+async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
   const { data: suppressedRows } = await supabase.from("members").select("email, crm_tags");
   const suppressed = new Set<string>();
   for (const m of suppressedRows || []) {
@@ -450,108 +177,63 @@ async function loadLocationRecipients(supabase: any, locationName: string): Prom
     }
   }
 
-  const out = new Map<string, Recipient>();
-  const add = (email: any, first: any, last: any) => {
-    const e = String(email || "").trim().toLowerCase();
-    if (!e.includes("@")) return;
-    if (suppressed.has(e)) return;
-    if (!out.has(e)) out.set(e, { email: e, first_name: first || "", last_name: last || "" });
-  };
-
-  const { data: members } = await supabase
-    .from("members").select("email, first_name, last_name, location, crm_tags")
-    .is("archived_at", null);
-  for (const m of members || []) if (isMtl(m.location)) add(m.email, m.first_name, m.last_name);
-
-  const { data: regs } = await supabase
-    .from("session_registrations").select("email, first_name, last_name, location");
-  for (const g of regs || []) if (isMtl(g.location)) add(g.email, g.first_name, g.last_name);
-
-  const { data: rsvps } = await supabase
-    .from("open_house_rsvps").select("email, first_name, last_name, location");
-  for (const g of rsvps || []) if (isMtl(g.location)) add(g.email, g.first_name, g.last_name);
-
-  const { data: prospects } = await supabase
-    .from("prospects").select("email, first_name, last_name, locations");
-  for (const p of prospects || []) {
-    if ((p.locations || []).some(isMtl)) add(p.email, p.first_name, p.last_name);
-  }
-
-  return Array.from(out.values());
-}
-
-async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
-  if (segment === "herd-reminder") return loadHerdRecipients(supabase);
-  if (segment === "herd-attendees") return loadHerdAttendees(supabase);
-  if (TONIGHT_CONFIGS[segment]) return loadLocationRecipients(supabase, TONIGHT_CONFIGS[segment].location);
-  // Paid: session_registrations for fall-2026 with payment_status='paid'
   const { data: paidRegs } = await supabase
     .from("session_registrations")
-    .select("email, first_name, last_name, payment_status, session_label")
+    .select("email, first_name, last_name")
     .eq("session_label", "fall-2026")
     .eq("payment_status", "paid");
 
-  // Build suppression set: members tagged 'no-email' should never receive campaigns
-  const { data: suppressedRows } = await supabase
-    .from("members")
-    .select("email, crm_tags");
-  const suppressed = new Set<string>();
-  for (const m of suppressedRows || []) {
-    if (m.email && Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) {
-      suppressed.add(m.email.toLowerCase());
-    }
+  const paidMap = new Map<string, Recipient>();
+  for (const r of paidRegs || []) {
+    const e = String(r.email || "").trim().toLowerCase();
+    if (!e.includes("@") || suppressed.has(e)) continue;
+    if (!paidMap.has(e)) paidMap.set(e, { email: e, first_name: r.first_name || "", last_name: r.last_name || "" });
   }
 
-  const paidSet = new Set<string>((paidRegs || []).map((r: any) => r.email.toLowerCase()));
-  const paidRecipients: Recipient[] = (paidRegs || [])
-    .filter((r: any) => r.email && !suppressed.has(r.email.toLowerCase()))
-    .map((r: any) => ({ email: r.email.toLowerCase(), first_name: r.first_name || "", last_name: r.last_name || "" }));
+  if (segment === "fall-paid") return Array.from(paidMap.values());
 
-  // Registered (any label, not paid) minus paid
   const { data: regRows } = await supabase
     .from("session_registrations")
-    .select("email, first_name, last_name, payment_status, session_label")
+    .select("email, first_name, last_name")
     .in("session_label", ["fall-2026", "open-house-2026", "try-a-session"])
     .neq("payment_status", "paid");
 
-  const regMap = new Map<string, Recipient>();
+  const unpaidMap = new Map<string, Recipient>();
   for (const r of regRows || []) {
-    if (!r.email) continue;
-    const key = r.email.toLowerCase();
-    if (paidSet.has(key)) continue;
-    if (suppressed.has(key)) continue;
-    if (!regMap.has(key)) regMap.set(key, { email: key, first_name: r.first_name || "", last_name: r.last_name || "" });
+    const e = String(r.email || "").trim().toLowerCase();
+    if (!e.includes("@") || suppressed.has(e) || paidMap.has(e)) continue;
+    if (!unpaidMap.has(e)) unpaidMap.set(e, { email: e, first_name: r.first_name || "", last_name: r.last_name || "" });
   }
-  const registeredRecipients = Array.from(regMap.values());
-  const registeredSet = new Set(regMap.keys());
 
-  if (segment === "paid") {
-    const uniq = new Map<string, Recipient>();
-    for (const r of paidRecipients) if (!uniq.has(r.email)) uniq.set(r.email, r);
-    return Array.from(uniq.values());
-  }
-  if (segment === "registered") return registeredRecipients;
+  if (segment === "fall-unpaid") return Array.from(unpaidMap.values());
 
-  // Everyone: members not in paid or registered, not archived, not suppressed, with email
-  const { data: memberRows } = await supabase
-    .from("members")
-    .select("email, first_name, last_name, archived_at, crm_tags")
+  // Everyone else: any contact with no fall registration at all
+  const rest = new Map<string, Recipient>();
+  const add = (email: any, first: any, last: any) => {
+    const e = String(email || "").trim().toLowerCase();
+    if (!e.includes("@")) return;
+    if (suppressed.has(e) || paidMap.has(e) || unpaidMap.has(e) || rest.has(e)) return;
+    rest.set(e, { email: e, first_name: first || "", last_name: last || "" });
+  };
+
+  const { data: members } = await supabase
+    .from("members").select("email, first_name, last_name, crm_tags")
     .is("archived_at", null);
-
-  const everyone: Recipient[] = [];
-  const seen = new Set<string>();
-  for (const m of memberRows || []) {
-    if (!m.email || !m.email.includes("@")) continue;
-    const key = m.email.toLowerCase();
-    if (paidSet.has(key) || registeredSet.has(key)) continue;
-    if (suppressed.has(key)) continue;
+  for (const m of members || []) {
     if (Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) continue;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    everyone.push({ email: key, first_name: m.first_name || "", last_name: m.last_name || "" });
+    add(m.email, m.first_name, m.last_name);
   }
-  return everyone;
+
+  const { data: rsvps } = await supabase.from("open_house_rsvps").select("email, first_name, last_name");
+  for (const g of rsvps || []) add(g.email, g.first_name, g.last_name);
+
+  const { data: prospects } = await supabase.from("prospects").select("email, first_name, last_name");
+  for (const p of prospects || []) add(p.email, p.first_name, p.last_name);
+
+  return Array.from(rest.values());
 }
+
+// ---------- handler ----------
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -579,9 +261,7 @@ serve(async (req) => {
     const previewOnly: boolean = !!body.previewOnly;
     const countOnly: boolean = !!body.countOnly;
 
-    if (!["paid", "registered", "everyone", "herd-reminder", "herd-attendees", ...Object.keys(TONIGHT_CONFIGS)].includes(segment)) {
-      throw new Error("Invalid segment");
-    }
+    if (!Object.keys(CAMPAIGN_KEYS).includes(segment)) throw new Error("Invalid segment");
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -598,7 +278,7 @@ serve(async (req) => {
 
     if (previewOnly) {
       const sample = recipients[0] || { email: "sample@example.com", first_name: "Sample", last_name: "" };
-      const { subject, html } = await renderEmail(segment, sample);
+      const { subject, html } = renderEmail(segment, sample);
       return new Response(JSON.stringify({ subject, html, count: recipients.length }), {
         status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
@@ -608,10 +288,9 @@ serve(async (req) => {
     if (!resendKey) throw new Error("RESEND_API_KEY not configured");
     const resend = new Resend(resendKey);
 
-    // Test send
     if (testEmail) {
       const sample = recipients[0] || { email: testEmail, first_name: "Sample", last_name: "" };
-      const { subject, html } = await renderEmail(segment, { ...sample, email: testEmail });
+      const { subject, html } = renderEmail(segment, { ...sample, email: testEmail });
       await resend.emails.send({
         from: "Club Choir <noreply@clubchoir.ca>",
         to: [testEmail],
@@ -623,18 +302,11 @@ serve(async (req) => {
       });
     }
 
-    // Real send — check campaign_sends to skip already-sent
-    const key = segment === "herd-reminder"
-      ? HERD_CAMPAIGN_KEY
-      : segment === "herd-attendees"
-        ? HERD_TODAY_CAMPAIGN_KEY
-        : TONIGHT_CONFIGS[segment]
-          ? TONIGHT_CONFIGS[segment].campaignKey
-          : `${CAMPAIGN_KEY}:${segment}`;
+    const key = CAMPAIGN_KEYS[segment];
     const { data: sentRows } = await supabase
       .from("campaign_sends").select("recipient_email")
       .eq("campaign_key", key);
-    const alreadySent = new Set<string>((sentRows || []).map((r: any) => r.recipient_email.toLowerCase()));
+    const alreadySent = new Set<string>((sentRows || []).map((r: any) => String(r.recipient_email).toLowerCase()));
     const toSend = recipients.filter((r) => !alreadySent.has(r.email));
 
     const results: { success: string[]; failed: string[]; skipped: number } = {
@@ -645,7 +317,7 @@ serve(async (req) => {
       const batch = toSend.slice(i, i + batchSize);
       await Promise.all(batch.map(async (r) => {
         try {
-          const { subject, html } = await renderEmail(segment, r);
+          const { subject, html } = renderEmail(segment, r);
           await resend.emails.send({
             from: "Club Choir <noreply@clubchoir.ca>",
             to: [r.email],
@@ -654,25 +326,17 @@ serve(async (req) => {
           });
           results.success.push(r.email);
           await supabase.from("campaign_sends").insert({
-            campaign_key: key,
-            segment,
-            recipient_email: r.email,
-            subject,
-            status: "sent",
+            campaign_key: key, segment, recipient_email: r.email, subject, status: "sent",
           });
         } catch (err: any) {
           results.failed.push(r.email);
           await supabase.from("campaign_sends").insert({
-            campaign_key: key,
-            segment,
-            recipient_email: r.email,
-            subject: "(failed)",
-            status: "failed",
+            campaign_key: key, segment, recipient_email: r.email,
+            subject: "(failed)", status: "failed",
             error: String(err?.message || err).slice(0, 500),
           });
         }
       }));
-      // small pacing gap
       await new Promise((res) => setTimeout(res, 350));
     }
 
