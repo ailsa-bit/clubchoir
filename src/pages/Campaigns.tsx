@@ -47,6 +47,12 @@ const Campaigns = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
+  const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
+    "fall-paid": {}, "fall-unpaid": {}, "fall-considering": {},
+  });
+  const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
+    "fall-paid": "all", "fall-unpaid": "all", "fall-considering": "all",
+  });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
   const [previewHtml, setPreviewHtml] = useState<string>("");
@@ -68,7 +74,8 @@ const Campaigns = () => {
       const { data } = await supabase.functions.invoke("send-campaign", {
         body: { segment: s.key, countOnly: true },
       });
-      setCounts((c) => ({ ...c, [s.key]: data?.count ?? 0 }));
+      setCounts((c) => ({ ...c, [s.key]: data?.total ?? data?.count ?? 0 }));
+      setByLocation((b) => ({ ...b, [s.key]: data?.byLocation ?? {} }));
     }
     // Sent counts — count per segment (a single unfiltered select is capped at 1000 rows)
     const grouped: Record<string, number> = { ...EMPTY_COUNTS };
@@ -88,6 +95,14 @@ const Campaigns = () => {
   useEffect(() => {
     if (isAdmin) loadCounts();
   }, [isAdmin]);
+
+  const audienceFor = (seg: Segment) => {
+    const f = locFilter[seg];
+    if (f === "all") return counts[seg];
+    const b = byLocation[seg] || {};
+    return b[f] ?? 0;
+  };
+
 
   const handlePreview = async (seg: Segment) => {
     setBusy(seg);
