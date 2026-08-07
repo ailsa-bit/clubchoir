@@ -116,14 +116,6 @@ const Index = () => {
 
 
 
-                <div className="pt-5 border-t border-orange/20">
-                  <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <span className="px-2 py-0.5 bg-lime/20 text-lime rounded-md font-bold text-[10px] uppercase tracking-wider">
-                      {isFr ? "Ouvert" : "Open Now"}
-                    </span>
-                    <span>{t("home.hero.reassurance")}</span>
-                  </p>
-                </div>
               </div>
             </div>
 
