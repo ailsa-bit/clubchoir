@@ -92,7 +92,9 @@ const Dashboard = () => {
 
   const data = useMemo(() => {
     const norm = (e?: string | null) => (e || "").trim().toLowerCase();
-    const included = (rows: Array<{ location?: string | null }>) => rows.filter((x) => !isExcludedLocation(x.location));
+    function included<T extends { location?: string | null }>(rows: T[]): T[] {
+      return rows.filter((x) => !isExcludedLocation(x.location));
+    }
     const includedProspects = prospects.filter((x) => !x.locations.some(isExcludedLocation));
 
     // Exclude legacy locations from dashboard metrics while preserving their records in the database.
