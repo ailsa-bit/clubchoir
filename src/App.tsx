@@ -57,6 +57,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
+        <AttributionTracker />
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
