@@ -12,6 +12,9 @@ import {
 
 type Segment = "fall-paid" | "fall-unpaid" | "fall-considering";
 
+const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
+type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
+
 const EMPTY_COUNTS = {
   "fall-paid": 0, "fall-unpaid": 0, "fall-considering": 0,
 } as Record<Segment, number>;
@@ -20,22 +23,23 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   {
     key: "fall-paid",
     title: "Registered & Paid",
-    description: "Confirmation that registration and payment were received, plus a sign-in button for the choir schedule. Bilingual EN/FR.",
+    description: "Confirms registration + payment, shows their location, rehearsal night, venue and first-rehearsal date, and asks them to reply with any corrections. Bilingual EN/FR.",
     color: "bg-green-50 border-green-200",
   },
   {
     key: "fall-unpaid",
     title: "Registered — Payment Outstanding",
-    description: "Friendly nudge with full Interac e-Transfer details ($280) for anyone registered for the fall session, a try-a-session, or an open house who hasn't paid. Bilingual EN/FR.",
+    description: "For Fall 2026 registrants who haven't paid: their details to confirm, Interac e-Transfer box ($280) and a note in case they've already paid. Bilingual EN/FR.",
     color: "bg-yellow-50 border-yellow-200",
   },
   {
     key: "fall-considering",
     title: "Still Considering Joining",
-    description: "Warm invitation with a Register button for every other contact — prospects, open house RSVPs and past members with no fall registration. Bilingual EN/FR.",
+    description: "Everyone with no Fall 2026 registration — prospects, open house RSVPs, try-a-session and past members. Includes their location's schedule, the $280 fee and a Register button. Bilingual EN/FR.",
     color: "bg-blue-50 border-blue-200",
   },
 ];
+
 
 
 const Campaigns = () => {
