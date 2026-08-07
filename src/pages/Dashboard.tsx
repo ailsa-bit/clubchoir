@@ -111,14 +111,14 @@ const Dashboard = () => {
     const paid = uniqueRegs.filter((x) => x.payment_status === "paid");
     const unpaid = uniqueRegs.filter((x) => x.payment_status !== "paid");
     // Fall back to the standard $280 session fee if an amount wasn't recorded.
-    const revenue = regs.reduce((s, x) => s + (x.payment_status === "paid" ? Number(x.amount_paid ?? 280) : 0), 0);
+    const revenue = includedRegs.reduce((s, x) => s + (x.payment_status === "paid" ? Number(x.amount_paid ?? 280) : 0), 0);
 
-    const rsvpEmails = new Set(rsvps.map((x) => norm(x.email)));
-    const prospectEmails = new Set(prospects.map((x) => norm(x.email)));
+    const rsvpEmails = new Set(includedRsvps.map((x) => norm(x.email)));
+    const prospectEmails = new Set(includedProspects.map((x) => norm(x.email)));
     // Open-house / try-a-session registrations count as "interested" too (matches CRM buckets)
-    const softRegEmails = new Set(tryRegs.map((x) => norm(x.email)));
+    const softRegEmails = new Set(includedTryRegs.map((x) => norm(x.email)));
     const memberTagged = new Set(
-      members.filter((x) => !x.archived_at && (x.crm_tags || []).some((t) => t === "open-house-2026" || t === "try-a-session")).map((x) => norm(x.email)),
+      members.filter((x) => !x.archived_at && !isExcludedLocation(x.location) && (x.crm_tags || []).some((t) => t === "open-house-2026" || t === "try-a-session")).map((x) => norm(x.email)),
     );
     const interested = new Set<string>([...rsvpEmails, ...prospectEmails, ...softRegEmails, ...memberTagged].filter((e) => e && !regByEmail.has(e)));
 
@@ -128,9 +128,9 @@ const Dashboard = () => {
     const blank = () => Object.fromEntries(days.map((d) => [d, 0])) as Record<string, number>;
     const sReg = blank(), sPro = blank(), sRsvp = blank(), sPaid = blank();
     uniqueRegs.forEach((x) => { const k = dayKey(x.created_at); if (k in sReg) sReg[k]++; });
-    regs.forEach((x) => { if (x.payment_status === "paid") { const k = dayKey(x.created_at); if (k in sPaid) sPaid[k]++; } });
-    prospects.forEach((x) => { const k = dayKey(x.created_at); if (k in sPro) sPro[k]++; });
-    rsvps.forEach((x) => { const k = dayKey(x.created_at); if (k in sRsvp) sRsvp[k]++; });
+    includedRegs.forEach((x) => { if (x.payment_status === "paid") { const k = dayKey(x.created_at); if (k in sPaid) sPaid[k]++; } });
+    includedProspects.forEach((x) => { const k = dayKey(x.created_at); if (k in sPro) sPro[k]++; });
+    includedRsvps.forEach((x) => { const k = dayKey(x.created_at); if (k in sRsvp) sRsvp[k]++; });
     const trend = days.map((d) => ({
       day: fmtDay(d),
       Registrations: sReg[d], "Open house RSVPs": sRsvp[d], "Interest signups": sPro[d],
