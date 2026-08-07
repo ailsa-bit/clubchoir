@@ -12,6 +12,9 @@ import {
 
 type Segment = "fall-paid" | "fall-unpaid" | "fall-considering";
 
+const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
+type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
+
 const EMPTY_COUNTS = {
   "fall-paid": 0, "fall-unpaid": 0, "fall-considering": 0,
 } as Record<Segment, number>;
@@ -20,22 +23,23 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   {
     key: "fall-paid",
     title: "Registered & Paid",
-    description: "Confirmation that registration and payment were received, plus a sign-in button for the choir schedule. Bilingual EN/FR.",
+    description: "Confirms registration + payment, shows their location, rehearsal night, venue and first-rehearsal date, and asks them to reply with any corrections. Bilingual EN/FR.",
     color: "bg-green-50 border-green-200",
   },
   {
     key: "fall-unpaid",
     title: "Registered — Payment Outstanding",
-    description: "Friendly nudge with full Interac e-Transfer details ($280) for anyone registered for the fall session, a try-a-session, or an open house who hasn't paid. Bilingual EN/FR.",
+    description: "For Fall 2026 registrants who haven't paid: their details to confirm, Interac e-Transfer box ($280) and a note in case they've already paid. Bilingual EN/FR.",
     color: "bg-yellow-50 border-yellow-200",
   },
   {
     key: "fall-considering",
     title: "Still Considering Joining",
-    description: "Warm invitation with a Register button for every other contact — prospects, open house RSVPs and past members with no fall registration. Bilingual EN/FR.",
+    description: "Everyone with no Fall 2026 registration — prospects, open house RSVPs, try-a-session and past members. Includes their location's schedule, the $280 fee and a Register button. Bilingual EN/FR.",
     color: "bg-blue-50 border-blue-200",
   },
 ];
+
 
 
 const Campaigns = () => {
@@ -43,6 +47,12 @@ const Campaigns = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
+  const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
+    "fall-paid": {}, "fall-unpaid": {}, "fall-considering": {},
+  });
+  const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
+    "fall-paid": "all", "fall-unpaid": "all", "fall-considering": "all",
+  });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
   const [previewHtml, setPreviewHtml] = useState<string>("");
@@ -64,7 +74,8 @@ const Campaigns = () => {
       const { data } = await supabase.functions.invoke("send-campaign", {
         body: { segment: s.key, countOnly: true },
       });
-      setCounts((c) => ({ ...c, [s.key]: data?.count ?? 0 }));
+      setCounts((c) => ({ ...c, [s.key]: data?.total ?? data?.count ?? 0 }));
+      setByLocation((b) => ({ ...b, [s.key]: data?.byLocation ?? {} }));
     }
     // Sent counts — count per segment (a single unfiltered select is capped at 1000 rows)
     const grouped: Record<string, number> = { ...EMPTY_COUNTS };
@@ -85,11 +96,19 @@ const Campaigns = () => {
     if (isAdmin) loadCounts();
   }, [isAdmin]);
 
+  const audienceFor = (seg: Segment) => {
+    const f = locFilter[seg];
+    if (f === "all") return counts[seg];
+    const b = byLocation[seg] || {};
+    return b[f] ?? 0;
+  };
+
+
   const handlePreview = async (seg: Segment) => {
     setBusy(seg);
     try {
       const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg, previewOnly: true },
+        body: { segment: seg, previewOnly: true, location: locFilter[seg] },
       });
       if (error) throw error;
       setPreviewSubject(data.subject);
@@ -107,7 +126,7 @@ const Campaigns = () => {
     setBusy(seg);
     try {
       const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg, testEmail: userEmail },
+        body: { segment: seg, testEmail: userEmail, location: locFilter[seg] },
       });
       if (error) throw error;
       toast({ title: "Test sent!", description: `Check ${userEmail}` });
@@ -123,7 +142,7 @@ const Campaigns = () => {
     setConfirmSegment(null);
     try {
       const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg },
+        body: { segment: seg, location: locFilter[seg] },
       });
       if (error) throw error;
       toast({
@@ -137,6 +156,7 @@ const Campaigns = () => {
       setSending(null);
     }
   };
+
 
   if (adminLoading) return <div className="py-20 text-center text-muted-foreground">Loading…</div>;
   if (!isAdmin) {
@@ -155,15 +175,17 @@ const Campaigns = () => {
         <div className="text-center mb-8">
           <Mail className="w-10 h-10 text-primary mx-auto mb-3" />
           <h1 className="font-heading font-bold text-3xl mb-2">Fall 2026 Email Campaigns</h1>
-          <p className="text-muted-foreground">Three bilingual follow-ups after the open houses.</p>
+          <p className="text-muted-foreground">Three bilingual follow-ups after the open houses — send to everyone or one location at a time.</p>
 
         </div>
 
         <div className="space-y-4">
           {SEGMENTS.map((s) => {
-            const count = counts[s.key];
+            const total = counts[s.key];
             const sent = sentCounts[s.key];
-            const remaining = count === null ? null : Math.max(0, count - sent);
+            const audience = audienceFor(s.key);
+            const filter = locFilter[s.key];
+            const buckets = byLocation[s.key] || {};
             return (
               <div key={s.key} className={`rounded-2xl border p-6 ${s.color}`}>
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
@@ -174,7 +196,7 @@ const Campaigns = () => {
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1.5 text-foreground">
                       <Users className="w-4 h-4" />
-                      {count === null ? "…" : `${count} recipients`}
+                      {total === null ? "…" : `${total} total`}
                     </div>
                     {sent > 0 && (
                       <div className="flex items-center gap-1.5 text-green-700">
@@ -183,6 +205,28 @@ const Campaigns = () => {
                       </div>
                     )}
                   </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {(["all", ...LOCATIONS, "unknown"] as LocationFilter[]).map((loc) => {
+                    const n = loc === "all" ? (total ?? 0) : (buckets[loc] ?? 0);
+                    if (loc === "unknown" && n === 0) return null;
+                    const active = filter === loc;
+                    return (
+                      <button
+                        key={loc}
+                        type="button"
+                        onClick={() => setLocFilter((f) => ({ ...f, [s.key]: loc }))}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+                          active
+                            ? "bg-foreground text-background border-foreground"
+                            : "bg-white/70 text-foreground border-border hover:bg-white"
+                        }`}
+                      >
+                        {loc === "all" ? "All locations" : loc === "unknown" ? "No location" : loc} ({n})
+                      </button>
+                    );
+                  })}
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-4">
@@ -195,13 +239,13 @@ const Campaigns = () => {
                   <Button
                     size="sm"
                     onClick={() => setConfirmSegment(s.key)}
-                    disabled={sending === s.key || !remaining}
+                    disabled={sending === s.key || !audience}
                     className="bg-primary text-primary-foreground"
                   >
                     {sending === s.key ? (
                       <><Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> Sending…</>
                     ) : (
-                      <><Send className="w-4 h-4 mr-1.5" /> Send to {remaining ?? "…"}</>
+                      <><Send className="w-4 h-4 mr-1.5" /> Send to {audience ?? "…"} {filter === "all" ? "(all)" : filter === "unknown" ? "(no location)" : `(${filter})`}</>
                     )}
                   </Button>
                 </div>
@@ -209,6 +253,7 @@ const Campaigns = () => {
             );
           })}
         </div>
+
 
         <div className="mt-8 p-4 rounded-xl bg-muted/40 border border-border text-sm text-muted-foreground">
           <div className="flex gap-2">
@@ -239,8 +284,10 @@ const Campaigns = () => {
             <DialogTitle>Send this campaign?</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">
-            This will email <strong>{confirmSegment ? Math.max(0, (counts[confirmSegment] ?? 0) - sentCounts[confirmSegment]) : 0}</strong> people in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment. Recipients already sent will be skipped.
+            This will email up to <strong>{confirmSegment ? (audienceFor(confirmSegment) ?? 0) : 0}</strong> people in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
+            {confirmSegment && locFilter[confirmSegment] !== "all" ? <> — <strong>{locFilter[confirmSegment]}</strong> only</> : " — all locations"}. Anyone who already received this campaign will be skipped.
           </p>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmSegment(null)}>Cancel</Button>
             <Button onClick={() => confirmSegment && handleSend(confirmSegment)}>
