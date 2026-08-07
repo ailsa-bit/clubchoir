@@ -1,11 +1,29 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Sparkles, Calendar, Users, Heart } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import founderPhoto from "@/assets/founder-ailsa.webp";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const About = () => {
   const { t } = useLanguage();
+  const [stats, setStats] = useState<{ singers: number; locations: number }>({ singers: 296, locations: 4 });
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.rpc("get_public_choir_stats");
+      const row = Array.isArray(data) ? data[0] : data;
+      if (!cancelled && !error && row) {
+        setStats({ singers: Number(row.singers) || 0, locations: Number(row.locations) || 4 });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div className="py-12 px-4">
       <PageMeta
