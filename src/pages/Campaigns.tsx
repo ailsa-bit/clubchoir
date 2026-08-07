@@ -214,7 +214,7 @@ const Campaigns = () => {
           <div className="flex gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <div>
-              Recipients who've already received this campaign are automatically skipped (safe to click Send again). Each email includes one-click RSVP buttons that record in the CRM under Open House sign-ups.
+              Recipients who've already received this campaign are automatically skipped (safe to click Send again). Contacts tagged <strong>no-email</strong> are never included, and each person appears in only one segment.
             </div>
           </div>
         </div>
