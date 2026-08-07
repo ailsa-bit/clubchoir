@@ -41,6 +41,22 @@ async function verifyToken(token: string): Promise<{ email: string; first_name: 
   } catch { return null; }
 }
 
+
+// Optional first-touch marketing attribution captured in the browser (see src/lib/attribution.ts).
+// Never required — flows must work when it is absent.
+const ATTR_KEYS = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","landing_page","referrer"] as const;
+function pickAttribution(raw: any): Record<string, string | null> {
+  const out: Record<string, string | null> = {};
+  const a = raw && typeof raw === "object" ? raw : {};
+  for (const k of ATTR_KEYS) {
+    const v = a[k];
+    out[k] = typeof v === "string" && v.trim() ? v.trim().slice(0, 300) : null;
+  }
+  const ts = a.attribution_captured_at;
+  out.attribution_captured_at = typeof ts === "string" && !isNaN(Date.parse(ts)) ? new Date(ts).toISOString() : null;
+  return out;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -49,6 +65,7 @@ serve(async (req) => {
     const token = String(body.token || "");
     const location = String(body.location || "");
     const method = String(body.method || "post"); // "get" = validate only
+    const attribution = pickAttribution(body.attribution);
 
     const payload = await verifyToken(token);
     if (!payload) {
@@ -80,6 +97,7 @@ serve(async (req) => {
       last_name: payload.last_name || null,
       location,
       source_campaign: payload.campaign || null,
+      ...attribution,
     }, { onConflict: "email,location" as any, ignoreDuplicates: false });
 
     if (rsvpErr) {
@@ -94,6 +112,7 @@ serve(async (req) => {
           last_name: payload.last_name || null,
           location,
           source_campaign: payload.campaign || null,
+          ...attribution,
         });
       }
     }
@@ -113,6 +132,7 @@ serve(async (req) => {
         last_name: payload.last_name || "",
         email: payload.email.toLowerCase(),
         payment_status: "free",
+        ...attribution,
       });
     }
 
