@@ -7,6 +7,7 @@ import { z } from "zod";
 import { ArrowLeft, Calendar, MapPin, Send, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getAttribution } from "@/lib/attribution";
+import { trackLead } from "@/lib/metaPixel";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -143,6 +144,7 @@ const OpenHouseRegister = () => {
       }
 
       setSent(true);
+      trackLead("Open House RSVP", (data.location.split("–")[0] || "").trim());
       toast({
         title: isFr ? "Inscription reçue !" : "You're on the list!",
         description: isFr

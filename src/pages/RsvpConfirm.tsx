@@ -4,6 +4,7 @@ import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { getAttribution } from "@/lib/attribution";
+import { trackLead } from "@/lib/metaPixel";
 
 const FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/record-open-house-rsvp`;
 
@@ -30,6 +31,7 @@ const RsvpConfirm = () => {
         if (!res.ok) throw new Error(data?.error || "Something went wrong");
         setEmail(data.email || "");
         setState("ok");
+        trackLead("Open House RSVP (email link)", location);
       } catch (e: any) {
         setState("error");
         setMessage(e?.message || "Invalid link");

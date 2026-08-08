@@ -8,6 +8,7 @@ import { z } from "zod";
 import { ArrowLeft, Calendar, MapPin, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getAttribution } from "@/lib/attribution";
+import { trackLead } from "@/lib/metaPixel";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -143,6 +144,7 @@ const TryASession = () => {
       }
 
       setSent(true);
+      trackLead("Try a Session", (data.location.split("–")[0] || "").trim());
       toast({ title: t("try.toast.sent.title"), description: t("try.toast.sent.desc") });
     } catch (err: any) {
       toast({
