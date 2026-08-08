@@ -141,6 +141,7 @@ const Register = () => {
         setResult({ kind: "already", returning: !!data.returning_member });
       } else {
         setResult({ kind: "success", returning: !!data?.returning_member });
+        trackCompleteRegistration(location, data?.payment_status || "pending");
       }
     } catch (err: any) {
       console.error(err);
