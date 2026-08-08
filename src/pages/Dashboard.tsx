@@ -104,10 +104,11 @@ const Dashboard = () => {
     const includedTryRegs = included(tryRegs);
     const includedRsvps = included(rsvps);
 
-    // Dedupe registrations by email (keep paid over unpaid)
+    // Dedupe registrations per person (people can share a household email), keep paid over unpaid
+    const personKey = (x: Reg) => `${norm(x.email)}|${(x.first_name || "").trim().toLowerCase()}|${(x.last_name || "").trim().toLowerCase()}`;
     const regByEmail = new Map<string, Reg>();
     includedRegs.forEach((x) => {
-      const k = norm(x.email);
+      const k = personKey(x);
       const prev = regByEmail.get(k);
       if (!prev || (prev.payment_status !== "paid" && x.payment_status === "paid")) regByEmail.set(k, x);
     });
