@@ -368,8 +368,31 @@ const Dashboard = () => {
                 <Area type="monotone" dataKey="Interest signups" stroke="hsl(38 92% 50%)" fill="url(#gPro)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
+        </div>
+
+        {/* Daily payments by location */}
+        <div className="bg-card border border-border rounded-xl p-4 md:p-6 mb-6">
+          <h2 className="font-heading font-bold text-lg mb-1">Payments received per day — by location</h2>
+          <p className="text-xs text-muted-foreground mb-4">
+            Since Aug 3, 2026 · {data.paymentsTotal} payments · ${data.paymentsAmount.toLocaleString("en-CA")} collected
+          </p>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data.payments} margin={{ left: -20, right: 8, top: 8 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="day" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" interval="preserveStartEnd" />
+                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+                <Bar dataKey="Montreal" stackId="p" fill="hsl(var(--primary))" />
+                <Bar dataKey="Saint-Hubert" stackId="p" fill="hsl(142 60% 40%)" />
+                <Bar dataKey="Pointe-Claire" stackId="p" fill="hsl(38 92% 50%)" />
+                <Bar dataKey="Hudson" stackId="p" fill="hsl(280 55% 55%)" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
+
 
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           {/* Location breakdown */}
