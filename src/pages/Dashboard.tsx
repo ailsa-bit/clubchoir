@@ -230,6 +230,7 @@ const Dashboard = () => {
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
       byLoc, staleUnpaid, feed, recent, recentByLoc,
+      payments, paymentsTotal, paymentsAmount,
       interestedCount: interested.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
