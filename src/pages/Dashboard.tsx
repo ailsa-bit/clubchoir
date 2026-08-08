@@ -368,7 +368,9 @@ const Dashboard = () => {
                 <Area type="monotone" dataKey="Interest signups" stroke="hsl(38 92% 50%)" fill="url(#gPro)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
+          </div>
         </div>
+
 
         {/* Daily payments by location */}
         <div className="bg-card border border-border rounded-xl p-4 md:p-6 mb-6">
