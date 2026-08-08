@@ -228,6 +228,9 @@ const Register = () => {
               </li>
             ))}
           </ul>
+          <p className="mt-4 rounded-xl border border-border bg-muted/50 px-4 py-3 text-sm font-semibold text-foreground">
+            {t.feeNote}
+          </p>
         </section>
 
         <form onSubmit={handleSubmit} className="space-y-6">
