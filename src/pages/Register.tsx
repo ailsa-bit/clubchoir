@@ -68,6 +68,13 @@ const Register = () => {
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { kind: "success" | "already"; returning: boolean }>(null);
+  const viewContentFired = useRef(false);
+
+  useEffect(() => {
+    if (viewContentFired.current) return;
+    viewContentFired.current = true;
+    trackViewContent("Fall 2026 Registration Page");
+  }, []);
 
   const t = {
     title: isFr ? "Inscription — Session d'automne 2026" : "Register — Fall 2026 Session",
