@@ -81,6 +81,11 @@ const Register = () => {
     subtitle: isFr
       ? "Inscrivez-vous à l'une de nos chorales d'automne. Nous vous enverrons les instructions de virement pour confirmer votre place."
       : "Sign up for one of our fall choirs. We'll email you e-transfer instructions to confirm your spot.",
+    introTitle: isFr ? "Un endroit accueillant pour chanter" : "A welcoming place to sing",
+    intro: isFr
+      ? "Club Choir est une chorale communautaire chaleureuse, sans audition, pour les adultes qui aiment chanter, même après une longue pause. Vous n'avez pas besoin de lire la musique ni d'être un chanteur ou une chanteuse parfaite. Choisissez le lieu qui vous convient et remplissez le formulaire ci-dessous pour réserver votre place à l'automne 2026. Nous commencerons à chanter ensemble en septembre."
+      : "Club Choir is a warm, no-audition community choir for adults who love to sing, even if they have not done it in years. You do not need to read music or be a perfect singer. Choose the location that works best for you and complete the registration below to reserve your place for Fall 2026. We start singing together in September.",
+    reassurances: isFr ? ["Aucune audition", "Pas besoin de lire la musique", "Venez comme vous êtes"] : ["No audition", "No music reading required", "Come as you are"],
     first: isFr ? "Prénom" : "First name",
     last: isFr ? "Nom" : "Last name",
     email: "Courriel",
