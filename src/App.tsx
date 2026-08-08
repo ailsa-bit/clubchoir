@@ -98,6 +98,9 @@ const App = () => (
             <Route path="/rsvp" element={<RsvpConfirm />} />
             <Route path="/open-house-rsvps" element={<OpenHouseRsvps />} />
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+            <Route path="/hudson-open-house" element={<HudsonOpenHouse />} />
+            <Route path="/fr/hudson-open-house" element={<HudsonOpenHouse lang="fr" />} />
+
 
             {/* SEO redirects for legacy indexed URLs */}
             <Route path="/website-about-us" element={<Navigate to="/about" replace />} />
