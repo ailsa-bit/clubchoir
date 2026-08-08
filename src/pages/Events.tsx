@@ -132,6 +132,36 @@ const Events = () => {
           {t("events.subtitle")}
         </p>
 
+        {/* Fall 2026 Registration CTA */}
+        <Card className="mb-6 border-primary/30 bg-primary/5">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-primary mb-1">
+              <Music className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Inscriptions ouvertes" : "Registration open"}
+              </span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {language === "fr" ? "Session d'automne 2026" : "Fall 2026 Session"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Inscrivez-vous à l'une de nos chorales d'automne à Montréal, Hudson, Saint-Hubert ou Pointe-Claire."
+                : "Sign up for one of our fall choirs in Montreal, Hudson, Saint-Hubert, or Pointe-Claire."}
+            </p>
+            <div className="pt-2">
+              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-semibold">
+                <Link to="/register">
+                  <Music className="w-4 h-4 mr-1.5" />
+                  {language === "fr" ? "S'inscrire maintenant" : "Register now"}
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Open Houses — recap */}
         <Card className="mb-12 border-lime/30 bg-lime-light">
           <CardHeader className="pb-3">
@@ -163,36 +193,6 @@ const Events = () => {
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
           {language === "fr" ? "Événements à venir" : "Upcoming Events"}
         </h2>
-
-        {/* Fall 2026 Registration CTA */}
-        <Card className="mb-6 border-primary/30 bg-primary/5">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-primary mb-1">
-              <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">
-                {language === "fr" ? "Inscriptions ouvertes" : "Registration open"}
-              </span>
-            </div>
-            <CardTitle className="text-xl font-heading">
-              {language === "fr" ? "Session d'automne 2026" : "Fall 2026 Session"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-muted-foreground leading-relaxed">
-              {language === "fr"
-                ? "Inscrivez-vous à l'une de nos chorales d'automne à Montréal, Hudson, Saint-Hubert ou Pointe-Claire."
-                : "Sign up for one of our fall choirs in Montreal, Hudson, Saint-Hubert, or Pointe-Claire."}
-            </p>
-            <div className="pt-2">
-              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full font-semibold">
-                <Link to="/register">
-                  <Music className="w-4 h-4 mr-1.5" />
-                  {language === "fr" ? "S'inscrire maintenant" : "Register now"}
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
 
 
         {/* Pointe-Claire Village Day Festival */}
