@@ -86,6 +86,9 @@ const Register = () => {
       ? "Club Choir est une chorale communautaire chaleureuse, sans audition, pour les adultes qui aiment chanter, même après une longue pause. Vous n'avez pas besoin de lire la musique ni d'être un chanteur ou une chanteuse parfaite. Choisissez le lieu qui vous convient et remplissez le formulaire ci-dessous pour réserver votre place à l'automne 2026. Nous commencerons à chanter ensemble en septembre."
       : "Club Choir is a warm, no-audition community choir for adults who love to sing, even if they have not done it in years. You do not need to read music or be a perfect singer. Choose the location that works best for you and complete the registration below to reserve your place for Fall 2026. We start singing together in September.",
     reassurances: isFr ? ["Aucune audition", "Pas besoin de lire la musique", "Venez comme vous êtes"] : ["No audition", "No music reading required", "Come as you are"],
+    feeNote: isFr
+      ? "La session d'automne 2026 est de 280 $ pour 14 semaines, soit 20 $ par semaine."
+      : "The Fall 2026 session is $280 for 14 weeks, which works out to $20 per week.",
     first: isFr ? "Prénom" : "First name",
     last: isFr ? "Nom" : "Last name",
     email: "Courriel",
@@ -225,6 +228,9 @@ const Register = () => {
               </li>
             ))}
           </ul>
+          <p className="mt-4 rounded-xl border border-border bg-muted/50 px-4 py-3 text-sm font-semibold text-foreground">
+            {t.feeNote}
+          </p>
         </section>
 
         <form onSubmit={handleSubmit} className="space-y-6">
