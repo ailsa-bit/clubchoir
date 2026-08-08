@@ -284,11 +284,15 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
 async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
   const { data: memberRows } = await supabase.from("members").select("email, first_name, last_name, location, crm_tags, archived_at");
   const suppressed = new Set<string>();
+  // Guest-list people are invited to try the first night; they must never get payment emails/reminders
+  const guestList = new Set<string>();
   for (const m of memberRows || []) {
-    if (m.email && Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) {
-      suppressed.add(String(m.email).toLowerCase());
-    }
+    if (!m.email) continue;
+    const e = String(m.email).toLowerCase();
+    if (Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) suppressed.add(e);
+    if (Array.isArray(m.crm_tags) && (m.crm_tags.includes("guest-list") || m.crm_tags.includes("no-payment-emails"))) guestList.add(e);
   }
+
 
   const { data: allRegs } = await supabase
     .from("session_registrations")
