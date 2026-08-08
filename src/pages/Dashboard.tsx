@@ -391,17 +391,17 @@ const Dashboard = () => {
 
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data.payments} margin={{ left: -20, right: 8, top: 8 }}>
+              <LineChart data={data.payments} margin={{ left: -20, right: 8, top: 8 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="day" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" interval="preserveStartEnd" />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                 <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
                 <Legend wrapperStyle={{ fontSize: 12 }} />
-                <Bar dataKey="Montreal" stackId="p" fill="hsl(var(--primary))" />
-                <Bar dataKey="Saint-Hubert" stackId="p" fill="hsl(142 60% 40%)" />
-                <Bar dataKey="Pointe-Claire" stackId="p" fill="hsl(38 92% 50%)" />
-                <Bar dataKey="Hudson" stackId="p" fill="hsl(280 55% 55%)" radius={[4, 4, 0, 0]} />
-              </BarChart>
+                <Line type="monotone" dataKey="Montreal" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                <Line type="monotone" dataKey="Saint-Hubert" stroke="hsl(142 60% 40%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                <Line type="monotone" dataKey="Pointe-Claire" stroke="hsl(38 92% 50%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                <Line type="monotone" dataKey="Hudson" stroke="hsl(280 55% 55%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+              </LineChart>
             </ResponsiveContainer>
           </div>
         </div>
