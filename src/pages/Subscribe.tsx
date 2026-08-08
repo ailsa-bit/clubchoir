@@ -4,6 +4,7 @@ import { Mail, Sparkles, Calendar, Music, PartyPopper, CheckCircle2 } from "luci
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { getAttribution } from "@/lib/attribution";
+import { trackLead } from "@/lib/metaPixel";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import PageMeta from "@/components/PageMeta";
@@ -85,6 +86,7 @@ const Subscribe = () => {
         // Duplicate email -> still treat as success (idempotent UX)
         if (error.code === "23505") {
           setDone(true);
+          trackLead("Prospect Subscribe", payload.locations?.[0]);
           return;
         }
         throw error;
@@ -96,6 +98,7 @@ const Subscribe = () => {
       );
 
       setDone(true);
+      trackLead("Prospect Subscribe", payload.locations?.[0]);
     } catch (err: any) {
       console.error("Subscribe error:", err);
       toast({

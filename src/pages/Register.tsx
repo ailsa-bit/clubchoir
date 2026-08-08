@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, CheckCircle2, AlertCircle, Calendar, MapPin } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import ChoirFaq from "@/components/ChoirFaq";
 import { supabase } from "@/integrations/supabase/client";
 import { getAttribution } from "@/lib/attribution";
+import { trackViewContent, trackCompleteRegistration } from "@/lib/metaPixel";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -67,6 +68,13 @@ const Register = () => {
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { kind: "success" | "already"; returning: boolean }>(null);
+  const viewContentFired = useRef(false);
+
+  useEffect(() => {
+    if (viewContentFired.current) return;
+    viewContentFired.current = true;
+    trackViewContent("Fall 2026 Registration Page");
+  }, []);
 
   const t = {
     title: isFr ? "Inscription — Session d'automne 2026" : "Register — Fall 2026 Session",
@@ -133,6 +141,7 @@ const Register = () => {
         setResult({ kind: "already", returning: !!data.returning_member });
       } else {
         setResult({ kind: "success", returning: !!data?.returning_member });
+        trackCompleteRegistration(location, data?.payment_status || "pending");
       }
     } catch (err: any) {
       console.error(err);
