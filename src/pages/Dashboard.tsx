@@ -174,14 +174,14 @@ const Dashboard = () => {
     const payDays: string[] = [];
     for (let d = new Date(payStart); d <= new Date(); d.setDate(d.getDate() + 1)) payDays.push(dayKey(new Date(d)));
     const payMap = new Map<string, any>(payDays.map((d) => [d, Object.fromEntries([["day", fmtDay(d)], ["total", 0], ["amount", 0], ...LOCATIONS.map((l) => [l, 0])])]));
-    // A household can pay once for several registrations — count one payment per email/day
+    // Each paid member counts as its own payment, even when a household shares one email
     const seenTx = new Set<string>();
     paidRegs.forEach((x) => {
       const k = dayKey(x.updated_at || x.created_at);
       const row = payMap.get(k);
       if (!row) return;
       const loc = LOCATIONS.find((l) => l.toLowerCase() === (x.location || "").toLowerCase());
-      const txKey = `${norm(x.email)}|${k}`;
+      const txKey = `${personKey(x)}|${k}`;
       if (!seenTx.has(txKey)) {
         seenTx.add(txKey);
         if (loc) row[loc]++;
