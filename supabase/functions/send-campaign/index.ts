@@ -321,9 +321,12 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   }
   // A person who paid on any registration should never also be in the unpaid list
   for (const e of paidMap.keys()) unpaidMap.delete(e);
+  // Guest list never receives payment reminders
+  for (const e of guestList) unpaidMap.delete(e);
 
   if (segment === "fall-paid") return Array.from(paidMap.values());
   if (segment === "fall-unpaid") return Array.from(unpaidMap.values());
+
 
   // Everyone else: any contact with no fall-2026 registration at all
   const rest = new Map<string, Recipient>();
