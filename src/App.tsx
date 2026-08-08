@@ -46,6 +46,7 @@ import Campaigns from "./pages/Campaigns";
 import RsvpConfirm from "./pages/RsvpConfirm";
 import OpenHouseRsvps from "./pages/OpenHouseRsvps";
 import OAuthConsent from "./pages/OAuthConsent";
+import HudsonOpenHouse from "./pages/HudsonOpenHouse";
 
 const queryClient = new QueryClient();
 
