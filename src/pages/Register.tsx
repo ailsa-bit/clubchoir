@@ -211,6 +211,22 @@ const Register = () => {
           {t.subtitle}
         </p>
 
+        <section className="rounded-2xl border border-border bg-card px-5 py-6 sm:px-7 mb-8" aria-labelledby="registration-intro-title">
+          <h2 id="registration-intro-title" className="font-heading font-bold text-xl text-foreground mb-2">
+            {t.introTitle}
+          </h2>
+          <p className="text-foreground/80 leading-relaxed">
+            {t.intro}
+          </p>
+          <ul className="mt-5 flex flex-wrap gap-2" aria-label={isFr ? "Rassurances" : "Reassurances"}>
+            {t.reassurances.map((reassurance) => (
+              <li key={reassurance} className="rounded-full bg-muted px-3 py-1.5 text-sm font-semibold text-foreground">
+                {reassurance}
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Location picker */}
           <div>
