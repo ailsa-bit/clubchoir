@@ -24,6 +24,7 @@ const isExcludedLocation = (location?: string | null) => EXCLUDED_LOCATIONS.has(
 interface Reg {
   email: string; location: string; payment_status: string; created_at: string;
   amount_paid: number | null; first_name: string; last_name: string; session_label: string;
+  updated_at?: string | null;
 }
 interface Prospect { email: string; locations: string[]; created_at: string; first_name: string; last_name: string | null; }
 interface Rsvp { email: string; location: string; created_at: string; first_name: string | null; last_name: string | null; }
@@ -76,8 +77,8 @@ const Dashboard = () => {
   const fetchAll = async () => {
     setLoading(true);
     const [r, t, p, o, m] = await Promise.all([
-      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").eq("session_label", "fall-2026"),
-      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label").in("session_label", ["try-a-session", "open-house-2026"]),
+      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label,updated_at").eq("session_label", "fall-2026"),
+      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label,updated_at").in("session_label", ["try-a-session", "open-house-2026"]),
       supabase.from("prospects").select("email,locations,created_at,first_name,last_name"),
       supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name"),
       supabase.from("members").select("email,location,status,created_at,crm_tags,archived_at"),
@@ -164,6 +165,24 @@ const Dashboard = () => {
       };
     });
 
+    // Daily payments received (by location) starting Aug 3, 2026
+    const payStart = new Date("2026-08-03T00:00:00");
+    const payDays: string[] = [];
+    for (let d = new Date(payStart); d <= new Date(); d.setDate(d.getDate() + 1)) payDays.push(dayKey(new Date(d)));
+    const payMap = new Map<string, any>(payDays.map((d) => [d, Object.fromEntries([["day", fmtDay(d)], ["total", 0], ["amount", 0], ...LOCATIONS.map((l) => [l, 0])])]));
+    includedRegs.filter((x) => x.payment_status === "paid").forEach((x) => {
+      const k = dayKey(x.updated_at || x.created_at);
+      const row = payMap.get(k);
+      if (!row) return;
+      const loc = LOCATIONS.find((l) => l.toLowerCase() === (x.location || "").toLowerCase());
+      if (loc) row[loc]++;
+      row.total++;
+      row.amount += Number(x.amount_paid ?? 280);
+    });
+    const payments = [...payMap.values()];
+    const paymentsTotal = payments.reduce((s2, r) => s2 + r.total, 0);
+    const paymentsAmount = payments.reduce((s2, r) => s2 + r.amount, 0);
+
     // Follow-ups: unpaid registrations older than 5 days
     const cutoff = daysAgo(5);
     const staleUnpaid = unpaid
@@ -211,6 +230,7 @@ const Dashboard = () => {
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
       byLoc, staleUnpaid, feed, recent, recentByLoc,
+      payments, paymentsTotal, paymentsAmount,
       interestedCount: interested.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
@@ -350,6 +370,31 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
         </div>
+
+
+        {/* Daily payments by location */}
+        <div className="bg-card border border-border rounded-xl p-4 md:p-6 mb-6">
+          <h2 className="font-heading font-bold text-lg mb-1">Payments received per day — by location</h2>
+          <p className="text-xs text-muted-foreground mb-4">
+            Since Aug 3, 2026 · {data.paymentsTotal} payments · ${data.paymentsAmount.toLocaleString("en-CA")} collected
+          </p>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data.payments} margin={{ left: -20, right: 8, top: 8 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="day" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" interval="preserveStartEnd" />
+                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
+                <Bar dataKey="Montreal" stackId="p" fill="hsl(var(--primary))" />
+                <Bar dataKey="Saint-Hubert" stackId="p" fill="hsl(142 60% 40%)" />
+                <Bar dataKey="Pointe-Claire" stackId="p" fill="hsl(38 92% 50%)" />
+                <Bar dataKey="Hudson" stackId="p" fill="hsl(280 55% 55%)" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
 
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           {/* Location breakdown */}
