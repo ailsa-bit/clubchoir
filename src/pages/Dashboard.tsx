@@ -240,7 +240,7 @@ const Dashboard = () => {
     return {
       uniqueRegs, paid, unpaid, revenue, interested, trend, newInRange, delta,
       byLoc, staleUnpaid, feed, recent, recentByLoc,
-      payments, paymentsTotal, paymentsAmount,
+      payments, paymentsTotal, paymentsAmount, paymentsStartLabel,
       interestedCount: interested.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
@@ -386,8 +386,9 @@ const Dashboard = () => {
         <div className="bg-card border border-border rounded-xl p-4 md:p-6 mb-6">
           <h2 className="font-heading font-bold text-lg mb-1">Payments received per day — by location</h2>
           <p className="text-xs text-muted-foreground mb-4">
-            Since Aug 3, 2026 · {data.paymentsTotal} payments · ${data.paymentsAmount.toLocaleString("en-CA")} collected
+            Since {data.paymentsStartLabel} · {data.paymentsTotal} payments · ${data.paymentsAmount.toLocaleString("en-CA")} collected (comped memberships excluded)
           </p>
+
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.payments} margin={{ left: -20, right: 8, top: 8 }}>
