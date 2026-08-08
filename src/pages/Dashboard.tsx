@@ -125,7 +125,8 @@ const Dashboard = () => {
     const memberTagged = new Set(
       members.filter((x) => !x.archived_at && !isExcludedLocation(x.location) && (x.crm_tags || []).some((t) => t === "open-house-2026" || t === "try-a-session")).map((x) => norm(x.email)),
     );
-    const interested = new Set<string>([...rsvpEmails, ...prospectEmails, ...softRegEmails, ...memberTagged].filter((e) => e && !regByEmail.has(e)));
+    const registeredEmails = new Set(includedRegs.map((x) => norm(x.email)));
+    const interested = new Set<string>([...rsvpEmails, ...prospectEmails, ...softRegEmails, ...memberTagged].filter((e) => e && !registeredEmails.has(e)));
 
     // Trend series
     const days: string[] = [];
