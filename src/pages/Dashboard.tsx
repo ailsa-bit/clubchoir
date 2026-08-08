@@ -165,23 +165,33 @@ const Dashboard = () => {
       };
     });
 
-    // Daily payments received (by location) starting Aug 3, 2026
-    const payStart = new Date("2026-08-03T00:00:00");
+    // Daily payments received (by location) — all payments, from the first one onward
+    const paidRegs = includedRegs.filter((x) => x.payment_status === "paid" && Number(x.amount_paid ?? 280) > 0);
+    const payDates = paidRegs.map((x) => new Date(x.updated_at || x.created_at)).sort((a, b) => +a - +b);
+    const payStart = payDates[0] ? new Date(payDates[0].toDateString()) : new Date();
     const payDays: string[] = [];
     for (let d = new Date(payStart); d <= new Date(); d.setDate(d.getDate() + 1)) payDays.push(dayKey(new Date(d)));
     const payMap = new Map<string, any>(payDays.map((d) => [d, Object.fromEntries([["day", fmtDay(d)], ["total", 0], ["amount", 0], ...LOCATIONS.map((l) => [l, 0])])]));
-    includedRegs.filter((x) => x.payment_status === "paid").forEach((x) => {
+    // A household can pay once for several registrations — count one payment per email/day
+    const seenTx = new Set<string>();
+    paidRegs.forEach((x) => {
       const k = dayKey(x.updated_at || x.created_at);
       const row = payMap.get(k);
       if (!row) return;
       const loc = LOCATIONS.find((l) => l.toLowerCase() === (x.location || "").toLowerCase());
-      if (loc) row[loc]++;
-      row.total++;
+      const txKey = `${norm(x.email)}|${k}`;
+      if (!seenTx.has(txKey)) {
+        seenTx.add(txKey);
+        if (loc) row[loc]++;
+        row.total++;
+      }
       row.amount += Number(x.amount_paid ?? 280);
     });
     const payments = [...payMap.values()];
     const paymentsTotal = payments.reduce((s2, r) => s2 + r.total, 0);
     const paymentsAmount = payments.reduce((s2, r) => s2 + r.amount, 0);
+    const paymentsStartLabel = fmtDay(dayKey(payStart));
+
 
     // Follow-ups: unpaid registrations older than 5 days
     const cutoff = daysAgo(5);
