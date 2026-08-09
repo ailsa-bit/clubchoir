@@ -119,14 +119,6 @@ const Index = () => {
                 </Link>
               </div>
 
-
-
-
-
-
-
-
-              </div>
             </div>
 
             {/* Visual */}
