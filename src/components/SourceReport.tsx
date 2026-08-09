@@ -37,6 +37,9 @@ type Rsvp = {
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
+  utm_content: string | null;
+  utm_term: string | null;
+  landing_page: string | null;
   source_campaign: string | null;
   referrer: string | null;
 };
@@ -57,6 +60,14 @@ const Row = ({ cells, head = false }: { cells: (string | number)[]; head?: boole
   </div>
 );
 
+const OhRow = ({ cells, head = false }: { cells: (string | number)[]; head?: boolean }) => (
+  <div className={`grid grid-cols-[1.1fr_0.9fr_1.2fr_1.1fr_0.9fr_1.1fr_minmax(0,0.5fr)] gap-2 px-3 py-2 text-sm min-w-[900px] ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
+    {cells.map((c, i) => (
+      <span key={i} className={i === 0 ? "truncate" : i === cells.length - 1 ? "text-right tabular-nums" : "truncate text-muted-foreground"}>{c}</span>
+    ))}
+  </div>
+);
+
 const SourceReport = () => {
   const [loading, setLoading] = useState(true);
   const [regs, setRegs] = useState<Reg[]>([]);
@@ -64,17 +75,24 @@ const SourceReport = () => {
 
   useEffect(() => {
     (async () => {
-      const [r1, r2] = await Promise.all([
+      const [r1, r2, r3] = await Promise.all([
         supabase
           .from("session_registrations")
           .select("location, payment_status, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer")
           .eq("session_label", SESSION_LABEL),
         supabase
           .from("open_house_rsvps")
-          .select("location, utm_source, utm_medium, utm_campaign, source_campaign, referrer"),
+          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, source_campaign, referrer"),
+        // Open-house signups submitted through /hudson-open-house land in session_registrations
+        // under the "open-house-2026" label — never mixed into the fall-2026 numbers above.
+        supabase
+          .from("session_registrations")
+          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer")
+          .eq("session_label", "open-house-2026"),
       ]);
       setRegs(((r1.data as Reg[]) || []).filter((r) => !EXCLUDED.has((r.location || "").trim().toLowerCase())));
-      setRsvps((r2.data as Rsvp[]) || []);
+      const ohForm = ((r3.data as any[]) || []).map((r) => ({ ...r, source_campaign: null })) as Rsvp[];
+      setRsvps([...(((r2.data as Rsvp[]) || [])), ...ohForm]);
       setLoading(false);
     })();
   }, []);
@@ -120,12 +138,17 @@ const SourceReport = () => {
   }, [regs]);
 
   const rsvpRows = useMemo(() => {
-    const map = new Map<string, { source: string; campaign: string; total: number }>();
+    type Agg = { source: string; medium: string; campaign: string; content: string; term: string; landing: string; total: number };
+    const map = new Map<string, Agg>();
     for (const r of rsvps) {
       const source = sourceOf(r);
+      const medium = r.utm_medium || "—";
       const campaign = r.utm_campaign || r.source_campaign || "—";
-      const key = `${source}|${campaign}`;
-      const cur = map.get(key) || { source, campaign, total: 0 };
+      const content = r.utm_content || "—";
+      const term = r.utm_term || "—";
+      const landing = (r.landing_page || "—").split("?")[0];
+      const key = `${source}|${medium}|${campaign}|${content}|${term}|${landing}`;
+      const cur = map.get(key) || { source, medium, campaign, content, term, landing, total: 0 };
       cur.total += 1;
       map.set(key, cur);
     }
@@ -194,16 +217,23 @@ const SourceReport = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-sm mb-2">Open house RSVPs by source</h3>
-            <div className="border border-border rounded-lg">
+            <h3 className="font-semibold text-sm mb-2">Open house RSVPs by source (separate from fall registrations)</h3>
+            <div className="flex flex-wrap gap-2 mb-2">
+              <Badge variant="outline">Total RSVPs: {rsvps.length}</Badge>
+              <Badge variant="outline">
+                Hudson open-house campaign:{" "}
+                {rsvps.filter((r) =>
+                  (r.utm_campaign || r.source_campaign || "").toLowerCase().includes("hudson") ||
+                  (r.landing_page || "").toLowerCase().includes("hudson-open-house"),
+                ).length}
+              </Badge>
+            </div>
+            <div className="border border-border rounded-lg overflow-x-auto">
+              <OhRow head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Landing page", "RSVPs"]} />
               {rsvpRows.length === 0 ? (
-                <div className="px-3 py-3 text-sm text-muted-foreground">No RSVPs yet.</div>
+                <div className="px-3 py-3 text-sm text-muted-foreground border-t border-border">No RSVPs yet.</div>
               ) : rsvpRows.map((r, i) => (
-                <div key={i} className={`flex items-center justify-between gap-3 px-3 py-2 text-sm ${i ? "border-t border-border" : ""}`}>
-                  <span className="truncate">{r.source}</span>
-                  <span className="truncate text-muted-foreground flex-1 mx-3">{r.campaign}</span>
-                  <Badge variant="outline" className="shrink-0">{r.total}</Badge>
-                </div>
+                <OhRow key={i} cells={[r.source, r.medium, r.campaign, r.content, r.term, r.landing, r.total]} />
               ))}
             </div>
           </div>
