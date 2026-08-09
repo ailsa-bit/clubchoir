@@ -45,8 +45,7 @@ const COPY = {
     formHint: "Just so we know to look out for you.",
     name: "Your name",
     email: "Email",
-    phone: "Phone (optional)",
-    question: "Have you sung in a choir before? (optional)",
+    message: "Message (optional)",
     submit: "RSVP for the Hudson Open House",
     sending: "Sending…",
     confirmTitle: "You're on the list for the Hudson Open House.",
@@ -83,8 +82,7 @@ const COPY = {
     formHint: "Pour qu'on sache vous attendre.",
     name: "Votre nom",
     email: "Courriel",
-    phone: "Téléphone (facultatif)",
-    question: "Avez-vous déjà chanté dans une chorale ? (facultatif)",
+    message: "Message (facultatif)",
     submit: "Je réserve ma place",
     sending: "Envoi…",
     confirmTitle: "Votre place est réservée pour les portes ouvertes à Hudson.",
@@ -103,8 +101,7 @@ const COPY = {
 type FormValues = {
   name: string;
   email: string;
-  phone: string;
-  experience: string;
+  message: string;
 };
 
 const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
@@ -116,13 +113,12 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
   const schema = z.object({
     name: z.string().trim().min(1, c.vName).max(100),
     email: z.string().trim().email(c.vEmail).max(255),
-    phone: z.string().trim().max(40).optional().default(""),
-    experience: z.string().trim().max(500).optional().default(""),
+    message: z.string().trim().max(2000).optional().default(""),
   });
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { name: "", email: "", phone: "", experience: "" },
+    defaultValues: { name: "", email: "", message: "" },
   });
 
   const onSubmit = async (data: FormValues) => {
@@ -131,8 +127,7 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
       const parts = data.name.trim().split(/\s+/);
       const notes = [
         "Hudson Open House — Tuesday, August 18, 2026, 7:30pm (The Hudson Legion)",
-        data.phone.trim() ? `Phone: ${data.phone.trim()}` : "",
-        data.experience.trim() ? `Choir experience: ${data.experience.trim()}` : "",
+        data.message.trim() ? `Message: ${data.message.trim()}` : "",
       ]
         .filter(Boolean)
         .join("\n");
@@ -206,7 +201,6 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
         }}
       />
 
-      {/* Invitation header */}
       <section className="px-4 pt-14 pb-10">
         <div className="container mx-auto max-w-6xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-orange-light text-foreground px-4 py-1.5 text-xs font-semibold tracking-wide uppercase">
@@ -233,7 +227,6 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
         </div>
       </section>
 
-      {/* Details */}
       <section className="px-4 pb-10">
         <div className="container mx-auto max-w-6xl rounded-2xl border border-border bg-card p-6">
           <h2 className="font-heading font-bold text-lg text-foreground mb-4">{c.detailsTitle}</h2>
@@ -241,7 +234,6 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
         </div>
       </section>
 
-      {/* RSVP */}
       <section className="px-4 pb-16">
         <div className="container mx-auto max-w-6xl rounded-2xl border border-border bg-card p-6 sm:p-8">
           {sent ? (
@@ -254,7 +246,7 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
               <p className="text-sm font-medium text-foreground">{c.confirmWhen}</p>
               <div className="mt-6">
                 <Button asChild variant="outline">
-                  <Link to={lang === "fr" ? "/" : "/"}>{c.home}</Link>
+                  <Link to="/">{c.home}</Link>
                 </Button>
               </div>
             </div>
@@ -292,25 +284,12 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
                   />
                   <FormField
                     control={form.control}
-                    name="phone"
+                    name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{c.phone}</FormLabel>
+                        <FormLabel>{c.message}</FormLabel>
                         <FormControl>
-                          <Input type="tel" autoComplete="tel" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="experience"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{c.question}</FormLabel>
-                        <FormControl>
-                          <Textarea rows={3} {...field} />
+                          <Textarea rows={4} {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
