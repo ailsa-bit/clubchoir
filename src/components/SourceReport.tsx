@@ -60,6 +60,14 @@ const Row = ({ cells, head = false }: { cells: (string | number)[]; head?: boole
   </div>
 );
 
+const OhRow = ({ cells, head = false }: { cells: (string | number)[]; head?: boolean }) => (
+  <div className={`grid grid-cols-[1.1fr_0.9fr_1.2fr_1.1fr_0.9fr_1.1fr_minmax(0,0.5fr)] gap-2 px-3 py-2 text-sm min-w-[900px] ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
+    {cells.map((c, i) => (
+      <span key={i} className={i === 0 ? "truncate" : i === cells.length - 1 ? "text-right tabular-nums" : "truncate text-muted-foreground"}>{c}</span>
+    ))}
+  </div>
+);
+
 const SourceReport = () => {
   const [loading, setLoading] = useState(true);
   const [regs, setRegs] = useState<Reg[]>([]);
@@ -67,17 +75,24 @@ const SourceReport = () => {
 
   useEffect(() => {
     (async () => {
-      const [r1, r2] = await Promise.all([
+      const [r1, r2, r3] = await Promise.all([
         supabase
           .from("session_registrations")
           .select("location, payment_status, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer")
           .eq("session_label", SESSION_LABEL),
         supabase
           .from("open_house_rsvps")
-          .select("location, utm_source, utm_medium, utm_campaign, source_campaign, referrer"),
+          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, source_campaign, referrer"),
+        // Open-house signups submitted through /hudson-open-house land in session_registrations
+        // under the "open-house-2026" label — never mixed into the fall-2026 numbers above.
+        supabase
+          .from("session_registrations")
+          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer")
+          .eq("session_label", "open-house-2026"),
       ]);
       setRegs(((r1.data as Reg[]) || []).filter((r) => !EXCLUDED.has((r.location || "").trim().toLowerCase())));
-      setRsvps((r2.data as Rsvp[]) || []);
+      const ohForm = ((r3.data as any[]) || []).map((r) => ({ ...r, source_campaign: null })) as Rsvp[];
+      setRsvps([...(((r2.data as Rsvp[]) || [])), ...ohForm]);
       setLoading(false);
     })();
   }, []);
