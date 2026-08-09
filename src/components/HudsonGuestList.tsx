@@ -34,14 +34,14 @@ const HudsonGuestList = () => {
       const [a, b] = await Promise.all([
         supabase
           .from("open_house_rsvps")
-          .select("first_name,last_name,email,location,landing_page,source_campaign,created_at"),
+          .select("first_name,last_name,email,landing_page,source_campaign,utm_campaign,created_at"),
         supabase
           .from("session_registrations")
-          .select("first_name,last_name,email,location,landing_page,created_at")
+          .select("first_name,last_name,email,landing_page,utm_campaign,created_at")
           .eq("session_label", "open-house-2026"),
       ]);
       const rows = [...((a.data as any[]) || []), ...((b.data as any[]) || [])]
-        .filter(isHudson)
+        .filter(isAug18Hudson)
         .map((r) => ({
           name: `${r.first_name || ""} ${r.last_name || ""}`.trim() || "—",
           email: (r.email || "").trim(),
@@ -86,6 +86,7 @@ const HudsonGuestList = () => {
           <Download className="h-4 w-4 mr-2" /> Export CSV
         </Button>
       </div>
+      <p className="text-xs text-muted-foreground -mt-2 mb-4">Hudson Open House — August 18, 2026 only (previous open houses excluded).</p>
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : guests.length === 0 ? (
