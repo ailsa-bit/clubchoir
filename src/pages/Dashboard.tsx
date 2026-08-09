@@ -255,6 +255,7 @@ const Dashboard = () => {
       byLoc, staleUnpaid, feed, recent, recentByLoc,
       payments, paymentsTotal, paymentsAmount, paymentsStartLabel,
       interestedCount: interested.size,
+      potentialCount: unpaid.length + interested.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
 
