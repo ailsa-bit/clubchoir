@@ -106,40 +106,36 @@ const Index = () => {
                   </Link>
                   <a
                     href="#sessions"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full border-2 border-orange text-orange font-bold hover:bg-orange hover:text-orange-foreground transition-colors"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-orange text-orange font-bold hover:bg-orange hover:text-orange-foreground transition-colors"
                   >
                     <Calendar className="w-4 h-4" />
                     {t("home.hero.seeSessions")}
                   </a>
                 </div>
 
-                <div className="rounded-2xl border border-lime/60 bg-lime-light p-5 shadow-sm">
-                  <span className="inline-block px-2.5 py-1 rounded-full bg-lime text-lime-foreground text-[11px] font-bold uppercase tracking-wide">
-                    {isFr ? "Événement gratuit" : "Free event"}
-                  </span>
-                  <p className="mt-3 font-heading font-bold text-lg text-foreground">
-                    {isFr ? "Portes ouvertes à Hudson" : "Hudson Open House"}
-                  </p>
-                  <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-lime shrink-0" />
-                      {isFr ? "Mardi 18 août 2026 · 19 h 30" : "Tuesday, August 18, 2026 · 7:30pm"}
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-lime shrink-0" />
-                      {isFr ? "The Hudson Legion, 57 Beach Road" : "The Hudson Legion, 57 Beach Road"}
-                    </li>
-                  </ul>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {isFr ? "Une soirée d'essai, sans engagement." : "One evening, no commitment."}
+                <div className="rounded-2xl bg-background border border-border p-5 max-w-xl">
+                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                    <p className="font-heading font-bold text-foreground">
+                      {isFr ? "Portes ouvertes à Hudson" : "Hudson Open House"}
+                    </p>
+                    <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                      {isFr ? "· Gratuit" : "· Free"}
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-sm text-muted-foreground">
+                    {isFr
+                      ? "Mardi 18 août 2026 · 19 h 30 · The Hudson Legion, 57 Beach Road — une soirée d'essai, sans engagement."
+                      : "Tuesday, August 18, 2026 · 7:30pm · The Hudson Legion, 57 Beach Road — one evening, no commitment."}
                   </p>
                   <Link
                     to={isFr ? "/fr/hudson-open-house" : "/hudson-open-house"}
-                    className="mt-4 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-lime text-lime-foreground font-bold hover:opacity-90 transition-opacity text-center"
+                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-foreground underline underline-offset-4 decoration-2 decoration-lime hover:text-lime transition-colors"
                   >
                     {isFr ? "Réserver ma place" : "RSVP for the open house"}
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
+
 
 
 
