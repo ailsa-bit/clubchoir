@@ -162,6 +162,59 @@ const Events = () => {
           </CardContent>
         </Card>
 
+        {/* Hudson Open House */}
+        <Card className="mb-6 border-lime/40 bg-lime-light">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-lime mb-1">
+              <Heart className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Vous êtes invité" : "You're invited"}
+              </span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {language === "fr" ? "Portes ouvertes à Hudson" : "Hudson Open House"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5 text-sm text-foreground/80">
+              <span className="flex items-center gap-1.5">
+                <Calendar className="w-4 h-4 text-lime" />
+                {language === "fr" ? "Mardi 18 août 2026" : "Tuesday, August 18, 2026"}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="w-4 h-4 text-lime" />
+                {language === "fr" ? "19 h 30" : "7:30pm"}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-lime" />
+                {language === "fr"
+                  ? "The Hudson Legion, 57 Beach Road, Hudson (QC)"
+                  : "The Hudson Legion, 57 Beach Road, Hudson, QC"}
+              </span>
+            </div>
+            <p className="text-muted-foreground leading-relaxed">
+              {language === "fr"
+                ? "Curieux de découvrir Club Choir ? Joignez-vous à nous pour des portes ouvertes décontractées : rencontrez le groupe, voyez comment se déroulent les répétitions et chantez avec nous le temps d'une soirée. Aucune audition, aucune lecture de musique et aucune pression de vous engager — simplement une belle façon de voir si Club Choir vous convient."
+                : "Curious about Club Choir? Join us for a relaxed open house where you can meet the group, see how rehearsals work, and sing with us for one evening. No auditions, no music reading, and no pressure to commit — just a warm way to see if Club Choir feels like a fit."}
+            </p>
+            <div className="pt-2">
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full font-semibold border-2 border-lime bg-background hover:bg-lime hover:text-lime-foreground"
+              >
+                <Link to={language === "fr" ? "/fr/hudson-open-house" : "/hudson-open-house"}>
+                  <Heart className="w-4 h-4 mr-1.5" />
+                  {language === "fr"
+                    ? "Réserver pour les portes ouvertes à Hudson"
+                    : "RSVP for the Hudson Open House"}
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+
         {/* Open Houses — recap */}
         <Card className="mb-12 border-lime/30 bg-lime-light">
           <CardHeader className="pb-3">
