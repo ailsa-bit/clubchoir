@@ -6,10 +6,24 @@ import { Download } from "lucide-react";
 
 type Guest = { name: string; email: string; created_at: string };
 
-const isHudson = (r: { location?: string | null; landing_page?: string | null; source_campaign?: string | null }) => {
-  const hay = `${r.location || ""} ${r.landing_page || ""} ${r.source_campaign || ""}`.toLowerCase();
-  return hay.includes("hudson");
+// Aug 18, 2026 Hudson Open House only. The dedicated /hudson-open-house page launched
+// Aug 8, 2026 — anything Hudson-related before that belongs to the previous open house.
+const CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
+const AUG18_CAMPAIGN = "hudson_open_house_aug18";
+
+const isAug18Hudson = (r: {
+  landing_page?: string | null;
+  source_campaign?: string | null;
+  utm_campaign?: string | null;
+  created_at?: string | null;
+}) => {
+  const campaign = `${r.utm_campaign || ""} ${r.source_campaign || ""}`.toLowerCase();
+  if (campaign.includes(AUG18_CAMPAIGN)) return true;
+  const landing = (r.landing_page || "").toLowerCase();
+  const onHudsonPage = landing.includes("/hudson-open-house") || landing.includes("/fr/hudson-open-house");
+  return onHudsonPage && +new Date(r.created_at || 0) >= CUTOFF;
 };
+
 
 const HudsonGuestList = () => {
   const [loading, setLoading] = useState(true);
@@ -20,14 +34,14 @@ const HudsonGuestList = () => {
       const [a, b] = await Promise.all([
         supabase
           .from("open_house_rsvps")
-          .select("first_name,last_name,email,location,landing_page,source_campaign,created_at"),
+          .select("first_name,last_name,email,landing_page,source_campaign,utm_campaign,created_at"),
         supabase
           .from("session_registrations")
-          .select("first_name,last_name,email,location,landing_page,created_at")
+          .select("first_name,last_name,email,landing_page,utm_campaign,created_at")
           .eq("session_label", "open-house-2026"),
       ]);
       const rows = [...((a.data as any[]) || []), ...((b.data as any[]) || [])]
-        .filter(isHudson)
+        .filter(isAug18Hudson)
         .map((r) => ({
           name: `${r.first_name || ""} ${r.last_name || ""}`.trim() || "—",
           email: (r.email || "").trim(),
@@ -72,6 +86,7 @@ const HudsonGuestList = () => {
           <Download className="h-4 w-4 mr-2" /> Export CSV
         </Button>
       </div>
+      <p className="text-xs text-muted-foreground -mt-2 mb-4">Hudson Open House — August 18, 2026 only (previous open houses excluded).</p>
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : guests.length === 0 ? (
