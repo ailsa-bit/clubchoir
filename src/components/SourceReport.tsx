@@ -26,6 +26,9 @@ type Reg = {
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
+  utm_content: string | null;
+  utm_term: string | null;
+  landing_page: string | null;
   referrer: string | null;
 };
 
@@ -47,9 +50,9 @@ const sourceOf = (r: { utm_source: string | null; referrer: string | null }) => 
 };
 
 const Row = ({ cells, head = false }: { cells: (string | number)[]; head?: boolean }) => (
-  <div className={`grid grid-cols-[1.4fr_1fr_1.2fr_repeat(3,minmax(0,0.6fr))] gap-2 px-3 py-2 text-sm ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
+  <div className={`grid grid-cols-[1.2fr_0.9fr_1.1fr_1.1fr_0.9fr_repeat(3,minmax(0,0.5fr))] gap-2 px-3 py-2 text-sm min-w-[860px] ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
     {cells.map((c, i) => (
-      <span key={i} className={i === 0 ? "truncate" : i > 2 ? "text-right tabular-nums" : "truncate text-muted-foreground"}>{c}</span>
+      <span key={i} className={i === 0 ? "truncate" : i > 4 ? "text-right tabular-nums" : "truncate text-muted-foreground"}>{c}</span>
     ))}
   </div>
 );
