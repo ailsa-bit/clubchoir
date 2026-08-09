@@ -424,8 +424,8 @@ const Dashboard = () => {
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           {/* Location breakdown */}
           <div className="bg-card border border-border rounded-xl p-4 md:p-6">
-            <h2 className="font-heading font-bold text-lg mb-1">By location</h2>
-            <p className="text-xs text-muted-foreground mb-4">Where to focus promotion and open house capacity.</p>
+            <h2 className="font-heading font-bold text-lg mb-1">Members and potential members by location</h2>
+            <p className="text-xs text-muted-foreground mb-4">Members have paid. Potential members are registered unpaid or interested.</p>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.byLoc} margin={{ left: -20, right: 8, top: 8 }}>
@@ -434,9 +434,8 @@ const Dashboard = () => {
                   <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                   <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Bar dataKey="Registered" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Paid" fill="hsl(142 60% 40%)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Interested" fill="hsl(38 92% 50%)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Members" fill="hsl(142 60% 40%)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Potential" fill="hsl(38 92% 50%)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -444,7 +443,7 @@ const Dashboard = () => {
               {data.byLoc.map((l) => (
                 <div key={l.location} className="flex items-center justify-between border-t border-border pt-1">
                   <span className="inline-flex items-center gap-1.5 text-muted-foreground"><MapPin className="w-3.5 h-3.5" />{l.location}</span>
-                  <span className="font-semibold">{l.Registered} reg · {l.Paid} paid · {l.Interested} interested</span>
+                  <span className="font-semibold">{l.Members} members · {l.Potential} potential ({l.Unpaid} unpaid + {l.Interested} interested)</span>
                 </div>
               ))}
             </div>
