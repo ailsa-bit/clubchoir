@@ -155,19 +155,26 @@ const Dashboard = () => {
       includedRsvps.filter((x) => inPrev(x.created_at)).length;
     const delta = prevCount === 0 ? null : Math.round(((newInRange - prevCount) / prevCount) * 100);
 
-    // Per-location
+    // Per-location: paid registrations are current members; unpaid registrations and
+    // non-registered interest are the potential-member pool.
     const byLoc = LOCATIONS.map((loc) => {
       const l = loc.toLowerCase();
       const regsL = uniqueRegs.filter((x) => (x.location || "").toLowerCase() === l);
+      const paidL = regsL.filter((x) => x.payment_status === "paid");
+      const unpaidL = regsL.filter((x) => x.payment_status !== "paid");
+      const interestedL = new Set([
+        ...includedRsvps.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+        ...includedTryRegs.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+        ...includedProspects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l)).map((x) => norm(x.email)),
+      ].filter((e) => interested.has(e)));
       return {
         location: loc,
         Registered: regsL.length,
-        Paid: regsL.filter((x) => x.payment_status === "paid").length,
-        Interested: new Set([
-          ...includedRsvps.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
-          ...includedTryRegs.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
-          ...includedProspects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l)).map((x) => norm(x.email)),
-        ].filter((e) => interested.has(e))).size,
+        Paid: paidL.length,
+        Unpaid: unpaidL.length,
+        Interested: interestedL.size,
+        Members: paidL.length,
+        Potential: unpaidL.length + interestedL.size,
       };
     });
 
