@@ -155,19 +155,26 @@ const Dashboard = () => {
       includedRsvps.filter((x) => inPrev(x.created_at)).length;
     const delta = prevCount === 0 ? null : Math.round(((newInRange - prevCount) / prevCount) * 100);
 
-    // Per-location
+    // Per-location: paid registrations are current members; unpaid registrations and
+    // non-registered interest are the potential-member pool.
     const byLoc = LOCATIONS.map((loc) => {
       const l = loc.toLowerCase();
       const regsL = uniqueRegs.filter((x) => (x.location || "").toLowerCase() === l);
+      const paidL = regsL.filter((x) => x.payment_status === "paid");
+      const unpaidL = regsL.filter((x) => x.payment_status !== "paid");
+      const interestedL = new Set([
+        ...includedRsvps.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+        ...includedTryRegs.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
+        ...includedProspects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l)).map((x) => norm(x.email)),
+      ].filter((e) => interested.has(e)));
       return {
         location: loc,
         Registered: regsL.length,
-        Paid: regsL.filter((x) => x.payment_status === "paid").length,
-        Interested: new Set([
-          ...includedRsvps.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
-          ...includedTryRegs.filter((x) => (x.location || "").toLowerCase() === l).map((x) => norm(x.email)),
-          ...includedProspects.filter((x) => (x.locations || []).some((v) => (v || "").toLowerCase() === l)).map((x) => norm(x.email)),
-        ].filter((e) => interested.has(e))).size,
+        Paid: paidL.length,
+        Unpaid: unpaidL.length,
+        Interested: interestedL.size,
+        Members: paidL.length,
+        Potential: unpaidL.length + interestedL.size,
       };
     });
 
@@ -248,6 +255,7 @@ const Dashboard = () => {
       byLoc, staleUnpaid, feed, recent, recentByLoc,
       payments, paymentsTotal, paymentsAmount, paymentsStartLabel,
       interestedCount: interested.size,
+      potentialCount: unpaid.length + interested.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
     };
 
@@ -285,16 +293,16 @@ const Dashboard = () => {
 
         {/* KPIs */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
-          <StatCard icon={UserPlus} label="Fall 2026 registered" value={data.uniqueRegs.length} sub={`${data.payRate}% have paid`} tone="accent" to="/crm" />
-          <StatCard icon={DollarSign} label="Paid" value={data.paid.length} sub={`$${data.revenue.toFixed(0)} collected`} tone="good" to="/crm" />
-          <StatCard icon={AlertTriangle} label="Awaiting payment" value={data.unpaid.length} sub={`${data.staleUnpaid.length} over 5 days old`} tone="warn" to="/crm" />
+          <StatCard icon={Users} label="Current members" value={data.paid.length} sub={`$${data.revenue.toFixed(0)} collected`} tone="good" to="/crm" />
+          <StatCard icon={UserPlus} label="Registered" value={data.uniqueRegs.length} sub={`${data.unpaid.length} registered unpaid · ${data.payRate}% paid`} tone="accent" to="/crm" />
+          <StatCard icon={AlertTriangle} label="Registered — unpaid" value={data.unpaid.length} sub="Potential members awaiting payment" tone="warn" to="/crm" />
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
           <StatCard icon={TrendingUp} label={`New signups (${range}d)`} value={data.newInRange}
             sub={data.delta === null ? "click for details" : `${data.delta >= 0 ? "+" : ""}${data.delta}% vs previous ${range}d · click for details`}
             tone={data.delta !== null && data.delta < 0 ? "warn" : "good"}
             onClick={() => setShowNew((v) => !v)} active={showNew} />
-          <StatCard icon={CalendarCheck} label="Interested Fall 2026" value={data.interestedCount} sub="open house · try a session · prospects" to="/crm" />
+          <StatCard icon={CalendarCheck} label="Potential members" value={data.potentialCount} sub={`${data.unpaid.length} registered unpaid + ${data.interestedCount} interested`} tone="accent" to="/crm" />
           <StatCard icon={Users} label="Contacts in CRM" value={new Set(members.filter((m) => !m.archived_at && !isExcludedLocation(m.location)).map((m) => (m.email || "").toLowerCase())).size} sub="active (non-archived)" to="/crm" />
         </div>
 
@@ -416,8 +424,8 @@ const Dashboard = () => {
         <div className="grid lg:grid-cols-2 gap-6 mb-6">
           {/* Location breakdown */}
           <div className="bg-card border border-border rounded-xl p-4 md:p-6">
-            <h2 className="font-heading font-bold text-lg mb-1">By location</h2>
-            <p className="text-xs text-muted-foreground mb-4">Where to focus promotion and open house capacity.</p>
+            <h2 className="font-heading font-bold text-lg mb-1">Members and potential members by location</h2>
+            <p className="text-xs text-muted-foreground mb-4">Members have paid. Potential members are registered unpaid or interested.</p>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.byLoc} margin={{ left: -20, right: 8, top: 8 }}>
@@ -426,9 +434,8 @@ const Dashboard = () => {
                   <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                   <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Bar dataKey="Registered" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Paid" fill="hsl(142 60% 40%)" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="Interested" fill="hsl(38 92% 50%)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Members" fill="hsl(142 60% 40%)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="Potential" fill="hsl(38 92% 50%)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -436,7 +443,7 @@ const Dashboard = () => {
               {data.byLoc.map((l) => (
                 <div key={l.location} className="flex items-center justify-between border-t border-border pt-1">
                   <span className="inline-flex items-center gap-1.5 text-muted-foreground"><MapPin className="w-3.5 h-3.5" />{l.location}</span>
-                  <span className="font-semibold">{l.Registered} reg · {l.Paid} paid · {l.Interested} interested</span>
+                  <span className="font-semibold">{l.Members} members · {l.Potential} potential ({l.Unpaid} unpaid + {l.Interested} interested)</span>
                 </div>
               ))}
             </div>
