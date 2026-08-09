@@ -294,8 +294,8 @@ const Dashboard = () => {
         {/* KPIs */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
           <StatCard icon={Users} label="Current members" value={data.paid.length} sub={`$${data.revenue.toFixed(0)} collected`} tone="good" to="/crm" />
-          <StatCard icon={UserPlus} label="Registered" value={data.uniqueRegs.length} sub={`${data.unpaid.length} potential · ${data.payRate}% paid`} tone="accent" to="/crm" />
-          <StatCard icon={AlertTriangle} label="Registered — unpaid" value={data.unpaid.length} sub={`${data.staleUnpaid.length} over 5 days old`} tone="warn" to="/crm" />
+          <StatCard icon={UserPlus} label="Registered" value={data.uniqueRegs.length} sub={`${data.unpaid.length} registered unpaid · ${data.payRate}% paid`} tone="accent" to="/crm" />
+          <StatCard icon={AlertTriangle} label="Registered — unpaid" value={data.unpaid.length} sub="Potential members awaiting payment" tone="warn" to="/crm" />
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
           <StatCard icon={TrendingUp} label={`New signups (${range}d)`} value={data.newInRange}
