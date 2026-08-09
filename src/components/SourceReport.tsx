@@ -150,11 +150,25 @@ const SourceReport = () => {
           <div>
             <h3 className="font-semibold text-sm mb-2">Fall 2026 registrations by source</h3>
             <div className="border border-border rounded-lg overflow-x-auto">
-              <Row head cells={["Source", "Medium", "Campaign", "Total", "Paid", "Unpaid"]} />
+              <Row head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Total", "Paid", "Unpaid"]} />
               {regRows.length === 0 ? (
                 <div className="px-3 py-3 text-sm text-muted-foreground border-t border-border">No registrations yet.</div>
               ) : regRows.map((r, i) => (
-                <Row key={i} cells={[r.source, r.medium, r.campaign, r.total, r.paid, r.unpaid]} />
+                <Row key={i} cells={[r.source, r.medium, r.campaign, r.content, r.term, r.total, r.paid, r.unpaid]} />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-sm mb-2">Fall 2026 registrations by landing page</h3>
+            <div className="border border-border rounded-lg">
+              {regByLandingPage.length === 0 ? (
+                <div className="px-3 py-3 text-sm text-muted-foreground">No registrations yet.</div>
+              ) : regByLandingPage.map(([lp, n], i) => (
+                <div key={lp} className={`flex items-center justify-between gap-3 px-3 py-2 text-sm ${i ? "border-t border-border" : ""}`}>
+                  <span className="truncate">{lp}</span>
+                  <Badge variant="outline" className="shrink-0">{n}</Badge>
+                </div>
               ))}
             </div>
           </div>
