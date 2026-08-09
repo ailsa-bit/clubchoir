@@ -26,6 +26,9 @@ type Reg = {
   utm_source: string | null;
   utm_medium: string | null;
   utm_campaign: string | null;
+  utm_content: string | null;
+  utm_term: string | null;
+  landing_page: string | null;
   referrer: string | null;
 };
 
@@ -47,9 +50,9 @@ const sourceOf = (r: { utm_source: string | null; referrer: string | null }) => 
 };
 
 const Row = ({ cells, head = false }: { cells: (string | number)[]; head?: boolean }) => (
-  <div className={`grid grid-cols-[1.4fr_1fr_1.2fr_repeat(3,minmax(0,0.6fr))] gap-2 px-3 py-2 text-sm ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
+  <div className={`grid grid-cols-[1.2fr_0.9fr_1.1fr_1.1fr_0.9fr_repeat(3,minmax(0,0.5fr))] gap-2 px-3 py-2 text-sm min-w-[860px] ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
     {cells.map((c, i) => (
-      <span key={i} className={i === 0 ? "truncate" : i > 2 ? "text-right tabular-nums" : "truncate text-muted-foreground"}>{c}</span>
+      <span key={i} className={i === 0 ? "truncate" : i > 4 ? "text-right tabular-nums" : "truncate text-muted-foreground"}>{c}</span>
     ))}
   </div>
 );
@@ -64,7 +67,7 @@ const SourceReport = () => {
       const [r1, r2] = await Promise.all([
         supabase
           .from("session_registrations")
-          .select("location, payment_status, utm_source, utm_medium, utm_campaign, referrer")
+          .select("location, payment_status, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer")
           .eq("session_label", SESSION_LABEL),
         supabase
           .from("open_house_rsvps")
@@ -77,19 +80,31 @@ const SourceReport = () => {
   }, []);
 
   const regRows = useMemo(() => {
-    const map = new Map<string, { source: string; medium: string; campaign: string; total: number; paid: number; unpaid: number }>();
+    type Agg = { source: string; medium: string; campaign: string; content: string; term: string; total: number; paid: number; unpaid: number };
+    const map = new Map<string, Agg>();
     for (const r of regs) {
       const source = sourceOf(r);
       const medium = r.utm_medium || "—";
       const campaign = r.utm_campaign || "—";
-      const key = `${source}|${medium}|${campaign}`;
-      const cur = map.get(key) || { source, medium, campaign, total: 0, paid: 0, unpaid: 0 };
+      const content = r.utm_content || "—";
+      const term = r.utm_term || "—";
+      const key = `${source}|${medium}|${campaign}|${content}|${term}`;
+      const cur = map.get(key) || { source, medium, campaign, content, term, total: 0, paid: 0, unpaid: 0 };
       cur.total += 1;
       const ps = (r.payment_status || "").toLowerCase();
       if (ps === "paid" || ps === "free") cur.paid += 1; else cur.unpaid += 1;
       map.set(key, cur);
     }
     return [...map.values()].sort((a, b) => b.total - a.total);
+  }, [regs]);
+
+  const regByLandingPage = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const r of regs) {
+      const lp = (r.landing_page || "—").split("?")[0];
+      map.set(lp, (map.get(lp) || 0) + 1);
+    }
+    return [...map.entries()].sort((a, b) => b[1] - a[1]);
   }, [regs]);
 
   const regByLocation = useMemo(() => {
@@ -135,11 +150,25 @@ const SourceReport = () => {
           <div>
             <h3 className="font-semibold text-sm mb-2">Fall 2026 registrations by source</h3>
             <div className="border border-border rounded-lg overflow-x-auto">
-              <Row head cells={["Source", "Medium", "Campaign", "Total", "Paid", "Unpaid"]} />
+              <Row head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Total", "Paid", "Unpaid"]} />
               {regRows.length === 0 ? (
                 <div className="px-3 py-3 text-sm text-muted-foreground border-t border-border">No registrations yet.</div>
               ) : regRows.map((r, i) => (
-                <Row key={i} cells={[r.source, r.medium, r.campaign, r.total, r.paid, r.unpaid]} />
+                <Row key={i} cells={[r.source, r.medium, r.campaign, r.content, r.term, r.total, r.paid, r.unpaid]} />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-sm mb-2">Fall 2026 registrations by landing page</h3>
+            <div className="border border-border rounded-lg">
+              {regByLandingPage.length === 0 ? (
+                <div className="px-3 py-3 text-sm text-muted-foreground">No registrations yet.</div>
+              ) : regByLandingPage.map(([lp, n], i) => (
+                <div key={lp} className={`flex items-center justify-between gap-3 px-3 py-2 text-sm ${i ? "border-t border-border" : ""}`}>
+                  <span className="truncate">{lp}</span>
+                  <Badge variant="outline" className="shrink-0">{n}</Badge>
+                </div>
               ))}
             </div>
           </div>
