@@ -6,10 +6,24 @@ import { Download } from "lucide-react";
 
 type Guest = { name: string; email: string; created_at: string };
 
-const isHudson = (r: { location?: string | null; landing_page?: string | null; source_campaign?: string | null }) => {
-  const hay = `${r.location || ""} ${r.landing_page || ""} ${r.source_campaign || ""}`.toLowerCase();
-  return hay.includes("hudson");
+// Aug 18, 2026 Hudson Open House only. The dedicated /hudson-open-house page launched
+// Aug 8, 2026 — anything Hudson-related before that belongs to the previous open house.
+const CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
+const AUG18_CAMPAIGN = "hudson_open_house_aug18";
+
+const isAug18Hudson = (r: {
+  landing_page?: string | null;
+  source_campaign?: string | null;
+  utm_campaign?: string | null;
+  created_at?: string | null;
+}) => {
+  const campaign = `${r.utm_campaign || ""} ${r.source_campaign || ""}`.toLowerCase();
+  if (campaign.includes(AUG18_CAMPAIGN)) return true;
+  const landing = (r.landing_page || "").toLowerCase();
+  const onHudsonPage = landing.includes("/hudson-open-house") || landing.includes("/fr/hudson-open-house");
+  return onHudsonPage && +new Date(r.created_at || 0) >= CUTOFF;
 };
+
 
 const HudsonGuestList = () => {
   const [loading, setLoading] = useState(true);
