@@ -113,6 +113,28 @@ const Index = () => {
                   </a>
                 </div>
 
+                <div className="rounded-2xl border-2 border-dashed border-lime/50 bg-lime-light p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                  <div className="flex-1">
+                    <p className="font-heading font-bold text-foreground">
+                      {isFr ? "Portes ouvertes à Hudson" : "Hudson Open House"}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {isFr
+                        ? "Mardi 18 août 2026 · 19 h 30 · The Hudson Legion — une soirée d'essai, sans engagement."
+                        : "Tuesday, August 18, 2026 · 7:30pm · The Hudson Legion — one evening, no commitment."}
+                    </p>
+                  </div>
+                  <Link
+                    to={isFr ? "/fr/hudson-open-house" : "/hudson-open-house"}
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border-2 border-lime text-foreground font-bold bg-background hover:bg-lime hover:text-lime-foreground transition-colors whitespace-nowrap"
+                  >
+                    <Calendar className="w-4 h-4" />
+                    {isFr ? "Réserver pour les portes ouvertes à Hudson" : "Register for Hudson Open House"}
+                  </Link>
+                </div>
+
+
+
 
 
 
