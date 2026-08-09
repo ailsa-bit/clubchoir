@@ -411,10 +411,11 @@ const Dashboard = () => {
                 <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                 <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
                 <Legend wrapperStyle={{ fontSize: 12 }} />
-                <Line type="monotone" dataKey="Montreal" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-                <Line type="monotone" dataKey="Saint-Hubert" stroke="hsl(142 60% 40%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-                <Line type="monotone" dataKey="Pointe-Claire" stroke="hsl(38 92% 50%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-                <Line type="monotone" dataKey="Hudson" stroke="hsl(280 55% 55%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                 <Line type="monotone" dataKey="Montreal" stroke="hsl(var(--primary))" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                 <Line type="monotone" dataKey="Saint-Hubert" stroke="hsl(142 60% 40%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                 <Line type="monotone" dataKey="Pointe-Claire" stroke="hsl(38 92% 50%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                 <Line type="monotone" dataKey="Hudson" stroke="hsl(280 55% 55%)" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                 <Line type="monotone" dataKey="total" name="Total" stroke="hsl(var(--foreground))" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 5 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
