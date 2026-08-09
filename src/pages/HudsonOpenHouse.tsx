@@ -208,7 +208,7 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
 
       {/* Invitation header */}
       <section className="px-4 pt-14 pb-10">
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="container mx-auto max-w-6xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-orange-light text-foreground px-4 py-1.5 text-xs font-semibold tracking-wide uppercase">
             <Music2 className="w-3.5 h-3.5" />
             {c.kicker}
@@ -217,7 +217,7 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
             {c.headline}
           </h1>
           <p className="font-heading text-xl sm:text-2xl text-primary mt-3">{c.sub}</p>
-          <p className="text-muted-foreground leading-relaxed mt-5 text-base sm:text-lg">
+          <p className="text-muted-foreground leading-relaxed mt-5 text-base sm:text-lg max-w-3xl mx-auto">
             {c.body}
           </p>
           <div className="flex flex-wrap justify-center gap-2 mt-6">
@@ -235,7 +235,7 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
 
       {/* Details */}
       <section className="px-4 pb-10">
-        <div className="max-w-3xl mx-auto rounded-2xl border border-border bg-card p-6">
+        <div className="container mx-auto max-w-6xl rounded-2xl border border-border bg-card p-6">
           <h2 className="font-heading font-bold text-lg text-foreground mb-4">{c.detailsTitle}</h2>
           {details}
         </div>
@@ -243,7 +243,7 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
 
       {/* RSVP */}
       <section className="px-4 pb-16">
-        <div className="max-w-xl mx-auto rounded-2xl border border-border bg-card p-6 sm:p-8">
+        <div className="container mx-auto max-w-6xl rounded-2xl border border-border bg-card p-6 sm:p-8">
           {sent ? (
             <div className="text-center py-4">
               <CheckCircle2 className="w-12 h-12 text-primary mx-auto mb-4" />
