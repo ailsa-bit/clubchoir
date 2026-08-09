@@ -107,8 +107,12 @@ const App = () => (
             <Route path="/website-about-us/*" element={<Navigate to="/about" replace />} />
             <Route path="/website-contact-us" element={<Navigate to="/about" replace />} />
             <Route path="/website-contact-us/*" element={<Navigate to="/about" replace />} />
-            <Route path="/club-choir-page-sessions" element={<Navigate to="/register" replace />} />
-            <Route path="/club-choir-page-sessions/*" element={<Navigate to="/register" replace />} />
+            <Route path="/club-choir-page-sessions" element={<KeepQueryRedirect to="/register" />} />
+            <Route path="/club-choir-page-sessions/*" element={<KeepQueryRedirect to="/register" />} />
+            {/* Registration route variants — keep UTM params for attribution */}
+            <Route path="/registration" element={<KeepQueryRedirect to="/register" />} />
+            <Route path="/registration/*" element={<KeepQueryRedirect to="/register" />} />
+            <Route path="/register/*" element={<KeepQueryRedirect to="/register" />} />
             <Route path="/themed-events" element={<Navigate to="/events" replace />} />
             <Route path="/themed-events/*" element={<Navigate to="/events" replace />} />
             <Route path="/fr" element={<Navigate to="/" replace />} />
