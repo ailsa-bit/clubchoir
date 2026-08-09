@@ -95,55 +95,30 @@ const Index = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-wrap gap-3">
-                  <Link
-                    to="/register"
-                    className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-pink text-pink-foreground font-bold shadow-lg shadow-pink/25 hover:shadow-xl hover:scale-[1.02] transition-all"
-                  >
-                    <Sparkles className="w-5 h-5" />
-                    {t("home.hero.registerFall")}
-                  </Link>
-                  <a
-                    href="#sessions"
-                    className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-orange text-orange font-bold hover:bg-orange hover:text-orange-foreground transition-colors"
-                  >
-                    <Calendar className="w-4 h-4" />
-                    {t("home.hero.seeSessions")}
-                  </a>
-                </div>
-
-                <div className="rounded-2xl bg-background border border-border p-5 max-w-xl">
-                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                    <p className="font-heading font-bold text-foreground">
-                      {isFr ? "Portes ouvertes à Hudson" : "Hudson Open House"}
-                    </p>
-                    <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                      {isFr ? "· Gratuit" : "· Free"}
-                    </span>
-                  </div>
-                  <p className="mt-1.5 text-sm text-muted-foreground">
-                    {isFr
-                      ? "Mardi 18 août 2026 · 19 h 30 · The Hudson Legion, 57 Beach Road — une soirée d'essai, sans engagement."
-                      : "Tuesday, August 18, 2026 · 7:30pm · The Hudson Legion, 57 Beach Road — one evening, no commitment."}
-                  </p>
-                  <Link
-                    to={isFr ? "/fr/hudson-open-house" : "/hudson-open-house"}
-                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-foreground underline underline-offset-4 decoration-2 decoration-lime hover:text-lime transition-colors"
-                  >
-                    {isFr ? "Réserver ma place" : "RSVP for the open house"}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-
-
-
-
-
-
-
-
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
+                <Link
+                  to="/register"
+                  className="min-h-14 inline-flex items-center justify-center gap-2 rounded-xl bg-pink px-4 py-3 text-center text-sm font-bold text-pink-foreground shadow-md shadow-pink/20 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                >
+                  <Sparkles className="w-4 h-4 shrink-0" />
+                  <span>{t("home.hero.registerFall")}</span>
+                </Link>
+                <a
+                  href="#sessions"
+                  className="min-h-14 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-orange bg-background px-4 py-3 text-center text-sm font-bold text-orange hover:bg-orange hover:text-orange-foreground transition-colors"
+                >
+                  <Calendar className="w-4 h-4 shrink-0" />
+                  <span>{t("home.hero.seeSessions")}</span>
+                </a>
+                <Link
+                  to={isFr ? "/fr/hudson-open-house" : "/hudson-open-house"}
+                  className="min-h-14 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-lime bg-background px-4 py-3 text-center text-sm font-bold text-foreground hover:bg-lime hover:text-lime-foreground transition-colors"
+                >
+                  <MapPin className="w-4 h-4 shrink-0" />
+                  <span>{isFr ? "Portes ouvertes à Hudson" : "Hudson Open House"}</span>
+                </Link>
               </div>
+
             </div>
 
             {/* Visual */}
