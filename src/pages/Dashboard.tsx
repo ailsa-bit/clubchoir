@@ -30,7 +30,11 @@ interface Prospect { email: string; locations: string[]; created_at: string; fir
 interface Rsvp { email: string; location: string; created_at: string; first_name: string | null; last_name: string | null; }
 interface MemberRow { email: string | null; location: string; status: string; created_at: string; crm_tags: string[]; archived_at: string | null; }
 
-const dayKey = (d: string | Date) => new Date(d).toISOString().slice(0, 10);
+// Local (Toronto/browser) calendar day, not UTC — avoids late-evening entries rolling to tomorrow
+const dayKey = (d: string | Date) => {
+  const t = new Date(d);
+  return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
+};
 const fmtDay = (k: string) => new Date(k + "T12:00:00").toLocaleDateString("en-CA", { month: "short", day: "numeric" });
 const daysAgo = (n: number) => { const d = new Date(); d.setDate(d.getDate() - n); return d; };
 
