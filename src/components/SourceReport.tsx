@@ -217,16 +217,23 @@ const SourceReport = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-sm mb-2">Open house RSVPs by source</h3>
-            <div className="border border-border rounded-lg">
+            <h3 className="font-semibold text-sm mb-2">Open house RSVPs by source (separate from fall registrations)</h3>
+            <div className="flex flex-wrap gap-2 mb-2">
+              <Badge variant="outline">Total RSVPs: {rsvps.length}</Badge>
+              <Badge variant="outline">
+                Hudson open-house campaign:{" "}
+                {rsvps.filter((r) =>
+                  (r.utm_campaign || r.source_campaign || "").toLowerCase().includes("hudson") ||
+                  (r.landing_page || "").toLowerCase().includes("hudson-open-house"),
+                ).length}
+              </Badge>
+            </div>
+            <div className="border border-border rounded-lg overflow-x-auto">
+              <OhRow head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Landing page", "RSVPs"]} />
               {rsvpRows.length === 0 ? (
-                <div className="px-3 py-3 text-sm text-muted-foreground">No RSVPs yet.</div>
+                <div className="px-3 py-3 text-sm text-muted-foreground border-t border-border">No RSVPs yet.</div>
               ) : rsvpRows.map((r, i) => (
-                <div key={i} className={`flex items-center justify-between gap-3 px-3 py-2 text-sm ${i ? "border-t border-border" : ""}`}>
-                  <span className="truncate">{r.source}</span>
-                  <span className="truncate text-muted-foreground flex-1 mx-3">{r.campaign}</span>
-                  <Badge variant="outline" className="shrink-0">{r.total}</Badge>
-                </div>
+                <OhRow key={i} cells={[r.source, r.medium, r.campaign, r.content, r.term, r.landing, r.total]} />
               ))}
             </div>
           </div>
