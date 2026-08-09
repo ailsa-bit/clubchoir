@@ -67,7 +67,7 @@ const SourceReport = () => {
       const [r1, r2] = await Promise.all([
         supabase
           .from("session_registrations")
-          .select("location, payment_status, utm_source, utm_medium, utm_campaign, referrer")
+          .select("location, payment_status, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer")
           .eq("session_label", SESSION_LABEL),
         supabase
           .from("open_house_rsvps")
@@ -80,19 +80,31 @@ const SourceReport = () => {
   }, []);
 
   const regRows = useMemo(() => {
-    const map = new Map<string, { source: string; medium: string; campaign: string; total: number; paid: number; unpaid: number }>();
+    type Agg = { source: string; medium: string; campaign: string; content: string; term: string; total: number; paid: number; unpaid: number };
+    const map = new Map<string, Agg>();
     for (const r of regs) {
       const source = sourceOf(r);
       const medium = r.utm_medium || "—";
       const campaign = r.utm_campaign || "—";
-      const key = `${source}|${medium}|${campaign}`;
-      const cur = map.get(key) || { source, medium, campaign, total: 0, paid: 0, unpaid: 0 };
+      const content = r.utm_content || "—";
+      const term = r.utm_term || "—";
+      const key = `${source}|${medium}|${campaign}|${content}|${term}`;
+      const cur = map.get(key) || { source, medium, campaign, content, term, total: 0, paid: 0, unpaid: 0 };
       cur.total += 1;
       const ps = (r.payment_status || "").toLowerCase();
       if (ps === "paid" || ps === "free") cur.paid += 1; else cur.unpaid += 1;
       map.set(key, cur);
     }
     return [...map.values()].sort((a, b) => b.total - a.total);
+  }, [regs]);
+
+  const regByLandingPage = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const r of regs) {
+      const lp = (r.landing_page || "—").split("?")[0];
+      map.set(lp, (map.get(lp) || 0) + 1);
+    }
+    return [...map.entries()].sort((a, b) => b[1] - a[1]);
   }, [regs]);
 
   const regByLocation = useMemo(() => {
