@@ -15,13 +15,17 @@ const isAug18Hudson = (r: {
   landing_page?: string | null;
   source_campaign?: string | null;
   utm_campaign?: string | null;
+  location?: string | null;
   created_at?: string | null;
 }) => {
   const campaign = `${r.utm_campaign || ""} ${r.source_campaign || ""}`.toLowerCase();
   if (campaign.includes(AUG18_CAMPAIGN)) return true;
+  const afterCutoff = +new Date(r.created_at || 0) >= CUTOFF;
   const landing = (r.landing_page || "").toLowerCase();
   const onHudsonPage = landing.includes("/hudson-open-house") || landing.includes("/fr/hudson-open-house");
-  return onHudsonPage && +new Date(r.created_at || 0) >= CUTOFF;
+  if (onHudsonPage && afterCutoff) return true;
+  // Fallback: Hudson RSVPs after the cutoff with no tracking data (direct visits)
+  return (r.location || "").toLowerCase() === "hudson" && afterCutoff;
 };
 
 
@@ -34,12 +38,13 @@ const HudsonGuestList = () => {
       const [a, b] = await Promise.all([
         supabase
           .from("open_house_rsvps")
-          .select("first_name,last_name,email,landing_page,source_campaign,utm_campaign,created_at"),
+          .select("first_name,last_name,email,location,landing_page,source_campaign,utm_campaign,created_at"),
         supabase
           .from("session_registrations")
-          .select("first_name,last_name,email,landing_page,utm_campaign,created_at")
+          .select("first_name,last_name,email,location,landing_page,utm_campaign,created_at")
           .eq("session_label", "open-house-2026"),
       ]);
+
       const rows = [...((a.data as any[]) || []), ...((b.data as any[]) || [])]
         .filter(isAug18Hudson)
         .map((r) => ({
