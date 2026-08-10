@@ -139,6 +139,8 @@ const HudsonOpenHouse = ({ lang = "en" }: { lang?: "en" | "fr" }) => {
           email: data.email,
           location: "Hudson",
           notes,
+          lang,
+          event: "hudson-open-house-aug18",
           attribution: getAttribution(),
         },
       });
