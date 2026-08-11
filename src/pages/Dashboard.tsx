@@ -151,21 +151,32 @@ const Dashboard = () => {
     }));
     const newInRange = trend.reduce((s, x) => s + x.total, 0);
 
-    // Paid ads activity: conversions that carry a paid-medium UTM or a paid-platform source
-    const isPaidAd = (row: { utm_medium?: string | null; utm_source?: string | null }) => {
-      const medium = (row.utm_medium || "").toLowerCase();
-      const source = (row.utm_source || "").toLowerCase();
-      return medium.includes("paid") || source.includes("facebook") || source.includes("instagram") || source.includes("meta");
-    };
-    const sPaidAds = blank(), sOrganic = blank();
-    [...uniqueRegs, ...includedRsvps, ...includedProspects].forEach((x) => {
+    // Membership growth: cumulative registrations vs cumulative paid members over the season
+    const allDates = [
+      ...uniqueRegs.map((x) => new Date(x.created_at)),
+      ...uniqueRegs.filter((x) => x.payment_status === "paid").map((x) => new Date(x.updated_at || x.created_at)),
+    ].sort((a, b) => +a - +b);
+    const growthStart = allDates[0] ? new Date(allDates[0].toDateString()) : new Date();
+    const growthDays: string[] = [];
+    for (let d = new Date(growthStart); d <= new Date(); d.setDate(d.getDate() + 1)) growthDays.push(dayKey(new Date(d)));
+    const gReg: Record<string, number> = Object.fromEntries(growthDays.map((d) => [d, 0]));
+    const gPaid: Record<string, number> = Object.fromEntries(growthDays.map((d) => [d, 0]));
+    uniqueRegs.forEach((x) => {
       const k = dayKey(x.created_at);
-      if (!(k in sPaidAds)) return;
-      if (isPaidAd(x)) sPaidAds[k]++; else sOrganic[k]++;
+      if (k in gReg) gReg[k]++;
+      if (x.payment_status === "paid") {
+        const pk = dayKey(x.updated_at || x.created_at);
+        if (pk in gPaid) gPaid[pk]++;
+      }
     });
-    const paidAdsTrend = days.map((d) => ({ day: fmtDay(d), "Paid ads": sPaidAds[d], "Organic": sOrganic[d] }));
-    const paidAdsTotal = paidAdsTrend.reduce((s, x) => s + x["Paid ads"], 0);
-    const organicTotal = paidAdsTrend.reduce((s, x) => s + x["Organic"], 0);
+    let cReg = 0, cPaid = 0;
+    const growth = growthDays.map((d) => {
+      cReg += gReg[d]; cPaid += gPaid[d];
+      return { day: fmtDay(d), Registered: cReg, "Paid members": cPaid };
+    });
+    const growthStartLabel = fmtDay(dayKey(growthStart));
+    const last7 = growth.length > 7 ? growth[growth.length - 1]["Paid members"] - growth[growth.length - 8]["Paid members"] : cPaid;
+
     const prevStart = daysAgo(range * 2), prevEnd = daysAgo(range);
     const inPrev = (d: string) => { const t = new Date(d); return t >= prevStart && t < prevEnd; };
     const prevCount =
