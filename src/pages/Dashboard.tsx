@@ -470,6 +470,46 @@ const Dashboard = () => {
             </div>
           </div>
 
+          {/* Paid ads activity */}
+          <div className="bg-card border border-border rounded-xl p-4 md:p-6">
+            <h2 className="font-heading font-bold text-lg mb-1">Paid ads activity</h2>
+            <p className="text-xs text-muted-foreground mb-4">
+              Signups attributed to paid social in the last {range} days · {data.paidAdsTotal} paid · {data.organicTotal} organic
+            </p>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={data.paidAdsTrend} margin={{ left: -20, right: 8, top: 8 }}>
+                  <defs>
+                    <linearGradient id="gPaid" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.5} />
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="gOrganic" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(142 60% 40%)" stopOpacity={0.5} />
+                      <stop offset="95%" stopColor="hsl(142 60% 40%)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="day" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" interval="preserveStartEnd" />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                  <Legend wrapperStyle={{ fontSize: 12 }} />
+                  <Area type="monotone" dataKey="Paid ads" stroke="hsl(var(--primary))" fill="url(#gPaid)" strokeWidth={2} />
+                  <Area type="monotone" dataKey="Organic" stroke="hsl(142 60% 40%)" fill="url(#gOrganic)" strokeWidth={2} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 space-y-1 text-sm">
+              <div className="flex items-center justify-between border-t border-border pt-1">
+                <span className="text-muted-foreground">Paid conversion rate</span>
+                <span className="font-semibold">
+                  {data.paidAdsTotal + data.organicTotal > 0
+                    ? Math.round((data.paidAdsTotal / (data.paidAdsTotal + data.organicTotal)) * 100)
+                    : 0}% of signups attributed to paid ads
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <SourceReport />
