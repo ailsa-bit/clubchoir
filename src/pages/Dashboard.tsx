@@ -26,9 +26,11 @@ interface Reg {
   email: string; location: string; payment_status: string; created_at: string;
   amount_paid: number | null; first_name: string; last_name: string; session_label: string;
   updated_at?: string | null;
+  utm_source?: string | null; utm_medium?: string | null; utm_campaign?: string | null;
+  utm_content?: string | null; utm_term?: string | null;
 }
-interface Prospect { email: string; locations: string[]; created_at: string; first_name: string; last_name: string | null; }
-interface Rsvp { email: string; location: string; created_at: string; first_name: string | null; last_name: string | null; }
+interface Prospect { email: string; locations: string[]; created_at: string; first_name: string; last_name: string | null; utm_source?: string | null; utm_medium?: string | null; }
+interface Rsvp { email: string; location: string; created_at: string; first_name: string | null; last_name: string | null; utm_source?: string | null; utm_medium?: string | null; }
 interface MemberRow { email: string | null; location: string; status: string; created_at: string; crm_tags: string[]; archived_at: string | null; }
 
 // Local (Toronto/browser) calendar day, not UTC — avoids late-evening entries rolling to tomorrow
