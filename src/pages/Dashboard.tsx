@@ -481,21 +481,21 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Paid ads activity */}
+          {/* Membership growth */}
           <div className="bg-card border border-border rounded-xl p-4 md:p-6">
-            <h2 className="font-heading font-bold text-lg mb-1">Paid ads activity</h2>
+            <h2 className="font-heading font-bold text-lg mb-1">Membership growth this season</h2>
             <p className="text-xs text-muted-foreground mb-4">
-              Signups attributed to paid social in the last {range} days · {data.paidAdsTotal} paid · {data.organicTotal} organic
+              Running totals since {data.growthStartLabel} · {data.uniqueRegs.length} registered · {data.paid.length} paid members
             </p>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data.paidAdsTrend} margin={{ left: -20, right: 8, top: 8 }}>
+                <AreaChart data={data.growth} margin={{ left: -20, right: 8, top: 8 }}>
                   <defs>
-                    <linearGradient id="gPaid" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.5} />
+                    <linearGradient id="gRegCum" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.35} />
                       <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
                     </linearGradient>
-                    <linearGradient id="gOrganic" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient id="gPaidCum" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(142 60% 40%)" stopOpacity={0.5} />
                       <stop offset="95%" stopColor="hsl(142 60% 40%)" stopOpacity={0} />
                     </linearGradient>
@@ -505,22 +505,23 @@ const Dashboard = () => {
                   <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
                   <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
-                  <Area type="monotone" dataKey="Paid ads" stroke="hsl(var(--primary))" fill="url(#gPaid)" strokeWidth={2} />
-                  <Area type="monotone" dataKey="Organic" stroke="hsl(142 60% 40%)" fill="url(#gOrganic)" strokeWidth={2} />
+                  <Area type="monotone" dataKey="Registered" stroke="hsl(var(--primary))" fill="url(#gRegCum)" strokeWidth={2} />
+                  <Area type="monotone" dataKey="Paid members" stroke="hsl(142 60% 40%)" fill="url(#gPaidCum)" strokeWidth={2} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
             <div className="mt-4 space-y-1 text-sm">
               <div className="flex items-center justify-between border-t border-border pt-1">
-                <span className="text-muted-foreground">Paid conversion rate</span>
-                <span className="font-semibold">
-                  {data.paidAdsTotal + data.organicTotal > 0
-                    ? Math.round((data.paidAdsTotal / (data.paidAdsTotal + data.organicTotal)) * 100)
-                    : 0}% of signups attributed to paid ads
-                </span>
+                <span className="text-muted-foreground">New paid members (last 7 days)</span>
+                <span className="font-semibold">+{data.paidLast7}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Waiting on payment</span>
+                <span className="font-semibold">{data.unpaid.length} registered unpaid</span>
               </div>
             </div>
           </div>
+
         </div>
 
         <SourceReport />
