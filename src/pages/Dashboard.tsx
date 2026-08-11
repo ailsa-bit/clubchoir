@@ -451,51 +451,6 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Action list */}
-          <div className="bg-card border border-border rounded-xl p-4 md:p-6">
-            <h2 className="font-heading font-bold text-lg mb-1">Next best actions</h2>
-            <p className="text-xs text-muted-foreground mb-4">Prioritized follow-ups based on current data.</p>
-            <ul className="space-y-3 text-sm">
-              {data.staleUnpaid.length > 0 && (
-                <li className="flex items-start gap-3">
-                  <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-                  <span>
-                    <strong>{data.staleUnpaid.length}</strong> registrations unpaid for 5+ days — send a payment reminder.{" "}
-                    <Link to="/campaigns" className="text-primary hover:underline">Run reminder campaign</Link>
-                  </span>
-                </li>
-              )}
-              {data.byLoc.filter((l) => l.Registered < 10).map((l) => (
-                <li key={l.location} className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
-                  <span><strong>{l.location}</strong> has only {l.Registered} registrations — consider extra promotion or a second open house date.</span>
-                </li>
-              ))}
-              {data.delta !== null && data.delta < 0 && (
-                <li className="flex items-start gap-3">
-                  <TrendingUp className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-                  <span>Signups are down {Math.abs(data.delta)}% vs the previous {range} days — a fresh campaign or social push may help.</span>
-                </li>
-              )}
-              {data.staleUnpaid.length === 0 && data.interested.size === 0 && (
-                <li className="text-muted-foreground">Nothing urgent — you're all caught up.</li>
-              )}
-            </ul>
-
-            {data.staleUnpaid.length > 0 && (
-              <div className="mt-5">
-                <h3 className="text-xs font-bold uppercase tracking-wide text-muted-foreground mb-2">Oldest unpaid registrations</h3>
-                <div className="space-y-1.5">
-                  {data.staleUnpaid.slice(0, 6).map((x) => (
-                    <div key={x.email} className="flex items-center justify-between text-sm border-t border-border pt-1.5">
-                      <span className="truncate mr-2">{x.first_name} {x.last_name} <span className="text-muted-foreground">· {x.location}</span></span>
-                      <Badge variant="outline" className="shrink-0">{Math.floor((Date.now() - +new Date(x.created_at)) / 86400000)}d</Badge>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
         </div>
 
         <SourceReport />
