@@ -10,14 +10,17 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 
 const EMPTY_COUNTS = {
-  "fall-paid": 0, "fall-unpaid": 0, "fall-considering": 0,
+  "fall-paid": 0, "fall-unpaid": 0, "fall-considering": 0, "hudson-open-house": 0,
 } as Record<Segment, number>;
+
+// Segments that target a single location — no location chips needed
+const SINGLE_LOCATION: Partial<Record<Segment, string>> = { "hudson-open-house": "Hudson" };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
@@ -38,6 +41,12 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Everyone with no Fall 2026 registration — prospects, open house RSVPs, try-a-session and past members. Includes their location's schedule, the $280 fee and a Register button. Bilingual EN/FR.",
     color: "bg-blue-50 border-blue-200",
   },
+  {
+    key: "hudson-open-house",
+    title: "Hudson — Second Open House (Aug 18)",
+    description: "All Hudson contacts (registered, interested and past members), excluding anyone who already RSVP'd for August 18. Warm general invitation to the second open house with the RSVP link. Bilingual EN/FR.",
+    color: "bg-purple-50 border-purple-200",
+  },
 ];
 
 
@@ -48,10 +57,10 @@ const Campaigns = () => {
   const { toast } = useToast();
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
-    "fall-paid": {}, "fall-unpaid": {}, "fall-considering": {},
+    "fall-paid": {}, "fall-unpaid": {}, "fall-considering": {}, "hudson-open-house": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
-    "fall-paid": "all", "fall-unpaid": "all", "fall-considering": "all",
+    "fall-paid": "all", "fall-unpaid": "all", "fall-considering": "all", "hudson-open-house": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
@@ -208,7 +217,7 @@ const Campaigns = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-1.5 mt-4">
-                  {(["all", ...LOCATIONS, "unknown"] as LocationFilter[]).map((loc) => {
+                  {(SINGLE_LOCATION[s.key] ? [] : (["all", ...LOCATIONS, "unknown"] as LocationFilter[])).map((loc) => {
                     const n = loc === "all" ? (total ?? 0) : (buckets[loc] ?? 0);
                     if (loc === "unknown" && n === 0) return null;
                     const active = filter === loc;

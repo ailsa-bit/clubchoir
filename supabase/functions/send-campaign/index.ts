@@ -11,13 +11,28 @@ const corsHeaders = {
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
   "fall-unpaid": "fall-2026-payment-outstanding-v1",
   "fall-considering": "fall-2026-still-considering-v1",
+  "hudson-open-house": "hudson-open-house-aug18-v1",
 };
+
+// Aug 18, 2026 Hudson Open House
+const HUDSON_RSVP_URL = `${SITE_URL}/hudson-open-house`;
+const HUDSON_CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
+const AUG18_CAMPAIGN = "hudson_open_house_aug18";
+
+function isAug18Rsvp(r: any): boolean {
+  const campaign = `${r.utm_campaign || ""} ${r.source_campaign || ""}`.toLowerCase();
+  if (campaign.includes(AUG18_CAMPAIGN)) return true;
+  const afterCutoff = +new Date(r.created_at || 0) >= HUDSON_CUTOFF;
+  const landing = String(r.landing_page || "").toLowerCase();
+  if ((landing.includes("/hudson-open-house") || landing.includes("/fr/hudson-open-house")) && afterCutoff) return true;
+  return normLocation(r.location) === "Hudson" && afterCutoff;
+}
 
 interface Recipient {
   email: string;
@@ -273,9 +288,45 @@ function renderConsidering(r: Recipient) {
   };
 }
 
+function renderHudsonOpenHouse(_r: Recipient) {
+  const inner = `
+    <p style="${P}">Hello everyone,</p>
+    <p style="${P}">First of all, a heartfelt <strong>thank you</strong> to everyone who has already signed up for the new session. This is going to be such a fun fall in Hudson — I can hardly wait to get started.</p>
+    <p style="${P}">Because so many of you asked, we've decided to hold a <strong>second open house</strong>:</p>
+    <div style="background:#ecfdf5;border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;"><strong>Tuesday, August 18, 2026</strong></p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">7:30 PM</p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">The Hudson Legion — 57 Beach Road, Hudson</p>
+    </div>
+    <p style="${P}">If you're still undecided, or you simply didn't have the chance to come to the first open house, please come and sing with us for an evening. No auditions, no music reading, no pressure — just a room full of people having a wonderful time.</p>
+    ${BTN(HUDSON_RSVP_URL, "Save my spot for August 18")}
+    <p style="${P}">We would truly love the opportunity to meet as many of you as possible before our first night together. Bring a friend if you'd like!</p>
+    <p style="${P}">Any questions at all, just write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    ${SIGN}
+    ${DIVIDER}
+    <p style="${P}">Bonjour à tous et à toutes,</p>
+    <p style="${P}">Tout d'abord, un immense <strong>merci</strong> à toutes les personnes qui se sont déjà inscrites à la nouvelle session. Cet automne à Hudson s'annonce vraiment amusant — j'ai bien hâte de commencer!</p>
+    <p style="${P}">Comme plusieurs d'entre vous l'ont demandé, nous avons décidé d'organiser une <strong>deuxième journée portes ouvertes</strong> :</p>
+    <div style="background:#ecfdf5;border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;"><strong>Mardi 18 août 2026</strong></p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">19 h 30</p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">La Légion de Hudson — 57 Beach Road, Hudson</p>
+    </div>
+    <p style="${P}">Si vous hésitez encore, ou si vous n'avez pas eu la chance de venir à la première soirée, venez chanter avec nous le temps d'une soirée. Sans audition, sans lecture de musique et sans pression — simplement une salle remplie de gens qui s'amusent.</p>
+    ${BTN(HUDSON_RSVP_URL, "Réserver ma place pour le 18 août")}
+    <p style="${P}">Nous aimerions vraiment avoir l'occasion de rencontrer le plus grand nombre d'entre vous avant notre première soirée. N'hésitez pas à venir accompagné(e)!</p>
+    <p style="${P}">Pour toute question, écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    ${SIGN}`;
+  return {
+    subject: "You're invited: second Hudson open house, Tuesday August 18 🎶 / Portes ouvertes à Hudson le 18 août",
+    html: wrap(inner, "A second Hudson open house on Tuesday, August 18 at 7:30 PM — come sing with us."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
   if (segment === "fall-paid") return renderPaid(r);
   if (segment === "fall-unpaid") return renderUnpaid(r);
+  if (segment === "hudson-open-house") return renderHudsonOpenHouse(r);
   return renderConsidering(r);
 }
 
@@ -326,6 +377,39 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
 
   if (segment === "fall-paid") return Array.from(paidMap.values());
   if (segment === "fall-unpaid") return Array.from(unpaidMap.values());
+
+  if (segment === "hudson-open-house") {
+    const { data: allRsvps } = await supabase
+      .from("open_house_rsvps")
+      .select("email, first_name, last_name, location, landing_page, source_campaign, utm_campaign, created_at");
+    const already = new Set<string>();
+    for (const g of allRsvps || []) {
+      if (isAug18Rsvp(g)) already.add(String(g.email || "").trim().toLowerCase());
+    }
+    for (const r of allRegs || []) {
+      if (r.session_label === "open-house-2026" && isAug18Rsvp(r)) {
+        already.add(String(r.email || "").trim().toLowerCase());
+      }
+    }
+
+    const hudson = new Map<string, Recipient>();
+    const addH = (email: any, first: any, last: any, location: any) => {
+      const e = String(email || "").trim().toLowerCase();
+      if (!e.includes("@") || suppressed.has(e) || already.has(e)) return;
+      if (normLocation(location) !== "Hudson") return;
+      if (hudson.has(e)) return;
+      hudson.set(e, { email: e, first_name: first || "", last_name: last || "", location: "Hudson" });
+    };
+    for (const r of allRegs || []) addH(r.email, r.first_name, r.last_name, r.location);
+    for (const g of allRsvps || []) addH(g.email, g.first_name, g.last_name, g.location);
+    const { data: hProspects } = await supabase.from("prospects").select("email, first_name, last_name, locations");
+    for (const p of hProspects || []) addH(p.email, p.first_name, p.last_name, Array.isArray(p.locations) ? p.locations[0] : "");
+    for (const m of memberRows || []) {
+      if (m.archived_at) continue;
+      addH(m.email, m.first_name, m.last_name, m.location);
+    }
+    return Array.from(hudson.values());
+  }
 
 
   // Everyone else: any contact with no fall-2026 registration at all
