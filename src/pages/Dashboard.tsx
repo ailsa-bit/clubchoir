@@ -148,6 +148,22 @@ const Dashboard = () => {
       total: sReg[d] + sRsvp[d] + sPro[d],
     }));
     const newInRange = trend.reduce((s, x) => s + x.total, 0);
+
+    // Paid ads activity: conversions that carry a paid-medium UTM or a paid-platform source
+    const isPaidAd = (row: { utm_medium?: string | null; utm_source?: string | null }) => {
+      const medium = (row.utm_medium || "").toLowerCase();
+      const source = (row.utm_source || "").toLowerCase();
+      return medium.includes("paid") || source.includes("facebook") || source.includes("instagram") || source.includes("meta");
+    };
+    const sPaidAds = blank(), sOrganic = blank();
+    [...uniqueRegs, ...includedRsvps, ...includedProspects].forEach((x) => {
+      const k = dayKey(x.created_at);
+      if (!(k in sPaidAds)) return;
+      if (isPaidAd(x)) sPaidAds[k]++; else sOrganic[k]++;
+    });
+    const paidAdsTrend = days.map((d) => ({ day: fmtDay(d), "Paid ads": sPaidAds[d], "Organic": sOrganic[d] }));
+    const paidAdsTotal = paidAdsTrend.reduce((s, x) => s + x["Paid ads"], 0);
+    const organicTotal = paidAdsTrend.reduce((s, x) => s + x["Organic"], 0);
     const prevStart = daysAgo(range * 2), prevEnd = daysAgo(range);
     const inPrev = (d: string) => { const t = new Date(d); return t >= prevStart && t < prevEnd; };
     const prevCount =
