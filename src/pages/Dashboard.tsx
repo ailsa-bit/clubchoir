@@ -26,9 +26,11 @@ interface Reg {
   email: string; location: string; payment_status: string; created_at: string;
   amount_paid: number | null; first_name: string; last_name: string; session_label: string;
   updated_at?: string | null;
+  utm_source?: string | null; utm_medium?: string | null; utm_campaign?: string | null;
+  utm_content?: string | null; utm_term?: string | null;
 }
-interface Prospect { email: string; locations: string[]; created_at: string; first_name: string; last_name: string | null; }
-interface Rsvp { email: string; location: string; created_at: string; first_name: string | null; last_name: string | null; }
+interface Prospect { email: string; locations: string[]; created_at: string; first_name: string; last_name: string | null; utm_source?: string | null; utm_medium?: string | null; }
+interface Rsvp { email: string; location: string; created_at: string; first_name: string | null; last_name: string | null; utm_source?: string | null; utm_medium?: string | null; }
 interface MemberRow { email: string | null; location: string; status: string; created_at: string; crm_tags: string[]; archived_at: string | null; }
 
 // Local (Toronto/browser) calendar day, not UTC — avoids late-evening entries rolling to tomorrow
@@ -82,10 +84,10 @@ const Dashboard = () => {
   const fetchAll = async () => {
     setLoading(true);
     const [r, t, p, o, m] = await Promise.all([
-      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label,updated_at").eq("session_label", "fall-2026"),
-      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label,updated_at").in("session_label", ["try-a-session", "open-house-2026"]),
-      supabase.from("prospects").select("email,locations,created_at,first_name,last_name"),
-      supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name"),
+      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label,updated_at,utm_source,utm_medium").eq("session_label", "fall-2026"),
+      supabase.from("session_registrations").select("email,location,payment_status,created_at,amount_paid,first_name,last_name,session_label,updated_at,utm_source,utm_medium").in("session_label", ["try-a-session", "open-house-2026"]),
+      supabase.from("prospects").select("email,locations,created_at,first_name,last_name,utm_source,utm_medium"),
+      supabase.from("open_house_rsvps").select("email,location,created_at,first_name,last_name,utm_source,utm_medium"),
       supabase.from("members").select("email,location,status,created_at,crm_tags,archived_at"),
     ]);
     setRegs((r.data as any) || []);
@@ -148,6 +150,22 @@ const Dashboard = () => {
       total: sReg[d] + sRsvp[d] + sPro[d],
     }));
     const newInRange = trend.reduce((s, x) => s + x.total, 0);
+
+    // Paid ads activity: conversions that carry a paid-medium UTM or a paid-platform source
+    const isPaidAd = (row: { utm_medium?: string | null; utm_source?: string | null }) => {
+      const medium = (row.utm_medium || "").toLowerCase();
+      const source = (row.utm_source || "").toLowerCase();
+      return medium.includes("paid") || source.includes("facebook") || source.includes("instagram") || source.includes("meta");
+    };
+    const sPaidAds = blank(), sOrganic = blank();
+    [...uniqueRegs, ...includedRsvps, ...includedProspects].forEach((x) => {
+      const k = dayKey(x.created_at);
+      if (!(k in sPaidAds)) return;
+      if (isPaidAd(x)) sPaidAds[k]++; else sOrganic[k]++;
+    });
+    const paidAdsTrend = days.map((d) => ({ day: fmtDay(d), "Paid ads": sPaidAds[d], "Organic": sOrganic[d] }));
+    const paidAdsTotal = paidAdsTrend.reduce((s, x) => s + x["Paid ads"], 0);
+    const organicTotal = paidAdsTrend.reduce((s, x) => s + x["Organic"], 0);
     const prevStart = daysAgo(range * 2), prevEnd = daysAgo(range);
     const inPrev = (d: string) => { const t = new Date(d); return t >= prevStart && t < prevEnd; };
     const prevCount =
@@ -258,6 +276,7 @@ const Dashboard = () => {
       interestedCount: interested.size,
       potentialCount: unpaid.length + interested.size,
       payRate: uniqueRegs.length ? Math.round((paid.length / uniqueRegs.length) * 100) : 0,
+      paidAdsTrend, paidAdsTotal, organicTotal,
     };
 
 
@@ -451,6 +470,46 @@ const Dashboard = () => {
             </div>
           </div>
 
+          {/* Paid ads activity */}
+          <div className="bg-card border border-border rounded-xl p-4 md:p-6">
+            <h2 className="font-heading font-bold text-lg mb-1">Paid ads activity</h2>
+            <p className="text-xs text-muted-foreground mb-4">
+              Signups attributed to paid social in the last {range} days · {data.paidAdsTotal} paid · {data.organicTotal} organic
+            </p>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={data.paidAdsTrend} margin={{ left: -20, right: 8, top: 8 }}>
+                  <defs>
+                    <linearGradient id="gPaid" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.5} />
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="gOrganic" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="hsl(142 60% 40%)" stopOpacity={0.5} />
+                      <stop offset="95%" stopColor="hsl(142 60% 40%)" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="day" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" interval="preserveStartEnd" />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                  <Legend wrapperStyle={{ fontSize: 12 }} />
+                  <Area type="monotone" dataKey="Paid ads" stroke="hsl(var(--primary))" fill="url(#gPaid)" strokeWidth={2} />
+                  <Area type="monotone" dataKey="Organic" stroke="hsl(142 60% 40%)" fill="url(#gOrganic)" strokeWidth={2} />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 space-y-1 text-sm">
+              <div className="flex items-center justify-between border-t border-border pt-1">
+                <span className="text-muted-foreground">Paid conversion rate</span>
+                <span className="font-semibold">
+                  {data.paidAdsTotal + data.organicTotal > 0
+                    ? Math.round((data.paidAdsTotal / (data.paidAdsTotal + data.organicTotal)) * 100)
+                    : 0}% of signups attributed to paid ads
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <SourceReport />
