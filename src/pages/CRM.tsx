@@ -901,9 +901,12 @@ function blank(key: string): UnifiedContact {
 function uniq<T>(arr: T[]): T[] { return [...new Set(arr)]; }
 // Several people can share one email (couples). Track every distinct name seen.
 function addPerson(c: UnifiedContact, first?: string | null, last?: string | null) {
-  const name = `${(first || "").trim()} ${(last || "").trim()}`.trim();
+  // Collapse extra whitespace and normalize accents so "Claude  Aimée" and
+  // "Claude Aimée" are treated as the same person.
+  const norm = (s: string) => s.normalize("NFC").replace(/\s+/g, " ").trim();
+  const name = norm(`${first || ""} ${last || ""}`);
   if (!name) return;
-  const exists = c.people.some(p => p.toLowerCase() === name.toLowerCase());
+  const exists = c.people.some(p => norm(p).toLowerCase() === name.toLowerCase());
   if (!exists) c.people.push(name);
 }
 function laterOf(a: string, b: string | null | undefined): string {
