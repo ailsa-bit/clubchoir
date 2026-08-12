@@ -202,7 +202,7 @@ const Register = () => {
         description="Sign up for a Club Choir Fall 2026 session in Montreal, Hudson, Saint-Hubert, or Pointe-Claire."
         path="/register"
       />
-      <div className="container mx-auto max-w-3xl">
+      <div className="container mx-auto max-w-6xl">
         <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> {t.back}
         </Link>
