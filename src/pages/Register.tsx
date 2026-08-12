@@ -164,7 +164,7 @@ const Register = () => {
     return (
       <div className="py-16 px-4">
         <PageMeta title="Registration received – Club Choir" description="Your Fall 2026 registration is in." path="/register" />
-        <div className="container mx-auto max-w-2xl">
+        <div className="container mx-auto max-w-6xl">
           <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
             <ArrowLeft className="w-4 h-4" /> {t.back}
           </Link>
