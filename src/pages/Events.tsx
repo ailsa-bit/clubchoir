@@ -247,38 +247,6 @@ const Events = () => {
           {language === "fr" ? "Événements à venir" : "Upcoming Events"}
         </h2>
 
-
-        {/* Pointe-Claire Village Day Festival */}
-        <Card className="mb-8 border-aqua/30 bg-aqua-light">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 text-aqua mb-1">
-              <Music className="w-5 h-5" />
-              <span className="text-sm font-semibold uppercase tracking-wide">{t("events.communityPerf")}</span>
-            </div>
-            <CardTitle className="text-xl font-heading">
-              {t("events.pointeclaireTitle")}
-            </CardTitle>
-            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
-              <Calendar className="w-4 h-4" />
-              <span>{t("events.pointeclaireDate")}</span>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <p className="text-muted-foreground leading-relaxed">
-              {t("events.pointeclaireDesc1")}
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              {t("events.pointeclaireDesc2")}
-            </p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-aqua" />
-                <span className="font-medium">{t("events.pointeclaireVenue")}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Past Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center mt-10">
           {language === "fr" ? "Événements passés" : "Past Events"}
@@ -479,6 +447,40 @@ const Events = () => {
           </CardContent>
         </Card>
 
+        {/* Pointe-Claire Village Street Festival — recap */}
+        <Card className="mb-6 border-aqua/30 bg-aqua-light">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2 text-aqua mb-1">
+              <CheckCircle2 className="w-5 h-5" />
+              <span className="text-sm font-semibold uppercase tracking-wide">
+                {language === "fr" ? "Un grand succès" : "A Huge Success"}
+              </span>
+            </div>
+            <CardTitle className="text-xl font-heading">
+              {t("events.pointeclaireTitle")}
+            </CardTitle>
+            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+              <Calendar className="w-4 h-4" />
+              <span>{language === "fr" ? "Samedi 9 août 2025" : "Saturday, August 9, 2025"}</span>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              {language === "fr"
+                ? "Club Choir a animé le Festival de rue du Village de Pointe-Claire avec une performance live suivie d'un chant communautaire. Une belle journée de musique et de convivialité en plein air."
+                : "Club Choir took over the Pointe-Claire Village Street Festival with a live performance followed by a community sing-along. A beautiful day of music and togetherness outdoors."}
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              {t("events.pointeclaireDesc2")}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 text-sm">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-aqua" />
+                <span className="font-medium">{t("events.pointeclaireVenue")}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Community Events */}
         <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
