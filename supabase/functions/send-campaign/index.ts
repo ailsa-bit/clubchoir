@@ -328,13 +328,15 @@ function renderConsideringReminder(r: Recipient) {
     ${greetEn(r)}
     <p style="${P}">September is quickly approaching; there's still time to join us this fall.</p>
     ${scheduleEn}
-    ${BTN(`${SITE_URL}/fall-registration`, "Register now")}
+    ${BTN(`${SITE_URL}/fall-registration`, "Register here")}
+    <p style="${P}">We would love to have you with us this fall — I hope you'll take the leap and come sing!</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
     <p style="${P}">Le mois de septembre approche à grands pas; il est encore temps de vous joindre à nous cet automne.</p>
     ${scheduleFr}
-    ${BTN(`${SITE_URL}/fall-registration`, "S'inscrire maintenant")}
+    ${BTN(`${SITE_URL}/fall-registration`, "S'inscrire ici")}
+    <p style="${P}">Nous serions ravis de vous compter parmi nous cet automne — j'espère que vous ferez le saut et viendrez chanter !</p>
     ${SIGN}`;
   return {
     subject: `There's still time to join us this fall${loc ? ` (${loc.city})` : ""} / Il est encore temps de vous joindre à nous`,
