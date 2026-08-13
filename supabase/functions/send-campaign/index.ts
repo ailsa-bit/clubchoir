@@ -11,13 +11,15 @@ const corsHeaders = {
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
   "fall-unpaid": "fall-2026-payment-outstanding-v1",
   "fall-considering": "fall-2026-still-considering-v1",
   "hudson-open-house": "hudson-open-house-aug18-v1",
+  "fall-unpaid-reminder": "fall-2026-payment-outstanding-v2",
+  "fall-considering-reminder": "fall-2026-still-considering-v2",
 };
 
 // Aug 18, 2026 Hudson Open House
