@@ -713,7 +713,14 @@ const CRM = () => {
                           <Checkbox checked={selected.has(c.key)} onCheckedChange={() => toggleOne(c.key)} disabled={!c.email} />
                         </td>
                         <td className="p-2">
-                          <div className="font-medium text-foreground">{c.people.length > 1 ? c.people.join(" + ") : `${c.first_name} ${c.last_name}`}</div>
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="font-medium text-foreground">{c.people.length > 1 ? c.people.join(" + ") : `${c.first_name} ${c.last_name}`}</span>
+                            {c.paid_reg && (
+                              <Badge variant="outline" className="bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30 text-[10px] font-semibold">
+                                ✅ Paid
+                              </Badge>
+                            )}
+                          </div>
                           {c.people.length > 1 && (
                             <div className="text-[10px] text-muted-foreground">{c.people.length} people share this email</div>
                           )}
