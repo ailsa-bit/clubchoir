@@ -381,7 +381,12 @@ const Dashboard = () => {
                           <td className="py-2 pr-3">{x.where}</td>
                           <td className="py-2 pr-3">
                             <Badge variant="outline">{x.kind}</Badge>
-                            {x.extra && <Badge variant="outline" className="ml-1">{x.extra}</Badge>}
+                            {x.extra === "Paid" && (
+                              <Badge variant="outline" className="ml-1 bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30 text-[10px] font-semibold">✅ Paid</Badge>
+                            )}
+                            {x.extra === "Unpaid" && (
+                              <Badge variant="outline" className="ml-1 bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30 text-[10px] font-semibold">Unpaid</Badge>
+                            )}
                           </td>
                           <td className="py-2 text-right text-xs text-muted-foreground whitespace-nowrap">
                             {new Date(x.at).toLocaleDateString("en-CA", { month: "short", day: "numeric" })}
