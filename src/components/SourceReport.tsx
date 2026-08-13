@@ -52,6 +52,14 @@ const sourceOf = (r: { utm_source: string | null; referrer: string | null }) => 
   return "direct / unknown";
 };
 
+// Ad set / campaign names can arrive with "+" decoded as a space (unencoded "+" in the URL),
+// so normalize whitespace and plus signs before grouping to avoid duplicate-looking rows.
+const norm = (v: string | null | undefined) => {
+  const s = (v || "").replace(/\+/g, " ").replace(/\s+/g, " ").trim();
+  return s || "—";
+};
+const normKey = (v: string) => norm(v).toLowerCase();
+
 const Row = ({ cells, head = false }: { cells: (string | number)[]; head?: boolean }) => (
   <div className={`grid grid-cols-[1.2fr_0.9fr_1.1fr_1.1fr_0.9fr_repeat(3,minmax(0,0.5fr))] gap-2 px-3 py-2 text-sm min-w-[860px] ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
     {cells.map((c, i) => (
