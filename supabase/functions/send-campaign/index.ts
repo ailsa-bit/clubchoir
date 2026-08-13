@@ -294,20 +294,20 @@ function renderConsidering(r: Recipient) {
 
 function renderUnpaidReminder(r: Recipient) {
   const loc = LOCATIONS[r.location];
+  const locNameEn = loc ? esc(loc.city) : "";
+  const locNameFr = loc ? esc(loc.city) : "";
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">Just a quick follow-up: your registration for the fall season is in and your spot is reserved — the only thing left is your payment so I can finalize everything.</p>
+    <p style="${P}">Just a quick follow-up: your registration for the ${locNameEn ? `${locNameEn} ` : ""}fall season is in and your spot is reserved — the only thing left is your payment so I can finalize everything.</p>
     ${PAYMENT_BOX_EN}
     <p style="${P}">Our first rehearsal is ${firstRehearsalEn(r)}, so there's still time — but I'd love to have you fully confirmed before then.</p>
-    ${BTN(`${SITE_URL}/fall-registration`, "View payment details")}
     <p style="${P}"><em>Already sent your payment? Thank you! Please disregard this note — if it hasn't shown up yet, just drop me a line and I'll track it down.</em></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">Petit suivi : votre inscription à la session d'automne est enregistrée et votre place est réservée — il ne reste que le paiement pour que je puisse tout finaliser.</p>
+    <p style="${P}">Petit suivi : votre inscription à la session d'automne${locNameFr ? ` de ${locNameFr}` : ""} est enregistrée et votre place est réservée — il ne reste que le paiement pour que je puisse tout finaliser.</p>
     ${PAYMENT_BOX_FR}
     <p style="${P}">Notre première répétition aura lieu ${firstRehearsalFr(r)} — il reste donc encore un peu de temps, mais j'aimerais beaucoup que tout soit confirmé d'ici là.</p>
-    ${BTN(`${SITE_URL}/fall-registration`, "Voir les détails de paiement")}
     <p style="${P}"><em>Vous avez déjà envoyé votre paiement? Merci! Veuillez ne pas tenir compte de ce message — s'il n'est pas encore enregistré, écrivez-moi et je le retrouverai.</em></p>
     ${SIGN}`;
   return {
