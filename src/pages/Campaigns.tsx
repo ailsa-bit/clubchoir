@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import FallCampaignTemplates from "@/components/FallCampaignTemplates";
+
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
