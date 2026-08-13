@@ -272,6 +272,9 @@ const Campaigns = () => {
             </div>
           </div>
         </div>
+
+        <FallCampaignTemplates />
+
       </div>
 
       {/* Preview dialog */}
