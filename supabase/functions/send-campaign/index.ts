@@ -319,28 +319,26 @@ function renderUnpaidReminder(r: Recipient) {
 function renderConsideringReminder(r: Recipient) {
   const loc = LOCATIONS[r.location];
   const scheduleEn = loc
-    ? `<p style="${P}">Here's what your fall would look like in <strong>${esc(loc.city)}</strong>: ${loc.dayEn} from ${loc.time} at ${esc(loc.venue)} (${esc(loc.address)}), ${loc.datesEn} — 14 weeks for <strong>$280</strong>, ending with a community showcase.</p>`
+    ? `<p style="${P}">Here's what your fall would look like in <strong>${esc(loc.city)}</strong>: ${loc.dayEn} from ${loc.time} at ${esc(loc.venue)} (${esc(loc.address)}), ${loc.datesEn} — 14 weeks for <strong>$280</strong>, ending with a showcase for friends and family.</p>`
     : `<p style="${P}">Our fall session runs 14 weeks from early September to early December, one evening a week (7:00–8:30 PM) for <strong>$280</strong> — in Montreal, Hudson, Saint-Hubert and Pointe-Claire.</p>`;
   const scheduleFr = loc
-    ? `<p style="${P}">Voici à quoi ressemblerait votre automne à <strong>${esc(loc.city)}</strong> : les ${loc.dayFr.toLowerCase()} de ${loc.time} à ${esc(loc.venue)} (${esc(loc.address)}), du ${loc.datesFr} — 14 semaines pour <strong>280 $</strong>, avec un spectacle communautaire en clôture.</p>`
+    ? `<p style="${P}">Voici à quoi ressemblerait votre automne à <strong>${esc(loc.city)}</strong> : les ${loc.dayFr.toLowerCase()} de ${loc.time} à ${esc(loc.venue)} (${esc(loc.address)}), du ${loc.datesFr} — 14 semaines pour <strong>280 $</strong>, avec un spectacle pour vos proches et vos ami(e)s en clôture.</p>`
     : `<p style="${P}">Notre session d'automne dure 14 semaines, du début septembre au début décembre, un soir par semaine (19 h–20 h 30) pour <strong>280 $</strong> — à Montréal, Hudson, Saint-Hubert et Pointe-Claire.</p>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">Fall choir starts the week of September 8 — and there's still time to join us!</p>
+    <p style="${P}">September is quickly approaching; there's still time to join us this fall.</p>
     ${scheduleEn}
     ${BTN(`${SITE_URL}/fall-registration`, "Register now")}
-    <p style="${P}">No audition, no music reading required — just come as you are. If you have any questions before deciding, I'm happy to help: <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">La chorale démarre la semaine du 8 septembre — il est encore temps de vous joindre à nous!</p>
+    <p style="${P}">Le mois de septembre approche à grands pas; il est encore temps de vous joindre à nous cet automne.</p>
     ${scheduleFr}
     ${BTN(`${SITE_URL}/fall-registration`, "S'inscrire maintenant")}
-    <p style="${P}">Pas d'audition, pas de lecture de musique — venez simplement comme vous êtes. Si vous avez des questions avant de décider, il me fera plaisir de vous aider : <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${SIGN}`;
   return {
     subject: `There's still time to join us this fall${loc ? ` (${loc.city})` : ""} / Il est encore temps de vous joindre à nous`,
-    html: wrap(inner, "Fall choir starts the week of September 8 — register and save your spot."),
+    html: wrap(inner, "September is almost here — register and save your spot for the fall session."),
   };
 }
 
