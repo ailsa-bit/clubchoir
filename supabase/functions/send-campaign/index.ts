@@ -434,7 +434,7 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   for (const e of guestList) unpaidMap.delete(e);
 
   if (segment === "fall-paid") return Array.from(paidMap.values());
-  if (segment === "fall-unpaid") return Array.from(unpaidMap.values());
+  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder") return Array.from(unpaidMap.values());
 
   if (segment === "hudson-open-house") {
     const { data: allRsvps } = await supabase
