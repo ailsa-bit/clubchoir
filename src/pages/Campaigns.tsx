@@ -10,13 +10,14 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 
 const EMPTY_COUNTS = {
   "fall-paid": 0, "fall-unpaid": 0, "fall-considering": 0, "hudson-open-house": 0,
+  "fall-unpaid-reminder": 0, "fall-considering-reminder": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
@@ -36,10 +37,22 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     color: "bg-yellow-50 border-yellow-200",
   },
   {
+    key: "fall-unpaid-reminder",
+    title: "Reminder — Payment Outstanding",
+    description: "Shorter, more urgent follow-up for unpaid Fall 2026 registrants. Leads with the September start, single payment CTA, fresh subject line so it won't thread under the first email. Bilingual EN/FR.",
+    color: "bg-amber-50 border-amber-300",
+  },
+  {
     key: "fall-considering",
     title: "Still Considering Joining",
     description: "Everyone with no Fall 2026 registration — prospects, open house RSVPs, try-a-session and past members. Includes their location's schedule, the $280 fee and a Register button. Bilingual EN/FR.",
     color: "bg-blue-50 border-blue-200",
+  },
+  {
+    key: "fall-considering-reminder",
+    title: "Reminder — Still Considering",
+    description: "Short, urgent follow-up for everyone who hasn't registered: leads with the September 8 start, schedule, single Register button, fresh subject line. Bilingual EN/FR.",
+    color: "bg-sky-50 border-sky-300",
   },
   {
     key: "hudson-open-house",
