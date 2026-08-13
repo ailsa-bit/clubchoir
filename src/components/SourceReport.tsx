@@ -52,6 +52,14 @@ const sourceOf = (r: { utm_source: string | null; referrer: string | null }) => 
   return "direct / unknown";
 };
 
+// Ad set / campaign names can arrive with "+" decoded as a space (unencoded "+" in the URL),
+// so normalize whitespace and plus signs before grouping to avoid duplicate-looking rows.
+const norm = (v: string | null | undefined) => {
+  const s = (v || "").replace(/\+/g, " ").replace(/\s+/g, " ").trim();
+  return s || "—";
+};
+const normKey = (v: string) => norm(v).toLowerCase();
+
 const Row = ({ cells, head = false }: { cells: (string | number)[]; head?: boolean }) => (
   <div className={`grid grid-cols-[1.2fr_0.9fr_1.1fr_1.1fr_0.9fr_repeat(3,minmax(0,0.5fr))] gap-2 px-3 py-2 text-sm min-w-[860px] ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
     {cells.map((c, i) => (
@@ -101,12 +109,12 @@ const SourceReport = () => {
     type Agg = { source: string; medium: string; campaign: string; content: string; term: string; total: number; paid: number; unpaid: number };
     const map = new Map<string, Agg>();
     for (const r of regs) {
-      const source = sourceOf(r);
-      const medium = r.utm_medium || "—";
-      const campaign = r.utm_campaign || "—";
-      const content = r.utm_content || "—";
-      const term = r.utm_term || "—";
-      const key = `${source}|${medium}|${campaign}|${content}|${term}`;
+      const source = norm(sourceOf(r));
+      const medium = norm(r.utm_medium);
+      const campaign = norm(r.utm_campaign);
+      const content = norm(r.utm_content);
+      const term = norm(r.utm_term);
+      const key = [source, medium, campaign, content, term].map(normKey).join("|");
       const cur = map.get(key) || { source, medium, campaign, content, term, total: 0, paid: 0, unpaid: 0 };
       cur.total += 1;
       const ps = (r.payment_status || "").toLowerCase();
@@ -141,13 +149,13 @@ const SourceReport = () => {
     type Agg = { source: string; medium: string; campaign: string; content: string; term: string; landing: string; total: number };
     const map = new Map<string, Agg>();
     for (const r of rsvps) {
-      const source = sourceOf(r);
-      const medium = r.utm_medium || "—";
-      const campaign = r.utm_campaign || r.source_campaign || "—";
-      const content = r.utm_content || "—";
-      const term = r.utm_term || "—";
+      const source = norm(sourceOf(r));
+      const medium = norm(r.utm_medium);
+      const campaign = norm(r.utm_campaign || r.source_campaign);
+      const content = norm(r.utm_content);
+      const term = norm(r.utm_term);
       const landing = (r.landing_page || "—").split("?")[0];
-      const key = `${source}|${medium}|${campaign}|${content}|${term}|${landing}`;
+      const key = [source, medium, campaign, content, term, landing].map(normKey).join("|");
       const cur = map.get(key) || { source, medium, campaign, content, term, landing, total: 0 };
       cur.total += 1;
       map.set(key, cur);
