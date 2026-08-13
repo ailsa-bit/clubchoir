@@ -10,13 +10,13 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder";
+type Segment = "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 
 const EMPTY_COUNTS = {
-  "fall-paid": 0, "fall-unpaid": 0, "fall-considering": 0, "hudson-open-house": 0,
+  "hudson-open-house": 0,
   "fall-unpaid-reminder": 0, "fall-considering-reminder": 0,
 } as Record<Segment, number>;
 
@@ -25,28 +25,10 @@ const SINGLE_LOCATION: Partial<Record<Segment, string>> = { "hudson-open-house":
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
-    key: "fall-paid",
-    title: "Registered & Paid",
-    description: "Confirms registration + payment, shows their location, rehearsal night, venue and first-rehearsal date, and asks them to reply with any corrections. Bilingual EN/FR.",
-    color: "bg-green-50 border-green-200",
-  },
-  {
-    key: "fall-unpaid",
-    title: "Registered — Payment Outstanding",
-    description: "For Fall 2026 registrants who haven't paid: their details to confirm, Interac e-Transfer box ($280) and a note in case they've already paid. Bilingual EN/FR.",
-    color: "bg-yellow-50 border-yellow-200",
-  },
-  {
     key: "fall-unpaid-reminder",
     title: "Reminder — Payment Outstanding",
     description: "Shorter, more urgent follow-up for unpaid Fall 2026 registrants. Leads with the September start, single payment CTA, fresh subject line so it won't thread under the first email. Bilingual EN/FR.",
     color: "bg-amber-50 border-amber-300",
-  },
-  {
-    key: "fall-considering",
-    title: "Still Considering Joining",
-    description: "Everyone with no Fall 2026 registration — prospects, open house RSVPs, try-a-session and past members. Includes their location's schedule, the $280 fee and a Register button. Bilingual EN/FR.",
-    color: "bg-blue-50 border-blue-200",
   },
   {
     key: "fall-considering-reminder",
@@ -61,6 +43,7 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     color: "bg-purple-50 border-purple-200",
   },
 ];
+
 
 
 
