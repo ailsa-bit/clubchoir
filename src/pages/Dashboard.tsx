@@ -244,9 +244,9 @@ const Dashboard = () => {
 
     // Activity feed
     const feed = [
-      ...uniqueRegs.map((x) => ({ kind: "Registered", who: `${x.first_name} ${x.last_name}`, where: x.location, at: x.created_at, tone: "blue" })),
-      ...includedRsvps.map((x) => ({ kind: "Open house RSVP", who: `${x.first_name || ""} ${x.last_name || ""}`.trim() || x.email, where: x.location, at: x.created_at, tone: "lime" })),
-      ...includedProspects.map((x) => ({ kind: "Interest signup", who: `${x.first_name} ${x.last_name || ""}`.trim(), where: (x.locations || [])[0] || "—", at: x.created_at, tone: "amber" })),
+      ...uniqueRegs.map((x) => ({ kind: "Registered", who: `${x.first_name} ${x.last_name}`, where: x.location, at: x.created_at, tone: "blue", paid: x.payment_status === "paid" })),
+      ...includedRsvps.map((x) => ({ kind: "Open house RSVP", who: `${x.first_name || ""} ${x.last_name || ""}`.trim() || x.email, where: x.location, at: x.created_at, tone: "lime", paid: false })),
+      ...includedProspects.map((x) => ({ kind: "Interest signup", who: `${x.first_name} ${x.last_name || ""}`.trim(), where: (x.locations || [])[0] || "—", at: x.created_at, tone: "amber", paid: false })),
     ].sort((a, b) => +new Date(b.at) - +new Date(a.at)).slice(0, 15);
 
     // New signups within the selected range (detail drill-down)
@@ -541,7 +541,12 @@ const Dashboard = () => {
                     <span className="font-medium text-foreground">{f.who || "—"}</span>
                     <span className="text-muted-foreground"> · {f.where}</span>
                   </div>
-                  <div className="flex items-center gap-3 shrink-0">
+                  <div className="flex items-center gap-2 shrink-0">
+                    {f.paid && (
+                      <Badge variant="outline" className="bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30 text-[10px] font-semibold">
+                        ✅ Paid
+                      </Badge>
+                    )}
                     <Badge variant="outline">{f.kind}</Badge>
                     <span className="text-xs text-muted-foreground w-24 text-right">
                       {new Date(f.at).toLocaleDateString("en-CA", { month: "short", day: "numeric" })}
