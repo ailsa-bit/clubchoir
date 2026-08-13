@@ -382,6 +382,8 @@ function renderHudsonOpenHouse(_r: Recipient) {
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
   if (segment === "fall-paid") return renderPaid(r);
   if (segment === "fall-unpaid") return renderUnpaid(r);
+  if (segment === "fall-unpaid-reminder") return renderUnpaidReminder(r);
+  if (segment === "fall-considering-reminder") return renderConsideringReminder(r);
   if (segment === "hudson-open-house") return renderHudsonOpenHouse(r);
   return renderConsidering(r);
 }
