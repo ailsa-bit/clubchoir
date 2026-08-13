@@ -109,12 +109,12 @@ const SourceReport = () => {
     type Agg = { source: string; medium: string; campaign: string; content: string; term: string; total: number; paid: number; unpaid: number };
     const map = new Map<string, Agg>();
     for (const r of regs) {
-      const source = sourceOf(r);
-      const medium = r.utm_medium || "—";
-      const campaign = r.utm_campaign || "—";
-      const content = r.utm_content || "—";
-      const term = r.utm_term || "—";
-      const key = `${source}|${medium}|${campaign}|${content}|${term}`;
+      const source = norm(sourceOf(r));
+      const medium = norm(r.utm_medium);
+      const campaign = norm(r.utm_campaign);
+      const content = norm(r.utm_content);
+      const term = norm(r.utm_term);
+      const key = [source, medium, campaign, content, term].map(normKey).join("|");
       const cur = map.get(key) || { source, medium, campaign, content, term, total: 0, paid: 0, unpaid: 0 };
       cur.total += 1;
       const ps = (r.payment_status || "").toLowerCase();
