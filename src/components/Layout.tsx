@@ -68,6 +68,12 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   };
 
 
+  const isBare = location.pathname.startsWith("/reports");
+
+  if (isBare) {
+    return <div className="min-h-screen flex flex-col bg-background"><main className="flex-1">{children}</main></div>;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-50 bg-card/90 backdrop-blur-md border-b border-border">
