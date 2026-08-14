@@ -100,7 +100,7 @@ const Reports = () => {
     else if (report === "unpaid") out = fromReg(fall.filter((r) => r.payment_status !== "paid" && r.payment_status !== "free"));
     else if (report === "all-registered") out = fromReg(fall);
     else if (report === "open-house")
-      out = rsvps
+      out = [...rsvps, ...regs.filter((r) => r.session_label === "open-house-2026")]
         .filter((r) => (augOnly ? +new Date(r.created_at || 0) >= AUG18_CUTOFF : true))
         .map((r) => ({
           name: fullName(r.first_name, r.last_name),
