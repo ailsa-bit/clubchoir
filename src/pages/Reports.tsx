@@ -231,6 +231,16 @@ const Reports = () => {
             </Button>
           ))}
         </div>
+        {report === "open-house" && (
+          <Button
+            size="sm"
+            variant={augOnly ? "default" : "outline"}
+            onClick={() => setAugOnly((v) => !v)}
+            title="Only show RSVPs for the August 18, 2026 Hudson Open House"
+          >
+            Aug 18 only {augOnly ? "✓" : ""}
+          </Button>
+        )}
         <Input placeholder="Search name or email…" value={search} onChange={(e) => setSearch(e.target.value)} className="w-full sm:w-64" />
         <div className="flex gap-2 ml-auto">
           <Button size="sm" variant="outline" onClick={() => window.print()} disabled={rows.length === 0}>
