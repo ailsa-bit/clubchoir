@@ -157,10 +157,10 @@ const SourceReport = () => {
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   }, [regs]);
 
-  const rsvpRows = useMemo(() => {
+  const aggregate = (list: Rsvp[]) => {
     type Agg = { source: string; medium: string; campaign: string; content: string; term: string; landing: string; total: number };
     const map = new Map<string, Agg>();
-    for (const r of rsvps) {
+    for (const r of list) {
       const source = norm(sourceOf(r));
       const medium = norm(r.utm_medium);
       const campaign = norm(r.utm_campaign || r.source_campaign);
@@ -173,7 +173,13 @@ const SourceReport = () => {
       map.set(key, cur);
     }
     return [...map.values()].sort((a, b) => b.total - a.total);
-  }, [rsvps]);
+  };
+
+  const currentRsvps = useMemo(() => rsvps.filter(isCurrentHudson), [rsvps]);
+  const pastRsvps = useMemo(() => rsvps.filter((r) => !isCurrentHudson(r)), [rsvps]);
+  const rsvpRows = useMemo(() => aggregate(currentRsvps), [currentRsvps]);
+  const pastRsvpRows = useMemo(() => aggregate(pastRsvps), [pastRsvps]);
+
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 md:p-6">
