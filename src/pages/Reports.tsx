@@ -100,14 +100,16 @@ const Reports = () => {
     else if (report === "unpaid") out = fromReg(fall.filter((r) => r.payment_status !== "paid" && r.payment_status !== "free"));
     else if (report === "all-registered") out = fromReg(fall);
     else if (report === "open-house")
-      out = rsvps.map((r) => ({
-        name: fullName(r.first_name, r.last_name),
-        email: (r.email || "").trim(),
-        location: r.location || "—",
-        status: regEmails.has((r.email || "").toLowerCase()) ? "Registered" : "RSVP",
-        created_at: r.created_at,
-        tags: tagsFor(r.email || ""),
-      }));
+      out = rsvps
+        .filter((r) => (augOnly ? +new Date(r.created_at || 0) >= AUG18_CUTOFF : true))
+        .map((r) => ({
+          name: fullName(r.first_name, r.last_name),
+          email: (r.email || "").trim(),
+          location: r.location || "—",
+          status: regEmails.has((r.email || "").toLowerCase()) ? "Registered" : "RSVP",
+          created_at: r.created_at,
+          tags: tagsFor(r.email || ""),
+        }));
     else if (report === "guest-list")
       out = members
         .filter((m) => !m.archived_at && (m.crm_tags || []).includes("guest-list"))
