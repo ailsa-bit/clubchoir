@@ -61,6 +61,9 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <AttributionTracker />
+        <Routes>
+          <Route path="/reports" element={<Reports />} />
+        </Routes>
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
