@@ -42,7 +42,18 @@ type Rsvp = {
   landing_page: string | null;
   source_campaign: string | null;
   referrer: string | null;
+  created_at: string | null;
 };
+
+// The Aug 18 Hudson open house is the only live one; everything before this date
+// belongs to the July open-house round and must not be mixed into current numbers.
+const AUG18_CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
+const isCurrentHudson = (r: Rsvp) =>
+  +new Date(r.created_at || 0) >= AUG18_CUTOFF &&
+  ((r.location || "").toLowerCase().includes("hudson") ||
+    (r.landing_page || "").toLowerCase().includes("hudson-open-house") ||
+    (r.utm_campaign || r.source_campaign || "").toLowerCase().includes("hudson"));
+
 
 const sourceOf = (r: { utm_source: string | null; referrer: string | null }) => {
   if (r.utm_source) return r.utm_source;
@@ -90,17 +101,18 @@ const SourceReport = () => {
           .eq("session_label", SESSION_LABEL),
         supabase
           .from("open_house_rsvps")
-          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, source_campaign, referrer"),
+          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, source_campaign, referrer, created_at"),
         // Open-house signups submitted through /hudson-open-house land in session_registrations
         // under the "open-house-2026" label — never mixed into the fall-2026 numbers above.
         supabase
           .from("session_registrations")
-          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer")
+          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer, created_at")
           .eq("session_label", "open-house-2026"),
       ]);
       setRegs(((r1.data as Reg[]) || []).filter((r) => !EXCLUDED.has((r.location || "").trim().toLowerCase())));
       const ohForm = ((r3.data as any[]) || []).map((r) => ({ ...r, source_campaign: null })) as Rsvp[];
-      setRsvps([...(((r2.data as Rsvp[]) || [])), ...ohForm]);
+      setRsvps([...(((r2.data as Rsvp[]) || [])), ...ohForm].filter((r) => !EXCLUDED.has((r.location || "").trim().toLowerCase())));
+
       setLoading(false);
     })();
   }, []);
@@ -145,10 +157,10 @@ const SourceReport = () => {
     return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   }, [regs]);
 
-  const rsvpRows = useMemo(() => {
+  const aggregate = (list: Rsvp[]) => {
     type Agg = { source: string; medium: string; campaign: string; content: string; term: string; landing: string; total: number };
     const map = new Map<string, Agg>();
-    for (const r of rsvps) {
+    for (const r of list) {
       const source = norm(sourceOf(r));
       const medium = norm(r.utm_medium);
       const campaign = norm(r.utm_campaign || r.source_campaign);
@@ -161,7 +173,13 @@ const SourceReport = () => {
       map.set(key, cur);
     }
     return [...map.values()].sort((a, b) => b.total - a.total);
-  }, [rsvps]);
+  };
+
+  const currentRsvps = useMemo(() => rsvps.filter(isCurrentHudson), [rsvps]);
+  const pastRsvps = useMemo(() => rsvps.filter((r) => !isCurrentHudson(r)), [rsvps]);
+  const rsvpRows = useMemo(() => aggregate(currentRsvps), [currentRsvps]);
+  const pastRsvpRows = useMemo(() => aggregate(pastRsvps), [pastRsvps]);
+
 
   return (
     <div className="bg-card border border-border rounded-xl p-4 md:p-6">
@@ -225,16 +243,9 @@ const SourceReport = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-sm mb-2">Open house RSVPs by source (separate from fall registrations)</h3>
+            <h3 className="font-semibold text-sm mb-2">Hudson open house — Aug 18 (current) by source</h3>
             <div className="flex flex-wrap gap-2 mb-2">
-              <Badge variant="outline">Total RSVPs: {rsvps.length}</Badge>
-              <Badge variant="outline">
-                Hudson open-house campaign:{" "}
-                {rsvps.filter((r) =>
-                  (r.utm_campaign || r.source_campaign || "").toLowerCase().includes("hudson") ||
-                  (r.landing_page || "").toLowerCase().includes("hudson-open-house"),
-                ).length}
-              </Badge>
+              <Badge variant="outline">RSVPs since Aug 8: {currentRsvps.length}</Badge>
             </div>
             <div className="border border-border rounded-lg overflow-x-auto">
               <OhRow head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Landing page", "RSVPs"]} />
@@ -245,6 +256,22 @@ const SourceReport = () => {
               ))}
             </div>
           </div>
+
+          <div>
+            <h3 className="font-semibold text-sm mb-2">Earlier open houses (July round) — archive</h3>
+            <div className="flex flex-wrap gap-2 mb-2">
+              <Badge variant="outline">RSVPs: {pastRsvps.length}</Badge>
+            </div>
+            <div className="border border-border rounded-lg overflow-x-auto">
+              <OhRow head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Landing page", "RSVPs"]} />
+              {pastRsvpRows.length === 0 ? (
+                <div className="px-3 py-3 text-sm text-muted-foreground border-t border-border">Nothing here.</div>
+              ) : pastRsvpRows.map((r, i) => (
+                <OhRow key={i} cells={[r.source, r.medium, r.campaign, r.content, r.term, r.landing, r.total]} />
+              ))}
+            </div>
+          </div>
+
         </div>
       )}
     </div>
