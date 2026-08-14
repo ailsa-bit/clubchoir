@@ -91,7 +91,6 @@ const App = () => (
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/crm" element={<CRM />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/reports" element={<Reports />} />
 
             <Route path="/popup/studio-77" element={<PopupStudio77 />} />
             <Route path="/popup-reservations" element={<PopupReservations />} />
