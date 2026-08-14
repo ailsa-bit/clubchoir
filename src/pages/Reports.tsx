@@ -52,6 +52,7 @@ const Reports = () => {
   const [report, setReport] = useState<ReportId>("paid");
   const [location, setLocation] = useState<string>("all");
   const [search, setSearch] = useState("");
+  const [augOnly, setAugOnly] = useState(true);
   const [regs, setRegs] = useState<any[]>([]);
   const [rsvps, setRsvps] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
