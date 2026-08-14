@@ -243,16 +243,9 @@ const SourceReport = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-sm mb-2">Open house RSVPs by source (separate from fall registrations)</h3>
+            <h3 className="font-semibold text-sm mb-2">Hudson open house — Aug 18 (current) by source</h3>
             <div className="flex flex-wrap gap-2 mb-2">
-              <Badge variant="outline">Total RSVPs: {rsvps.length}</Badge>
-              <Badge variant="outline">
-                Hudson open-house campaign:{" "}
-                {rsvps.filter((r) =>
-                  (r.utm_campaign || r.source_campaign || "").toLowerCase().includes("hudson") ||
-                  (r.landing_page || "").toLowerCase().includes("hudson-open-house"),
-                ).length}
-              </Badge>
+              <Badge variant="outline">RSVPs since Aug 8: {currentRsvps.length}</Badge>
             </div>
             <div className="border border-border rounded-lg overflow-x-auto">
               <OhRow head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Landing page", "RSVPs"]} />
@@ -263,6 +256,22 @@ const SourceReport = () => {
               ))}
             </div>
           </div>
+
+          <div>
+            <h3 className="font-semibold text-sm mb-2">Earlier open houses (July round) — archive</h3>
+            <div className="flex flex-wrap gap-2 mb-2">
+              <Badge variant="outline">RSVPs: {pastRsvps.length}</Badge>
+            </div>
+            <div className="border border-border rounded-lg overflow-x-auto">
+              <OhRow head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Landing page", "RSVPs"]} />
+              {pastRsvpRows.length === 0 ? (
+                <div className="px-3 py-3 text-sm text-muted-foreground border-t border-border">Nothing here.</div>
+              ) : pastRsvpRows.map((r, i) => (
+                <OhRow key={i} cells={[r.source, r.medium, r.campaign, r.content, r.term, r.landing, r.total]} />
+              ))}
+            </div>
+          </div>
+
         </div>
       )}
     </div>
