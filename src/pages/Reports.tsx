@@ -10,6 +10,8 @@ import { Loader2, Download, Printer, FileText, RefreshCw } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
 const SESSION = "fall-2026";
+// Aug 18, 2026 Hudson Open House cutoff — RSVPs after this belong to the new event.
+const AUG18_CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
 
 type Row = {
   name: string;
