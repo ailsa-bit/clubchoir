@@ -101,17 +101,18 @@ const SourceReport = () => {
           .eq("session_label", SESSION_LABEL),
         supabase
           .from("open_house_rsvps")
-          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, source_campaign, referrer"),
+          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, source_campaign, referrer, created_at"),
         // Open-house signups submitted through /hudson-open-house land in session_registrations
         // under the "open-house-2026" label — never mixed into the fall-2026 numbers above.
         supabase
           .from("session_registrations")
-          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer")
+          .select("location, utm_source, utm_medium, utm_campaign, utm_content, utm_term, landing_page, referrer, created_at")
           .eq("session_label", "open-house-2026"),
       ]);
       setRegs(((r1.data as Reg[]) || []).filter((r) => !EXCLUDED.has((r.location || "").trim().toLowerCase())));
       const ohForm = ((r3.data as any[]) || []).map((r) => ({ ...r, source_campaign: null })) as Rsvp[];
-      setRsvps([...(((r2.data as Rsvp[]) || [])), ...ohForm]);
+      setRsvps([...(((r2.data as Rsvp[]) || [])), ...ohForm].filter((r) => !EXCLUDED.has((r.location || "").trim().toLowerCase())));
+
       setLoading(false);
     })();
   }, []);
