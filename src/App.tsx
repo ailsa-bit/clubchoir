@@ -61,12 +61,10 @@ const App = () => (
       <BrowserRouter>
         <ScrollToTop />
         <AttributionTracker />
-        <Routes>
-          <Route path="/reports" element={<Reports />} />
-        </Routes>
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/reports" element={<Reports />} />
             <Route path="/this-week" element={<ActiveMemberGate><ThisWeek /></ActiveMemberGate>} />
             <Route path="/schedule/:locationSlug" element={<ActiveMemberGate><LocationSchedule /></ActiveMemberGate>} />
             <Route path="/community" element={<ActiveMemberGate><Community /></ActiveMemberGate>} />
