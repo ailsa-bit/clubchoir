@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
@@ -195,6 +195,7 @@ const Reports = () => {
 
       <div className="flex items-start justify-between gap-4 flex-wrap mb-6 print:hidden">
         <div>
+          <Link to="/dashboard" className="text-xs text-muted-foreground hover:text-primary inline-flex items-center gap-1 mb-2">← Dashboard</Link>
           <h1 className="font-heading font-bold text-3xl flex items-center gap-2"><FileText className="w-7 h-7 text-primary" /> Reports & lists</h1>
           <p className="text-muted-foreground text-sm mt-1">Pick a list, filter it, then print a sign-in sheet or export to CSV.</p>
         </div>
