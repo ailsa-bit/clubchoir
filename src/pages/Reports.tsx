@@ -10,6 +10,8 @@ import { Loader2, Download, Printer, FileText, RefreshCw } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
 const SESSION = "fall-2026";
+// Aug 18, 2026 Hudson Open House cutoff — RSVPs after this belong to the new event.
+const AUG18_CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
 
 type Row = {
   name: string;
@@ -50,6 +52,7 @@ const Reports = () => {
   const [report, setReport] = useState<ReportId>("paid");
   const [location, setLocation] = useState<string>("all");
   const [search, setSearch] = useState("");
+  const [augOnly, setAugOnly] = useState(true);
   const [regs, setRegs] = useState<any[]>([]);
   const [rsvps, setRsvps] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
@@ -97,14 +100,16 @@ const Reports = () => {
     else if (report === "unpaid") out = fromReg(fall.filter((r) => r.payment_status !== "paid" && r.payment_status !== "free"));
     else if (report === "all-registered") out = fromReg(fall);
     else if (report === "open-house")
-      out = rsvps.map((r) => ({
-        name: fullName(r.first_name, r.last_name),
-        email: (r.email || "").trim(),
-        location: r.location || "—",
-        status: regEmails.has((r.email || "").toLowerCase()) ? "Registered" : "RSVP",
-        created_at: r.created_at,
-        tags: tagsFor(r.email || ""),
-      }));
+      out = rsvps
+        .filter((r) => (augOnly ? +new Date(r.created_at || 0) >= AUG18_CUTOFF : true))
+        .map((r) => ({
+          name: fullName(r.first_name, r.last_name),
+          email: (r.email || "").trim(),
+          location: r.location || "—",
+          status: regEmails.has((r.email || "").toLowerCase()) ? "Registered" : "RSVP",
+          created_at: r.created_at,
+          tags: tagsFor(r.email || ""),
+        }));
     else if (report === "guest-list")
       out = members
         .filter((m) => !m.archived_at && (m.crm_tags || []).includes("guest-list"))
@@ -164,7 +169,7 @@ const Reports = () => {
     });
     out.sort((a, b) => a.name.localeCompare(b.name));
     return out;
-  }, [report, location, search, regs, rsvps, members, prospects]);
+  }, [report, location, search, regs, rsvps, members, prospects, augOnly]);
 
   const current = REPORTS.find((r) => r.id === report)!;
   const fileBase = `${report}${location !== "all" ? `-${location.toLowerCase()}` : ""}-${new Date().toISOString().slice(0, 10)}`;
@@ -226,6 +231,16 @@ const Reports = () => {
             </Button>
           ))}
         </div>
+        {report === "open-house" && (
+          <Button
+            size="sm"
+            variant={augOnly ? "default" : "outline"}
+            onClick={() => setAugOnly((v) => !v)}
+            title="Only show RSVPs for the August 18, 2026 Hudson Open House"
+          >
+            Aug 18 only {augOnly ? "✓" : ""}
+          </Button>
+        )}
         <Input placeholder="Search name or email…" value={search} onChange={(e) => setSearch(e.target.value)} className="w-full sm:w-64" />
         <div className="flex gap-2 ml-auto">
           <Button size="sm" variant="outline" onClick={() => window.print()} disabled={rows.length === 0}>
