@@ -169,7 +169,7 @@ const Reports = () => {
     });
     out.sort((a, b) => a.name.localeCompare(b.name));
     return out;
-  }, [report, location, search, regs, rsvps, members, prospects]);
+  }, [report, location, search, regs, rsvps, members, prospects, augOnly]);
 
   const current = REPORTS.find((r) => r.id === report)!;
   const fileBase = `${report}${location !== "all" ? `-${location.toLowerCase()}` : ""}-${new Date().toISOString().slice(0, 10)}`;
