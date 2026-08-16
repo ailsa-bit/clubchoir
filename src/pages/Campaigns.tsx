@@ -18,10 +18,14 @@ type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 const EMPTY_COUNTS = {
   "hudson-open-house": 0,
   "fall-unpaid-reminder": 0, "fall-considering-reminder": 0,
+  "hudson-open-house-reminder": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
-const SINGLE_LOCATION: Partial<Record<Segment, string>> = { "hudson-open-house": "Hudson" };
+const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
+  "hudson-open-house": "Hudson",
+  "hudson-open-house-reminder": "Hudson",
+};
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
