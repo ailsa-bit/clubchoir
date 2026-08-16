@@ -46,6 +46,12 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "All Hudson contacts (registered, interested and past members), excluding anyone who already RSVP'd for August 18. Warm general invitation to the second open house with the RSVP link. Bilingual EN/FR.",
     color: "bg-purple-50 border-purple-200",
   },
+  {
+    key: "hudson-open-house-reminder",
+    title: "Hudson Open House — Reminder (Aug 18)",
+    description: "Warm, quick reminder sent only to people who have RSVP'd for the August 18 Hudson open house. Lets them know what to expect and that they don't need to bring anything. Bilingual EN/FR.",
+    color: "bg-emerald-50 border-emerald-300",
+  },
 ];
 
 
@@ -59,10 +65,12 @@ const Campaigns = () => {
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "hudson-open-house": {},
     "fall-unpaid-reminder": {}, "fall-considering-reminder": {},
+    "hudson-open-house-reminder": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "hudson-open-house": "all",
     "fall-unpaid-reminder": "all", "fall-considering-reminder": "all",
+    "hudson-open-house-reminder": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
