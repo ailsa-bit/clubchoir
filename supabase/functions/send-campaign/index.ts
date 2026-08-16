@@ -507,7 +507,7 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
       .select("email, first_name, last_name, location, landing_page, source_campaign, utm_campaign, created_at");
     const { data: ohRegs } = await supabase
       .from("session_registrations")
-      .select("email, first_name, last_name, location, landing_page, source_campaign, utm_campaign, created_at")
+      .select("email, first_name, last_name, location, landing_page, utm_campaign, created_at")
       .eq("session_label", "open-house-2026");
     const going = new Map<string, Recipient>();
     const addGoing = (email: any, first: any, last: any) => {
