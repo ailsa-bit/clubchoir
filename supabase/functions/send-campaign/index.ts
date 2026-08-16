@@ -390,6 +390,7 @@ function renderHudsonOpenHouseReminder(r: Recipient) {
       <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">The Hudson Legion — 57 Beach Road, Hudson</p>
     </div>
     <p style="${P}">You don't need to bring anything — just yourself! We'll start with a brief rundown of what to expect during a Club Choir session, and then we'll learn a simplified song arrangement, Club Choir style. No auditions, no music reading, no pressure — just come ready to sing and have a good time.</p>
+    <p style="${P}">Feel free to arrive a little early so you can get settled and have a chance to chat with everyone before we get started.</p>
     <p style="${P}">If you have any questions before Tuesday, feel free to write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. See you soon!</p>
     ${SIGN}
     ${DIVIDER}
