@@ -500,6 +500,31 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
     return Array.from(hudson.values());
   }
 
+  if (segment === "hudson-open-house-reminder") {
+    // Everyone who has RSVP'd for the Aug 18 Hudson open house
+    const { data: allRsvps } = await supabase
+      .from("open_house_rsvps")
+      .select("email, first_name, last_name, location, landing_page, source_campaign, utm_campaign, created_at");
+    const { data: ohRegs } = await supabase
+      .from("session_registrations")
+      .select("email, first_name, last_name, location, landing_page, source_campaign, utm_campaign, created_at")
+      .eq("session_label", "open-house-2026");
+    const going = new Map<string, Recipient>();
+    const addGoing = (email: any, first: any, last: any) => {
+      const e = String(email || "").trim().toLowerCase();
+      if (!e.includes("@") || suppressed.has(e)) return;
+      if (going.has(e)) return;
+      going.set(e, { email: e, first_name: first || "", last_name: last || "", location: "Hudson" });
+    };
+    for (const g of allRsvps || []) {
+      if (isAug18Rsvp(g)) addGoing(g.email, g.first_name, g.last_name);
+    }
+    for (const r of ohRegs || []) {
+      if (isAug18Rsvp(r)) addGoing(r.email, r.first_name, r.last_name);
+    }
+    return Array.from(going.values());
+  }
+
 
   // Everyone else: any contact with no fall-2026 registration at all
   const rest = new Map<string, Recipient>();
