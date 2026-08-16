@@ -390,6 +390,7 @@ function renderHudsonOpenHouseReminder(r: Recipient) {
       <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">The Hudson Legion — 57 Beach Road, Hudson</p>
     </div>
     <p style="${P}">You don't need to bring anything — just yourself! We'll start with a brief rundown of what to expect during a Club Choir session, and then we'll learn a simplified song arrangement, Club Choir style. No auditions, no music reading, no pressure — just come ready to sing and have a good time.</p>
+    <p style="${P}">Feel free to arrive a little early so you can get settled and have a chance to chat with everyone before we get started.</p>
     <p style="${P}">If you have any questions before Tuesday, feel free to write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. See you soon!</p>
     ${SIGN}
     ${DIVIDER}
@@ -401,6 +402,7 @@ function renderHudsonOpenHouseReminder(r: Recipient) {
       <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">La Légion de Hudson — 57 Beach Road, Hudson</p>
     </div>
     <p style="${P}">Vous n'avez rien à apporter — juste vous-même! Nous commencerons par un bref aperçu de ce à quoi ressemble une soirée avec Club Choir, puis nous apprendrons un arrangement de chanson simplifié, façon Club Choir. Sans audition, sans lecture de musique et sans pression — venez prêts à chanter et à passer un bon moment.</p>
+    <p style="${P}">N'hésitez pas à arriver un peu en avance pour vous installer et avoir l'occasion de jaser un peu avec tout le monde avant de commencer.</p>
     <p style="${P}">Si vous avez des questions avant mardi, n'hésitez pas à m'écrire à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. À bientôt!</p>
     ${SIGN}`;
   return {
