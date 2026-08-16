@@ -11,7 +11,7 @@ const corsHeaders = {
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -20,6 +20,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "hudson-open-house": "hudson-open-house-aug18-v1",
   "fall-unpaid-reminder": "fall-2026-payment-outstanding-v2",
   "fall-considering-reminder": "fall-2026-still-considering-v2",
+  "hudson-open-house-reminder": "hudson-open-house-aug18-reminder-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -379,12 +380,42 @@ function renderHudsonOpenHouse(_r: Recipient) {
   };
 }
 
+function renderHudsonOpenHouseReminder(r: Recipient) {
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}">Just a quick note to say how much I'm looking forward to seeing you at the Hudson open house this <strong>Tuesday, August 18 at 7:30 PM</strong> at The Hudson Legion (57 Beach Road). It's going to be a lovely evening!</p>
+    <div style="background:#ecfdf5;border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;"><strong>Tuesday, August 18, 2026</strong></p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">7:30 PM</p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">The Hudson Legion — 57 Beach Road, Hudson</p>
+    </div>
+    <p style="${P}">You don't need to bring anything — just yourself! We'll start with a brief rundown of what to expect during a Club Choir session, and then we'll learn a simplified song arrangement, Club Choir style. No auditions, no music reading, no pressure — just come ready to sing and have a good time.</p>
+    <p style="${P}">If you have any questions before Tuesday, feel free to write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. See you soon!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}">Petit mot pour vous dire à quel point j'ai hâte de vous voir à la soirée portes ouvertes de Hudson ce <strong>mardi 18 août à 19 h 30</strong> à la Légion de Hudson (57 Beach Road). Ce sera une belle soirée!</p>
+    <div style="background:#ecfdf5;border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;"><strong>Mardi 18 août 2026</strong></p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">19 h 30</p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">La Légion de Hudson — 57 Beach Road, Hudson</p>
+    </div>
+    <p style="${P}">Vous n'avez rien à apporter — juste vous-même! Nous commencerons par un bref aperçu de ce à quoi ressemble une soirée avec Club Choir, puis nous apprendrons un arrangement de chanson simplifié, façon Club Choir. Sans audition, sans lecture de musique et sans pression — venez prêts à chanter et à passer un bon moment.</p>
+    <p style="${P}">Si vous avez des questions avant mardi, n'hésitez pas à m'écrire à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. À bientôt!</p>
+    ${SIGN}`;
+  return {
+    subject: "See you Tuesday at the Hudson open house 🎶 / Rendez-vous mardi à Hudson",
+    html: wrap(inner, "Tuesday August 18 at 7:30 PM — you don't need to bring anything, just yourself!"),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
   if (segment === "fall-paid") return renderPaid(r);
   if (segment === "fall-unpaid") return renderUnpaid(r);
   if (segment === "fall-unpaid-reminder") return renderUnpaidReminder(r);
   if (segment === "fall-considering-reminder") return renderConsideringReminder(r);
   if (segment === "hudson-open-house") return renderHudsonOpenHouse(r);
+  if (segment === "hudson-open-house-reminder") return renderHudsonOpenHouseReminder(r);
   return renderConsidering(r);
 }
 
@@ -467,6 +498,31 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
       addH(m.email, m.first_name, m.last_name, m.location);
     }
     return Array.from(hudson.values());
+  }
+
+  if (segment === "hudson-open-house-reminder") {
+    // Everyone who has RSVP'd for the Aug 18 Hudson open house
+    const { data: allRsvps } = await supabase
+      .from("open_house_rsvps")
+      .select("email, first_name, last_name, location, landing_page, source_campaign, utm_campaign, created_at");
+    const { data: ohRegs } = await supabase
+      .from("session_registrations")
+      .select("email, first_name, last_name, location, landing_page, source_campaign, utm_campaign, created_at")
+      .eq("session_label", "open-house-2026");
+    const going = new Map<string, Recipient>();
+    const addGoing = (email: any, first: any, last: any) => {
+      const e = String(email || "").trim().toLowerCase();
+      if (!e.includes("@") || suppressed.has(e)) return;
+      if (going.has(e)) return;
+      going.set(e, { email: e, first_name: first || "", last_name: last || "", location: "Hudson" });
+    };
+    for (const g of allRsvps || []) {
+      if (isAug18Rsvp(g)) addGoing(g.email, g.first_name, g.last_name);
+    }
+    for (const r of ohRegs || []) {
+      if (isAug18Rsvp(r)) addGoing(r.email, r.first_name, r.last_name);
+    }
+    return Array.from(going.values());
   }
 
 
