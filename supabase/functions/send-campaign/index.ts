@@ -403,7 +403,7 @@ function renderHudsonOpenHouseReminder(r: Recipient) {
     </div>
     <p style="${P}">Vous n'avez rien à apporter — juste vous-même! Nous commencerons par un bref aperçu de ce à quoi ressemble une soirée avec Club Choir, puis nous apprendrons un arrangement de chanson simplifié, façon Club Choir. Sans audition, sans lecture de musique et sans pression — venez prêts à chanter et à passer un bon moment.</p>
     <p style="${P}">N'hésitez pas à arriver un peu en avance pour vous installer et avoir l'occasion de jaser un peu avec tout le monde avant de commencer.</p>
-    <p style="${P}">Si vous avez des questions avant mardi, n'hésitez pas à m'écrire à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. À bientôt!</p>
+    <p style="${P}">Si vous avez des questions avant demain soir, n'hésitez pas à m'écrire à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. À bientôt!</p>
     ${SIGN}`;
   return {
     subject: "See you tomorrow night at the Hudson open house 🎶 / Rendez-vous demain soir à Hudson",
