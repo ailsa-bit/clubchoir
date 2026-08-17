@@ -383,7 +383,7 @@ function renderHudsonOpenHouse(_r: Recipient) {
 function renderHudsonOpenHouseReminder(r: Recipient) {
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">Just a quick note to say how much I'm looking forward to seeing you at the Hudson open house this <strong>Tuesday, August 18 at 7:30 PM</strong> at The Hudson Legion (57 Beach Road). It's going to be a lovely evening!</p>
+    <p style="${P}">Just a quick note to say how much I'm looking forward to seeing you at the Hudson open house <strong>tomorrow night</strong>! It's going to be a lovely evening.</p>
     <div style="background:#ecfdf5;border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <p style="margin:3px 0;font-size:15px;color:#0f3d2e;"><strong>Tuesday, August 18, 2026</strong></p>
       <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">7:30 PM</p>
@@ -391,11 +391,11 @@ function renderHudsonOpenHouseReminder(r: Recipient) {
     </div>
     <p style="${P}">You don't need to bring anything — just yourself! We'll start with a brief rundown of what to expect during a Club Choir session, and then we'll learn a simplified song arrangement, Club Choir style. No auditions, no music reading, no pressure — just come ready to sing and have a good time.</p>
     <p style="${P}">Feel free to arrive a little early so you can get settled and have a chance to chat with everyone before we get started.</p>
-    <p style="${P}">If you have any questions before Tuesday, feel free to write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. See you soon!</p>
+    <p style="${P}">If you have any questions before tomorrow night, feel free to write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. See you soon!</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">Petit mot pour vous dire à quel point j'ai hâte de vous voir à la soirée portes ouvertes de Hudson ce <strong>mardi 18 août à 19 h 30</strong> à la Légion de Hudson (57 Beach Road). Ce sera une belle soirée!</p>
+    <p style="${P}">Petit mot pour vous dire à quel point j'ai hâte de vous voir à la soirée portes ouvertes de Hudson <strong>demain soir</strong>! Ce sera une belle soirée.</p>
     <div style="background:#ecfdf5;border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <p style="margin:3px 0;font-size:15px;color:#0f3d2e;"><strong>Mardi 18 août 2026</strong></p>
       <p style="margin:3px 0;font-size:15px;color:#0f3d2e;">19 h 30</p>
@@ -406,8 +406,8 @@ function renderHudsonOpenHouseReminder(r: Recipient) {
     <p style="${P}">Si vous avez des questions avant mardi, n'hésitez pas à m'écrire à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>. À bientôt!</p>
     ${SIGN}`;
   return {
-    subject: "See you Tuesday at the Hudson open house 🎶 / Rendez-vous mardi à Hudson",
-    html: wrap(inner, "Tuesday August 18 at 7:30 PM — you don't need to bring anything, just yourself!"),
+    subject: "See you tomorrow night at the Hudson open house 🎶 / Rendez-vous demain soir à Hudson",
+    html: wrap(inner, "Tomorrow night at 7:30 PM — you don't need to bring anything, just yourself!"),
   };
 }
 
