@@ -11,7 +11,7 @@ const corsHeaders = {
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -21,6 +21,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-unpaid-reminder": "fall-2026-payment-outstanding-v2",
   "fall-considering-reminder": "fall-2026-still-considering-v2",
   "hudson-open-house-reminder": "hudson-open-house-aug18-reminder-v1",
+  "hudson-open-house-thanks": "hudson-open-house-aug18-thanks-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -411,6 +412,31 @@ function renderHudsonOpenHouseReminder(r: Recipient) {
   };
 }
 
+function renderHudsonOpenHouseThanks(_r: Recipient) {
+  const inner = `
+    <p style="${P}">Hello everyone,</p>
+    <p style="${P}">Thank you to everyone who attended our open house tonight! The energy was incredible, and the evening was a great success.</p>
+    <p style="${P}">If you weren't able to attend but are interested in learning more about Club Choir, please feel free to email me with any questions at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}">For those who joined us tonight, you can reach me at the same email address with any questions. As promised during my presentation, here is the link for our upcoming session:</p>
+    ${BTN(`${SITE_URL}/register`, "Register for the fall session")}
+    <p style="${P}">The 14-week session begins <strong>September 8</strong>. Once you've completed the registration process, you'll have access to the members' section, where you can find the full schedule for the session. You'll also receive emails leading up to our first night confirming the start time and providing everything you need to get ready.</p>
+    <p style="${P}">Thank you again for your enthusiasm. I look forward to singing with you!</p>
+    ${SIGN}
+    ${DIVIDER}
+    <p style="${P}">Bonjour à tous et à toutes,</p>
+    <p style="${P}">Merci à toutes les personnes qui sont venues à notre journée portes ouvertes ce soir! L'énergie était incroyable et la soirée fut un franc succès.</p>
+    <p style="${P}">Si vous n'avez pas pu y assister mais que vous aimeriez en savoir plus sur Club Choir, n'hésitez pas à m'écrire pour toute question à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}">Pour celles et ceux qui étaient des nôtres ce soir, vous pouvez me joindre à la même adresse pour toute question. Comme promis pendant ma présentation, voici le lien pour notre prochaine session :</p>
+    ${BTN(`${SITE_URL}/register`, "S'inscrire à la session d'automne")}
+    <p style="${P}">La session de 14 semaines débute le <strong>8 septembre</strong>. Une fois votre inscription complétée, vous aurez accès à la section des membres, où se trouve l'horaire complet de la session. Vous recevrez aussi des courriels avant notre première soirée pour confirmer l'heure de début et vous donner tout ce qu'il faut pour bien vous préparer.</p>
+    <p style="${P}">Merci encore pour votre enthousiasme. J'ai hâte de chanter avec vous!</p>
+    ${SIGN}`;
+  return {
+    subject: "Thank you for a wonderful open house 🎶 / Merci pour cette belle soirée portes ouvertes",
+    html: wrap(inner, "Thank you for coming! Here's the registration link for our 14-week fall session starting September 8."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
   if (segment === "fall-paid") return renderPaid(r);
   if (segment === "fall-unpaid") return renderUnpaid(r);
@@ -418,6 +444,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "fall-considering-reminder") return renderConsideringReminder(r);
   if (segment === "hudson-open-house") return renderHudsonOpenHouse(r);
   if (segment === "hudson-open-house-reminder") return renderHudsonOpenHouseReminder(r);
+  if (segment === "hudson-open-house-thanks") return renderHudsonOpenHouseThanks(r);
   return renderConsidering(r);
 }
 
@@ -500,6 +527,32 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
       addH(m.email, m.first_name, m.last_name, m.location);
     }
     return Array.from(hudson.values());
+  }
+
+  if (segment === "hudson-open-house-thanks") {
+    // Everyone who RSVP'd for the Aug 18 Hudson open house, plus contacts tagged for it
+    const { data: allRsvps } = await supabase
+      .from("open_house_rsvps")
+      .select("email, first_name, last_name, location, landing_page, source_campaign, utm_campaign, created_at");
+    const { data: ohRegs } = await supabase
+      .from("session_registrations")
+      .select("email, first_name, last_name, location, landing_page, utm_campaign, created_at")
+      .eq("session_label", "open-house-2026");
+    const list = new Map<string, Recipient>();
+    const addT = (email: any, first: any, last: any, location: any) => {
+      const e = String(email || "").trim().toLowerCase();
+      if (!e.includes("@") || suppressed.has(e) || list.has(e)) return;
+      list.set(e, { email: e, first_name: first || "", last_name: last || "", location: normLocation(location) || "Hudson" });
+    };
+    for (const g of allRsvps || []) if (isAug18Rsvp(g)) addT(g.email, g.first_name, g.last_name, g.location);
+    for (const r of ohRegs || []) if (isAug18Rsvp(r)) addT(r.email, r.first_name, r.last_name, r.location);
+    for (const m of memberRows || []) {
+      if (m.archived_at) continue;
+      if (Array.isArray(m.crm_tags) && m.crm_tags.includes("hudson-open-house-aug18")) {
+        addT(m.email, m.first_name, m.last_name, m.location);
+      }
+    }
+    return Array.from(list.values());
   }
 
   if (segment === "hudson-open-house-reminder") {
