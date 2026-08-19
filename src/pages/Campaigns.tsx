@@ -10,7 +10,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder";
+type Segment = "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -18,13 +18,14 @@ type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 const EMPTY_COUNTS = {
   "hudson-open-house": 0,
   "fall-unpaid-reminder": 0, "fall-considering-reminder": 0,
-  "hudson-open-house-reminder": 0,
+  "hudson-open-house-reminder": 0, "hudson-open-house-thanks": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
 const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
   "hudson-open-house": "Hudson",
   "hudson-open-house-reminder": "Hudson",
+  "hudson-open-house-thanks": "Hudson",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
@@ -52,6 +53,12 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Warm, quick reminder sent only to people who have RSVP'd for the August 18 Hudson open house. Lets them know what to expect and that they don't need to bring anything. Bilingual EN/FR.",
     color: "bg-emerald-50 border-emerald-300",
   },
+  {
+    key: "hudson-open-house-thanks",
+    title: "Hudson Open House — Thank You + Register (Aug 18)",
+    description: "Thank-you follow-up to everyone who RSVP'd or was added for the August 18 Hudson open house, with the registration link and September 8 start date. Bilingual EN/FR.",
+    color: "bg-rose-50 border-rose-300",
+  },
 ];
 
 
@@ -65,12 +72,12 @@ const Campaigns = () => {
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "hudson-open-house": {},
     "fall-unpaid-reminder": {}, "fall-considering-reminder": {},
-    "hudson-open-house-reminder": {},
+    "hudson-open-house-reminder": {}, "hudson-open-house-thanks": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "hudson-open-house": "all",
     "fall-unpaid-reminder": "all", "fall-considering-reminder": "all",
-    "hudson-open-house-reminder": "all",
+    "hudson-open-house-reminder": "all", "hudson-open-house-thanks": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
