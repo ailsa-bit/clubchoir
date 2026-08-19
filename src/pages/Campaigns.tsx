@@ -26,30 +26,6 @@ const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
-    key: "fall-unpaid-reminder",
-    title: "Reminder — Payment Outstanding",
-    description: "Shorter, more urgent follow-up for unpaid Fall 2026 registrants. Leads with the September start, single payment CTA, fresh subject line so it won't thread under the first email. Bilingual EN/FR.",
-    color: "bg-amber-50 border-amber-300",
-  },
-  {
-    key: "fall-considering-reminder",
-    title: "Reminder — Still Considering",
-    description: "Short, urgent follow-up for everyone who hasn't registered: leads with the September 8 start, schedule, single Register button, fresh subject line. Bilingual EN/FR.",
-    color: "bg-sky-50 border-sky-300",
-  },
-  {
-    key: "hudson-open-house",
-    title: "Hudson — Second Open House (Aug 18)",
-    description: "All Hudson contacts (registered, interested and past members), excluding anyone who already RSVP'd for August 18. Warm general invitation to the second open house with the RSVP link. Bilingual EN/FR.",
-    color: "bg-purple-50 border-purple-200",
-  },
-  {
-    key: "hudson-open-house-reminder",
-    title: "Hudson Open House — Reminder (Aug 18)",
-    description: "Warm, quick reminder sent only to people who have RSVP'd for the August 18 Hudson open house. Lets them know what to expect and that they don't need to bring anything. Bilingual EN/FR.",
-    color: "bg-emerald-50 border-emerald-300",
-  },
-  {
     key: "hudson-open-house-thanks",
     title: "Hudson Open House — Thank You + Register (Aug 18)",
     description: "Thank-you follow-up to everyone who RSVP'd or was added for the August 18 Hudson open house, with the registration link and September 8 start date. Bilingual EN/FR.",
