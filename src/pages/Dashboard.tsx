@@ -531,8 +531,6 @@ const Dashboard = () => {
 
         <SourceReport />
 
-        <HudsonGuestList />
-
         {/* Activity feed */}
         <div className="bg-card border border-border rounded-xl p-4 md:p-6">
           <h2 className="font-heading font-bold text-lg mb-4">Recent activity</h2>
