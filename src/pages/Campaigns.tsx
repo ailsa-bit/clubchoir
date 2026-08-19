@@ -10,21 +10,17 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks";
+type Segment = "hudson-open-house-thanks";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 
 const EMPTY_COUNTS = {
-  "hudson-open-house": 0,
-  "fall-unpaid-reminder": 0, "fall-considering-reminder": 0,
-  "hudson-open-house-reminder": 0, "hudson-open-house-thanks": 0,
+  "hudson-open-house-thanks": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
 const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
-  "hudson-open-house": "Hudson",
-  "hudson-open-house-reminder": "Hudson",
   "hudson-open-house-thanks": "Hudson",
 };
 
