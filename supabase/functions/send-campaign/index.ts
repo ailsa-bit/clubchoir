@@ -445,7 +445,7 @@ function renderBinderUnpaid(r: Recipient) {
   const whereFr = loc ? `<strong>${esc(loc.city)}</strong>` : "votre groupe";
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">Big news: I'm off to buy <strong>binders</strong> 🎉 — one for every single singer joining us this fall, will soon be packed with the lyrics and everything you'll need for our 14 weeks together.</p>
+    <p style="${P}">Big news: I'm off to buy <strong>binders</strong> 🎉 — one for every single singer joining us this fall (unless you are a returning member), it will soon be packed with the lyrics and everything you'll need for our 14 weeks together.</p>
     <p style="${P}">Which brings me to a small but important favour. Your spot for ${whereEn} is <strong>reserved but not yet confirmed</strong>, because your payment hasn't come in yet. I count binders (and chairs, and music) based on confirmed singers — so completing your registration this week makes sure there's a binder with your name on it.</p>
     ${detailsBox(r, "en")}
     ${PAYMENT_BOX_EN}
