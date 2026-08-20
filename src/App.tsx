@@ -45,6 +45,7 @@ import OpenHouseRegister from "./pages/OpenHouseRegister";
 import SingForTheHerd from "./pages/SingForTheHerd";
 import FallRegistration from "./pages/FallRegistration";
 import Campaigns from "./pages/Campaigns";
+import Deliverability from "./pages/Deliverability";
 import RsvpConfirm from "./pages/RsvpConfirm";
 import OpenHouseRsvps from "./pages/OpenHouseRsvps";
 import OAuthConsent from "./pages/OAuthConsent";
