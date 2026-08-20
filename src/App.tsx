@@ -99,6 +99,7 @@ const App = () => (
             <Route path="/tickets/sing-for-the-herd" element={<SingForTheHerd />} />
             <Route path="/fall-registration" element={<FallRegistration />} />
             <Route path="/campaigns" element={<Campaigns />} />
+            <Route path="/deliverability" element={<Deliverability />} />
             <Route path="/rsvp" element={<RsvpConfirm />} />
             <Route path="/open-house-rsvps" element={<OpenHouseRsvps />} />
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
