@@ -445,23 +445,23 @@ function renderBinderUnpaid(r: Recipient) {
   const whereFr = loc ? `<strong>${esc(loc.city)}</strong>` : "votre groupe";
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">Big news: I'm off to buy <strong>binders</strong> 🎉 — one for every single singer joining us this fall, will soon be packed with the lyrics and everything you'll need for our 14 weeks together.</p>
+    <p style="${P}">Big news: I'm off to buy <strong>binders</strong> 🎉 — one for every single singer joining us this fall (unless you are a returning member), it will soon be packed with the lyrics and everything you'll need for our 14 weeks together.</p>
     <p style="${P}">Which brings me to a small but important favour. Your spot for ${whereEn} is <strong>reserved but not yet confirmed</strong>, because your payment hasn't come in yet. I count binders (and chairs, and music) based on confirmed singers — so completing your registration this week makes sure there's a binder with your name on it.</p>
     ${detailsBox(r, "en")}
     ${PAYMENT_BOX_EN}
     <p style="${P}"><em>Already sent your payment? Thank you — ignore this one, and give me a shout if it hasn't been credited.</em></p>
-    <p style="${P}">One more thing: I'll be sending out <strong>important emails over the next couple of weeks</strong> to get everyone ready for our first night — start times, what to bring, parking tips. Remember, once your registration is complete you can create your profile and get access to the song list and schedule for the session. Confirmed members get all of it, and I'd hate for you to miss out.</p>
+    <p style="${P}">One more thing: I'll be sending out the <strong>important pre-season emails</strong> over the next couple of weeks to get everyone ready for our first night — start times, what to bring, parking tips. Remember, once your registration is complete you can create your profile and get access to the song list and schedule for the session. Confirmed members get all of it, and I'd hate for you to miss out.</p>
     <p style="${P}">Our first rehearsal is ${firstRehearsalEn(r)}. Let's get you on the list!</p>
     ${BTN(`${SITE_URL}/fall-registration`, "Complete my registration")}
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">Grande nouvelle : je pars acheter les <strong>cartables</strong> 🎉 — un pour chaque choriste qui se joint à nous cet automne, bientôt rempli de paroles et de tout ce qu'il faut pour nos 14 semaines ensemble.</p>
+    <p style="${P}">Grande nouvelle : je pars acheter les <strong>cartables</strong> 🎉 — un pour chaque choriste qui se joint à nous cet automne (à moins que vous ne soyez un membre revenant), il sera bientôt rempli de paroles et de tout ce qu'il faut pour nos 14 semaines ensemble.</p>
     <p style="${P}">D'où ce petit service à vous demander. Votre place à ${whereFr} est <strong>réservée, mais pas encore confirmée</strong>, car votre paiement n'est pas encore arrivé. Je commande les cartables (et les chaises, et les partitions) selon le nombre de choristes confirmés — compléter votre inscription cette semaine garantit qu'un cartable portera votre nom.</p>
     ${detailsBox(r, "fr")}
     ${PAYMENT_BOX_FR}
     <p style="${P}"><em>Vous avez déjà envoyé votre paiement? Merci — ne tenez pas compte de ce rappel, et écrivez-moi s'il n'a pas été enregistré.</em></p>
-    <p style="${P}">Autre chose : j'enverrai <strong>des courriels importants au cours des prochaines semaines</strong> pour préparer notre première soirée — heure d'arrivée, quoi apporter, stationnement. N'oubliez pas qu'une fois votre inscription complétée, vous pourrez créer votre profil et accéder à la liste des chansons et à l'horaire de la session. Les membres confirmés reçoivent tout, et je ne voudrais pas que vous manquiez quoi que ce soit.</p>
+    <p style="${P}">Autre chose : j'enverrai <strong>les importants courriels d'avant-saison</strong> au cours des prochaines semaines pour préparer notre première soirée — heure d'arrivée, quoi apporter, stationnement. N'oubliez pas qu'une fois votre inscription complétée, vous pourrez créer votre profil et accéder à la liste des chansons et à l'horaire de la session. Les membres confirmés reçoivent tout, et je ne voudrais pas que vous manquiez quoi que ce soit.</p>
     <p style="${P}">Notre première répétition a lieu ${firstRehearsalFr(r)}. Réservons votre cartable!</p>
     ${BTN(`${SITE_URL}/fall-registration`, "Compléter mon inscription")}
     ${SIGN}`;
