@@ -456,7 +456,7 @@ function renderBinderUnpaid(r: Recipient) {
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">Grande nouvelle : je pars acheter les <strong>cartables</strong> 🎉 — un pour chaque choriste qui se joint à nous cet automne, bientôt rempli de paroles et de tout ce qu'il faut pour nos 14 semaines ensemble.</p>
+    <p style="${P}">Grande nouvelle : je pars acheter les <strong>cartables</strong> 🎉 — un pour chaque choriste qui se joint à nous cet automne (à moins que vous ne soyez un membre revenant), il sera bientôt rempli de paroles et de tout ce qu'il faut pour nos 14 semaines ensemble.</p>
     <p style="${P}">D'où ce petit service à vous demander. Votre place à ${whereFr} est <strong>réservée, mais pas encore confirmée</strong>, car votre paiement n'est pas encore arrivé. Je commande les cartables (et les chaises, et les partitions) selon le nombre de choristes confirmés — compléter votre inscription cette semaine garantit qu'un cartable portera votre nom.</p>
     ${detailsBox(r, "fr")}
     ${PAYMENT_BOX_FR}
