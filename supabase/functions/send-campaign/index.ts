@@ -456,12 +456,12 @@ function renderBinderUnpaid(r: Recipient) {
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">Grande nouvelle : je pars acheter les <strong>cartables</strong> 🎉 — un pour chaque choriste qui se joint à nous cet automne, avec les paroles et tout ce qu'il faut pour nos 14 semaines ensemble.</p>
+    <p style="${P}">Grande nouvelle : je pars acheter les <strong>cartables</strong> 🎉 — un pour chaque choriste qui se joint à nous cet automne, bientôt rempli de paroles et de tout ce qu'il faut pour nos 14 semaines ensemble.</p>
     <p style="${P}">D'où ce petit service à vous demander. Votre place à ${whereFr} est <strong>réservée, mais pas encore confirmée</strong>, car votre paiement n'est pas encore arrivé. Je commande les cartables (et les chaises, et les partitions) selon le nombre de choristes confirmés — compléter votre inscription cette semaine garantit qu'un cartable portera votre nom.</p>
     ${detailsBox(r, "fr")}
     ${PAYMENT_BOX_FR}
     <p style="${P}"><em>Vous avez déjà envoyé votre paiement? Merci — ne tenez pas compte de ce rappel, et écrivez-moi s'il n'a pas été enregistré.</em></p>
-    <p style="${P}">Autre chose : j'enverrai <strong>des courriels importants au cours des prochaines semaines</strong> pour préparer notre première soirée — heure d'arrivée, quoi apporter, stationnement, les chansons. Les membres confirmés reçoivent tout, et je ne voudrais pas que vous manquiez quoi que ce soit.</p>
+    <p style="${P}">Autre chose : j'enverrai <strong>des courriels importants au cours des prochaines semaines</strong> pour préparer notre première soirée — heure d'arrivée, quoi apporter, stationnement. N'oubliez pas qu'une fois votre inscription complétée, vous pourrez créer votre profil et accéder à la liste des chansons et à l'horaire de la session. Les membres confirmés reçoivent tout, et je ne voudrais pas que vous manquiez quoi que ce soit.</p>
     <p style="${P}">Notre première répétition a lieu ${firstRehearsalFr(r)}. Réservons votre cartable!</p>
     ${BTN(`${SITE_URL}/fall-registration`, "Compléter mon inscription")}
     ${SIGN}`;
