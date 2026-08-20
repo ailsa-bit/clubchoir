@@ -10,13 +10,15 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "hudson-open-house-thanks";
+type Segment = "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 
 const EMPTY_COUNTS = {
   "hudson-open-house-thanks": 0,
+  "binder-count-unpaid": 0,
+  "binder-count-considering": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
@@ -31,6 +33,18 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Thank-you follow-up to everyone who RSVP'd or was added for the August 18 Hudson open house, with the registration link and September 8 start date. Bilingual EN/FR.",
     color: "bg-rose-50 border-rose-300",
   },
+  {
+    key: "binder-count-unpaid",
+    title: "Binder Count — Registered, Not Yet Paid",
+    description: "Fun, slightly urgent nudge to registered singers who haven't paid: binders are being ordered, complete your registration so you're counted and don't miss the pre-season emails. Includes Interac details. Bilingual EN/FR.",
+    color: "bg-amber-50 border-amber-300",
+  },
+  {
+    key: "binder-count-considering",
+    title: "Binder Count — Still Considering",
+    description: "Warm invite to everyone not registered for fall 2026: a binder per singer, important prep emails going out shortly, register now so you don't miss out. Bilingual EN/FR.",
+    color: "bg-sky-50 border-sky-300",
+  },
 ];
 
 
@@ -43,9 +57,13 @@ const Campaigns = () => {
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "hudson-open-house-thanks": {},
+    "binder-count-unpaid": {},
+    "binder-count-considering": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "hudson-open-house-thanks": "all",
+    "binder-count-unpaid": "all",
+    "binder-count-considering": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
