@@ -474,6 +474,48 @@ export type Database = {
         }
         Relationships: []
       }
+      resend_email_events: {
+        Row: {
+          clicked_url: string | null
+          created_at: string
+          email_id: string | null
+          event_type: string
+          from_email: string | null
+          id: string
+          message_id: string | null
+          raw_payload: Json
+          received_at: string
+          recipient_email: string | null
+          subject: string | null
+        }
+        Insert: {
+          clicked_url?: string | null
+          created_at?: string
+          email_id?: string | null
+          event_type: string
+          from_email?: string | null
+          id?: string
+          message_id?: string | null
+          raw_payload: Json
+          received_at?: string
+          recipient_email?: string | null
+          subject?: string | null
+        }
+        Update: {
+          clicked_url?: string | null
+          created_at?: string
+          email_id?: string | null
+          event_type?: string
+          from_email?: string | null
+          id?: string
+          message_id?: string | null
+          raw_payload?: Json
+          received_at?: string
+          recipient_email?: string | null
+          subject?: string | null
+        }
+        Relationships: []
+      }
       session_registrations: {
         Row: {
           amount_paid: number | null

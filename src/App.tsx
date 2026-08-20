@@ -45,6 +45,7 @@ import OpenHouseRegister from "./pages/OpenHouseRegister";
 import SingForTheHerd from "./pages/SingForTheHerd";
 import FallRegistration from "./pages/FallRegistration";
 import Campaigns from "./pages/Campaigns";
+import Deliverability from "./pages/Deliverability";
 import RsvpConfirm from "./pages/RsvpConfirm";
 import OpenHouseRsvps from "./pages/OpenHouseRsvps";
 import OAuthConsent from "./pages/OAuthConsent";
@@ -98,6 +99,7 @@ const App = () => (
             <Route path="/tickets/sing-for-the-herd" element={<SingForTheHerd />} />
             <Route path="/fall-registration" element={<FallRegistration />} />
             <Route path="/campaigns" element={<Campaigns />} />
+            <Route path="/deliverability" element={<Deliverability />} />
             <Route path="/rsvp" element={<RsvpConfirm />} />
             <Route path="/open-house-rsvps" element={<OpenHouseRsvps />} />
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
