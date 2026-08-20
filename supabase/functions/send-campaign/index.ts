@@ -481,12 +481,13 @@ function renderBinderConsidering(r: Recipient) {
     : `<p style="${P}">On chante à Montréal, Hudson, Saint-Hubert et Pointe-Claire — un soir par semaine, de 19 h à 20 h 30, 14 semaines pour <strong>280 $</strong>, avec un spectacle pour la famille et les amis en clôture.</p>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">Quick note from the binder aisle 🛒 — I'm buying <strong>one binder per singer</strong> for the fall season, and I'd love to have one waiting for you.</p>
-    <p style="${P}">September is coming up fast, and over the next couple of weeks I'll be sending out the <strong>important pre-season emails</strong>: what to expect on the first night, when to arrive, what to bring, and the songs we'll be learning. Those go to registered singers — so if you've been thinking "yes, but later", now's the moment so you don't miss out.</p>
+    <p style="${P}">Quick note from the binder aisle — I'm buying <strong>one binder per singer</strong> for the fall season, and I'd love to have one waiting for you.</p>
+    <p style="${P}">September is coming up fast, and over the next couple of weeks I'll be sending out the <strong>important pre-season emails</strong>: what to expect on the first night, when to arrive, what to bring. Remember, once your registration is complete you can create your profile and get access to the song list and schedule for the session. Those go to registered singers — so if you've been thinking "yes, but later", now's the moment so you don't miss out.</p>
     ${scheduleEn}
     <p style="${P}">No audition. No music reading. Just a room full of people having a great time singing songs you already love, ${firstRehearsalEn(r).replace("on <strong>", "starting <strong>").replace("in <strong>", "starting <strong>")}.</p>
     ${BTN(`${SITE_URL}/register`, "Register for the fall session")}
     <p style="${P}">Questions before you decide — location, fees, anything at all? Write me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll answer personally.</p>
+    <p style="${P}">If you're not ready to join us this session, please let me know so I don't bother you unnecessarily — I'll keep you on our list for the winter 2027 session and other Club Choir events.</p>
     <p style="${P}">Hope to be labelling a binder with your name this week!</p>
     ${SIGN}
     ${DIVIDER}
