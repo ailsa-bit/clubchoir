@@ -730,11 +730,17 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    const onlyEmails: string[] = Array.isArray(body.onlyEmails)
+      ? body.onlyEmails.map((e: string) => String(e).toLowerCase().trim())
+      : [];
+
     const all = await loadRecipients(supabase, segment);
-    const recipients =
+    let recipients =
       location === "all" ? all
       : location === "unknown" ? all.filter((r) => !r.location)
       : all.filter((r) => r.location === location);
+    if (onlyEmails.length) recipients = all.filter((r) => onlyEmails.includes(r.email.toLowerCase()));
+
 
     if (countOnly) {
       const byLocation: Record<string, number> = { unknown: 0 };
