@@ -11,7 +11,7 @@ const corsHeaders = {
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -22,6 +22,8 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-considering-reminder": "fall-2026-still-considering-v2",
   "hudson-open-house-reminder": "hudson-open-house-aug18-reminder-v1",
   "hudson-open-house-thanks": "hudson-open-house-aug18-thanks-v1",
+  "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
+  "binder-count-considering": "fall-2026-binder-count-considering-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -512,6 +514,8 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "hudson-open-house") return renderHudsonOpenHouse(r);
   if (segment === "hudson-open-house-reminder") return renderHudsonOpenHouseReminder(r);
   if (segment === "hudson-open-house-thanks") return renderHudsonOpenHouseThanks(r);
+  if (segment === "binder-count-unpaid") return renderBinderUnpaid(r);
+  if (segment === "binder-count-considering") return renderBinderConsidering(r);
   return renderConsidering(r);
 }
 
@@ -561,7 +565,7 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   for (const e of guestList) unpaidMap.delete(e);
 
   if (segment === "fall-paid") return Array.from(paidMap.values());
-  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder") return Array.from(unpaidMap.values());
+  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid") return Array.from(unpaidMap.values());
 
   if (segment === "hudson-open-house") {
     const { data: allRsvps } = await supabase
