@@ -492,12 +492,13 @@ function renderBinderConsidering(r: Recipient) {
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">Petit mot depuis l'allée des fournitures 🛒 — j'achète <strong>un cartable par choriste</strong> pour la session d'automne, et j'aimerais bien en réserver un pour vous.</p>
-    <p style="${P}">Septembre approche à grands pas, et au cours des prochaines semaines j'enverrai les <strong>courriels importants de préparation</strong> : à quoi s'attendre lors de la première soirée, l'heure d'arrivée, quoi apporter et les chansons au programme. Ils sont envoyés aux personnes inscrites — donc si vous vous disiez « oui, mais plus tard », c'est le moment pour ne rien manquer.</p>
+    <p style="${P}">Petit mot depuis l'allée des fournitures — j'achète <strong>un cartable par choriste</strong> pour la session d'automne, et j'aimerais bien en réserver un pour vous.</p>
+    <p style="${P}">Septembre approche à grands pas, et au cours des prochaines semaines j'enverrai les <strong>courriels importants de préparation</strong> : à quoi s'attendre lors de la première soirée, l'heure d'arrivée, quoi apporter. N'oubliez pas qu'une fois votre inscription complétée, vous pourrez créer votre profil et accéder à la liste des chansons et à l'horaire de la session. Ils sont envoyés aux personnes inscrites — donc si vous vous disiez « oui, mais plus tard », c'est le moment pour ne rien manquer.</p>
     ${scheduleFr}
     <p style="${P}">Aucune audition. Aucune lecture de musique. Simplement une salle remplie de gens qui s'amusent à chanter des chansons qu'ils adorent déjà, dès ${firstRehearsalFr(r)}.</p>
     ${BTN(`${SITE_URL}/register`, "S'inscrire à la session d'automne")}
     <p style="${P}">Des questions avant de vous décider — lieu, frais, autre chose? Écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous répondrai personnellement.</p>
+    <p style="${P}">Si vous n'êtes pas prêt(e) à vous joindre à nous cette session, faites-le-moi savoir pour ne pas vous déranger inutilement — je vous garderai sur ma liste pour la session d'hiver 2027 et d'autres événements de Club Choir.</p>
     <p style="${P}">J'espère écrire votre nom sur un cartable cette semaine!</p>
     ${SIGN}`;
   return {
