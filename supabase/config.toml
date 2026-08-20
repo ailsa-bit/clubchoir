@@ -2,3 +2,6 @@ project_id = "vbbfpzszmtwhydhpgtgj"
 
 [functions.popup-ticket-redirect]
 verify_jwt = false
+
+[functions.resend-webhook]
+verify_jwt = false
