@@ -461,7 +461,7 @@ function renderBinderUnpaid(r: Recipient) {
     ${detailsBox(r, "fr")}
     ${PAYMENT_BOX_FR}
     <p style="${P}"><em>Vous avez déjà envoyé votre paiement? Merci — ne tenez pas compte de ce rappel, et écrivez-moi s'il n'a pas été enregistré.</em></p>
-    <p style="${P}">Autre chose : j'enverrai <strong>des courriels importants au cours des prochaines semaines</strong> pour préparer notre première soirée — heure d'arrivée, quoi apporter, stationnement. N'oubliez pas qu'une fois votre inscription complétée, vous pourrez créer votre profil et accéder à la liste des chansons et à l'horaire de la session. Les membres confirmés reçoivent tout, et je ne voudrais pas que vous manquiez quoi que ce soit.</p>
+    <p style="${P}">Autre chose : j'enverrai <strong>les importants courriels d'avant-saison</strong> au cours des prochaines semaines pour préparer notre première soirée — heure d'arrivée, quoi apporter, stationnement. N'oubliez pas qu'une fois votre inscription complétée, vous pourrez créer votre profil et accéder à la liste des chansons et à l'horaire de la session. Les membres confirmés reçoivent tout, et je ne voudrais pas que vous manquiez quoi que ce soit.</p>
     <p style="${P}">Notre première répétition a lieu ${firstRehearsalFr(r)}. Réservons votre cartable!</p>
     ${BTN(`${SITE_URL}/fall-registration`, "Compléter mon inscription")}
     ${SIGN}`;
