@@ -790,7 +790,7 @@ serve(async (req) => {
       .from("campaign_sends").select("recipient_email")
       .eq("campaign_key", key);
     const alreadySent = new Set<string>((sentRows || []).map((r: any) => String(r.recipient_email).toLowerCase()));
-    const toSend = recipients.filter((r) => !alreadySent.has(r.email));
+    const toSend = onlyEmails.length ? recipients : recipients.filter((r) => !alreadySent.has(r.email));
 
     const results: { success: string[]; failed: string[]; skipped: number } = {
       success: [], failed: [], skipped: recipients.length - toSend.length,
