@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
             <li>Tap <strong>Sign In</strong> above — no password needed. / Cliquez sur <strong>Sign In</strong> — aucun mot de passe requis.</li>
             <li>You'll land in the members section, where you can see the songs and resources for this session. / Vous arriverez dans la section des membres, avec les chansons et les ressources de la session.</li>
             <li>To set a password for next time, go to the login page and use <strong>Forgot password?</strong>. / Pour créer un mot de passe, utilisez <strong>Mot de passe oublié?</strong> sur la page de connexion.</li>
-            <li>Still stuck? Just reply-free — email <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>. / Un souci? Écrivez à <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>.</li>
+            <li>Still stuck? Email <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>. / Un souci? Écrivez à <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>.</li>
           </ol>
         </div>
 
