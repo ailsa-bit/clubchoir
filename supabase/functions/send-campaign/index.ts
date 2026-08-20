@@ -11,7 +11,7 @@ const corsHeaders = {
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -22,6 +22,8 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-considering-reminder": "fall-2026-still-considering-v2",
   "hudson-open-house-reminder": "hudson-open-house-aug18-reminder-v1",
   "hudson-open-house-thanks": "hudson-open-house-aug18-thanks-v1",
+  "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
+  "binder-count-considering": "fall-2026-binder-count-considering-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -437,7 +439,74 @@ function renderHudsonOpenHouseThanks(_r: Recipient) {
   };
 }
 
+function renderBinderUnpaid(r: Recipient) {
+  const loc = LOCATIONS[r.location];
+  const whereEn = loc ? `<strong>${esc(loc.city)}</strong>` : "your location";
+  const whereFr = loc ? `<strong>${esc(loc.city)}</strong>` : "votre groupe";
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}">Big news: I'm off to buy <strong>binders</strong> 🎉 — one for every single singer joining us this fall, packed with the lyrics and everything you'll need for our 14 weeks together.</p>
+    <p style="${P}">Which brings me to a small but important favour. Your spot for ${whereEn} is <strong>reserved but not yet confirmed</strong>, because your payment hasn't come in yet. I count binders (and chairs, and music, and snacks-worthy energy) based on confirmed singers — so completing your registration this week makes sure there's a binder with your name on it.</p>
+    ${detailsBox(r, "en")}
+    ${PAYMENT_BOX_EN}
+    <p style="${P}"><em>Already sent your payment? Thank you — ignore this one, and give me a shout if it hasn't been credited.</em></p>
+    <p style="${P}">One more thing: I'll be sending out <strong>important emails over the next couple of weeks</strong> to get everyone ready for our first night — start times, what to bring, parking tips, the songs. Confirmed members get all of it, and I'd hate for you to miss out.</p>
+    <p style="${P}">Our first rehearsal is ${firstRehearsalEn(r)}. Let's get you on the list!</p>
+    ${BTN(`${SITE_URL}/fall-registration`, "Complete my registration")}
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}">Grande nouvelle : je pars acheter les <strong>cartables</strong> 🎉 — un pour chaque choriste qui se joint à nous cet automne, avec les paroles et tout ce qu'il faut pour nos 14 semaines ensemble.</p>
+    <p style="${P}">D'où ce petit service à vous demander. Votre place à ${whereFr} est <strong>réservée, mais pas encore confirmée</strong>, car votre paiement n'est pas encore arrivé. Je commande les cartables (et les chaises, et les partitions) selon le nombre de choristes confirmés — compléter votre inscription cette semaine garantit qu'un cartable portera votre nom.</p>
+    ${detailsBox(r, "fr")}
+    ${PAYMENT_BOX_FR}
+    <p style="${P}"><em>Vous avez déjà envoyé votre paiement? Merci — ne tenez pas compte de ce rappel, et écrivez-moi s'il n'a pas été enregistré.</em></p>
+    <p style="${P}">Autre chose : j'enverrai <strong>des courriels importants au cours des prochaines semaines</strong> pour préparer notre première soirée — heure d'arrivée, quoi apporter, stationnement, les chansons. Les membres confirmés reçoivent tout, et je ne voudrais pas que vous manquiez quoi que ce soit.</p>
+    <p style="${P}">Notre première répétition a lieu ${firstRehearsalFr(r)}. Réservons votre cartable!</p>
+    ${BTN(`${SITE_URL}/fall-registration`, "Compléter mon inscription")}
+    ${SIGN}`;
+  return {
+    subject: `I'm buying binders — is one of them yours? 🎶 / J'achète les cartables — y en a-t-il un pour vous?`,
+    html: wrap(inner, "Confirming numbers for binders this week — complete your registration so you don't miss the prep emails."),
+  };
+}
+
+function renderBinderConsidering(r: Recipient) {
+  const loc = LOCATIONS[r.location];
+  const scheduleEn = loc
+    ? `<p style="${P}">In <strong>${esc(loc.city)}</strong> we sing ${loc.dayEn} from ${loc.time} at ${esc(loc.venue)} (${esc(loc.address)}), ${loc.datesEn} — 14 weeks for <strong>$280</strong>, ending with a showcase for friends and family.</p>`
+    : `<p style="${P}">We sing in Montreal, Hudson, Saint-Hubert and Pointe-Claire — one evening a week, 7:00–8:30 PM, 14 weeks for <strong>$280</strong>, ending with a showcase for friends and family.</p>`;
+  const scheduleFr = loc
+    ? `<p style="${P}">À <strong>${esc(loc.city)}</strong>, on chante les ${loc.dayFr.toLowerCase()} de ${loc.time} à ${esc(loc.venue)} (${esc(loc.address)}), du ${loc.datesFr} — 14 semaines pour <strong>280 $</strong>, avec un spectacle pour la famille et les amis en clôture.</p>`
+    : `<p style="${P}">On chante à Montréal, Hudson, Saint-Hubert et Pointe-Claire — un soir par semaine, de 19 h à 20 h 30, 14 semaines pour <strong>280 $</strong>, avec un spectacle pour la famille et les amis en clôture.</p>`;
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}">Quick note from the binder aisle 🛒 — I'm buying <strong>one binder per singer</strong> for the fall season, and I'd love to have one waiting for you.</p>
+    <p style="${P}">September is coming up fast, and over the next couple of weeks I'll be sending out the <strong>important pre-season emails</strong>: what to expect on the first night, when to arrive, what to bring, and the songs we'll be learning. Those go to registered singers — so if you've been thinking "yes, but later", now's the moment so you don't miss out.</p>
+    ${scheduleEn}
+    <p style="${P}">No audition. No music reading. Just a room full of people having a great time singing songs you already love, ${firstRehearsalEn(r).replace("on <strong>", "starting <strong>").replace("in <strong>", "starting <strong>")}.</p>
+    ${BTN(`${SITE_URL}/register`, "Register for the fall session")}
+    <p style="${P}">Questions before you decide — location, fees, anything at all? Write me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll answer personally.</p>
+    <p style="${P}">Hope to be labelling a binder with your name this week!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}">Petit mot depuis l'allée des fournitures 🛒 — j'achète <strong>un cartable par choriste</strong> pour la session d'automne, et j'aimerais bien en réserver un pour vous.</p>
+    <p style="${P}">Septembre approche à grands pas, et au cours des prochaines semaines j'enverrai les <strong>courriels importants de préparation</strong> : à quoi s'attendre lors de la première soirée, l'heure d'arrivée, quoi apporter et les chansons au programme. Ils sont envoyés aux personnes inscrites — donc si vous vous disiez « oui, mais plus tard », c'est le moment pour ne rien manquer.</p>
+    ${scheduleFr}
+    <p style="${P}">Aucune audition. Aucune lecture de musique. Simplement une salle remplie de gens qui s'amusent à chanter des chansons qu'ils adorent déjà, dès ${firstRehearsalFr(r)}.</p>
+    ${BTN(`${SITE_URL}/register`, "S'inscrire à la session d'automne")}
+    <p style="${P}">Des questions avant de vous décider — lieu, frais, autre chose? Écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous répondrai personnellement.</p>
+    <p style="${P}">J'espère écrire votre nom sur un cartable cette semaine!</p>
+    ${SIGN}`;
+  return {
+    subject: `There's a binder with your name on it 🎶 / Il y a un cartable à votre nom`,
+    html: wrap(inner, "Buying binders this week and sending pre-season emails soon — register so you don't miss out."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
+
   if (segment === "fall-paid") return renderPaid(r);
   if (segment === "fall-unpaid") return renderUnpaid(r);
   if (segment === "fall-unpaid-reminder") return renderUnpaidReminder(r);
@@ -445,6 +514,8 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "hudson-open-house") return renderHudsonOpenHouse(r);
   if (segment === "hudson-open-house-reminder") return renderHudsonOpenHouseReminder(r);
   if (segment === "hudson-open-house-thanks") return renderHudsonOpenHouseThanks(r);
+  if (segment === "binder-count-unpaid") return renderBinderUnpaid(r);
+  if (segment === "binder-count-considering") return renderBinderConsidering(r);
   return renderConsidering(r);
 }
 
@@ -494,7 +565,7 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   for (const e of guestList) unpaidMap.delete(e);
 
   if (segment === "fall-paid") return Array.from(paidMap.values());
-  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder") return Array.from(unpaidMap.values());
+  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid") return Array.from(unpaidMap.values());
 
   if (segment === "hudson-open-house") {
     const { data: allRsvps } = await supabase
