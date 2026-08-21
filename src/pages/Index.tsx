@@ -95,7 +95,7 @@ const Index = () => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-2xl">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
                 <Link
                   to="/register"
                   className="min-h-14 inline-flex items-center justify-center gap-2 rounded-xl bg-pink px-4 py-3 text-center text-sm font-bold text-pink-foreground shadow-md shadow-pink/20 hover:shadow-lg hover:-translate-y-0.5 transition-all"
@@ -110,14 +110,8 @@ const Index = () => {
                   <Calendar className="w-4 h-4 shrink-0" />
                   <span>{t("home.hero.seeSessions")}</span>
                 </a>
-                <Link
-                  to={isFr ? "/fr/hudson-open-house" : "/hudson-open-house"}
-                  className="min-h-14 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-lime bg-background px-4 py-3 text-center text-sm font-bold text-foreground hover:bg-lime hover:text-lime-foreground transition-colors"
-                >
-                  <MapPin className="w-4 h-4 shrink-0" />
-                  <span>{isFr ? "Portes ouvertes à Hudson" : "Hudson Open House"}</span>
-                </Link>
               </div>
+
 
             </div>
 
