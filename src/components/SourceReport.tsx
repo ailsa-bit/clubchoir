@@ -175,10 +175,7 @@ const SourceReport = () => {
     return [...map.values()].sort((a, b) => b.total - a.total);
   };
 
-  const currentRsvps = useMemo(() => rsvps.filter(isCurrentHudson), [rsvps]);
-  const pastRsvps = useMemo(() => rsvps.filter((r) => !isCurrentHudson(r)), [rsvps]);
-  const rsvpRows = useMemo(() => aggregate(currentRsvps), [currentRsvps]);
-  const pastRsvpRows = useMemo(() => aggregate(pastRsvps), [pastRsvps]);
+  const rsvpRows = useMemo(() => aggregate(rsvps), [rsvps]);
 
 
   return (
