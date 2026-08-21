@@ -45,14 +45,8 @@ type Rsvp = {
   created_at: string | null;
 };
 
-// The Aug 18 Hudson open house is the only live one; everything before this date
-// belongs to the July open-house round and must not be mixed into current numbers.
-const AUG18_CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
-const isCurrentHudson = (r: Rsvp) =>
-  +new Date(r.created_at || 0) >= AUG18_CUTOFF &&
-  ((r.location || "").toLowerCase().includes("hudson") ||
-    (r.landing_page || "").toLowerCase().includes("hudson-open-house") ||
-    (r.utm_campaign || r.source_campaign || "").toLowerCase().includes("hudson"));
+
+
 
 
 const sourceOf = (r: { utm_source: string | null; referrer: string | null }) => {
