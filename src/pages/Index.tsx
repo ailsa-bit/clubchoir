@@ -303,6 +303,11 @@ const Index = () => {
                 {t("home.whatWeSing.title")}
               </h2>
               <p className="text-base text-foreground/80 leading-relaxed mb-3">{t("home.whatWeSing.intro")}</p>
+              <p className="text-base text-foreground/80 leading-relaxed mb-3 font-semibold">
+                {isFr
+                  ? "Cette session, nous chanterons des chansons d'artistes comme Miley Cyrus, Prince, Olivia Dean et The Zombies."
+                  : "This session we will be singing songs by artists like Miley Cyrus, Prince, Olivia Dean and The Zombies."}
+              </p>
               <p className="font-heading font-bold text-sm text-foreground mb-1">
                 {t("home.whatWeSing.recent")}
               </p>
