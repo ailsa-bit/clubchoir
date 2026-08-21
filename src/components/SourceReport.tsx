@@ -239,24 +239,6 @@ const SourceReport = () => {
             </div>
           </div>
 
-
-
-
-          <div>
-            <h3 className="font-semibold text-sm mb-2">Earlier open houses (July round) — archive</h3>
-            <div className="flex flex-wrap gap-2 mb-2">
-              <Badge variant="outline">RSVPs: {pastRsvps.length}</Badge>
-            </div>
-            <div className="border border-border rounded-lg overflow-x-auto">
-              <OhRow head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Landing page", "RSVPs"]} />
-              {pastRsvpRows.length === 0 ? (
-                <div className="px-3 py-3 text-sm text-muted-foreground border-t border-border">Nothing here.</div>
-              ) : pastRsvpRows.map((r, i) => (
-                <OhRow key={i} cells={[r.source, r.medium, r.campaign, r.content, r.term, r.landing, r.total]} />
-              ))}
-            </div>
-          </div>
-
         </div>
       )}
     </div>
