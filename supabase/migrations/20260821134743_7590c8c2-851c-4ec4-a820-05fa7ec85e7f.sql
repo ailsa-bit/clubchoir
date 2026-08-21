@@ -1,0 +1,1 @@
+UPDATE session_registrations SET first_name = 'Michele', updated_at = now() WHERE id = '1ea3dd6e-7393-4f42-af8b-b1886b9864b1' AND email = 'mlheuff@mac.com';
