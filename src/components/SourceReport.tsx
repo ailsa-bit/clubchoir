@@ -45,14 +45,8 @@ type Rsvp = {
   created_at: string | null;
 };
 
-// The Aug 18 Hudson open house is the only live one; everything before this date
-// belongs to the July open-house round and must not be mixed into current numbers.
-const AUG18_CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
-const isCurrentHudson = (r: Rsvp) =>
-  +new Date(r.created_at || 0) >= AUG18_CUTOFF &&
-  ((r.location || "").toLowerCase().includes("hudson") ||
-    (r.landing_page || "").toLowerCase().includes("hudson-open-house") ||
-    (r.utm_campaign || r.source_campaign || "").toLowerCase().includes("hudson"));
+
+
 
 
 const sourceOf = (r: { utm_source: string | null; referrer: string | null }) => {
@@ -79,13 +73,8 @@ const Row = ({ cells, head = false }: { cells: (string | number)[]; head?: boole
   </div>
 );
 
-const OhRow = ({ cells, head = false }: { cells: (string | number)[]; head?: boolean }) => (
-  <div className={`grid grid-cols-[1.1fr_0.9fr_1.2fr_1.1fr_0.9fr_1.1fr_minmax(0,0.5fr)] gap-2 px-3 py-2 text-sm min-w-[900px] ${head ? "font-semibold text-muted-foreground text-xs uppercase tracking-wide" : "border-t border-border"}`}>
-    {cells.map((c, i) => (
-      <span key={i} className={i === 0 ? "truncate" : i === cells.length - 1 ? "text-right tabular-nums" : "truncate text-muted-foreground"}>{c}</span>
-    ))}
-  </div>
-);
+
+
 
 const SourceReport = () => {
   const [loading, setLoading] = useState(true);
@@ -175,10 +164,7 @@ const SourceReport = () => {
     return [...map.values()].sort((a, b) => b.total - a.total);
   };
 
-  const currentRsvps = useMemo(() => rsvps.filter(isCurrentHudson), [rsvps]);
-  const pastRsvps = useMemo(() => rsvps.filter((r) => !isCurrentHudson(r)), [rsvps]);
-  const rsvpRows = useMemo(() => aggregate(currentRsvps), [currentRsvps]);
-  const pastRsvpRows = useMemo(() => aggregate(pastRsvps), [pastRsvps]);
+  const rsvpRows = useMemo(() => aggregate(rsvps), [rsvps]);
 
 
   return (
@@ -239,24 +225,6 @@ const SourceReport = () => {
                 </div>
               ))}
               {regByLocation.length === 0 && <p className="text-sm text-muted-foreground">No registrations yet.</p>}
-            </div>
-          </div>
-
-
-
-
-          <div>
-            <h3 className="font-semibold text-sm mb-2">Earlier open houses (July round) — archive</h3>
-            <div className="flex flex-wrap gap-2 mb-2">
-              <Badge variant="outline">RSVPs: {pastRsvps.length}</Badge>
-            </div>
-            <div className="border border-border rounded-lg overflow-x-auto">
-              <OhRow head cells={["Source", "Medium", "Campaign", "Content (ad)", "Term (ad set)", "Landing page", "RSVPs"]} />
-              {pastRsvpRows.length === 0 ? (
-                <div className="px-3 py-3 text-sm text-muted-foreground border-t border-border">Nothing here.</div>
-              ) : pastRsvpRows.map((r, i) => (
-                <OhRow key={i} cells={[r.source, r.medium, r.campaign, r.content, r.term, r.landing, r.total]} />
-              ))}
             </div>
           </div>
 
