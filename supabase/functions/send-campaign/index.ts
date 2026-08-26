@@ -563,10 +563,17 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   }
   // A person who paid on any registration should never also be in the unpaid list
   for (const e of paidMap.keys()) unpaidMap.delete(e);
+  // Registered singers paying cash/cheque on the first night (tagged no-payment-emails)
+  // are confirmed attendees: they belong on the first-night/paid mailing list.
+  for (const [e, rec] of unpaidMap.entries()) {
+    if (guestList.has(e) && !paidMap.has(e)) paidMap.set(e, rec);
+  }
   // Guest list never receives payment reminders
   for (const e of guestList) unpaidMap.delete(e);
 
+
   if (segment === "fall-paid") return Array.from(paidMap.values());
+
   if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid") return Array.from(unpaidMap.values());
 
   if (segment === "hudson-open-house") {
