@@ -200,7 +200,7 @@ function renderPaid(r: Recipient) {
   const inner = `
     ${greetEn(r)}
     <p style="${P}">I hope you had a chance to stop by one of our open houses this week. It was wonderful to meet new members and reconnect with so many familiar faces. If you weren't able to join us, we'll have plenty of time to catch up this fall!</p>
-    <p style="${P}">I'm happy to confirm that your <strong>registration and payment have been received</strong>. You're all set for the upcoming Club Choir season.</p>
+    <p style="${P}">I'm happy to confirm that <strong>you are registered for the upcoming Club Choir season</strong> — your spot is saved and we're looking forward to singing with you.</p>
     ${detailsBox(r, "en")}
     <p style="${P}">Your membership is active, so you can sign in at clubchoir.ca to see the schedule and the songs we'll be learning. If you haven't created your account yet, use <strong>this same email address</strong> when you sign up and everything will be linked automatically.</p>
     ${BTN(`${SITE_URL}/login`, "Sign in & view the schedule")}
@@ -211,7 +211,7 @@ function renderPaid(r: Recipient) {
     ${DIVIDER}
     ${greetFr(r)}
     <p style="${P}">J'espère que vous avez eu l'occasion de passer à l'une de nos journées portes ouvertes cette semaine. Ce fut un réel plaisir de rencontrer de nouveaux membres et de revoir autant de visages familiers. Si vous n'avez pas pu vous joindre à nous, nous aurons tout le temps de nous retrouver cet automne!</p>
-    <p style="${P}">Je suis heureuse de vous confirmer que <strong>votre inscription et votre paiement ont bien été reçus</strong>. Tout est prêt pour votre prochaine saison avec Club Choir.</p>
+    <p style="${P}">Je suis heureuse de vous confirmer <strong>votre inscription à la prochaine saison de Club Choir</strong> — votre place est réservée et nous avons hâte de chanter avec vous.</p>
     ${detailsBox(r, "fr")}
     <p style="${P}">Votre adhésion est active : vous pouvez vous connecter à clubchoir.ca pour consulter l'horaire et les chansons que nous apprendrons. Si vous n'avez pas encore créé votre compte, utilisez <strong>cette même adresse courriel</strong> lors de l'inscription et tout sera relié automatiquement.</p>
     ${BTN(`${SITE_URL}/login`, "Se connecter et voir l'horaire")}
