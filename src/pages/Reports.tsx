@@ -171,6 +171,25 @@ const Reports = () => {
     return out;
   }, [report, location, search, regs, rsvps, members, prospects, augOnly]);
 
+  const summary = useMemo(() => {
+    const fall = regs.filter((r) => r.session_label === SESSION);
+    const seen = new Set<string>();
+    const uniq = fall.filter((r) => {
+      const k = `${fullName(r.first_name, r.last_name).toLowerCase()}|${(r.email || "").toLowerCase()}`;
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+    const byLoc = LOCATIONS.map((loc) => {
+      const list = uniq.filter((r) => (r.location || "").toLowerCase() === loc.toLowerCase());
+      const paid = list.filter((r) => r.payment_status === "paid" || r.payment_status === "free").length;
+      return { loc, total: list.length, paid, unpaid: list.length - paid };
+    });
+    const total = uniq.length;
+    const paid = uniq.filter((r) => r.payment_status === "paid" || r.payment_status === "free").length;
+    return { byLoc, total, paid, unpaid: total - paid };
+  }, [regs]);
+
   const current = REPORTS.find((r) => r.id === report)!;
   const fileBase = `${report}${location !== "all" ? `-${location.toLowerCase()}` : ""}-${new Date().toISOString().slice(0, 10)}`;
 
