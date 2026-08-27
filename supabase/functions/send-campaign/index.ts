@@ -202,7 +202,7 @@ function renderPaid(r: Recipient) {
     <p style="${P}">I hope you had a chance to stop by one of our open houses this week. It was wonderful to meet new members and reconnect with so many familiar faces. If you weren't able to join us, we'll have plenty of time to catch up this fall!</p>
     <p style="${P}">I'm happy to confirm that <strong>you are registered for the upcoming Club Choir season</strong> — your spot is saved and we're looking forward to singing with you.</p>
     ${detailsBox(r, "en")}
-    <p style="${P}">Your membership is active, so you can sign in at clubchoir.ca to see the schedule and the songs we'll be learning. If you haven't created your account yet, use <strong>this same email address</strong> when you sign up and everything will be linked automatically.</p>
+    <p style="${P}">You can sign in at clubchoir.ca to see the schedule and the songs we'll be learning. If you haven't created your account yet, use <strong>this same email address</strong> when you sign up and everything will be linked automatically.</p>
     ${BTN(`${SITE_URL}/login`, "Sign in & view the schedule")}
     <p style="${P}">If you have any trouble creating your account, signing in, or accessing the schedule, please let me know. I'll be happy to walk you through it.</p>
     <p style="${P}">Our first rehearsal is ${firstRehearsalEn(r)}! I'm so pleased to welcome you—or welcome you back—to the Club Choir family. It's because of members like you that I get to do what I love, and Club Choir truly wouldn't exist without you.</p>
@@ -213,7 +213,7 @@ function renderPaid(r: Recipient) {
     <p style="${P}">J'espère que vous avez eu l'occasion de passer à l'une de nos journées portes ouvertes cette semaine. Ce fut un réel plaisir de rencontrer de nouveaux membres et de revoir autant de visages familiers. Si vous n'avez pas pu vous joindre à nous, nous aurons tout le temps de nous retrouver cet automne!</p>
     <p style="${P}">Je suis heureuse de vous confirmer <strong>votre inscription à la prochaine saison de Club Choir</strong> — votre place est réservée et nous avons hâte de chanter avec vous.</p>
     ${detailsBox(r, "fr")}
-    <p style="${P}">Votre adhésion est active : vous pouvez vous connecter à clubchoir.ca pour consulter l'horaire et les chansons que nous apprendrons. Si vous n'avez pas encore créé votre compte, utilisez <strong>cette même adresse courriel</strong> lors de l'inscription et tout sera relié automatiquement.</p>
+    <p style="${P}">Vous pouvez vous connecter à clubchoir.ca pour consulter l'horaire et les chansons que nous apprendrons. Si vous n'avez pas encore créé votre compte, utilisez <strong>cette même adresse courriel</strong> lors de l'inscription et tout sera relié automatiquement.</p>
     ${BTN(`${SITE_URL}/login`, "Se connecter et voir l'horaire")}
     <p style="${P}">Si vous éprouvez des difficultés à créer votre compte, à vous connecter ou à consulter l'horaire, n'hésitez pas à communiquer avec moi. Il me fera plaisir de vous guider.</p>
     <p style="${P}">Notre première répétition aura lieu ${firstRehearsalFr(r)}! Je suis ravie de vous accueillir—ou de vous retrouver—dans la grande famille de Club Choir. C'est grâce à des membres comme vous que j'ai la chance de faire ce que j'aime, et Club Choir n'existerait tout simplement pas sans vous.</p>
@@ -221,8 +221,8 @@ function renderPaid(r: Recipient) {
     ${SIGN}`;
   const where = loc ? ` — ${loc.city}, ${loc.dayEn}` : "";
   return {
-    subject: `You're all set for the fall season${where ? ` (${loc!.city})` : ""} 🎶 / Tout est prêt pour l'automne`,
-    html: wrap(inner, `Registration and payment confirmed${where}. Please check your details.`),
+    subject: `You're registered for the fall season${where ? ` (${loc!.city})` : ""} 🎶 / Votre inscription pour l'automne`,
+    html: wrap(inner, `You're registered for the upcoming season${where}. Please check your details.`),
   };
 }
 
