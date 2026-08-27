@@ -228,7 +228,30 @@ const Reports = () => {
         </Button>
       </div>
 
+      <div className="bg-card border border-border rounded-xl p-4 md:p-5 mb-6">
+        <div className="flex items-center gap-2 flex-wrap mb-3">
+          <h2 className="font-heading font-bold text-lg">Fall 2026 — registered &amp; paid</h2>
+          <Badge>{summary.total} registered</Badge>
+          <Badge variant="default">{summary.paid} paid</Badge>
+          <Badge variant="outline">{summary.unpaid} not paid</Badge>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {summary.byLoc.map((s) => (
+            <div key={s.loc} className="rounded-lg border border-border p-3">
+              <div className="font-heading font-semibold text-sm">{s.loc}</div>
+              <div className="text-2xl font-bold mt-1">{s.paid}<span className="text-sm font-normal text-muted-foreground"> / {s.total} paid</span></div>
+              <div className="text-xs text-muted-foreground mt-1">{s.unpaid} still to pay</div>
+              <div className="flex gap-2 mt-2 print:hidden">
+                <Button size="sm" variant="outline" onClick={() => { setReport("paid"); setLocation(s.loc); }}>Paid list</Button>
+                <Button size="sm" variant="ghost" onClick={() => { setReport("unpaid"); setLocation(s.loc); }}>Unpaid</Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6 print:hidden">
+
         {REPORTS.map((r) => (
           <button
             key={r.id}
