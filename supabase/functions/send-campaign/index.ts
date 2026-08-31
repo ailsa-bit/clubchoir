@@ -510,6 +510,159 @@ function renderBinderConsidering(r: Recipient) {
   };
 }
 
+// ---------- first-night (week 1) templates ----------
+
+// Location-specific logistics for the first rehearsal, bilingual
+function firstNightLogistics(r: Recipient, lang: "en" | "fr"): string {
+  const loc = LOCATIONS[r.location];
+  const city = loc ? esc(loc.city) : "";
+  const venueLine = loc
+    ? (lang === "en"
+      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Where:</strong> ${esc(loc.venue)}, ${esc(loc.address)}</p>`
+      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Où :</strong> ${esc(loc.venue)}, ${esc(loc.address)}</p>`)
+    : "";
+  let timeLine = "";
+  let extra = "";
+  if (r.location === "Hudson") {
+    timeLine = lang === "en"
+      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc!.startEn} — singing starts at <strong>7:30 PM</strong> (a little later than usual)</p>`
+      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc!.startFr} — on commence à chanter à <strong>19 h 30</strong> (un peu plus tard qu'à l'habitude)</p>`;
+    extra = lang === "en"
+      ? `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">The Legion is hosting its scheduled <strong>burger night</strong> that evening, which is why we start a little later. I'll be there from <strong>6:00 PM</strong> enjoying a burger — arrive earlier if you'd like to join me! 🍔</p>
+         <p style="margin:6px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Parking:</strong> if you park in the restricted area, you'll be given a <strong>parking pass</strong> when you sign in.</p>`
+      : `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">La Légion tient sa <strong>soirée burgers</strong> ce soir-là, c'est pourquoi nous commençons un peu plus tard. Je serai sur place dès <strong>18 h</strong> pour savourer un burger — arrivez plus tôt si vous voulez vous joindre à moi! 🍔</p>
+         <p style="margin:6px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Stationnement :</strong> si vous vous garez dans la zone réservée, on vous remettra un <strong>laissez-passer de stationnement</strong> à l'accueil.</p>`;
+  } else if (r.location === "Montreal") {
+    timeLine = lang === "en"
+      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc!.startEn} — please arrive a few minutes early, we start singing at <strong>7:00 PM</strong></p>`
+      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc!.startFr} — arrivez quelques minutes à l'avance, on commence à chanter à <strong>19 h</strong></p>`;
+    extra = lang === "en"
+      ? `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Accessibility:</strong> if you have mobility restrictions, there is an <strong>elevator to the right of the door</strong> as you enter the building.</p>`
+      : `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Accessibilité :</strong> si vous avez des restrictions de mobilité, il y a un <strong>ascenseur à droite de la porte</strong> en entrant dans l'édifice.</p>`;
+  } else if (loc) {
+    timeLine = lang === "en"
+      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc.startEn} — please arrive a few minutes early, we start singing at <strong>7:00 PM</strong></p>`
+      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc.startFr} — arrivez quelques minutes à l'avance, on commence à chanter à <strong>19 h</strong></p>`;
+  }
+  const title = lang === "en"
+    ? `First night details${city ? ` — ${city}` : ""}`
+    : `Détails de la première soirée${city ? ` — ${city}` : ""}`;
+  return `
+  <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+    <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${title}</div>
+    ${venueLine}
+    ${timeLine}
+    ${extra}
+  </div>`;
+}
+
+const SONGS_EN = `On the first night we'll learn our <strong>first song of the session: "Lovely Day" by Bill Withers</strong> — the perfect feel-good song to kick things off. Later this session we'll be singing "Dreams" (Fleetwood Mac), "Flowers" (Miley Cyrus), "When Doves Cry" (Prince) and more.`;
+const SONGS_FR = `Lors de la première soirée, nous apprendrons notre <strong>première chanson de la session : « Lovely Day » de Bill Withers</strong> — la chanson feel-good parfaite pour bien commencer. Plus tard cette session, nous chanterons « Dreams » (Fleetwood Mac), « Flowers » (Miley Cyrus), « When Doves Cry » (Prince) et bien d'autres.`;
+
+function renderFirstNightGuests(r: Recipient) {
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>This email contains a lot of information — please read all the way to the end.</strong></p>
+    <p style="${P}">I'm so happy you'll be joining us for the first rehearsal of the fall session! Here's everything you need to know for a great first night.</p>
+    ${firstNightLogistics(r, "en")}
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">What to bring</div>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">💧 <strong>Water</strong> — singing is thirsty work, stay hydrated!</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">👓 <strong>Your reading glasses</strong>, if you need them.</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 You'll be <strong>provided a binder</strong> with all the lyric sheets. If you decide to join us, the binder is yours to keep — if you're still undecided after the first night, simply leave it behind.</p>
+    </div>
+    <p style="${P}"><strong>What to expect:</strong> ${SONGS_EN}</p>
+    <p style="${P}">There's no audition and no pressure — just come as you are and enjoy the evening. And if you choose to join after the first rehearsal, you'll get <strong>full access to the members section</strong> of clubchoir.ca, with the weekly schedule, the songs we're learning, and everything else for the season.</p>
+    <p style="${P}">I can't wait to sing with you!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>Ce courriel contient beaucoup d'informations — merci de le lire jusqu'à la fin.</strong></p>
+    <p style="${P}">Je suis ravie que vous vous joigniez à nous pour la première répétition de la session d'automne! Voici tout ce qu'il faut savoir pour une belle première soirée.</p>
+    ${firstNightLogistics(r, "fr")}
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Quoi apporter</div>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">💧 <strong>De l'eau</strong> — chanter donne soif, restez hydraté(e)!</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">👓 <strong>Vos lunettes de lecture</strong>, si vous en avez besoin.</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 On vous remettra un <strong>cartable</strong> avec toutes les paroles. Si vous décidez de vous joindre à nous, il est à vous — si vous êtes encore indécis(e) après la première soirée, laissez-le simplement sur place.</p>
+    </div>
+    <p style="${P}"><strong>À quoi s'attendre :</strong> ${SONGS_FR}</p>
+    <p style="${P}">Pas d'audition, pas de pression — venez comme vous êtes et profitez de la soirée. Et si vous choisissez de vous joindre à nous après la première répétition, vous aurez <strong>un accès complet à la section membres</strong> de clubchoir.ca : horaire hebdomadaire, chansons de la session et tout le reste.</p>
+    <p style="${P}">Au plaisir de chanter avec vous!</p>
+    ${SIGN}`;
+  return {
+    subject: `Your first night at Club Choir — everything you need to know / Votre première soirée à Club Choir`,
+    html: wrap(inner, "First night details: where, when, what to bring, and our first song of the session."),
+  };
+}
+
+function renderFirstNightPaid(r: Recipient) {
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>This email contains a lot of information — please read all the way to the end.</strong></p>
+    <p style="${P}"><strong>Welcome to Club Choir!</strong> Whether you're a brand-new face or a returning member, I'm so glad you're with us for the fall session — your spot is confirmed and we're ready to sing. 🎶</p>
+    ${firstNightLogistics(r, "en")}
+    <p style="${P}"><strong>Your member portal:</strong> as a registered member you have full access to the members section at clubchoir.ca — the weekly schedule, the songs we're learning, and important updates from week to week. If you haven't created your profile yet, please do it now:</p>
+    ${BTN(`${SITE_URL}/profile`, "Set up your member profile")}
+    <p style="${P}">Important information will be posted in the portal throughout the session, so it's worth getting connected before we start. <strong>If you have any trouble signing in or creating your profile, let me know right away</strong> — write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and we'll take care of it before we get started next week.</p>
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">What to bring</div>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">💧 <strong>Water</strong> — stay hydrated!</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">👓 <strong>Your reading glasses</strong>, if you need them.</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 Your <strong>binder</strong> with the session's lyric sheets will be waiting for you — it's yours to keep.</p>
+    </div>
+    <p style="${P}">${SONGS_EN}</p>
+    <p style="${P}">See you next week — I can't wait to make music with you again (or for the very first time)!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>Ce courriel contient beaucoup d'informations — merci de le lire jusqu'à la fin.</strong></p>
+    <p style="${P}"><strong>Bienvenue à Club Choir!</strong> Que vous soyez un nouveau visage ou un membre de retour, je suis ravie de vous compter parmi nous pour la session d'automne — votre place est confirmée et nous sommes prêts à chanter. 🎶</p>
+    ${firstNightLogistics(r, "fr")}
+    <p style="${P}"><strong>Votre portail membre :</strong> en tant que membre inscrit(e), vous avez un accès complet à la section membres de clubchoir.ca — horaire hebdomadaire, chansons de la session et informations importantes de semaine en semaine. Si vous n'avez pas encore créé votre profil, faites-le maintenant :</p>
+    ${BTN(`${SITE_URL}/profile`, "Créer mon profil membre")}
+    <p style="${P}">Des informations importantes seront publiées dans le portail tout au long de la session, alors ça vaut la peine de vous connecter avant le début. <strong>Si vous avez de la difficulté à vous connecter ou à créer votre profil, écrivez-moi tout de suite</strong> à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et nous réglerons ça avant la semaine prochaine.</p>
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Quoi apporter</div>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">💧 <strong>De l'eau</strong> — restez hydraté(e)!</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">👓 <strong>Vos lunettes de lecture</strong>, si vous en avez besoin.</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 Votre <strong>cartable</strong> avec les paroles de la session vous attendra sur place — il est à vous.</p>
+    </div>
+    <p style="${P}">${SONGS_FR}</p>
+    <p style="${P}">À la semaine prochaine — j'ai tellement hâte de chanter avec vous (encore une fois, ou pour la toute première fois)!</p>
+    ${SIGN}`;
+  return {
+    subject: `Welcome to Club Choir! First night details inside / Bienvenue à Club Choir! Détails de la première soirée`,
+    html: wrap(inner, "Welcome! First night details, what to bring, and your member portal access."),
+  };
+}
+
+function renderFirstNightUnpaid(r: Recipient) {
+  const loc = LOCATIONS[r.location];
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>Choir starts next week${loc ? ` (${loc.startEn})` : ""}</strong> — and this week I'm sending out all the important first-night information emails: what to bring, where to go, parking details, and our first song of the session.</p>
+    <p style="${P}">You've registered or told me you're interested, but your registration isn't finalized yet. <strong>If you'd like to receive the first-night information, now is the time to complete your registration</strong> so you don't miss anything.</p>
+    ${PAYMENT_BOX_EN}
+    <p style="${P}">This is the last chance to join for the fall session — we'd love to have you with us from night one.</p>
+    ${BTN(`${SITE_URL}/fall-registration`, "Finalize my registration")}
+    <p style="${P}"><strong>Not sure yet?</strong> No problem — if you'd like to come try out the first night before making a decision, just reply to this email or write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and let me know, so we can be prepared to welcome you.</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>La chorale commence la semaine prochaine${loc ? ` (${loc.startFr})` : ""}</strong> — et cette semaine, j'envoie tous les courriels d'information importants pour la première soirée : quoi apporter, où aller, le stationnement et notre première chanson de la session.</p>
+    <p style="${P}">Vous vous êtes inscrit(e) ou m'avez dit être intéressé(e), mais votre inscription n'est pas encore finalisée. <strong>Si vous souhaitez recevoir les informations pour la première soirée, c'est le moment de compléter votre inscription</strong> pour ne rien manquer.</p>
+    ${PAYMENT_BOX_FR}
+    <p style="${P}">C'est la dernière chance de vous joindre à nous pour la session d'automne — nous serions ravis de vous accueillir dès la première soirée.</p>
+    ${BTN(`${SITE_URL}/fall-registration`, "Finaliser mon inscription")}
+    <p style="${P}"><strong>Vous hésitez encore?</strong> Pas de problème — si vous aimeriez venir essayer la première soirée avant de prendre votre décision, répondez simplement à ce courriel ou écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> pour me le dire, afin que nous soyons prêts à vous accueillir.</p>
+    ${SIGN}`;
+  return {
+    subject: `Choir starts next week — don't miss the first-night details / La chorale commence la semaine prochaine`,
+    html: wrap(inner, "First-night info emails are going out this week — finalize your registration so you don't miss anything."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
 
   if (segment === "fall-paid") return renderPaid(r);
