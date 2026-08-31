@@ -54,14 +54,14 @@ const Campaigns = () => {
   const { toast } = useToast();
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
-    "hudson-open-house-thanks": {},
-    "binder-count-unpaid": {},
-    "binder-count-considering": {},
+    "first-night-guests": {},
+    "first-night-paid": {},
+    "first-night-unpaid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
-    "hudson-open-house-thanks": "all",
-    "binder-count-unpaid": "all",
-    "binder-count-considering": "all",
+    "first-night-guests": "all",
+    "first-night-paid": "all",
+    "first-night-unpaid": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
