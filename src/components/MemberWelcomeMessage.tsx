@@ -10,23 +10,37 @@ import type { Database } from "@/integrations/supabase/types";
 
 type Announcement = Database["public"]["Tables"]["weekly_announcements"]["Row"];
 
-const DEFAULT_TITLE = { en: "A Note from Club Choir", fr: "Un mot de Club Choir" };
+const DEFAULT_TITLE = { en: "A Note from Ailsa 🎶", fr: "Un mot d'Ailsa 🎶" };
 
 const DEFAULT_MESSAGE = {
-  en: `Welcome to the Fall 2026 session! Whether this is your first time singing with us or you are returning for another season, I am so glad you are here. It has been a busy summer, so be sure to check out our Events page for photos and highlights.
+  en: `Hello wonderful singers! 🌟
 
-Remember: your home base choir is always your musical home, but as a member you are welcome to visit any of our four locations whenever it suits you.
+Welcome to our Fall 2026 session! Whether you're stepping into Club Choir for the very first time or coming back to sing with us again, I am absolutely thrilled you're here. 🎉 This summer has been full of music and memories, so be sure to check out our Events page to catch up on all the fun!
 
-I also encourage you to invite a friend to a rehearsal this session — someone who might love to join, or someone who could simply use a little musical pick-me-up.
+Remember — your home base choir is your musical home, but as a member you can visit any of our four locations anytime it suits your schedule. 🎵
 
-New song resources will be posted every Friday in Fall 2026 Song Resources. See you at choir!`,
-  fr: `Bienvenue à la session d'automne 2026 ! Que ce soit votre première fois avec nous ou que vous reveniez pour une autre saison, je suis ravie que vous soyez là. Ce fut un été bien rempli, alors consultez notre page Événements pour des photos et des moments forts.
+I also encourage you to bring a friend to a rehearsal this session — someone who might love to join our choir family, or someone who could use a little musical sunshine in their week. ☀️💛
 
-N'oubliez pas : votre chorale de base est toujours votre foyer musical, mais en tant que membre vous êtes les bienvenus dans n'importe laquelle de nos quatre locations quand cela vous convient.
+New song resources will be posted every Friday in Fall 2026 Song Resources, so check back weekly to find recordings, lyrics, and slides.
 
-Je vous encourage aussi à inviter un ami à un répétition cette session — quelqu'un qui aimerait se joindre à nous, ou quelqu'un qui aurait besoin d'un petit coup de pouce musical.
+You can reach me anytime at ailsa@clubchoir.ca — I'm always happy to hear from you!
 
-Les nouvelles ressources musicales seront publiées chaque vendredi dans Ressources chansons Automne 2026. À bientôt au chœur !`,
+Tra-la-la,
+Ailsa 🎤✨`,
+  fr: `Bonjour merveilleux chanteurs et chanteuses ! 🌟
+
+Bienvenue à notre session d'automne 2026 ! Que ce soit votre première fois à Club Choir ou que vous reveniez chanter avec nous, je suis absolument ravie que vous soyez là. 🎉 Cet été a été rempli de musique et de souvenirs, alors consultez notre page Événements pour ne rien manquer !
+
+N'oubliez pas — votre chorale de base est votre foyer musical, mais en tant que membre vous pouvez visiter n'importe laquelle de nos quatre locations quand cela vous convient. 🎵
+
+Je vous encourage aussi à amener un ami à une répétition cette session — quelqu'un qui aimerait se joindre à notre famille chorale, ou quelqu'un qui aurait besoin d'un peu de soleil musical dans sa semaine. ☀️💛
+
+Les nouvelles ressources musicales seront publiées chaque vendredi dans Ressources chansons Automne 2026, alors revenez chaque semaine pour trouver les enregistrements, paroles et diapositives.
+
+Vous pouvez me joindre en tout temps à ailsa@clubchoir.ca — ça me fait toujours plaisir de vous entendre !
+
+Tra-la-la,
+Ailsa 🎤✨`,
 };
 
 const formatDateInput = (d: string) => d.split("T")[0];
