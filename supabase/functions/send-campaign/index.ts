@@ -599,7 +599,7 @@ function renderFirstNightGuests(r: Recipient) {
 function renderFirstNightPaid(r: Recipient) {
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>This email contains a lot of information — please read all the way to the end.</strong></p>
+    <p style="${P}"><strong>This email contains important information about the first night — please read all the way to the end.</strong></p>
     <p style="${P}"><strong>Welcome to Club Choir!</strong> Whether you're a brand-new face or a returning member, I'm so glad you're with us for the fall session — your spot is confirmed and we're ready to sing. 🎶</p>
     ${firstNightLogistics(r, "en")}
     <p style="${P}"><strong>Your member portal:</strong> as a registered member you have full access to the members section at clubchoir.ca — the weekly schedule, the songs we're learning, and important updates from week to week. If you haven't created your profile yet, please do it now:</p>
