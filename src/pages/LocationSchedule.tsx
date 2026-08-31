@@ -63,6 +63,15 @@ function getSessionLabel(type: string) {
   }
 }
 
+// Hudson Legion hosts a BBQ on Tuesday nights for the first six weeks of the fall session,
+// so Hudson weeks 1–6 run 7:30–9:00 PM instead of the usual 7:00–8:30 PM.
+function getSessionTime(location: string, week: string, defaultTime: string): string {
+  if (location === "Hudson" && /^Week [1-6]$/i.test(week)) {
+    return "7:30–9:00 PM";
+  }
+  return defaultTime;
+}
+
 const LocationSchedule = () => {
   const { locationSlug } = useParams<{ locationSlug: string }>();
   const [sessions, setSessions] = useState<SessionRow[]>([]);
