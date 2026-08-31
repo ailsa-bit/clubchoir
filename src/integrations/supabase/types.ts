@@ -650,6 +650,36 @@ export type Database = {
         }
         Relationships: []
       }
+      weekly_announcements: {
+        Row: {
+          active_from: string
+          created_at: string
+          id: string
+          message_en: string
+          message_fr: string
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          active_from?: string
+          created_at?: string
+          id?: string
+          message_en: string
+          message_fr: string
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active_from?: string
+          created_at?: string
+          id?: string
+          message_en?: string
+          message_fr?: string
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
