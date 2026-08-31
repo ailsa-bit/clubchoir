@@ -46,13 +46,12 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
 
   // Consolidated "My Choir" dropdown for member-only day-to-day items
   const myChoirChildren = [
+    { label: t("nav.songs.fall2026"), path: "/resources/fall-2026" },
     { label: "Montreal", path: "/schedule/montreal" },
     { label: "Hudson", path: "/schedule/hudson" },
     { label: "Saint-Hubert", path: "/schedule/saint-hubert" },
     { label: "Pointe-Claire", path: "/schedule/pointe-claire" },
-    
     { label: t("nav.chat"), path: "/chat" },
-    { label: t("nav.songs.fall2026"), path: "/resources/fall-2026" },
   ];
 
   const memberNavItems = [
