@@ -235,6 +235,8 @@ const LocationSchedule = () => {
                       <span className="text-xs font-semibold text-muted-foreground">{s.week}</span>
                       <span className="text-xs text-muted-foreground">·</span>
                       <span className="text-xs text-muted-foreground">{format(date, "EEE, MMM d")}</span>
+                      <span className="text-xs text-muted-foreground">·</span>
+                      <span className="text-xs font-medium text-foreground/80">{getSessionTime(s.location, s.week, meta.time)}</span>
                       {isCurrentWeek && (
                         <span className="text-[10px] font-bold uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
                           This Week
