@@ -70,7 +70,7 @@ const MemberDetail = () => {
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
-      navigate("/community");
+      navigate("/this-week");
     }
   }, [isAdmin, adminLoading]);
 

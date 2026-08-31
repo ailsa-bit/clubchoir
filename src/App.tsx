@@ -11,7 +11,7 @@ import Layout from "./components/Layout";
 import ActiveMemberGate from "./components/ActiveMemberGate";
 import Index from "./pages/Index";
 import ThisWeek from "./pages/ThisWeek";
-import Community from "./pages/Community";
+
 import Events from "./pages/Events";
 import Corporate from "./pages/Corporate";
 import Profile from "./pages/Profile";
@@ -68,7 +68,7 @@ const App = () => (
             <Route path="/reports" element={<Reports />} />
             <Route path="/this-week" element={<ActiveMemberGate><ThisWeek /></ActiveMemberGate>} />
             <Route path="/schedule/:locationSlug" element={<ActiveMemberGate><LocationSchedule /></ActiveMemberGate>} />
-            <Route path="/community" element={<ActiveMemberGate><Community /></ActiveMemberGate>} />
+            
             <Route path="/events" element={<Events />} />
             <Route path="/register" element={<Register />} />
             <Route path="/resources" element={<ActiveMemberGate><Navigate to="/resources/fall-2026" replace /></ActiveMemberGate>} />

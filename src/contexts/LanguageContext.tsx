@@ -14,7 +14,7 @@ const translations: Record<string, Record<Language, string>> = {
   "nav.thisWeek": { en: "This Week at Choir", fr: "Cette semaine au chœur" },
   "nav.events": { en: "Club Choir Events", fr: "Événements Club Choir" },
   "nav.corporate": { en: "Corporate Events", fr: "Événements corporatifs" },
-  "nav.community": { en: "Choir Community", fr: "Communauté chorale" },
+  
   "nav.chat": { en: "Chat", fr: "Clavardage" },
   "nav.resources": { en: "Songs", fr: "Chansons" },
   "nav.songs": { en: "Songs", fr: "Chansons" },
