@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Music, Calendar, Star, PartyPopper, Clock, MapPin, ArrowLeft, Upload } from "lucide-react";
+import { Music, Calendar, Star, PartyPopper, Clock, MapPin, ArrowLeft, Upload, Info } from "lucide-react";
 import { useAdmin } from "@/hooks/use-admin";
-import { format, parseISO, isThisWeek, isFuture, isPast } from "date-fns";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { format, parseISO, isThisWeek, isPast } from "date-fns";
 import AdminScheduleUpload from "@/components/AdminScheduleUpload";
 import { Helmet } from "react-helmet-async";
 
@@ -16,10 +17,24 @@ interface SessionRow {
   artist: string | null;
 }
 
-const locationMeta: Record<string, { dot: string; bg: string; venue: string; day: string; time: string; address: string }> = {
+interface LocationMeta {
+  dot: string;
+  bg: string;
+  venue: string;
+  day: string;
+  time: string;
+  address: string;
+  notice?: { en: string; fr: string };
+}
+
+const hudsonBbqNotice = {
+  en: "The Hudson Legion hosts a BBQ night on Tuesdays. We can only begin singing at 7:30 PM, but Ailsa will be there early — feel free to arrive beforehand and enjoy burgers with the community!",
+  fr: "Le Hudson Legion organise une soirée BBQ les mardis. Nous ne pouvons commencer à chanter qu'à 19 h 30, mais Ailsa sera là en avance — n'hésitez pas à arriver plus tôt et profiter des burgers avec la communauté !",
+};
+
+const locationMeta: Record<string, LocationMeta> = {
   "Montreal": { dot: "bg-pink", bg: "bg-pink-light border-pink/20", venue: "Kensington – Kensington Room", day: "Monday", time: "7:00–8:30 PM", address: "6225 Av. Godfrey" },
-  "Hudson": { dot: "bg-orange", bg: "bg-orange-light border-orange/20", venue: "The Hudson Legion", day: "Tuesday", time: "7:00–8:30 PM", address: "57 Beach Road, Hudson, J0P 1H0" },
-  
+  "Hudson": { dot: "bg-orange", bg: "bg-orange-light border-orange/20", venue: "The Hudson Legion", day: "Tuesday", time: "7:00–8:30 PM", address: "57 Beach Road, Hudson, J0P 1H0", notice: hudsonBbqNotice },
   "Saint-Hubert": { dot: "bg-lime", bg: "bg-lime-light border-lime/20", venue: "St-Gabriel Catholic Church", day: "Wednesday", time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert" },
   "Pointe-Claire": { dot: "bg-purple", bg: "bg-purple-light border-purple/20", venue: "Valois United Church", day: "Thursday", time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire" },
 };
@@ -49,6 +64,15 @@ function getSessionLabel(type: string) {
   }
 }
 
+// Hudson Legion hosts a BBQ on Tuesday nights for the first six weeks of the fall session,
+// so Hudson weeks 1–6 run 7:30–9:00 PM instead of the usual 7:00–8:30 PM.
+function getSessionTime(location: string, week: string, defaultTime: string): string {
+  if (location === "Hudson" && /^Week [1-6]$/i.test(week)) {
+    return "7:30–9:00 PM";
+  }
+  return defaultTime;
+}
+
 const LocationSchedule = () => {
   const { locationSlug } = useParams<{ locationSlug: string }>();
   const [sessions, setSessions] = useState<SessionRow[]>([]);
@@ -56,6 +80,7 @@ const LocationSchedule = () => {
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [showUpload, setShowUpload] = useState(false);
   const { isAdmin } = useAdmin();
+  const { language } = useLanguage();
 
   const locationName = locationSlug
     ? locationSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join("-")
@@ -136,6 +161,17 @@ const LocationSchedule = () => {
           </div>
         </div>
 
+        {meta.notice && (
+          <div className="rounded-2xl border border-orange/30 bg-orange-light p-5 mb-8">
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 text-orange mt-0.5 shrink-0" />
+              <p className="text-foreground/90 text-sm leading-relaxed">
+                {language === "fr" ? meta.notice.fr : meta.notice.en}
+              </p>
+            </div>
+          </div>
+        )}
+
         {isAdmin && (
           <div className="mb-6">
             <button
@@ -199,6 +235,8 @@ const LocationSchedule = () => {
                       <span className="text-xs font-semibold text-muted-foreground">{s.week}</span>
                       <span className="text-xs text-muted-foreground">·</span>
                       <span className="text-xs text-muted-foreground">{format(date, "EEE, MMM d")}</span>
+                      <span className="text-xs text-muted-foreground">·</span>
+                      <span className="text-xs font-medium text-foreground/80">{getSessionTime(s.location, s.week, meta.time)}</span>
                       {isCurrentWeek && (
                         <span className="text-[10px] font-bold uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
                           This Week
