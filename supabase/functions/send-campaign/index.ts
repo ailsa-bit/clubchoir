@@ -885,9 +885,14 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   }
 
   if (segment === "first-night-unpaid") {
-    // Registered-but-unpaid plus everyone else who showed interest — no guests, no paid
-    return [...Array.from(unpaidMap.values()), ...Array.from(rest.values())];
+    // Registered-but-unpaid plus everyone else who showed interest.
+    // Guests (guest-list) and cash-on-first-night singers must NEVER appear here.
+    const restNoGuests = Array.from(rest.values()).filter(
+      (r) => !guestList.has(r.email) && !cashFirstNight.has(r.email) && !paidMap.has(r.email),
+    );
+    return [...Array.from(unpaidMap.values()), ...restNoGuests];
   }
+
 
   return Array.from(rest.values());
 }
