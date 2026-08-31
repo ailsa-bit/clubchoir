@@ -881,6 +881,11 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
     add(m.email, m.first_name, m.last_name, m.location);
   }
 
+  if (segment === "first-night-unpaid") {
+    // Registered-but-unpaid plus everyone else who showed interest — no guests, no paid
+    return [...Array.from(unpaidMap.values()), ...Array.from(rest.values())];
+  }
+
   return Array.from(rest.values());
 }
 
