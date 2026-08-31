@@ -80,6 +80,7 @@ const LocationSchedule = () => {
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [showUpload, setShowUpload] = useState(false);
   const { isAdmin } = useAdmin();
+  const { language } = useLanguage();
 
   const locationName = locationSlug
     ? locationSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join("-")
