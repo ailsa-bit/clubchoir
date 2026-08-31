@@ -577,7 +577,7 @@ function renderFirstNightGuests(r: Recipient) {
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>Ce courriel contient beaucoup d'informations — merci de le lire jusqu'à la fin.</strong></p>
+    <p style="${P}"><strong>Ce courriel contient des informations importantes au sujet de la première soirée — merci de le lire jusqu'à la fin.</strong></p>
     <p style="${P}">Je suis ravie que vous vous joigniez à nous pour la première répétition de la session d'automne! Voici tout ce qu'il faut savoir pour une belle première soirée.</p>
     ${firstNightLogistics(r, "fr")}
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
