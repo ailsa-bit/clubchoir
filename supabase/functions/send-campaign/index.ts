@@ -525,8 +525,8 @@ function firstNightLogistics(r: Recipient, lang: "en" | "fr"): string {
   let extra = "";
   if (r.location === "Hudson") {
     timeLine = lang === "en"
-      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc!.startEn} — singing starts at <strong>7:30 PM</strong> (a little later than usual)</p>`
-      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc!.startFr} — on commence à chanter à <strong>19 h 30</strong> (un peu plus tard qu'à l'habitude)</p>`;
+      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc!.startEn} — please arrive at least 15 minutes early (or from <strong>6:00 PM</strong> for the burger night), singing starts at <strong>7:30 PM</strong></p>`
+      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc!.startFr} — arrivez au moins 15 minutes à l'avance (ou dès <strong>18 h</strong> pour la soirée burgers), on commence à chanter à <strong>19 h 30</strong></p>`;
     extra = lang === "en"
       ? `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">The Legion is hosting its scheduled <strong>burger night</strong> that evening, which is why we start a little later. I'll be there from <strong>6:00 PM</strong> enjoying a burger — arrive earlier if you'd like to join me! 🍔</p>
          <p style="margin:6px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Parking:</strong> if you park in the restricted area, you'll be given a <strong>parking pass</strong> when you sign in.</p>`
@@ -534,15 +534,15 @@ function firstNightLogistics(r: Recipient, lang: "en" | "fr"): string {
          <p style="margin:6px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Stationnement :</strong> si vous vous garez dans la zone réservée, on vous remettra un <strong>laissez-passer de stationnement</strong> à l'accueil.</p>`;
   } else if (r.location === "Montreal") {
     timeLine = lang === "en"
-      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc!.startEn} — please arrive a few minutes early, we start singing at <strong>7:00 PM</strong></p>`
-      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc!.startFr} — arrivez quelques minutes à l'avance, on commence à chanter à <strong>19 h</strong></p>`;
+      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc!.startEn} — please arrive at least 15 minutes early (I will be there as of <strong>6:00 PM</strong>), we start singing at <strong>7:00 PM</strong></p>`
+      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc!.startFr} — arrivez au moins 15 minutes à l'avance (je serai sur place dès <strong>18 h</strong>), on commence à chanter à <strong>19 h</strong></p>`;
     extra = lang === "en"
       ? `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Accessibility:</strong> if you have mobility restrictions, there is an <strong>elevator to the right of the door</strong> as you enter the building.</p>`
       : `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Accessibilité :</strong> si vous avez des restrictions de mobilité, il y a un <strong>ascenseur à droite de la porte</strong> en entrant dans l'édifice.</p>`;
   } else if (loc) {
     timeLine = lang === "en"
-      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc.startEn} — please arrive a few minutes early, we start singing at <strong>7:00 PM</strong></p>`
-      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc.startFr} — arrivez quelques minutes à l'avance, on commence à chanter à <strong>19 h</strong></p>`;
+      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc.startEn} — please arrive at least 15 minutes early (I will be there as of <strong>6:00 PM</strong>), we start singing at <strong>7:00 PM</strong></p>`
+      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc.startFr} — arrivez au moins 15 minutes à l'avance (je serai sur place dès <strong>18 h</strong>), on commence à chanter à <strong>19 h</strong></p>`;
   }
   const title = lang === "en"
     ? `First night details${city ? ` — ${city}` : ""}`
