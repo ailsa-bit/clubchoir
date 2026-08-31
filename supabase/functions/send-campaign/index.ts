@@ -562,7 +562,7 @@ const SONGS_FR = `Lors de la première soirée, nous apprendrons notre <strong>p
 function renderFirstNightGuests(r: Recipient) {
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>This email contains a lot of information — please read all the way to the end.</strong></p>
+    <p style="${P}"><strong>This email contains important information about the first night — please read all the way to the end.</strong></p>
     <p style="${P}">I'm so happy you'll be joining us for the first rehearsal of the fall session! Here's everything you need to know for a great first night.</p>
     ${firstNightLogistics(r, "en")}
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
