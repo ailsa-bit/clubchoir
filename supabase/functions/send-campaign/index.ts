@@ -763,7 +763,7 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   }
 
 
-  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid") return Array.from(unpaidMap.values());
+  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid" || segment === "first-night-unpaid") return Array.from(unpaidMap.values());
 
   if (segment === "hudson-open-house") {
     const { data: allRsvps } = await supabase
