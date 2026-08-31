@@ -763,7 +763,7 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   }
 
 
-  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid" || segment === "first-night-unpaid") return Array.from(unpaidMap.values());
+  if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid") return Array.from(unpaidMap.values());
 
   if (segment === "hudson-open-house") {
     const { data: allRsvps } = await supabase
@@ -885,9 +885,14 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   }
 
   if (segment === "first-night-unpaid") {
-    // Registered-but-unpaid plus everyone else who showed interest — no guests, no paid
-    return [...Array.from(unpaidMap.values()), ...Array.from(rest.values())];
+    // Registered-but-unpaid plus everyone else who showed interest.
+    // Guests (guest-list) and cash-on-first-night singers must NEVER appear here.
+    const restNoGuests = Array.from(rest.values()).filter(
+      (r) => !guestList.has(r.email) && !cashFirstNight.has(r.email) && !paidMap.has(r.email),
+    );
+    return [...Array.from(unpaidMap.values()), ...restNoGuests];
   }
+
 
   return Array.from(rest.values());
 }
@@ -991,11 +996,28 @@ serve(async (req) => {
       .from("campaign_sends").select("recipient_email")
       .eq("campaign_key", key);
     const alreadySent = new Set<string>((sentRows || []).map((r: any) => String(r.recipient_email).toLowerCase()));
+
+    // Mutually exclusive campaigns: an address must receive only ONE first-night email.
+    const EXCLUSIVE_GROUPS: string[][] = [
+      ["first-night-guests", "first-night-paid", "first-night-unpaid"],
+    ];
+    const conflictSegments = EXCLUSIVE_GROUPS
+      .filter((g) => g.includes(segment))
+      .flatMap((g) => g.filter((s) => s !== segment));
+    if (conflictSegments.length) {
+      const conflictKeys = conflictSegments.map((s) => CAMPAIGN_KEYS[s as Segment]).filter(Boolean);
+      const { data: conflictRows } = await supabase
+        .from("campaign_sends").select("recipient_email")
+        .in("campaign_key", conflictKeys);
+      for (const r of conflictRows || []) alreadySent.add(String(r.recipient_email).toLowerCase());
+    }
+
     const toSend = onlyEmails.length ? recipients : recipients.filter((r) => !alreadySent.has(r.email));
 
     const results: { success: string[]; failed: string[]; skipped: number } = {
       success: [], failed: [], skipped: recipients.length - toSend.length,
     };
+
     const batchSize = 5;
     for (let i = 0; i < toSend.length; i += batchSize) {
       const batch = toSend.slice(i, i + batchSize);
