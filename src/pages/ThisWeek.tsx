@@ -22,9 +22,13 @@ const ThisWeek = () => {
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
           {t("thisWeek.title")}
         </h1>
-        <p className="text-center text-muted-foreground mb-10">
+        <p className="text-center text-muted-foreground mb-6">
           {t("thisWeek.subtitle")}
         </p>
+
+        <div className="mb-8">
+          <MemberWelcomeMessage />
+        </div>
 
         <div className="space-y-4">
           {sessions.map((s) => (
