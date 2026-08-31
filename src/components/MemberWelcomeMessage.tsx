@@ -187,7 +187,7 @@ export function MemberWelcomeMessage() {
           </div>
         </div>
       ) : (
-        <div className="prose prose-sm max-w-none text-foreground/90 whitespace-pre-line leading-relaxed">
+        <div className="text-sm text-foreground/90 whitespace-pre-line leading-relaxed">
           {body}
         </div>
       )}
