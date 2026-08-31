@@ -130,9 +130,9 @@ export function MemberWelcomeMessage() {
           <Megaphone className="w-5 h-5 text-primary" />
         </div>
         <div className="flex-1">
-          <h2 className="font-heading font-bold text-xl text-foreground">{title}</h2>
-          <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
-            <CalendarDays className="w-3 h-3" />
+          <h2 className="font-heading font-bold text-2xl text-foreground">{title}</h2>
+          <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+            <CalendarDays className="w-4 h-4" />
             {announcement
               ? `${language === "fr" ? "Publié le" : "Posted"} ${new Date(announcement.active_from).toLocaleDateString(language === "fr" ? "fr-CA" : "en-CA", { year: "numeric", month: "long", day: "numeric" })}`
               : language === "fr" ? "Message par défaut" : "Default welcome message"}
@@ -201,7 +201,7 @@ export function MemberWelcomeMessage() {
           </div>
         </div>
       ) : (
-        <div className="text-sm text-foreground/90 whitespace-pre-line leading-relaxed">
+        <div className="text-base md:text-lg text-foreground/90 whitespace-pre-line leading-relaxed">
           {body}
         </div>
       )}
