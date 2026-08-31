@@ -10,40 +10,38 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering";
+type Segment = "first-night-guests" | "first-night-paid" | "first-night-unpaid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 
 const EMPTY_COUNTS = {
-  "hudson-open-house-thanks": 0,
-  "binder-count-unpaid": 0,
-  "binder-count-considering": 0,
+  "first-night-guests": 0,
+  "first-night-paid": 0,
+  "first-night-unpaid": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
-const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
-  "hudson-open-house-thanks": "Hudson",
-};
+const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
-    key: "hudson-open-house-thanks",
-    title: "Hudson Open House — Thank You + Register (Aug 18)",
-    description: "Thank-you follow-up to everyone who RSVP'd or was added for the August 18 Hudson open house, with the registration link and September 8 start date. Bilingual EN/FR.",
+    key: "first-night-paid",
+    title: "First Night — Registered & Paid",
+    description: "Big welcome email to confirmed members: first-night logistics per location (Hudson burger night 6:00 PM / 7:30 start + parking pass, Montreal elevator), member portal setup (clubchoir.ca/profile), what to bring, and Week 1 song. Bilingual EN/FR.",
+    color: "bg-emerald-50 border-emerald-300",
+  },
+  {
+    key: "first-night-guests",
+    title: "First Night — Guest List",
+    description: "Friendly info email for guests trying the first night: where/when per location, what to bring (water, glasses), binder policy, Week 1 song (Lovely Day) + teasers, and member access if they join. Bilingual EN/FR.",
     color: "bg-rose-50 border-rose-300",
   },
   {
-    key: "binder-count-unpaid",
-    title: "Binder Count — Registered, Not Yet Paid",
-    description: "Fun, slightly urgent nudge to registered singers who haven't paid: binders are being ordered, complete your registration so you're counted and don't miss the pre-season emails. Includes Interac details. Bilingual EN/FR.",
+    key: "first-night-unpaid",
+    title: "First Night — Registered/Interested, Unpaid",
+    description: "Last-chance nudge: choir starts next week, info emails are going out now — finalize registration (Interac details included) or reply to try the first night. Bilingual EN/FR.",
     color: "bg-amber-50 border-amber-300",
-  },
-  {
-    key: "binder-count-considering",
-    title: "Binder Count — Still Considering",
-    description: "Warm invite to everyone not registered for fall 2026: a binder per singer, important prep emails going out shortly, register now so you don't miss out. Bilingual EN/FR.",
-    color: "bg-sky-50 border-sky-300",
   },
 ];
 
@@ -56,14 +54,14 @@ const Campaigns = () => {
   const { toast } = useToast();
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
-    "hudson-open-house-thanks": {},
-    "binder-count-unpaid": {},
-    "binder-count-considering": {},
+    "first-night-guests": {},
+    "first-night-paid": {},
+    "first-night-unpaid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
-    "hudson-open-house-thanks": "all",
-    "binder-count-unpaid": "all",
-    "binder-count-considering": "all",
+    "first-night-guests": "all",
+    "first-night-paid": "all",
+    "first-night-unpaid": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
