@@ -616,7 +616,7 @@ function renderFirstNightPaid(r: Recipient) {
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>Ce courriel contient beaucoup d'informations — merci de le lire jusqu'à la fin.</strong></p>
+    <p style="${P}"><strong>Ce courriel contient des informations importantes au sujet de la première soirée — merci de le lire jusqu'à la fin.</strong></p>
     <p style="${P}"><strong>Bienvenue à Club Choir!</strong> Que vous soyez un nouveau visage ou un membre de retour, je suis ravie de vous compter parmi nous pour la session d'automne — votre place est confirmée et nous sommes prêts à chanter. 🎶</p>
     ${firstNightLogistics(r, "fr")}
     <p style="${P}"><strong>Votre portail membre :</strong> en tant que membre inscrit(e), vous avez un accès complet à la section membres de clubchoir.ca — horaire hebdomadaire, chansons de la session et informations importantes de semaine en semaine. Si vous n'avez pas encore créé votre profil, faites-le maintenant :</p>
