@@ -11,7 +11,7 @@ const corsHeaders = {
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "first-night-guests" | "first-night-paid" | "first-night-unpaid";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -24,6 +24,9 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "hudson-open-house-thanks": "hudson-open-house-aug18-thanks-v1",
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
+  "first-night-guests": "fall-2026-first-night-guests-v1",
+  "first-night-paid": "fall-2026-first-night-paid-v1",
+  "first-night-unpaid": "fall-2026-first-night-unpaid-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
