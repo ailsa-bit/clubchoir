@@ -161,6 +161,17 @@ const LocationSchedule = () => {
           </div>
         </div>
 
+        {meta.notice && (
+          <div className="rounded-2xl border border-orange/30 bg-orange-light p-5 mb-8">
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 text-orange mt-0.5 shrink-0" />
+              <p className="text-foreground/90 text-sm leading-relaxed">
+                {language === "fr" ? meta.notice.fr : meta.notice.en}
+              </p>
+            </div>
+          </div>
+        )}
+
         {isAdmin && (
           <div className="mb-6">
             <button
