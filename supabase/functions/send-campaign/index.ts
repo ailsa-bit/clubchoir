@@ -674,6 +674,9 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "hudson-open-house-thanks") return renderHudsonOpenHouseThanks(r);
   if (segment === "binder-count-unpaid") return renderBinderUnpaid(r);
   if (segment === "binder-count-considering") return renderBinderConsidering(r);
+  if (segment === "first-night-guests") return renderFirstNightGuests(r);
+  if (segment === "first-night-paid") return renderFirstNightPaid(r);
+  if (segment === "first-night-unpaid") return renderFirstNightUnpaid(r);
   return renderConsidering(r);
 }
 
