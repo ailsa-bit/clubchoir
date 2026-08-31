@@ -685,11 +685,15 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   const suppressed = new Set<string>();
   // Guest-list people are invited to try the first night; they must never get payment emails/reminders
   const guestList = new Set<string>();
+  // Registered singers paying cash/cheque on the first night (no-payment-emails WITHOUT guest-list)
+  const cashFirstNight = new Set<string>();
   for (const m of memberRows || []) {
     if (!m.email) continue;
     const e = String(m.email).toLowerCase();
-    if (Array.isArray(m.crm_tags) && m.crm_tags.includes("no-email")) suppressed.add(e);
-    if (Array.isArray(m.crm_tags) && (m.crm_tags.includes("guest-list") || m.crm_tags.includes("no-payment-emails"))) guestList.add(e);
+    const tags = Array.isArray(m.crm_tags) ? m.crm_tags : [];
+    if (tags.includes("no-email")) suppressed.add(e);
+    if (tags.includes("guest-list")) guestList.add(e);
+    else if (tags.includes("no-payment-emails")) cashFirstNight.add(e);
   }
 
 
