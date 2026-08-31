@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Music, Calendar, Star, PartyPopper, Clock, MapPin, ArrowLeft, Upload, Info } from "lucide-react";
 import { useAdmin } from "@/hooks/use-admin";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { format, parseISO, isThisWeek, isPast } from "date-fns";
 import AdminScheduleUpload from "@/components/AdminScheduleUpload";
 import { Helmet } from "react-helmet-async";
