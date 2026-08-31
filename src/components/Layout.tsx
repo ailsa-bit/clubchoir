@@ -50,7 +50,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
     { label: `${t("nav.thisWeek")} — Hudson`, path: "/schedule/hudson" },
     { label: `${t("nav.thisWeek")} — Saint-Hubert`, path: "/schedule/saint-hubert" },
     { label: `${t("nav.thisWeek")} — Pointe-Claire`, path: "/schedule/pointe-claire" },
-    { label: t("nav.community"), path: "/community" },
+    
     { label: t("nav.chat"), path: "/chat" },
     { label: t("nav.songs.fall2026"), path: "/resources/fall-2026" },
   ];

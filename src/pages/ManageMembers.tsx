@@ -122,7 +122,7 @@ const ManageMembers = () => {
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
-      navigate("/community");
+      navigate("/this-week");
       return;
     }
     if (isAdmin) {
