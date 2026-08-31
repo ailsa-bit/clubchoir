@@ -602,16 +602,15 @@ function renderFirstNightPaid(r: Recipient) {
     <p style="${P}"><strong>This email contains important information about the first night — please read all the way to the end.</strong></p>
     <p style="${P}"><strong>Welcome to Club Choir!</strong> Whether you're a brand-new face or a returning member, I'm so glad you're with us for the fall session — your spot is confirmed and we're ready to sing. 🎶</p>
     ${firstNightLogistics(r, "en")}
-    <p style="${P}"><strong>Your member portal:</strong> as a registered member you have full access to the members section at clubchoir.ca — the weekly schedule, the songs we're learning, and important updates from week to week. If you haven't created your profile yet, please do it now:</p>
+    <p style="${P}"><strong>Your member portal:</strong> as a registered member you have full access to the members section at clubchoir.ca — the weekly schedule, the songs we're learning, recordings, lyrics and slides from week to week, and important updates from week to week. If you haven't created your profile yet, please do it now:</p>
     ${BTN(`${SITE_URL}/profile`, "Set up your member profile")}
     <p style="${P}">Important information will be posted in the portal throughout the session, so it's worth getting connected before we start. <strong>If you have any trouble signing in or creating your profile, let me know right away</strong> — write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and we'll take care of it before we get started next week.</p>
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">What to bring</div>
       <p style="margin:3px 0;font-size:15px;color:#831843;">💧 <strong>Water</strong> — stay hydrated!</p>
       <p style="margin:3px 0;font-size:15px;color:#831843;">👓 <strong>Your reading glasses</strong>, if you need them.</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 Your <strong>binder</strong> with the session's lyric sheets will be waiting for you — it's yours to keep.</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 Your <strong>binder</strong> with the session's lyric sheets will be waiting for you — it's yours to keep. <em>Returning members, please bring your binder from last session.</em></p>
     </div>
-    <p style="${P}">${SONGS_EN}</p>
     <p style="${P}">See you next week — I can't wait to make music with you again (or for the very first time)!</p>
     ${SIGN}
     ${DIVIDER}
@@ -619,16 +618,15 @@ function renderFirstNightPaid(r: Recipient) {
     <p style="${P}"><strong>Ce courriel contient des informations importantes au sujet de la première soirée — merci de le lire jusqu'à la fin.</strong></p>
     <p style="${P}"><strong>Bienvenue à Club Choir!</strong> Que vous soyez un nouveau visage ou un membre de retour, je suis ravie de vous compter parmi nous pour la session d'automne — votre place est confirmée et nous sommes prêts à chanter. 🎶</p>
     ${firstNightLogistics(r, "fr")}
-    <p style="${P}"><strong>Votre portail membre :</strong> en tant que membre inscrit(e), vous avez un accès complet à la section membres de clubchoir.ca — horaire hebdomadaire, chansons de la session et informations importantes de semaine en semaine. Si vous n'avez pas encore créé votre profil, faites-le maintenant :</p>
+    <p style="${P}"><strong>Votre portail membre :</strong> en tant que membre inscrit(e), vous avez un accès complet à la section membres de clubchoir.ca — horaire hebdomadaire, chansons de la session, enregistrements, paroles et diapositives de semaine en semaine, et informations importantes de semaine en semaine. Si vous n'avez pas encore créé votre profil, faites-le maintenant :</p>
     ${BTN(`${SITE_URL}/profile`, "Créer mon profil membre")}
     <p style="${P}">Des informations importantes seront publiées dans le portail tout au long de la session, alors ça vaut la peine de vous connecter avant le début. <strong>Si vous avez de la difficulté à vous connecter ou à créer votre profil, écrivez-moi tout de suite</strong> à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et nous réglerons ça avant la semaine prochaine.</p>
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Quoi apporter</div>
       <p style="margin:3px 0;font-size:15px;color:#831843;">💧 <strong>De l'eau</strong> — restez hydraté(e)!</p>
       <p style="margin:3px 0;font-size:15px;color:#831843;">👓 <strong>Vos lunettes de lecture</strong>, si vous en avez besoin.</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 Votre <strong>cartable</strong> avec les paroles de la session vous attendra sur place — il est à vous.</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 Votre <strong>cartable</strong> avec les paroles de la session vous attendra sur place — il est à vous. <em>Les membres de retour, veuillez apporter votre cartable de la dernière session.</em></p>
     </div>
-    <p style="${P}">${SONGS_FR}</p>
     <p style="${P}">À la semaine prochaine — j'ai tellement hâte de chanter avec vous (encore une fois, ou pour la toute première fois)!</p>
     ${SIGN}`;
   return {
