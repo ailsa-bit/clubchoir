@@ -731,7 +731,34 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   for (const e of guestList) unpaidMap.delete(e);
 
 
-  if (segment === "fall-paid") return Array.from(paidMap.values());
+  if (segment === "fall-paid" || segment === "first-night-paid") return Array.from(paidMap.values());
+
+  if (segment === "first-night-guests") {
+    // People tagged guest-list who haven't paid — invited to try the first night
+    const regLoc = new Map<string, string>();
+    for (const r of allRegs || []) {
+      if (r.session_label !== "fall-2026") continue;
+      const e = String(r.email || "").trim().toLowerCase();
+      const loc = normLocation(r.location);
+      if (e && loc && !regLoc.has(e)) regLoc.set(e, loc);
+    }
+    const guests = new Map<string, Recipient>();
+    for (const m of memberRows || []) {
+      if (!m.email || m.archived_at) continue;
+      const e = String(m.email).toLowerCase();
+      if (suppressed.has(e) || paidMap.has(e) || guests.has(e)) continue;
+      const tags = Array.isArray(m.crm_tags) ? m.crm_tags : [];
+      if (!tags.includes("guest-list")) continue;
+      guests.set(e, {
+        email: e,
+        first_name: m.first_name || "",
+        last_name: m.last_name || "",
+        location: normLocation(m.location) || regLoc.get(e) || "",
+      });
+    }
+    return Array.from(guests.values());
+  }
+
 
   if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid") return Array.from(unpaidMap.values());
 
