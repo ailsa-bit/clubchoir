@@ -602,7 +602,7 @@ function renderFirstNightPaid(r: Recipient) {
     <p style="${P}"><strong>This email contains important information about the first night — please read all the way to the end.</strong></p>
     <p style="${P}"><strong>Welcome to Club Choir!</strong> Whether you're a brand-new face or a returning member, I'm so glad you're with us for the fall session — your spot is confirmed and we're ready to sing. 🎶</p>
     ${firstNightLogistics(r, "en")}
-    <p style="${P}"><strong>Your member portal:</strong> as a registered member you have full access to the members section at clubchoir.ca — the weekly schedule, the songs we're learning, recordings, lyrics and slides from week to week, and important updates from week to week. If you haven't created your profile yet, please do it now:</p>
+    <p style="${P}"><strong>Your member portal:</strong> as a registered member you have full access to the members section at clubchoir.ca — the weekly schedule, the songs we're learning, recordings, lyrics and slides, and important updates from week to week. If you haven't created your profile yet, please do it now:</p>
     ${BTN(`${SITE_URL}/profile`, "Set up your member profile")}
     <p style="${P}">Important information will be posted in the portal throughout the session, so it's worth getting connected before we start. <strong>If you have any trouble signing in or creating your profile, let me know right away</strong> — write to <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and we'll take care of it before we get started next week.</p>
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
