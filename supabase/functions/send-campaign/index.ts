@@ -1027,7 +1027,10 @@ serve(async (req) => {
     const key = CAMPAIGN_KEYS[segment];
     const alreadySent = await loadAlreadySent(supabase, segment);
 
-    const toSend = onlyEmails.length ? recipients : recipients.filter((r) => !alreadySent.has(r.email));
+    const skipIfAlreadySent: boolean = !!body.skipIfAlreadySent;
+    const toSend = (onlyEmails.length && !skipIfAlreadySent)
+      ? recipients
+      : recipients.filter((r) => !alreadySent.has(r.email));
 
 
     const results: { success: string[]; failed: string[]; skipped: number } = {
