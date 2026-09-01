@@ -328,6 +328,31 @@ const Login = () => {
           </Button>
         </form>
 
+        <div className="mt-4 rounded-lg border border-border bg-muted/40 p-4">
+          <button
+            type="button"
+            className="text-sm font-medium text-primary hover:underline"
+            onClick={() => setShowHelp((v) => !v)}
+          >
+            {t("login.help.title")}
+          </button>
+          {showHelp && (
+            <div className="mt-3 space-y-3 text-sm text-muted-foreground">
+              <p>{t("login.help.body")}</p>
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full"
+                disabled={linkSending}
+                onClick={sendSignInLink}
+              >
+                {linkSending ? t("login.wait") : t("login.help.sendLink")}
+              </Button>
+              <p>{t("login.help.contact")}</p>
+            </div>
+          )}
+        </div>
+
         {!isSignUp && !isForgotPassword && (
           <p className="text-center text-sm text-muted-foreground mt-3">
             <button
@@ -339,6 +364,7 @@ const Login = () => {
             </button>
           </p>
         )}
+
 
         <p className="text-center text-sm text-muted-foreground mt-4">
           {isForgotPassword ? (
