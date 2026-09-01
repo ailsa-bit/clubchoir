@@ -693,6 +693,17 @@ export type Database = {
         }[]
       }
       expire_stale_members: { Args: never; Returns: number }
+      get_my_member_profile: {
+        Args: never
+        Returns: {
+          active_until: string
+          display_name: string
+          email: string
+          location: string
+          member_since: string
+          status: string
+        }[]
+      }
       get_public_choir_stats: {
         Args: never
         Returns: {
@@ -708,6 +719,10 @@ export type Database = {
         Returns: boolean
       }
       is_active_member: { Args: { _user_id: string }; Returns: boolean }
+      update_my_member_name: {
+        Args: { _first_name: string; _last_name: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "user"
