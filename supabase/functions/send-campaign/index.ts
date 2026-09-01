@@ -903,12 +903,18 @@ const EXCLUSIVE_GROUPS: string[][] = [
   ["first-night-guests", "first-night-paid", "first-night-unpaid"],
 ];
 
-async function loadAlreadySent(supabase: any, segment: Segment): Promise<Set<string>> {
+async function loadAlreadySent(
+  supabase: any,
+  segment: Segment,
+  sameKeyOnly = false,
+): Promise<Set<string>> {
   const keys = [CAMPAIGN_KEYS[segment]];
-  for (const g of EXCLUSIVE_GROUPS) {
-    if (!g.includes(segment)) continue;
-    for (const s of g) {
-      if (s !== segment && CAMPAIGN_KEYS[s as Segment]) keys.push(CAMPAIGN_KEYS[s as Segment]);
+  if (!sameKeyOnly) {
+    for (const g of EXCLUSIVE_GROUPS) {
+      if (!g.includes(segment)) continue;
+      for (const s of g) {
+        if (s !== segment && CAMPAIGN_KEYS[s as Segment]) keys.push(CAMPAIGN_KEYS[s as Segment]);
+      }
     }
   }
   const skip = new Set<string>();
