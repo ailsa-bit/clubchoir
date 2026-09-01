@@ -138,6 +138,10 @@ const Login = () => {
       });
       if (error) {
         setError(friendlyError(error.message));
+      } else if (signUpData.user && (signUpData.user.identities?.length ?? 1) === 0) {
+        // Account already exists — Supabase returns a stub user with no identities
+        setError(t("login.err.alreadyRegistered"));
+        setIsSignUp(false);
       } else {
         setMessage(t("login.confirmEmail"));
         try {
