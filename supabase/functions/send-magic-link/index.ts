@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
       type: "magiclink",
       email,
       options: {
-        redirectTo: "https://clubchoir.ca/community",
+        redirectTo: "https://clubchoir.ca/this-week",
       },
     });
 
