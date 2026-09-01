@@ -229,7 +229,10 @@ const Campaigns = () => {
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1.5 text-foreground">
                       <Users className="w-4 h-4" />
-                      {total === null ? "…" : `${total} total`}
+                      {total === null ? "…" : `${total} on list`}
+                    </div>
+                    <div className="flex items-center gap-1.5 font-semibold text-foreground">
+                      {newCounts[s.key] === null ? "…" : `${newCounts[s.key]} not yet emailed`}
                     </div>
                     {sent > 0 && (
                       <div className="flex items-center gap-1.5 text-green-700">
@@ -239,6 +242,7 @@ const Campaigns = () => {
                     )}
                   </div>
                 </div>
+
 
                 <div className="flex flex-wrap gap-1.5 mt-4">
                   {(SINGLE_LOCATION[s.key] ? [] : (["all", ...LOCATIONS, "unknown"] as LocationFilter[])).map((loc) => {
