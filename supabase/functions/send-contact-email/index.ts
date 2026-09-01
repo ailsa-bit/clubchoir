@@ -117,6 +117,29 @@ const handler = async (req: Request): Promise<Response> => {
         </p>
       `;
 
+    const FRENCH_DAYS: Record<string, string> = {
+      Mondays: "le lundi",
+      Tuesdays: "le mardi",
+      Wednesdays: "le mercredi",
+      Thursdays: "le jeudi",
+    };
+    const sessionBlockFr = info
+      ? `
+        <h3 style="font-family: 'Quicksand', Arial, sans-serif; color:#1a1a1a; margin: 24px 0 8px;">
+          Club Choir ${escapeHtml(info.city)} — détails de la session
+        </h3>
+        <ul style="font-family: 'Nunito', Arial, sans-serif; color:#333; line-height:1.6; padding-left: 18px;">
+          <li><strong>Quand :</strong> ${escapeHtml(FRENCH_DAYS[info.day] ?? info.day)}, ${escapeHtml(info.time)}</li>
+          <li><strong>Dates :</strong> ${escapeHtml(info.dates)}</li>
+          <li><strong>Où :</strong> ${escapeHtml(info.venue)}</li>
+        </ul>
+      `
+      : `
+        <p style="font-family: 'Nunito', Arial, sans-serif; color:#333;">
+          Vous avez choisi : <strong>${escapeHtml(location)}</strong>. Nous vous enverrons les détails sous peu.
+        </p>
+      `;
+
     const firstName = name.trim().split(/\s+/)[0] || name;
 
     await resend.emails.send({
@@ -148,10 +171,24 @@ const handler = async (req: Request): Promise<Response> => {
             <strong>Ailsa & the Club Choir Team</strong>
           </p>
           <hr style="border:none; border-top: 1px solid #eee; margin: 28px 0;" />
-          <p style="font-size: 13px; color:#555; line-height:1.5;">
-            <strong>En français :</strong><br/>
-            Bonjour ${escapeHtml(firstName)} ! Nous sommes ravies que vous souhaitiez essayer Club Choir. Vous êtes invité(e) à notre soirée d'ouverture. Veuillez confirmer votre présence en écrivant directement à Ailsa à <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a> afin d'être ajouté(e) à la liste d'invités. Au plaisir de chanter avec vous !
-          </p>
+          <div style="font-size: 13px; color:#555; line-height:1.5;">
+            <p style="margin: 0 0 12px;"><strong>En français :</strong></p>
+            <p style="margin: 0 0 12px;">Bonjour ${escapeHtml(firstName)} ! Nous sommes ravies que vous souhaitiez essayer Club Choir. Voici les détails pour le choeur que vous avez choisi :</p>
+            ${sessionBlockFr}
+            <p style="margin: 16px 0 12px;">
+              <strong>🎤 Vous êtes invité(e) à notre soirée d'ouverture !</strong>
+            </p>
+            <p style="margin: 0 0 12px;">
+              Pour réserver votre place sur la liste d'invités, veuillez écrire directement à Ailsa à <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a>. Une fois sur la liste, vous recevrez un courriel avec tous les détails : quoi apporter, quoi attendre et où aller.
+            </p>
+            <p style="margin: 0 0 12px;">
+              Après la première soirée, si tout vous convient, nous serions ravies de vous compter parmi nous pour la session complète.
+            </p>
+            <p style="margin: 0;">
+              Au plaisir de vous rencontrer et de chanter avec vous !<br/>
+              <strong>Ailsa et l'équipe Club Choir</strong>
+            </p>
+          </div>
           <p style="font-size: 12px; color:#888; margin-top: 16px;">
             Club Choir · <a href="https://clubchoir.ca" style="color:#888;">clubchoir.ca</a>
           </p>
