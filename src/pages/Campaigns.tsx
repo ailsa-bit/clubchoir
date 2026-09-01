@@ -93,6 +93,9 @@ const Campaigns = () => {
       });
       setCounts((c) => ({ ...c, [s.key]: data?.total ?? data?.count ?? 0 }));
       setByLocation((b) => ({ ...b, [s.key]: data?.byLocation ?? {} }));
+      setNewCounts((c) => ({ ...c, [s.key]: data?.newTotal ?? 0 }));
+      setNewByLocation((b) => ({ ...b, [s.key]: data?.newByLocation ?? {} }));
+
     }
     // Sent counts — count per segment (a single unfiltered select is capped at 1000 rows)
     const grouped: Record<string, number> = { ...EMPTY_COUNTS };
