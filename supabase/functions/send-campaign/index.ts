@@ -952,10 +952,22 @@ serve(async (req) => {
       const byLocation: Record<string, number> = { unknown: 0 };
       for (const k of LOCATION_KEYS) byLocation[k] = 0;
       for (const r of all) byLocation[r.location || "unknown"]++;
-      return new Response(JSON.stringify({ count: recipients.length, total: all.length, byLocation }), {
+
+      // How many would ACTUALLY receive an email (already-sent + conflicting first-night sends removed)
+      const skip = await loadAlreadySent(supabase, segment);
+      const fresh = all.filter((r) => !skip.has(r.email));
+      const newByLocation: Record<string, number> = { unknown: 0 };
+      for (const k of LOCATION_KEYS) newByLocation[k] = 0;
+      for (const r of fresh) newByLocation[r.location || "unknown"]++;
+
+      return new Response(JSON.stringify({
+        count: recipients.length, total: all.length, byLocation,
+        newTotal: fresh.length, newByLocation,
+      }), {
         status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
+
 
     if (previewOnly) {
       const fallback: Recipient = {
