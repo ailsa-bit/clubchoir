@@ -1,3 +1,4 @@
+import type React from "react";
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
 type Language = "en" | "fr";
@@ -899,7 +900,14 @@ const translations: Record<string, Record<Language, string>> = {
   "events.herdLink": { en: "Learn more about A Horse Tale Rescue", fr: "En savoir plus sur A Horse Tale Rescue" },
 };
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+// Keep a single context instance across HMR module reloads so that
+// components rendered from a stale module copy still find the provider.
+const g = globalThis as unknown as {
+  __clubchoirLanguageContext?: React.Context<LanguageContextType | undefined>;
+};
+const LanguageContext =
+  g.__clubchoirLanguageContext ??
+  (g.__clubchoirLanguageContext = createContext<LanguageContextType | undefined>(undefined));
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<Language>(() => {
@@ -931,7 +939,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
-    throw new Error("useLanguage must be used within LanguageProvider");
+    // Defensive fallback (e.g. during HMR) so the app never blanks out.
+    return {
+      language: "en" as Language,
+      setLanguage: () => {},
+      t: (key: string) => translations[key]?.en || key,
+    };
   }
   return context;
 };
