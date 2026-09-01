@@ -24,20 +24,12 @@ type Row = {
 
 type ReportId =
   | "paid"
-  | "unpaid"
-  | "all-registered"
-  | "interested"
   | "guest-list"
-  | "open-house"
   | "members";
 
 const REPORTS: { id: ReportId; label: string; description: string }[] = [
   { id: "paid", label: "Attendance list — paid members", description: "Registered and paid for Fall 2026. Best for weekly attendance." },
-  { id: "unpaid", label: "Registered — not paid", description: "Registered for Fall 2026 with payment outstanding." },
-  { id: "all-registered", label: "All Fall 2026 registrations", description: "Everyone who filled out the registration form." },
   { id: "guest-list", label: "Guest list (first-night trials)", description: "Contacts tagged guest-list." },
-  { id: "open-house", label: "Open house RSVPs", description: "Everyone who RSVP'd to an open house." },
-  { id: "interested", label: "Interested contacts", description: "Prospects and contacts who have not registered." },
   { id: "members", label: "Full contact list", description: "Every non-archived contact in the CRM." },
 ];
 
