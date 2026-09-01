@@ -903,12 +903,18 @@ const EXCLUSIVE_GROUPS: string[][] = [
   ["first-night-guests", "first-night-paid", "first-night-unpaid"],
 ];
 
-async function loadAlreadySent(supabase: any, segment: Segment): Promise<Set<string>> {
+async function loadAlreadySent(
+  supabase: any,
+  segment: Segment,
+  sameKeyOnly = false,
+): Promise<Set<string>> {
   const keys = [CAMPAIGN_KEYS[segment]];
-  for (const g of EXCLUSIVE_GROUPS) {
-    if (!g.includes(segment)) continue;
-    for (const s of g) {
-      if (s !== segment && CAMPAIGN_KEYS[s as Segment]) keys.push(CAMPAIGN_KEYS[s as Segment]);
+  if (!sameKeyOnly) {
+    for (const g of EXCLUSIVE_GROUPS) {
+      if (!g.includes(segment)) continue;
+      for (const s of g) {
+        if (s !== segment && CAMPAIGN_KEYS[s as Segment]) keys.push(CAMPAIGN_KEYS[s as Segment]);
+      }
     }
   }
   const skip = new Set<string>();
@@ -1025,10 +1031,13 @@ serve(async (req) => {
     }
 
     const key = CAMPAIGN_KEYS[segment];
-    const alreadySent = await loadAlreadySent(supabase, segment);
-
     const skipIfAlreadySent: boolean = !!body.skipIfAlreadySent;
-    const toSend = (onlyEmails.length && !skipIfAlreadySent)
+    // For targeted one-off sends (e.g. admin confirms a payment), only suppress a
+    // duplicate of THIS campaign — a prior guest/unpaid email must not block it.
+    const targeted = onlyEmails.length > 0;
+    const alreadySent = await loadAlreadySent(supabase, segment, targeted);
+
+    const toSend = (targeted && !skipIfAlreadySent)
       ? recipients
       : recipients.filter((r) => !alreadySent.has(r.email));
 
