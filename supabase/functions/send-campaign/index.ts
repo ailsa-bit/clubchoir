@@ -897,7 +897,28 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   return Array.from(rest.values());
 }
 
+// Addresses that must be skipped: already sent this campaign, or already sent a
+// mutually-exclusive first-night campaign (an address gets only ONE first-night email).
+const EXCLUSIVE_GROUPS: string[][] = [
+  ["first-night-guests", "first-night-paid", "first-night-unpaid"],
+];
+
+async function loadAlreadySent(supabase: any, segment: Segment): Promise<Set<string>> {
+  const keys = [CAMPAIGN_KEYS[segment]];
+  for (const g of EXCLUSIVE_GROUPS) {
+    if (!g.includes(segment)) continue;
+    for (const s of g) {
+      if (s !== segment && CAMPAIGN_KEYS[s as Segment]) keys.push(CAMPAIGN_KEYS[s as Segment]);
+    }
+  }
+  const skip = new Set<string>();
+  const { data } = await supabase.from("campaign_sends").select("recipient_email").in("campaign_key", keys);
+  for (const r of data || []) skip.add(String(r.recipient_email).toLowerCase());
+  return skip;
+}
+
 // ---------- handler ----------
+
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
@@ -952,10 +973,22 @@ serve(async (req) => {
       const byLocation: Record<string, number> = { unknown: 0 };
       for (const k of LOCATION_KEYS) byLocation[k] = 0;
       for (const r of all) byLocation[r.location || "unknown"]++;
-      return new Response(JSON.stringify({ count: recipients.length, total: all.length, byLocation }), {
+
+      // How many would ACTUALLY receive an email (already-sent + conflicting first-night sends removed)
+      const skip = await loadAlreadySent(supabase, segment);
+      const fresh = all.filter((r) => !skip.has(r.email));
+      const newByLocation: Record<string, number> = { unknown: 0 };
+      for (const k of LOCATION_KEYS) newByLocation[k] = 0;
+      for (const r of fresh) newByLocation[r.location || "unknown"]++;
+
+      return new Response(JSON.stringify({
+        count: recipients.length, total: all.length, byLocation,
+        newTotal: fresh.length, newByLocation,
+      }), {
         status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
+
 
     if (previewOnly) {
       const fallback: Recipient = {
@@ -992,27 +1025,10 @@ serve(async (req) => {
     }
 
     const key = CAMPAIGN_KEYS[segment];
-    const { data: sentRows } = await supabase
-      .from("campaign_sends").select("recipient_email")
-      .eq("campaign_key", key);
-    const alreadySent = new Set<string>((sentRows || []).map((r: any) => String(r.recipient_email).toLowerCase()));
-
-    // Mutually exclusive campaigns: an address must receive only ONE first-night email.
-    const EXCLUSIVE_GROUPS: string[][] = [
-      ["first-night-guests", "first-night-paid", "first-night-unpaid"],
-    ];
-    const conflictSegments = EXCLUSIVE_GROUPS
-      .filter((g) => g.includes(segment))
-      .flatMap((g) => g.filter((s) => s !== segment));
-    if (conflictSegments.length) {
-      const conflictKeys = conflictSegments.map((s) => CAMPAIGN_KEYS[s as Segment]).filter(Boolean);
-      const { data: conflictRows } = await supabase
-        .from("campaign_sends").select("recipient_email")
-        .in("campaign_key", conflictKeys);
-      for (const r of conflictRows || []) alreadySent.add(String(r.recipient_email).toLowerCase());
-    }
+    const alreadySent = await loadAlreadySent(supabase, segment);
 
     const toSend = onlyEmails.length ? recipients : recipients.filter((r) => !alreadySent.has(r.email));
+
 
     const results: { success: string[]; failed: string[]; skipped: number } = {
       success: [], failed: [], skipped: recipients.length - toSend.length,

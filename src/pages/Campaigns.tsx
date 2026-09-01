@@ -64,6 +64,13 @@ const Campaigns = () => {
     "first-night-unpaid": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
+  const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
+  const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
+    "first-night-guests": {},
+    "first-night-paid": {},
+    "first-night-unpaid": {},
+  });
+
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
   const [previewHtml, setPreviewHtml] = useState<string>("");
   const [previewSubject, setPreviewSubject] = useState<string>("");
@@ -86,6 +93,9 @@ const Campaigns = () => {
       });
       setCounts((c) => ({ ...c, [s.key]: data?.total ?? data?.count ?? 0 }));
       setByLocation((b) => ({ ...b, [s.key]: data?.byLocation ?? {} }));
+      setNewCounts((c) => ({ ...c, [s.key]: data?.newTotal ?? 0 }));
+      setNewByLocation((b) => ({ ...b, [s.key]: data?.newByLocation ?? {} }));
+
     }
     // Sent counts — count per segment (a single unfiltered select is capped at 1000 rows)
     const grouped: Record<string, number> = { ...EMPTY_COUNTS };
@@ -112,6 +122,15 @@ const Campaigns = () => {
     const b = byLocation[seg] || {};
     return b[f] ?? 0;
   };
+
+  // How many would actually get an email (already-emailed people are skipped automatically)
+  const newAudienceFor = (seg: Segment) => {
+    const f = locFilter[seg];
+    if (f === "all") return newCounts[seg];
+    const b = newByLocation[seg] || {};
+    return b[f] ?? 0;
+  };
+
 
 
   const handlePreview = async (seg: Segment) => {
@@ -196,8 +215,10 @@ const Campaigns = () => {
             const total = counts[s.key];
             const sent = sentCounts[s.key];
             const audience = audienceFor(s.key);
+            const newAudience = newAudienceFor(s.key);
             const filter = locFilter[s.key];
             const buckets = byLocation[s.key] || {};
+
             return (
               <div key={s.key} className={`rounded-2xl border p-6 ${s.color}`}>
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
@@ -208,7 +229,10 @@ const Campaigns = () => {
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1.5 text-foreground">
                       <Users className="w-4 h-4" />
-                      {total === null ? "…" : `${total} total`}
+                      {total === null ? "…" : `${total} on list`}
+                    </div>
+                    <div className="flex items-center gap-1.5 font-semibold text-foreground">
+                      {newCounts[s.key] === null ? "…" : `${newCounts[s.key]} not yet emailed`}
                     </div>
                     {sent > 0 && (
                       <div className="flex items-center gap-1.5 text-green-700">
@@ -218,6 +242,7 @@ const Campaigns = () => {
                     )}
                   </div>
                 </div>
+
 
                 <div className="flex flex-wrap gap-1.5 mt-4">
                   {(SINGLE_LOCATION[s.key] ? [] : (["all", ...LOCATIONS, "unknown"] as LocationFilter[])).map((loc) => {
@@ -251,14 +276,15 @@ const Campaigns = () => {
                   <Button
                     size="sm"
                     onClick={() => setConfirmSegment(s.key)}
-                    disabled={sending === s.key || !audience}
+                    disabled={sending === s.key || !newAudience}
                     className="bg-primary text-primary-foreground"
                   >
                     {sending === s.key ? (
                       <><Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> Sending…</>
                     ) : (
-                      <><Send className="w-4 h-4 mr-1.5" /> Send to {audience ?? "…"} {filter === "all" ? "(all)" : filter === "unknown" ? "(no location)" : `(${filter})`}</>
+                      <><Send className="w-4 h-4 mr-1.5" /> Send to {newAudience ?? "…"} new {filter === "all" ? "(all locations)" : filter === "unknown" ? "(no location)" : `(${filter})`}</>
                     )}
+
                   </Button>
                 </div>
               </div>
@@ -296,9 +322,10 @@ const Campaigns = () => {
             <DialogTitle>Send this campaign?</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">
-            This will email up to <strong>{confirmSegment ? (audienceFor(confirmSegment) ?? 0) : 0}</strong> people in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
-            {confirmSegment && locFilter[confirmSegment] !== "all" ? <> — <strong>{locFilter[confirmSegment]}</strong> only</> : " — all locations"}. Anyone who already received this campaign will be skipped.
+            This will email <strong>{confirmSegment ? (newAudienceFor(confirmSegment) ?? 0) : 0}</strong> people who have not yet received it, in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
+            {confirmSegment && locFilter[confirmSegment] !== "all" ? <> — <strong>{locFilter[confirmSegment]}</strong> only</> : " — all locations"}. Everyone who already received this campaign (or another first-night email) is skipped automatically.
           </p>
+
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmSegment(null)}>Cancel</Button>
