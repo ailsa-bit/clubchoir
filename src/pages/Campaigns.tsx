@@ -322,9 +322,10 @@ const Campaigns = () => {
             <DialogTitle>Send this campaign?</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">
-            This will email up to <strong>{confirmSegment ? (audienceFor(confirmSegment) ?? 0) : 0}</strong> people in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
-            {confirmSegment && locFilter[confirmSegment] !== "all" ? <> — <strong>{locFilter[confirmSegment]}</strong> only</> : " — all locations"}. Anyone who already received this campaign will be skipped.
+            This will email <strong>{confirmSegment ? (newAudienceFor(confirmSegment) ?? 0) : 0}</strong> people who have not yet received it, in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
+            {confirmSegment && locFilter[confirmSegment] !== "all" ? <> — <strong>{locFilter[confirmSegment]}</strong> only</> : " — all locations"}. Everyone who already received this campaign (or another first-night email) is skipped automatically.
           </p>
+
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmSegment(null)}>Cancel</Button>
