@@ -123,6 +123,15 @@ const Campaigns = () => {
     return b[f] ?? 0;
   };
 
+  // How many would actually get an email (already-emailed people are skipped automatically)
+  const newAudienceFor = (seg: Segment) => {
+    const f = locFilter[seg];
+    if (f === "all") return newCounts[seg];
+    const b = newByLocation[seg] || {};
+    return b[f] ?? 0;
+  };
+
+
 
   const handlePreview = async (seg: Segment) => {
     setBusy(seg);
