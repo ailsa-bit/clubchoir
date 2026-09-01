@@ -87,16 +87,19 @@ const Campaigns = () => {
   }, []);
 
   const loadCounts = async () => {
-    for (const s of SEGMENTS) {
-      const { data } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: s.key, countOnly: true },
-      });
-      setCounts((c) => ({ ...c, [s.key]: data?.total ?? data?.count ?? 0 }));
-      setByLocation((b) => ({ ...b, [s.key]: data?.byLocation ?? {} }));
-      setNewCounts((c) => ({ ...c, [s.key]: data?.newTotal ?? 0 }));
-      setNewByLocation((b) => ({ ...b, [s.key]: data?.newByLocation ?? {} }));
+    // Load all segment counts in parallel — a serial loop left cards greyed out for a long time
+    await Promise.all(
+      SEGMENTS.map(async (s) => {
+        const { data } = await supabase.functions.invoke("send-campaign", {
+          body: { segment: s.key, countOnly: true },
+        });
+        setCounts((c) => ({ ...c, [s.key]: data?.total ?? data?.count ?? 0 }));
+        setByLocation((b) => ({ ...b, [s.key]: data?.byLocation ?? {} }));
+        setNewCounts((c) => ({ ...c, [s.key]: data?.newTotal ?? 0 }));
+        setNewByLocation((b) => ({ ...b, [s.key]: data?.newByLocation ?? {} }));
+      })
+    );
 
-    }
     // Sent counts — count per segment (a single unfiltered select is capped at 1000 rows)
     const grouped: Record<string, number> = { ...EMPTY_COUNTS };
     await Promise.all(
