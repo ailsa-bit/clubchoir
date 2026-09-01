@@ -39,6 +39,20 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [linkSending, setLinkSending] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+  const [sessionChecked, setSessionChecked] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setSessionChecked(true);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
+      setSession(s);
+      setSessionChecked(true);
+    });
+    return () => sub.subscription.unsubscribe();
+  }, []);
 
   // Turn raw auth errors into plain-language guidance
   const friendlyError = (raw: string) => {
