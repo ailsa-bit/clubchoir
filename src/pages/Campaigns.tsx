@@ -64,6 +64,13 @@ const Campaigns = () => {
     "first-night-unpaid": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
+  const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
+  const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
+    "first-night-guests": {},
+    "first-night-paid": {},
+    "first-night-unpaid": {},
+  });
+
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
   const [previewHtml, setPreviewHtml] = useState<string>("");
   const [previewSubject, setPreviewSubject] = useState<string>("");
