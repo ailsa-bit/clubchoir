@@ -127,25 +127,32 @@ const handler = async (req: Request): Promise<Response> => {
       html: `
         <div style="font-family: 'Nunito', Arial, sans-serif; color:#1a1a1a; max-width: 560px; margin: 0 auto; padding: 24px;">
           <h1 style="font-family: 'Quicksand', Arial, sans-serif; font-size: 22px; margin: 0 0 12px;">
-            Hi ${escapeHtml(firstName)}, thanks for reaching out!
+            Hi ${escapeHtml(firstName)}, thanks for reaching out! 🎵
           </h1>
           <p style="line-height:1.6; color:#333;">
-            We're so glad you want to come try a session with us. Here are the details for the choir you picked:
+            We're thrilled you're interested in trying Club Choir. Here's everything you need to know for the location you selected:
           </p>
           ${sessionBlock}
           <p style="line-height:1.6; color:#333; margin-top: 20px;">
-            <strong>You are invited to our opening night!</strong> Please confirm with Ailsa directly at
-            <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a> if you plan on attending. Let us know
-            so we can add you to our guest list. Once you are on the guest list you will receive an email with
-            everything you need to know about the first night. If it feels like the right fit, you can join after.
-            Can't wait to meet you!
+            <strong>🎤 You're invited to join us for opening night!</strong>
+          </p>
+          <p style="line-height:1.6; color:#333;">
+            To reserve your spot on the guest list, please email Ailsa directly at
+            <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a>. Once you're on the list, you'll receive a follow-up email with all the details about what to expect, what to bring, and where to go.
+          </p>
+          <p style="line-height:1.6; color:#333;">
+            After the first night, if it feels like the right fit, we'd love to have you join us for the full session.
           </p>
           <p style="line-height:1.6; color:#333; margin-top: 24px;">
-            Can't wait to sing with you,<br/>
-            <strong>The Club Choir Team</strong>
+            Looking forward to meeting you and singing together!<br/>
+            <strong>Ailsa & the Club Choir Team</strong>
           </p>
           <hr style="border:none; border-top: 1px solid #eee; margin: 28px 0;" />
-          <p style="font-size: 12px; color:#888;">
+          <p style="font-size: 13px; color:#555; line-height:1.5;">
+            <strong>En français :</strong><br/>
+            Bonjour ${escapeHtml(firstName)} ! Nous sommes ravies que vous souhaitiez essayer Club Choir. Vous êtes invité(e) à notre soirée d'ouverture. Veuillez confirmer votre présence en écrivant directement à Ailsa à <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a> afin d'être ajouté(e) à la liste d'invités. Au plaisir de chanter avec vous !
+          </p>
+          <p style="font-size: 12px; color:#888; margin-top: 16px;">
             Club Choir · <a href="https://clubchoir.ca" style="color:#888;">clubchoir.ca</a>
           </p>
         </div>
