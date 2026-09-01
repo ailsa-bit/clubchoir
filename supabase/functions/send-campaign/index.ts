@@ -897,7 +897,28 @@ async function loadRecipients(supabase: any, segment: Segment): Promise<Recipien
   return Array.from(rest.values());
 }
 
+// Addresses that must be skipped: already sent this campaign, or already sent a
+// mutually-exclusive first-night campaign (an address gets only ONE first-night email).
+const EXCLUSIVE_GROUPS: string[][] = [
+  ["first-night-guests", "first-night-paid", "first-night-unpaid"],
+];
+
+async function loadAlreadySent(supabase: any, segment: Segment): Promise<Set<string>> {
+  const keys = [CAMPAIGN_KEYS[segment]];
+  for (const g of EXCLUSIVE_GROUPS) {
+    if (!g.includes(segment)) continue;
+    for (const s of g) {
+      if (s !== segment && CAMPAIGN_KEYS[s as Segment]) keys.push(CAMPAIGN_KEYS[s as Segment]);
+    }
+  }
+  const skip = new Set<string>();
+  const { data } = await supabase.from("campaign_sends").select("recipient_email").in("campaign_key", keys);
+  for (const r of data || []) skip.add(String(r.recipient_email).toLowerCase());
+  return skip;
+}
+
 // ---------- handler ----------
+
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
