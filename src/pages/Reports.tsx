@@ -10,8 +10,6 @@ import { Loader2, Download, Printer, FileText, RefreshCw } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
 const SESSION = "fall-2026";
-// Aug 18, 2026 Hudson Open House cutoff — RSVPs after this belong to the new event.
-const AUG18_CUTOFF = new Date("2026-08-08T00:00:00-04:00").getTime();
 
 type Row = {
   name: string;
@@ -24,20 +22,12 @@ type Row = {
 
 type ReportId =
   | "paid"
-  | "unpaid"
-  | "all-registered"
-  | "interested"
   | "guest-list"
-  | "open-house"
   | "members";
 
 const REPORTS: { id: ReportId; label: string; description: string }[] = [
   { id: "paid", label: "Attendance list — paid members", description: "Registered and paid for Fall 2026. Best for weekly attendance." },
-  { id: "unpaid", label: "Registered — not paid", description: "Registered for Fall 2026 with payment outstanding." },
-  { id: "all-registered", label: "All Fall 2026 registrations", description: "Everyone who filled out the registration form." },
   { id: "guest-list", label: "Guest list (first-night trials)", description: "Contacts tagged guest-list." },
-  { id: "open-house", label: "Open house RSVPs", description: "Everyone who RSVP'd to an open house." },
-  { id: "interested", label: "Interested contacts", description: "Prospects and contacts who have not registered." },
   { id: "members", label: "Full contact list", description: "Every non-archived contact in the CRM." },
 ];
 
@@ -52,11 +42,8 @@ const Reports = () => {
   const [report, setReport] = useState<ReportId>("paid");
   const [location, setLocation] = useState<string>("all");
   const [search, setSearch] = useState("");
-  const [augOnly, setAugOnly] = useState(true);
   const [regs, setRegs] = useState<any[]>([]);
-  const [rsvps, setRsvps] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
-  const [prospects, setProspects] = useState<any[]>([]);
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) navigate("/");
@@ -64,16 +51,12 @@ const Reports = () => {
 
   const load = async () => {
     setLoading(true);
-    const [r, o, m, p] = await Promise.all([
+    const [r, m] = await Promise.all([
       supabase.from("session_registrations").select("first_name,last_name,email,location,payment_status,session_label,created_at"),
-      supabase.from("open_house_rsvps").select("first_name,last_name,email,location,created_at"),
       supabase.from("members").select("first_name,last_name,email,location,status,crm_tags,archived_at,created_at"),
-      supabase.from("prospects").select("first_name,last_name,email,locations,status,created_at"),
     ]);
     setRegs(r.data || []);
-    setRsvps(o.data || []);
     setMembers(m.data || []);
-    setProspects(p.data || []);
     setLoading(false);
   };
 
@@ -81,7 +64,6 @@ const Reports = () => {
 
   const rows = useMemo<Row[]>(() => {
     const fall = regs.filter((r) => r.session_label === SESSION);
-    const regEmails = new Set(fall.map((r) => (r.email || "").toLowerCase()));
     const tagsFor = (email: string) =>
       members.find((m) => (m.email || "").toLowerCase() === email.toLowerCase())?.crm_tags || [];
 
@@ -97,19 +79,6 @@ const Reports = () => {
 
     let out: Row[] = [];
     if (report === "paid") out = fromReg(fall.filter((r) => r.payment_status === "paid" || r.payment_status === "free"));
-    else if (report === "unpaid") out = fromReg(fall.filter((r) => r.payment_status !== "paid" && r.payment_status !== "free"));
-    else if (report === "all-registered") out = fromReg(fall);
-    else if (report === "open-house")
-      out = [...rsvps, ...regs.filter((r) => r.session_label === "open-house-2026")]
-        .filter((r) => (augOnly ? +new Date(r.created_at || 0) >= AUG18_CUTOFF : true))
-        .map((r) => ({
-          name: fullName(r.first_name, r.last_name),
-          email: (r.email || "").trim(),
-          location: r.location || "—",
-          status: regEmails.has((r.email || "").toLowerCase()) ? "Registered" : "RSVP",
-          created_at: r.created_at,
-          tags: tagsFor(r.email || ""),
-        }));
     else if (report === "guest-list")
       out = members
         .filter((m) => !m.archived_at && (m.crm_tags || []).includes("guest-list"))
@@ -121,29 +90,7 @@ const Reports = () => {
           created_at: m.created_at,
           tags: m.crm_tags || [],
         }));
-    else if (report === "interested") {
-      const memberRows = members
-        .filter((m) => !m.archived_at && !regEmails.has((m.email || "").toLowerCase()))
-        .map((m) => ({
-          name: fullName(m.first_name, m.last_name),
-          email: (m.email || "").trim(),
-          location: m.location || "—",
-          status: "Interested",
-          created_at: m.created_at,
-          tags: m.crm_tags || [],
-        }));
-      const prospectRows = prospects
-        .filter((p) => !regEmails.has((p.email || "").toLowerCase()))
-        .map((p) => ({
-          name: fullName(p.first_name, p.last_name),
-          email: (p.email || "").trim(),
-          location: (p.locations || [])[0] || "—",
-          status: "Interested",
-          created_at: p.created_at,
-          tags: [] as string[],
-        }));
-      out = [...memberRows, ...prospectRows];
-    } else {
+    else {
       out = members
         .filter((m) => !m.archived_at)
         .map((m) => ({
@@ -169,7 +116,7 @@ const Reports = () => {
     });
     out.sort((a, b) => a.name.localeCompare(b.name));
     return out;
-  }, [report, location, search, regs, rsvps, members, prospects, augOnly]);
+  }, [report, location, search, regs, members]);
 
   const current = REPORTS.find((r) => r.id === report)!;
   const fileBase = `${report}${location !== "all" ? `-${location.toLowerCase()}` : ""}-${new Date().toISOString().slice(0, 10)}`;
@@ -231,16 +178,6 @@ const Reports = () => {
             </Button>
           ))}
         </div>
-        {report === "open-house" && (
-          <Button
-            size="sm"
-            variant={augOnly ? "default" : "outline"}
-            onClick={() => setAugOnly((v) => !v)}
-            title="Only show RSVPs for the August 18, 2026 Hudson Open House"
-          >
-            Aug 18 only {augOnly ? "✓" : ""}
-          </Button>
-        )}
         <Input placeholder="Search name or email…" value={search} onChange={(e) => setSearch(e.target.value)} className="w-full sm:w-64" />
         <div className="flex gap-2 ml-auto">
           <Button size="sm" variant="outline" onClick={() => window.print()} disabled={rows.length === 0}>
