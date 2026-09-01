@@ -117,6 +117,29 @@ const handler = async (req: Request): Promise<Response> => {
         </p>
       `;
 
+    const FRENCH_DAYS: Record<string, string> = {
+      Mondays: "le lundi",
+      Tuesdays: "le mardi",
+      Wednesdays: "le mercredi",
+      Thursdays: "le jeudi",
+    };
+    const sessionBlockFr = info
+      ? `
+        <h3 style="font-family: 'Quicksand', Arial, sans-serif; color:#1a1a1a; margin: 24px 0 8px;">
+          Club Choir ${escapeHtml(info.city)} — détails de la session
+        </h3>
+        <ul style="font-family: 'Nunito', Arial, sans-serif; color:#333; line-height:1.6; padding-left: 18px;">
+          <li><strong>Quand :</strong> ${escapeHtml(FRENCH_DAYS[info.day] ?? info.day)}, ${escapeHtml(info.time)}</li>
+          <li><strong>Dates :</strong> ${escapeHtml(info.dates)}</li>
+          <li><strong>Où :</strong> ${escapeHtml(info.venue)}</li>
+        </ul>
+      `
+      : `
+        <p style="font-family: 'Nunito', Arial, sans-serif; color:#333;">
+          Vous avez choisi : <strong>${escapeHtml(location)}</strong>. Nous vous enverrons les détails sous peu.
+        </p>
+      `;
+
     const firstName = name.trim().split(/\s+/)[0] || name;
 
     await resend.emails.send({
