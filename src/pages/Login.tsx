@@ -87,7 +87,7 @@ const Login = () => {
         body: { email: email.trim().toLowerCase() },
       });
       if (error) {
-        setError(error.message);
+        setError(friendlyError(error.message));
       } else {
         setMessage(t("login.resetEmailSent"));
       }
@@ -122,7 +122,7 @@ const Login = () => {
         },
       });
       if (error) {
-        setError(error.message);
+        setError(friendlyError(error.message));
       } else {
         setMessage(t("login.confirmEmail"));
         try {
@@ -145,7 +145,7 @@ const Login = () => {
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
-        setError(error.message);
+        setError(friendlyError(error.message));
       } else {
         navigate(postAuthRedirect);
       }
