@@ -3,7 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, LifeBuoy, Send, RefreshCw, CheckCircle2 } from "lucide-react";
+import { Loader2, LifeBuoy, Send, RefreshCw, CheckCircle2, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface AuthUserRow {
   id: string;
@@ -164,7 +165,7 @@ const SignupIssuesPanel = () => {
         Members who are stuck creating their portal account. Send a magic link — it signs them in and lets them set a password.
       </p>
 
-      <div className="flex flex-wrap gap-2 mb-4">
+      <div className="flex flex-wrap items-center gap-2 mb-4">
         {(["all", "unconfirmed", "no-account", "never-signed-in"] as const).map((k) => (
           <button
             key={k}
@@ -176,6 +177,15 @@ const SignupIssuesPanel = () => {
             {k === "all" ? "All" : KIND_LABEL[k]} ({counts[k] || 0})
           </button>
         ))}
+        <div className="relative ml-auto w-full sm:w-64">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search name or email…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
+        </div>
       </div>
 
       {loading ? (
