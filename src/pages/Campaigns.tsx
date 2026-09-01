@@ -215,8 +215,10 @@ const Campaigns = () => {
             const total = counts[s.key];
             const sent = sentCounts[s.key];
             const audience = audienceFor(s.key);
+            const newAudience = newAudienceFor(s.key);
             const filter = locFilter[s.key];
             const buckets = byLocation[s.key] || {};
+
             return (
               <div key={s.key} className={`rounded-2xl border p-6 ${s.color}`}>
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-3">
