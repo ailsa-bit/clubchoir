@@ -1,3 +1,4 @@
+import type React from "react";
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
 type Language = "en" | "fr";
@@ -938,7 +939,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
-    throw new Error("useLanguage must be used within LanguageProvider");
+    // Defensive fallback (e.g. during HMR) so the app never blanks out.
+    return {
+      language: "en" as Language,
+      setLanguage: () => {},
+      t: (key: string) => translations[key]?.en || key,
+    };
   }
   return context;
 };
