@@ -190,7 +190,40 @@ const Login = () => {
     return <LogIn className="w-7 h-7 text-primary" />;
   };
 
- return (
+  if (sessionChecked && session) {
+    const name =
+      (session.user.user_metadata?.display_name as string | undefined) ||
+      session.user.email ||
+      "";
+    return (
+      <div className="py-16 px-4">
+        <PageMeta title="Member Login – Club Choir" description="Sign in to your Club Choir account to access songs, schedules, and your member community." path="/login" noindex />
+        <div className="container mx-auto max-w-sm text-center">
+          <div className="w-14 h-14 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
+            <LogIn className="w-7 h-7 text-primary" />
+          </div>
+          <h1 className="font-heading font-bold text-2xl text-foreground mb-2">
+            {t("login.alreadySignedIn.title")}
+          </h1>
+          <p className="text-sm text-muted-foreground mb-6">
+            {t("login.alreadySignedIn.body")} {name && <span className="font-medium text-foreground">({name})</span>}
+          </p>
+          <Button className="w-full mb-3" onClick={() => navigate(postAuthRedirect)}>
+            {t("login.alreadySignedIn.continue")}
+          </Button>
+          <button
+            type="button"
+            className="text-sm text-muted-foreground hover:text-foreground hover:underline"
+            onClick={async () => { await supabase.auth.signOut(); }}
+          >
+            {t("login.alreadySignedIn.signOut")}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
    <div className="py-16 px-4">
      <PageMeta title="Member Login – Club Choir" description="Sign in to your Club Choir account to access songs, schedules, and your member community." path="/login" noindex />
      <div className="container mx-auto max-w-sm">
