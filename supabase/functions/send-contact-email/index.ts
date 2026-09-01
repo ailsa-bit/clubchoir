@@ -134,13 +134,11 @@ const handler = async (req: Request): Promise<Response> => {
           </p>
           ${sessionBlock}
           <p style="line-height:1.6; color:#333; margin-top: 20px;">
-            As a bonus — because you've reached out — <strong>you'll be the first to receive an invitation
-            to our open house in your area</strong>. It's a relaxed, free evening to come sing, meet the group,
-            and see what Club Choir is all about before committing to a full session.
-          </p>
-          <p style="line-height:1.6; color:#333;">
-            Ailsa will personally follow up shortly to confirm your spot and answer any questions.
-            In the meantime, feel free to just reply to this email.
+            <strong>You are invited to our opening night!</strong> Please confirm with Ailsa directly at
+            <a href="mailto:ailsa@clubchoir.ca">ailsa@clubchoir.ca</a> if you plan on attending. Let us know
+            so we can add you to our guest list. Once you are on the guest list you will receive an email with
+            everything you need to know about the first night. If it feels like the right fit, you can join after.
+            Can't wait to meet you!
           </p>
           <p style="line-height:1.6; color:#333; margin-top: 24px;">
             Can't wait to sing with you,<br/>
