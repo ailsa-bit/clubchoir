@@ -57,6 +57,7 @@ const SignupIssuesPanel = () => {
   const [sending, setSending] = useState<string | null>(null);
   const [sent, setSent] = useState<Set<string>>(new Set());
   const [filter, setFilter] = useState<IssueKind | "all">("all");
+  const [search, setSearch] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -128,7 +129,12 @@ const SignupIssuesPanel = () => {
     return c;
   }, [rows]);
 
-  const visible = filter === "all" ? rows : rows.filter((r) => r.kind === filter);
+  const visible = useMemo(() => {
+    let out = filter === "all" ? rows : rows.filter((r) => r.kind === filter);
+    const q = search.trim().toLowerCase();
+    if (q) out = out.filter((r) => r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q));
+    return out;
+  }, [rows, filter, search]);
 
   const sendLink = async (email: string) => {
     setSending(email);
