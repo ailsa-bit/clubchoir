@@ -31,17 +31,50 @@ const Login = () => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(searchParams.get("signup") === "1");
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [location, setLocation] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [linkSending, setLinkSending] = useState(false);
+
+  // Turn raw auth errors into plain-language guidance
+  const friendlyError = (raw: string) => {
+    const m = raw.toLowerCase();
+    if (m.includes("invalid login credentials")) return t("login.err.badCredentials");
+    if (m.includes("email not confirmed") || m.includes("not confirmed")) return t("login.err.notConfirmed");
+    if (m.includes("already registered") || m.includes("already been registered")) return t("login.err.alreadyRegistered");
+    if (m.includes("weak") || m.includes("pwned") || m.includes("easy to guess")) return t("login.err.weakPassword");
+    if (m.includes("rate limit") || m.includes("too many")) return t("login.err.rateLimit");
+    if (m.includes("user with this email not found") || m.includes("not found")) return t("login.err.noAccount");
+    return raw;
+  };
+
+  const sendSignInLink = async () => {
+    setError("");
+    setMessage("");
+    const addr = email.trim().toLowerCase();
+    if (!addr) {
+      setError(t("login.err.enterEmailFirst"));
+      return;
+    }
+    setLinkSending(true);
+    const { error } = await supabase.functions.invoke("send-magic-link", { body: { email: addr } });
+    if (error) {
+      setError(t("login.err.noAccount"));
+    } else {
+      setMessage(t("login.linkSent"));
+    }
+    setLinkSending(false);
+  };
 
   const passwordValid =
     password.length >= 8 &&
     /[a-z]/.test(password) &&
     /[A-Z]/.test(password) &&
     /[0-9]/.test(password);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,7 +87,7 @@ const Login = () => {
         body: { email: email.trim().toLowerCase() },
       });
       if (error) {
-        setError(error.message);
+        setError(friendlyError(error.message));
       } else {
         setMessage(t("login.resetEmailSent"));
       }
@@ -89,7 +122,7 @@ const Login = () => {
         },
       });
       if (error) {
-        setError(error.message);
+        setError(friendlyError(error.message));
       } else {
         setMessage(t("login.confirmEmail"));
         try {
@@ -112,7 +145,7 @@ const Login = () => {
     } else {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
-        setError(error.message);
+        setError(friendlyError(error.message));
       } else {
         navigate(postAuthRedirect);
       }
@@ -295,6 +328,31 @@ const Login = () => {
           </Button>
         </form>
 
+        <div className="mt-4 rounded-lg border border-border bg-muted/40 p-4">
+          <button
+            type="button"
+            className="text-sm font-medium text-primary hover:underline"
+            onClick={() => setShowHelp((v) => !v)}
+          >
+            {t("login.help.title")}
+          </button>
+          {showHelp && (
+            <div className="mt-3 space-y-3 text-sm text-muted-foreground">
+              <p>{t("login.help.body")}</p>
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full"
+                disabled={linkSending}
+                onClick={sendSignInLink}
+              >
+                {linkSending ? t("login.wait") : t("login.help.sendLink")}
+              </Button>
+              <p>{t("login.help.contact")}</p>
+            </div>
+          )}
+        </div>
+
         {!isSignUp && !isForgotPassword && (
           <p className="text-center text-sm text-muted-foreground mt-3">
             <button
@@ -306,6 +364,7 @@ const Login = () => {
             </button>
           </p>
         )}
+
 
         <p className="text-center text-sm text-muted-foreground mt-4">
           {isForgotPassword ? (

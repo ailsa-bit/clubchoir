@@ -532,6 +532,19 @@ const translations: Record<string, Record<Language, string>> = {
   "login.rule.uppercase": { en: "One uppercase letter (A–Z)", fr: "Une lettre majuscule (A–Z)" },
   "login.rule.number": { en: "One number (0–9)", fr: "Un chiffre (0–9)" },
   "login.passwordRulesHint": { en: "Please meet all password requirements above before continuing.", fr: "Veuillez respecter toutes les exigences ci-dessus avant de continuer." },
+  "login.err.badCredentials": { en: "We couldn't sign you in. If you haven't created your account yet, tap \"Sign Up\" below — or use \"Having trouble signing in?\" to get a one-tap sign-in link by email.", fr: "Connexion impossible. Si vous n'avez pas encore créé votre compte, cliquez sur « S'inscrire » ci-dessous — ou utilisez « Problème de connexion ? » pour recevoir un lien de connexion par courriel." },
+  "login.err.notConfirmed": { en: "Your email isn't confirmed yet. Check your inbox (and junk folder) for the confirmation email, or get a one-tap sign-in link below.", fr: "Votre courriel n'est pas encore confirmé. Vérifiez votre boîte de réception (et les indésirables), ou obtenez un lien de connexion ci-dessous." },
+  "login.err.alreadyRegistered": { en: "This email already has an account. Switch to Sign In, or use \"Having trouble signing in?\" to get a sign-in link by email.", fr: "Ce courriel a déjà un compte. Passez à « Se connecter », ou utilisez « Problème de connexion ? » pour recevoir un lien par courriel." },
+  "login.err.weakPassword": { en: "That password is too common. Please choose a different one (8+ characters, with an uppercase letter, a lowercase letter and a number).", fr: "Ce mot de passe est trop courant. Choisissez-en un autre (8 caractères ou plus, avec majuscule, minuscule et chiffre)." },
+  "login.err.rateLimit": { en: "Too many attempts. Please wait a few minutes and try again.", fr: "Trop de tentatives. Veuillez patienter quelques minutes et réessayer." },
+  "login.err.noAccount": { en: "We couldn't find an account with that email. Please sign up with the same email address you used to register, or email ailsa@clubchoir.ca.", fr: "Aucun compte trouvé avec ce courriel. Inscrivez-vous avec la même adresse que lors de votre inscription, ou écrivez à ailsa@clubchoir.ca." },
+  "login.err.enterEmailFirst": { en: "Please enter your email address first.", fr: "Veuillez d'abord entrer votre adresse courriel." },
+  "login.linkSent": { en: "Sign-in link sent! Check your email (and junk folder) — it signs you in with no password.", fr: "Lien de connexion envoyé ! Vérifiez vos courriels (et les indésirables) — il vous connecte sans mot de passe." },
+  "login.help.title": { en: "Having trouble signing in?", fr: "Problème de connexion ?" },
+  "login.help.body": { en: "Use the same email address you registered with. If you never confirmed your email, or you're not sure whether you have an account, we can email you a link that signs you in instantly — no password needed.", fr: "Utilisez la même adresse courriel que lors de votre inscription. Si vous n'avez jamais confirmé votre courriel, ou si vous n'êtes pas certain(e) d'avoir un compte, nous pouvons vous envoyer un lien qui vous connecte instantanément — sans mot de passe." },
+  "login.help.sendLink": { en: "Email me a sign-in link", fr: "M'envoyer un lien de connexion" },
+  "login.help.contact": { en: "Still stuck? Email ailsa@clubchoir.ca and we'll set you up.", fr: "Toujours bloqué(e) ? Écrivez à ailsa@clubchoir.ca et nous vous aiderons." },
+
 
   // Reset password extras
   "reset.loading": { en: "Loading...", fr: "Chargement..." },
