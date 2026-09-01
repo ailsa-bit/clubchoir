@@ -530,6 +530,8 @@ const Dashboard = () => {
 
         </div>
 
+        <SignupIssuesPanel />
+
         <SourceReport />
 
         {/* Activity feed */}
