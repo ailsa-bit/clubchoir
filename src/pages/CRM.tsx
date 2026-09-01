@@ -430,21 +430,26 @@ const CRM = () => {
           : `${c.first_name} is marked paid. Access unlocks when they sign up.`,
       });
     }
-    // Send payment confirmation email
+    // Send the "First Night — Registered & Paid" welcome email
     try {
-      const { error: emailErr } = await supabase.functions.invoke("notify-payment-confirmed", {
+      const { data: sendRes, error: emailErr } = await supabase.functions.invoke("send-campaign", {
         body: {
-          email: c.email,
-          first_name: c.first_name,
-          amount,
-          location: reg.location,
-          has_account: activated,
+          segment: "first-night-paid",
+          onlyEmails: [c.email],
+          skipIfAlreadySent: true,
         },
       });
       if (emailErr) {
         toast({ title: "Payment email failed", description: emailErr.message, variant: "destructive" });
+      } else if (sendRes?.success?.length) {
+        toast({ title: "First night email sent", description: `Emailed ${c.email}` });
+      } else if (sendRes?.failed?.length) {
+        toast({ title: "Payment email failed", description: `Could not email ${c.email}`, variant: "destructive" });
       } else {
-        toast({ title: "Confirmation email sent", description: `Emailed ${c.email}` });
+        toast({
+          title: "No email sent",
+          description: `${c.email} already received the first-night paid email (or isn't in that list yet).`,
+        });
       }
     } catch (e: any) {
       toast({ title: "Payment email failed", description: e?.message || "Unknown error", variant: "destructive" });
