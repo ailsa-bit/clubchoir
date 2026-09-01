@@ -276,14 +276,15 @@ const Campaigns = () => {
                   <Button
                     size="sm"
                     onClick={() => setConfirmSegment(s.key)}
-                    disabled={sending === s.key || !audience}
+                    disabled={sending === s.key || !newAudience}
                     className="bg-primary text-primary-foreground"
                   >
                     {sending === s.key ? (
                       <><Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> Sending…</>
                     ) : (
-                      <><Send className="w-4 h-4 mr-1.5" /> Send to {audience ?? "…"} {filter === "all" ? "(all)" : filter === "unknown" ? "(no location)" : `(${filter})`}</>
+                      <><Send className="w-4 h-4 mr-1.5" /> Send to {newAudience ?? "…"} new {filter === "all" ? "(all locations)" : filter === "unknown" ? "(no location)" : `(${filter})`}</>
                     )}
+
                   </Button>
                 </div>
               </div>
