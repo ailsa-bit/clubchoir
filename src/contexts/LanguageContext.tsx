@@ -899,7 +899,14 @@ const translations: Record<string, Record<Language, string>> = {
   "events.herdLink": { en: "Learn more about A Horse Tale Rescue", fr: "En savoir plus sur A Horse Tale Rescue" },
 };
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+// Keep a single context instance across HMR module reloads so that
+// components rendered from a stale module copy still find the provider.
+const g = globalThis as unknown as {
+  __clubchoirLanguageContext?: React.Context<LanguageContextType | undefined>;
+};
+const LanguageContext =
+  g.__clubchoirLanguageContext ??
+  (g.__clubchoirLanguageContext = createContext<LanguageContextType | undefined>(undefined));
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<Language>(() => {
