@@ -77,6 +77,7 @@ serve(async (req) => {
         email: u.email,
         created_at: u.created_at,
         email_confirmed_at: u.email_confirmed_at,
+        last_sign_in_at: u.last_sign_in_at,
         display_name: profile?.display_name || null,
         location: profile?.location || null,
         profile_status: profile?.status || "no profile",

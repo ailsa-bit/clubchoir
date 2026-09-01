@@ -8,6 +8,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import SourceReport from "@/components/SourceReport";
+import SignupIssuesPanel from "@/components/SignupIssuesPanel";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -528,6 +529,8 @@ const Dashboard = () => {
           </div>
 
         </div>
+
+        <SignupIssuesPanel />
 
         <SourceReport />
 
