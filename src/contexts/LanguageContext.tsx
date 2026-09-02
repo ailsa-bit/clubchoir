@@ -545,6 +545,8 @@ const translations: Record<string, Record<Language, string>> = {
   "login.alreadySignedIn.body": { en: "No need to create a profile — your account is ready. Continue to the member area to see this week's songs and schedule.", fr: "Pas besoin de créer un profil — votre compte est prêt. Accédez à l'espace membre pour voir les chansons et l'horaire de la semaine." },
   "login.alreadySignedIn.continue": { en: "Go to the member area", fr: "Accéder à l'espace membre" },
   "login.alreadySignedIn.signOut": { en: "Not you? Sign out", fr: "Ce n'est pas vous ? Se déconnecter" },
+  "login.alreadySignedIn.setPassword": { en: "Set a password for next time", fr: "Créer un mot de passe pour la prochaine fois" },
+
   "login.help.title": { en: "Having trouble signing in?", fr: "Problème de connexion ?" },
   "login.help.body": { en: "Use the same email address you registered with. If you never confirmed your email, or you're not sure whether you have an account, we can email you a link that signs you in instantly — no password needed.", fr: "Utilisez la même adresse courriel que lors de votre inscription. Si vous n'avez jamais confirmé votre courriel, ou si vous n'êtes pas certain(e) d'avoir un compte, nous pouvons vous envoyer un lien qui vous connecte instantanément — sans mot de passe." },
   "login.help.sendLink": { en: "Email me a sign-in link", fr: "M'envoyer un lien de connexion" },
