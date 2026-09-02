@@ -34,6 +34,10 @@ const Profile = () => {
 
   const loadProfile = async () => {
     const { data, error } = await supabase.rpc("get_my_member_profile");
+    if (error) {
+      console.error("get_my_member_profile failed", error);
+      toast.error(error.message);
+    }
     if (!error && data && data.length > 0) {
       const p = data[0] as MemberProfile;
       setProfile(p);
@@ -43,6 +47,7 @@ const Profile = () => {
     }
     setLoading(false);
   };
+
 
   useEffect(() => {
     if (!user) {
