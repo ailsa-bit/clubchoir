@@ -34,6 +34,10 @@ const Profile = () => {
 
   const loadProfile = async () => {
     const { data, error } = await supabase.rpc("get_my_member_profile");
+    if (error) {
+      console.error("get_my_member_profile failed", error);
+      toast.error(error.message);
+    }
     if (!error && data && data.length > 0) {
       const p = data[0] as MemberProfile;
       setProfile(p);
@@ -43,6 +47,7 @@ const Profile = () => {
     }
     setLoading(false);
   };
+
 
   useEffect(() => {
     if (!user) {
@@ -68,13 +73,19 @@ const Profile = () => {
     });
     setSaving(false);
     if (error) {
-      toast.error(t("profile.nameError"));
+      console.error("update_my_member_name failed", error);
+      toast.error(`${t("profile.nameError")} (${error.message})`);
       return;
     }
+    // optimistic: show the new name immediately
+    setProfile((prev) =>
+      prev ? { ...prev, display_name: `${firstName.trim()} ${lastName.trim()}`.trim() } : prev
+    );
     toast.success(t("profile.nameSaved"));
     setEditing(false);
     loadProfile();
   };
+
 
   const formatDate = (d: string | null) => {
     if (!d) return t("profile.notSet");
