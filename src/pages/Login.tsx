@@ -211,6 +211,10 @@ const Login = () => {
           <Button className="w-full mb-3" onClick={() => navigate(postAuthRedirect)}>
             {t("login.alreadySignedIn.continue")}
           </Button>
+          <Button variant="outline" className="w-full mb-3" onClick={() => navigate("/reset-password")}>
+            {t("login.alreadySignedIn.setPassword")}
+          </Button>
+
           <button
             type="button"
             className="text-sm text-muted-foreground hover:text-foreground hover:underline"

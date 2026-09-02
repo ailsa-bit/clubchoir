@@ -51,7 +51,7 @@ Deno.serve(async (req) => {
           <ol style="font-size: 14px; color: hsl(240, 5%, 30%); line-height: 1.7; margin: 0; padding-left: 18px;">
             <li>Tap <strong>Sign In</strong> above — no password needed. / Cliquez sur <strong>Sign In</strong> — aucun mot de passe requis.</li>
             <li>You'll land in the members section. For your weekly schedule and songs, use the <strong>My Choir</strong> menu at the top — not <strong>My Profile</strong>, which is only for account settings. / Vous arriverez dans la section des membres. Pour votre horaire et vos chansons, utilisez le menu <strong>My Choir</strong> en haut — pas <strong>My Profile</strong>, qui est réservé aux paramètres du compte.</li>
-            <li>To set a password for next time, go to the login page and use <strong>Forgot password?</strong>. / Pour créer un mot de passe, utilisez <strong>Mot de passe oublié?</strong> sur la page de connexion.</li>
+            <li>To set a password for next time, open <a href="https://clubchoir.ca/reset-password" style="color: hsl(340, 75%, 60%);">clubchoir.ca/reset-password</a> while signed in and choose a new password. / Pour créer un mot de passe, ouvrez <a href="https://clubchoir.ca/reset-password" style="color: hsl(340, 75%, 60%);">clubchoir.ca/reset-password</a> une fois connecté(e).</li>
             <li>Still stuck? Email <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>. / Un souci? Écrivez à <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>.</li>
           </ol>
         </div>
