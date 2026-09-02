@@ -73,13 +73,19 @@ const Profile = () => {
     });
     setSaving(false);
     if (error) {
-      toast.error(t("profile.nameError"));
+      console.error("update_my_member_name failed", error);
+      toast.error(`${t("profile.nameError")} (${error.message})`);
       return;
     }
+    // optimistic: show the new name immediately
+    setProfile((prev) =>
+      prev ? { ...prev, display_name: `${firstName.trim()} ${lastName.trim()}`.trim() } : prev
+    );
     toast.success(t("profile.nameSaved"));
     setEditing(false);
     loadProfile();
   };
+
 
   const formatDate = (d: string | null) => {
     if (!d) return t("profile.notSet");
