@@ -1129,12 +1129,22 @@ serve(async (req) => {
       success: [], failed: [], skipped: recipients.length - toSend.length,
     };
 
+    const apologyNote: boolean = !!body.apologyNote;
+    const APOLOGY_HTML = `
+    <div style="background:#fdf2f8;border:1px solid #f9a8d4;border-radius:10px;padding:16px 18px;margin:0 0 22px;">
+      <p style="${P} margin-top:0;">Sorry — we mistakenly sent you a test message. Apologies for the confusion! Here is the correct information for your first-night try-out. See you next week!</p>
+      <p style="${P} margin-bottom:0;color:#555;">Désolée — nous vous avons envoyé un message test par erreur. Désolée pour la confusion! Voici les bonnes informations pour votre première soirée d'essai. À la semaine prochaine!</p>
+    </div>`;
+
     const batchSize = 5;
     for (let i = 0; i < toSend.length; i += batchSize) {
       const batch = toSend.slice(i, i + batchSize);
       await Promise.all(batch.map(async (r) => {
         try {
-          const { subject, html } = renderEmail(segment, r);
+          const { subject, html: baseHtml } = renderEmail(segment, r);
+          const html = apologyNote
+            ? baseHtml.replace("<p style=", `${APOLOGY_HTML}<p style=`)
+            : baseHtml;
           await resend.emails.send({
             from: "Club Choir <noreply@clubchoir.ca>",
             reply_to: CONTACT,
@@ -1142,6 +1152,7 @@ serve(async (req) => {
             subject,
             html,
           });
+
           results.success.push(r.email);
           await supabase.from("campaign_sends").insert({
             campaign_key: key, segment, recipient_email: r.email, subject, status: "sent",
