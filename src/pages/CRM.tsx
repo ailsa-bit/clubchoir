@@ -432,11 +432,39 @@ const CRM = () => {
     }
     // Send the "First Night — Registered & Paid" welcome email
     try {
+      const sendRequest = {
+        segment: "first-night-paid",
+        onlyEmails: [c.email],
+        skipIfAlreadySent: true,
+      };
+      const { data: verification, error: verificationErr } = await supabase.functions.invoke("send-campaign", {
+        body: {
+          ...sendRequest,
+          preflightOnly: true,
+        },
+      });
+      if (verificationErr) throw verificationErr;
+      if (verification?.issues?.length) {
+        const details = verification.issues
+          .map((issue: { email: string; problems: string[] }) => `${issue.email}: ${issue.problems.join(", ")}`)
+          .join("; ");
+        toast({ title: "Payment email blocked", description: details, variant: "destructive" });
+        fetchAll();
+        return;
+      }
+      if (verification?.count !== 1 || !verification?.fingerprint) {
+        toast({
+          title: "No email sent",
+          description: `${c.email} already received this email or is not on the verified paid list.`,
+        });
+        fetchAll();
+        return;
+      }
       const { data: sendRes, error: emailErr } = await supabase.functions.invoke("send-campaign", {
         body: {
-          segment: "first-night-paid",
-          onlyEmails: [c.email],
-          skipIfAlreadySent: true,
+          ...sendRequest,
+          preflightFingerprint: verification.fingerprint,
+          preflightCount: verification.count,
         },
       });
       if (emailErr) {

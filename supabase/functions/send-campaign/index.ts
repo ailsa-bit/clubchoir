@@ -10,6 +10,7 @@ const corsHeaders = {
 
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
+const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
 type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "first-night-guests" | "first-night-paid" | "first-night-unpaid";
 
@@ -48,6 +49,15 @@ interface Recipient {
   first_name: string;
   last_name: string;
   location: string;
+}
+
+interface RecipientManifestItem extends Recipient {
+  subject: string;
+}
+
+interface RecipientIssue {
+  email: string;
+  problems: string[];
 }
 
 // ---------- location schedule ----------
@@ -923,6 +933,40 @@ async function loadAlreadySent(
   return skip;
 }
 
+function validateRecipients(recipients: Recipient[]): RecipientIssue[] {
+  const seen = new Set<string>();
+  const issues: RecipientIssue[] = [];
+  for (const r of recipients) {
+    const problems: string[] = [];
+    const email = String(r.email || "").trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) problems.push("invalid email");
+    if (!String(r.first_name || "").trim()) problems.push("missing first name");
+    if (!LOCATION_KEYS.includes(r.location)) problems.push("missing or invalid location");
+    if (seen.has(email)) problems.push("duplicate email");
+    seen.add(email);
+    if (problems.length) issues.push({ email: email || "(missing email)", problems });
+  }
+  return issues;
+}
+
+async function buildPreflight(segment: Segment, location: string, recipients: Recipient[]) {
+  const manifest: RecipientManifestItem[] = recipients
+    .map((r) => ({ ...r, subject: renderEmail(segment, r).subject }))
+    .sort((a, b) => a.email.localeCompare(b.email));
+  const canonical = JSON.stringify({
+    campaignKey: CAMPAIGN_KEYS[segment], segment, location,
+    recipients: manifest.map((r) => ({
+      email: r.email, first_name: r.first_name, last_name: r.last_name,
+      location: r.location, subject: r.subject,
+    })),
+  });
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(canonical));
+  const fingerprint = Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+  return { manifest, fingerprint, issues: validateRecipients(recipients) };
+}
+
 // ---------- handler ----------
 
 
@@ -951,6 +995,7 @@ serve(async (req) => {
     const testEmail: string | undefined = body.testEmail;
     const previewOnly: boolean = !!body.previewOnly;
     const countOnly: boolean = !!body.countOnly;
+    const preflightOnly: boolean = !!body.preflightOnly;
     const location: string = typeof body.location === "string" ? body.location : "all";
 
     if (!Object.keys(CAMPAIGN_KEYS).includes(segment)) throw new Error("Invalid segment");
@@ -972,7 +1017,7 @@ serve(async (req) => {
       location === "all" ? all
       : location === "unknown" ? all.filter((r) => !r.location)
       : all.filter((r) => r.location === location);
-    if (onlyEmails.length) recipients = all.filter((r) => onlyEmails.includes(r.email.toLowerCase()));
+    if (onlyEmails.length) recipients = recipients.filter((r) => onlyEmails.includes(r.email.toLowerCase()));
 
 
     if (countOnly) {
@@ -1001,8 +1046,7 @@ serve(async (req) => {
         email: "sample@example.com", first_name: "Sample", last_name: "Singer",
         location: location !== "all" && location !== "unknown" ? location : "Montreal",
       };
-      const sample = recipients[0] || fallback;
-      const { subject, html } = renderEmail(segment, sample);
+      const { subject, html } = renderEmail(segment, fallback);
       return new Response(JSON.stringify({ subject, html, count: recipients.length }), {
         status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
@@ -1013,19 +1057,25 @@ serve(async (req) => {
     const resend = new Resend(resendKey);
 
     if (testEmail) {
-      const fallback: Recipient = {
-        email: testEmail, first_name: "Sample", last_name: "Singer",
+      const requestedTestEmail = String(testEmail).trim().toLowerCase();
+      const signedInEmail = String(user.email || "").trim().toLowerCase();
+      if (requestedTestEmail !== TEST_RECIPIENT || signedInEmail !== TEST_RECIPIENT) {
+        return new Response(JSON.stringify({ error: `Test emails are locked to ${TEST_RECIPIENT}` }), {
+          status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      const testRecipient: Recipient = {
+        email: TEST_RECIPIENT, first_name: "Ailsa", last_name: "Pehi",
         location: location !== "all" && location !== "unknown" ? location : "Montreal",
       };
-      const sample = recipients[0] || fallback;
-      const { subject, html } = renderEmail(segment, { ...sample, email: testEmail });
+      const { subject, html } = renderEmail(segment, testRecipient);
       await resend.emails.send({
         from: "Club Choir <noreply@clubchoir.ca>",
-        to: [testEmail],
+        to: [TEST_RECIPIENT],
         subject: `[TEST] ${subject}`,
         html,
       });
-      return new Response(JSON.stringify({ ok: true, sentTo: testEmail }), {
+      return new Response(JSON.stringify({ ok: true, sentTo: TEST_RECIPIENT }), {
         status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
@@ -1040,6 +1090,39 @@ serve(async (req) => {
     const toSend = (targeted && !skipIfAlreadySent)
       ? recipients
       : recipients.filter((r) => !alreadySent.has(r.email));
+
+    const preflight = await buildPreflight(segment, location, toSend);
+    if (preflightOnly) {
+      return new Response(JSON.stringify({
+        campaignKey: key, segment, location,
+        count: preflight.manifest.length,
+        manifest: preflight.manifest,
+        issues: preflight.issues,
+        fingerprint: preflight.fingerprint,
+      }), {
+        status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    if (preflight.issues.length) {
+      return new Response(JSON.stringify({
+        error: "Send blocked: recipient verification failed",
+        issues: preflight.issues,
+      }), {
+        status: 409, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
+    const expectedFingerprint = typeof body.preflightFingerprint === "string" ? body.preflightFingerprint : "";
+    const expectedCount = Number(body.preflightCount);
+    if (!expectedFingerprint || expectedFingerprint !== preflight.fingerprint ||
+        !Number.isInteger(expectedCount) || expectedCount !== preflight.manifest.length) {
+      return new Response(JSON.stringify({
+        error: "Send blocked: the recipient list was not verified or changed after review. Run preflight again.",
+      }), {
+        status: 409, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
 
 
     const results: { success: string[]; failed: string[]; skipped: number } = {

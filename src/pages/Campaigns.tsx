@@ -15,6 +15,26 @@ type Segment = "first-night-guests" | "first-night-paid" | "first-night-unpaid";
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
 
+interface ManifestRecipient {
+  email: string;
+  first_name: string;
+  last_name: string;
+  location: string;
+  subject: string;
+}
+
+interface RecipientIssue {
+  email: string;
+  problems: string[];
+}
+
+interface Preflight {
+  count: number;
+  manifest: ManifestRecipient[];
+  issues: RecipientIssue[];
+  fingerprint: string;
+}
+
 const EMPTY_COUNTS = {
   "first-night-guests": 0,
   "first-night-paid": 0,
@@ -78,6 +98,8 @@ const Campaigns = () => {
   const [sending, setSending] = useState<Segment | null>(null);
   const [busy, setBusy] = useState<Segment | null>(null);
   const [userEmail, setUserEmail] = useState<string>("");
+  const [preflight, setPreflight] = useState<Preflight | null>(null);
+  const [preflightLoading, setPreflightLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -154,7 +176,10 @@ const Campaigns = () => {
   };
 
   const handleTest = async (seg: Segment) => {
-    if (!userEmail) return;
+    if (userEmail.toLowerCase() !== "ailsa@clubchoir.ca") {
+      toast({ title: "Test blocked", description: "Test emails can only be sent to ailsa@clubchoir.ca.", variant: "destructive" });
+      return;
+    }
     setBusy(seg);
     try {
       const { data, error } = await supabase.functions.invoke("send-campaign", {
@@ -170,11 +195,17 @@ const Campaigns = () => {
   };
 
   const handleSend = async (seg: Segment) => {
+    if (!preflight || preflight.issues.length) return;
     setSending(seg);
     setConfirmSegment(null);
     try {
       const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg, location: locFilter[seg] },
+        body: {
+          segment: seg,
+          location: locFilter[seg],
+          preflightFingerprint: preflight.fingerprint,
+          preflightCount: preflight.count,
+        },
       });
       if (error) throw error;
       toast({
@@ -186,6 +217,23 @@ const Campaigns = () => {
       toast({ title: "Send failed", description: e.message, variant: "destructive" });
     } finally {
       setSending(null);
+      setPreflight(null);
+    }
+  };
+
+  const prepareSend = async (seg: Segment) => {
+    setPreflightLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("send-campaign", {
+        body: { segment: seg, location: locFilter[seg], preflightOnly: true },
+      });
+      if (error) throw error;
+      setPreflight(data as Preflight);
+      setConfirmSegment(seg);
+    } catch (e: any) {
+      toast({ title: "Verification failed", description: e.message, variant: "destructive" });
+    } finally {
+      setPreflightLoading(false);
     }
   };
 
@@ -278,8 +326,8 @@ const Campaigns = () => {
                   </Button>
                   <Button
                     size="sm"
-                    onClick={() => setConfirmSegment(s.key)}
-                    disabled={sending === s.key || !newAudience}
+                    onClick={() => prepareSend(s.key)}
+                    disabled={sending === s.key || preflightLoading || !newAudience}
                     className="bg-primary text-primary-foreground"
                   >
                     {sending === s.key ? (
@@ -319,20 +367,45 @@ const Campaigns = () => {
       </Dialog>
 
       {/* Confirm send */}
-      <Dialog open={confirmSegment !== null} onOpenChange={(v) => !v && setConfirmSegment(null)}>
-        <DialogContent>
+      <Dialog open={confirmSegment !== null} onOpenChange={(v) => { if (!v) { setConfirmSegment(null); setPreflight(null); } }}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>Send this campaign?</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">
-            This will email <strong>{confirmSegment ? (newAudienceFor(confirmSegment) ?? 0) : 0}</strong> people who have not yet received it, in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
+            This verified list contains <strong>{preflight?.count ?? 0}</strong> people in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
             {confirmSegment && locFilter[confirmSegment] !== "all" ? <> — <strong>{locFilter[confirmSegment]}</strong> only</> : " — all locations"}. Everyone who already received this campaign (or another first-night email) is skipped automatically.
           </p>
 
+          {preflight?.issues.length ? (
+            <div className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+              <p className="font-semibold">Send blocked — fix these records first:</p>
+              {preflight.issues.map((issue) => (
+                <p key={issue.email}>{issue.email}: {issue.problems.join(", ")}</p>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-md border border-border overflow-auto min-h-0">
+              <table className="w-full text-sm">
+                <thead className="sticky top-0 bg-muted">
+                  <tr><th className="p-2 text-left">Name</th><th className="p-2 text-left">Email</th><th className="p-2 text-left">Location</th></tr>
+                </thead>
+                <tbody>
+                  {preflight?.manifest.map((r) => (
+                    <tr key={r.email} className="border-t border-border">
+                      <td className="p-2">{r.first_name} {r.last_name}</td>
+                      <td className="p-2">{r.email}</td>
+                      <td className="p-2">{r.location}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setConfirmSegment(null)}>Cancel</Button>
-            <Button onClick={() => confirmSegment && handleSend(confirmSegment)}>
+            <Button disabled={!preflight || preflight.count === 0 || preflight.issues.length > 0} onClick={() => confirmSegment && handleSend(confirmSegment)}>
               <Send className="w-4 h-4 mr-1.5" /> Send now
             </Button>
           </DialogFooter>
