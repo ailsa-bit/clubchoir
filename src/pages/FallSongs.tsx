@@ -325,14 +325,20 @@ const FallSongs = () => {
               />
             ))}
             {isAdmin && (
-              <div className="space-y-2">
+              <div className="flex flex-wrap gap-2">
                 {audio.map((r) => (
-                  <button key={`d-${r.id}`} onClick={() => handleDelete(r)} className="text-xs text-destructive underline">
-                    Delete {r.file_name}
+                  <button
+                    key={`d-${r.id}`}
+                    onClick={() => handleDelete(r)}
+                    className="min-h-[40px] px-3 rounded-lg border border-destructive/40 text-destructive text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition max-w-full"
+                  >
+                    <Trash2 className="w-4 h-4 shrink-0" />
+                    <span className="truncate">{c.delete}: {r.file_name}</span>
                   </button>
                 ))}
               </div>
             )}
+
           </section>
         )}
 
