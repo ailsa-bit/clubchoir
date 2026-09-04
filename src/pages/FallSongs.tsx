@@ -272,8 +272,16 @@ const FallSongs = () => {
     sheet_music: { icon: <BookOpen className="w-4 h-4" />, label: c.sheet, bg: "bg-[hsl(var(--purple-light))]", text: "text-[hsl(var(--purple))]" },
   };
 
-  const FileRow = ({ row, label }: { row: Row; label: string }) => (
-    <div className="flex items-center gap-2 rounded-lg border border-border bg-card p-2.5">
+  const FileRow = ({ row, label, list, index }: { row: Row; label: string; list: Row[]; index: number }) => (
+    <div
+      draggable={isAdmin}
+      onDragStart={() => setDragId(row.id)}
+      onDragOver={(e) => { if (isAdmin && dragId && dragId !== row.id) e.preventDefault(); }}
+      onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(list, index); }}
+      onDragEnd={() => setDragId(null)}
+      className={`flex items-center gap-2 rounded-lg border border-border bg-card p-2.5 ${dragId === row.id ? "opacity-50" : ""}`}
+    >
+      {isAdmin && <ReorderControls list={list} index={index} />}
       <span className="min-w-0 flex-1 text-sm truncate">{label}</span>
       <button onClick={() => openFile(row)} className="min-h-[40px] px-3 rounded-lg bg-primary text-primary-foreground text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition">
         <ExternalLink className="w-3.5 h-3.5" /> {c.open}
@@ -289,6 +297,7 @@ const FallSongs = () => {
 
     </div>
   );
+
 
   const SongDetail = ({ items }: { name: string; items: Row[] }) => {
     const audio = items.filter((r) => r.resource_type === "audio");
