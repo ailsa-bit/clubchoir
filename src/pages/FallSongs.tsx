@@ -208,8 +208,7 @@ const FallSongs = () => {
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length || !uploadSong.trim() || !user || !selectedWeek) return;
-    const type: ResourceType = uploadKind.startsWith("sheet:") ? "sheet_music" : (uploadKind as ResourceType);
-    const part: Part | null = uploadKind.startsWith("sheet:") ? (uploadKind.split(":")[1] as Part) : null;
+    const type: ResourceType = uploadKind as ResourceType;
     const safeSong = uploadSong.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-zA-Z0-9\s-]/g, "").replace(/\s+/g, "-").toLowerCase();
 
