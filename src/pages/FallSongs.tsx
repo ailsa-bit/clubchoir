@@ -122,7 +122,6 @@ const FallSongs = () => {
 
   const weekParam = params.get("week");
   const selectedWeek = weekParam && WEEKS.includes(Number(weekParam)) ? Number(weekParam) : null;
-  const selectedSong = params.get("song");
 
   const fetchRows = async () => {
     setLoading(true);
@@ -243,16 +242,6 @@ const FallSongs = () => {
     [rows, selectedWeek]
   );
 
-  const songsInWeek = useMemo(() => {
-    const map = new Map<string, Row[]>();
-    for (const r of weekRows) {
-      const list = map.get(r.song_name) || [];
-      list.push(r);
-      map.set(r.song_name, list);
-    }
-    return Array.from(map.entries());
-  }, [weekRows]);
-
   const searchResults = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return [];
@@ -267,7 +256,6 @@ const FallSongs = () => {
   }, [rows, search]);
 
   const goWeek = (w: number) => setParams({ week: String(w) });
-  const goSong = (w: number, name: string) => setParams({ week: String(w), song: name });
   const goWeeks = () => setParams({});
 
   const BackBar = ({ onClick, label }: { onClick: () => void; label: string }) => (
@@ -315,8 +303,6 @@ const FallSongs = () => {
 
     return (
       <div className="space-y-6">
-        <h2 className="text-2xl font-heading font-bold">{name}</h2>
-
         {audio.length > 0 && (
           <section className="space-y-2">
             <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta.audio.text}`}>{c.recordings}</h3>
@@ -430,23 +416,13 @@ const FallSongs = () => {
     <div className="py-8 px-4">
       <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-3xl">
-        {/* Song view */}
-        {selectedWeek && selectedSong ? (
-          <>
-            <BackBar onClick={() => goWeek(selectedWeek)} label={`${c.backToWeek} ${selectedWeek}`} />
-            <SongDetail name={selectedSong} items={weekRows.filter((r) => r.song_name === selectedSong)} />
-            <div className="mt-8">
-              <button onClick={goWeeks} className="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-lg border border-border text-sm font-semibold">
-                <ArrowLeft className="w-4 h-4" /> {c.backToWeeks}
-              </button>
-            </div>
-          </>
-        ) : selectedWeek ? (
+        {/* Week view: one song per week, files shown right away */}
+        {selectedWeek ? (
           <>
             <BackBar onClick={goWeeks} label={c.backToWeeks} />
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {selectedWeek}</p>
             <h1 className="text-3xl font-heading font-bold mb-1">{WEEK_TITLES[selectedWeek]}</h1>
-            <p className="text-muted-foreground mb-6">{songsInWeek.length} {c.songs}</p>
+            <p className="text-muted-foreground mb-6">{weekRows.length} {c.items}</p>
             {isAdmin && (
               <>
                 <button onClick={() => setShowUpload((s) => !s)} className="mb-3 inline-flex items-center gap-2 min-h-[44px] px-4 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold">
@@ -455,28 +431,19 @@ const FallSongs = () => {
                 {showUpload && <UploadPanel />}
               </>
             )}
-            {songsInWeek.length === 0 ? (
+            {weekRows.length === 0 ? (
               <p className="text-muted-foreground py-10 text-center">{c.empty}</p>
             ) : (
-              <div className="space-y-3">
-                {songsInWeek.map(([name, items]) => (
-                  <button
-                    key={name}
-                    onClick={() => goSong(selectedWeek, name)}
-                    className="w-full text-left rounded-xl border border-border bg-card p-4 flex items-center gap-3 hover:border-primary/50 active:scale-[.99] transition"
-                  >
-                    <Music className="w-5 h-5 text-primary shrink-0" />
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-semibold truncate">{name}</span>
-                      <span className="block text-xs text-muted-foreground">{items.length} {c.items}</span>
-                    </span>
-                    <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
-                  </button>
-                ))}
-              </div>
+              <SongDetail name={WEEK_TITLES[selectedWeek]} items={weekRows} />
             )}
+            <div className="mt-8">
+              <button onClick={goWeeks} className="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-lg border border-border text-sm font-semibold">
+                <ArrowLeft className="w-4 h-4" /> {c.backToWeeks}
+              </button>
+            </div>
           </>
         ) : (
+
           <>
             <h1 className="text-3xl font-heading font-bold mb-2">{c.title}</h1>
             <p className="text-muted-foreground mb-6">{c.intro}</p>
@@ -499,7 +466,7 @@ const FallSongs = () => {
                   {searchResults.map((r) => (
                     <button
                       key={`${r.week}-${r.name}`}
-                      onClick={() => goSong(r.week, r.name)}
+                      onClick={() => goWeek(r.week)}
                       className="w-full text-left rounded-xl border border-border bg-card p-4 flex items-center gap-3"
                     >
                       <Music className="w-5 h-5 text-primary shrink-0" />
@@ -517,7 +484,7 @@ const FallSongs = () => {
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">{c.pickWeek}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {WEEKS.map((w) => {
-                    const count = new Set(rows.filter((r) => r.week === w).map((r) => r.song_name)).size;
+                    const count = rows.filter((r) => r.week === w).length;
                     return (
                       <button
                         key={w}
@@ -527,7 +494,7 @@ const FallSongs = () => {
                         <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {w}</span>
                         <span className="block text-lg font-heading font-bold leading-tight mt-0.5">{WEEK_TITLES[w]}</span>
                         <span className="block text-xs text-muted-foreground mt-1">
-                          {count > 0 ? `${count} ${c.songs}` : "—"}
+                          {count > 0 ? `${count} ${c.items}` : "—"}
                         </span>
                       </button>
                     );
