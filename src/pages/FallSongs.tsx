@@ -125,10 +125,10 @@ const FallSongs = () => {
   const [uploading, setUploading] = useState<string | null>(null);
   const [dragId, setDragId] = useState<string | null>(null);
   const [openSections, setOpenSections] = useState<Record<ResourceType, boolean>>({
-    audio: true,
-    lyrics: true,
-    slides: true,
-    sheet_music: true,
+    audio: false,
+    lyrics: false,
+    slides: false,
+    sheet_music: false,
   });
 
   const weekParam = params.get("week");
