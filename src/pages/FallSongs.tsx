@@ -52,7 +52,7 @@ const copy = {
     empty: "Nothing uploaded for this week yet — check back soon.",
     noResults: "No songs match your search.",
     recordings: "Recordings",
-    lyrics: "Lyrics",
+    lyrics: "Lyrics binder",
     slides: "Lyric slides",
     sheet: "Sheet music",
     open: "Open",
@@ -84,7 +84,7 @@ const copy = {
     empty: "Rien n'a encore été téléversé pour cette semaine — revenez bientôt.",
     noResults: "Aucune chanson ne correspond à votre recherche.",
     recordings: "Enregistrements",
-    lyrics: "Paroles",
+    lyrics: "Cahier de paroles",
     slides: "Diapositives",
     sheet: "Partitions",
     open: "Ouvrir",
@@ -343,7 +343,7 @@ const FallSongs = () => {
       onDragOver={(e) => { if (isAdmin && dragId && dragId !== row.id) e.preventDefault(); }}
       onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(list, index); }}
       onDragEnd={() => setDragId(null)}
-      className={`flex items-center gap-2 rounded-lg border border-border bg-card p-2.5 ${dragId === row.id ? "opacity-50" : ""}`}
+      className={`flex items-center gap-2 rounded-lg border border-border p-2.5 ${typeMeta[row.resource_type].bg} ${dragId === row.id ? "opacity-50" : ""}`}
     >
       {isAdmin && <ReorderControls list={list} index={index} />}
       <span className="min-w-0 flex-1 text-sm truncate">{label}</span>
