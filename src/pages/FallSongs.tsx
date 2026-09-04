@@ -209,7 +209,9 @@ const FallSongs = () => {
 
 
   const handleDelete = async (row: Row) => {
+    if (!isAdmin) return;
     if (!confirm(c.deleteConfirm.replace("{name}", row.file_name))) return;
+
     await supabase.storage.from("song-resources").remove([row.storage_path]);
     const { error } = await supabase.from("song_resources").delete().eq("id", row.id);
     if (error) { toast({ title: error.message, variant: "destructive" }); return; }
