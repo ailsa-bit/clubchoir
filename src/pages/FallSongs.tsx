@@ -376,53 +376,86 @@ const FallSongs = () => {
     const slides = items.filter((r) => r.resource_type === "slides");
     const sheets = items.filter((r) => r.resource_type === "sheet_music");
 
+    const sectionGroups: { key: ResourceType; list: Row[] }[] = [
+      { key: "audio", list: audio },
+      { key: "lyrics", list: lyrics },
+      { key: "slides", list: slides },
+      { key: "sheet_music", list: sheets },
+    ];
+
     return (
-      <div className="space-y-6">
+      <div className="space-y-4">
         {isAdmin && items.length > 1 && (
           <p className="text-xs text-muted-foreground">{c.reorderHint}</p>
         )}
 
-        {audio.length > 0 && (
-          <section className="space-y-2">
-            <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta.audio.text}`}>{c.recordings}</h3>
-            {audio.map((r, i) => (
-              <div
-                key={r.id}
-                draggable={isAdmin}
-                onDragStart={() => setDragId(r.id)}
-                onDragOver={(e) => { if (isAdmin && dragId && dragId !== r.id) e.preventDefault(); }}
-                onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(audio, i); }}
-                onDragEnd={() => setDragId(null)}
-                className={`flex items-start gap-2 ${dragId === r.id ? "opacity-50" : ""}`}
-              >
-                {isAdmin && <div className="pt-2"><ReorderControls list={audio} index={i} /></div>}
-                <div className="min-w-0 flex-1">
-                  <SongAudioPlayer
-                    id={r.id}
-                    label={r.file_name}
-                    activeId={activeAudio}
-                    onActivate={setActiveAudio}
-                    loadUrl={() => getSignedUrl(r, false)}
-                    onDownload={() => downloadFile(r)}
-                    downloadLabel={c.download}
-                    isAdmin={isAdmin}
-                    onDelete={() => handleDelete(r)}
-                    deleteLabel={c.delete}
-                  />
+        {sectionGroups.map(({ key, list }) => {
+          if (list.length === 0) return null;
+          const meta = typeMeta[key];
+          const isOpen = openSections[key];
+          return (
+            <Collapsible
+              key={key}
+              open={isOpen}
+              onOpenChange={(open) => setOpenSections((prev) => ({ ...prev, [key]: open }))}
+              className="rounded-xl border border-border bg-card overflow-hidden"
+            >
+              <CollapsibleTrigger asChild>
+                <button
+                  className={`w-full flex items-center justify-between gap-3 px-4 py-3 text-left transition hover:bg-muted/50 ${meta.bg}`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className={meta.text}>{meta.icon}</span>
+                    <span className={`text-sm font-semibold uppercase tracking-wide ${meta.text}`}>
+                      {meta.label}
+                    </span>
+                  </span>
+                  <span className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs text-muted-foreground hidden sm:inline">{list.length} {c.items}</span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                    />
+                  </span>
+                </button>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="p-3 space-y-2 bg-background/60">
+                  {key === "audio" ? (
+                    audio.map((r, i) => (
+                      <div
+                        key={r.id}
+                        draggable={isAdmin}
+                        onDragStart={() => setDragId(r.id)}
+                        onDragOver={(e) => { if (isAdmin && dragId && dragId !== r.id) e.preventDefault(); }}
+                        onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(audio, i); }}
+                        onDragEnd={() => setDragId(null)}
+                        className={`flex items-start gap-2 ${dragId === r.id ? "opacity-50" : ""}`}
+                      >
+                        {isAdmin && <div className="pt-2"><ReorderControls list={audio} index={i} /></div>}
+                        <div className="min-w-0 flex-1">
+                          <SongAudioPlayer
+                            id={r.id}
+                            label={r.file_name}
+                            activeId={activeAudio}
+                            onActivate={setActiveAudio}
+                            loadUrl={() => getSignedUrl(r, false)}
+                            onDownload={() => downloadFile(r)}
+                            downloadLabel={c.download}
+                            isAdmin={isAdmin}
+                            onDelete={() => handleDelete(r)}
+                            deleteLabel={c.delete}
+                          />
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    list.map((r, i) => <FileRow key={r.id} row={r} label={r.file_name} list={list} index={i} />)
+                  )}
                 </div>
-              </div>
-            ))}
-          </section>
-        )}
-
-        {[{ list: lyrics, key: "lyrics" as const }, { list: slides, key: "slides" as const }, { list: sheets, key: "sheet_music" as const }].map(({ list, key }) =>
-          list.length > 0 ? (
-            <section key={key} className="space-y-2">
-              <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta[key].text}`}>{typeMeta[key].label}</h3>
-              {list.map((r, i) => <FileRow key={r.id} row={r} label={r.file_name} list={list} index={i} />)}
-            </section>
-          ) : null
-        )}
+              </CollapsibleContent>
+            </Collapsible>
+          );
+        })}
       </div>
     );
   };
