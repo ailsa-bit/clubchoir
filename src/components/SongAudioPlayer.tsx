@@ -127,8 +127,9 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
   };
 
   return (
-    <div className="rounded-xl border border-[hsl(var(--pink)/.3)] bg-[hsl(var(--pink-light))] p-3">
-      <div className="flex items-center gap-3">
+    <div className="rounded-xl border border-[hsl(var(--pink)/.3)] bg-[hsl(var(--pink-light))] p-3 space-y-2">
+      <p className="text-sm font-semibold break-words">{label}</p>
+      <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={toggle}
@@ -143,31 +144,24 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
             <Play className="w-5 h-5 ml-0.5" />
           )}
         </button>
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold truncate">{label}</p>
-          <div className="flex items-center gap-2 mt-1">
-            <input
-              type="range"
-              min={0}
-              max={duration || 0}
-              step={0.1}
-              value={current}
-              onChange={seek}
-              aria-label="Seek"
-              className="flex-1 h-2 accent-[hsl(var(--pink))] cursor-pointer"
-            />
-            <span className="text-xs tabular-nums text-muted-foreground shrink-0">
-              {fmt(current)} / {fmt(duration)}
-            </span>
-          </div>
-        </div>
+        {(playing || current > 0) && (
+          <button
+            type="button"
+            onClick={stop}
+            aria-label={`Stop and reset ${label}`}
+            className="shrink-0 w-11 h-11 rounded-full border border-[hsl(var(--pink))]/40 bg-background/70 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
+        )}
+        <div className="min-w-0 flex-1" />
         {onDownload && (
           <button
             type="button"
             onClick={() => onDownload()}
             aria-label={`${downloadLabel} ${label}`}
             title={downloadLabel}
-            className="shrink-0 w-9 h-9 rounded-full border border-[hsl(var(--pink))]/40 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
+            className="shrink-0 w-11 h-11 rounded-full border border-[hsl(var(--pink))]/40 bg-background/70 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
           >
             <Download className="w-4 h-4" />
           </button>
@@ -178,22 +172,28 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
             onClick={() => onDelete()}
             aria-label={`${deleteLabel} ${label}`}
             title={deleteLabel}
-            className="shrink-0 w-9 h-9 rounded-full border border-destructive/40 text-destructive flex items-center justify-center active:scale-95 transition-transform"
+            className="shrink-0 w-11 h-11 rounded-full border border-destructive/40 bg-background/70 text-destructive flex items-center justify-center active:scale-95 transition-transform"
           >
             <Trash2 className="w-4 h-4" />
           </button>
         )}
-        {(playing || current > 0) && (
-          <button
-            type="button"
-            onClick={stop}
-            aria-label={`Stop and reset ${label}`}
-            className="shrink-0 w-9 h-9 rounded-full border border-[hsl(var(--pink))]/40 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
-          >
-            <RotateCcw className="w-4 h-4" />
-          </button>
-        )}
       </div>
+      <div className="flex items-center gap-2">
+        <input
+          type="range"
+          min={0}
+          max={duration || 0}
+          step={0.1}
+          value={current}
+          onChange={seek}
+          aria-label="Seek"
+          className="min-w-0 flex-1 h-2 accent-[hsl(var(--pink))] cursor-pointer"
+        />
+        <span className="text-xs tabular-nums text-muted-foreground shrink-0">
+          {fmt(current)} / {fmt(duration)}
+        </span>
+      </div>
+
       {error && <p className="text-xs text-destructive mt-2">Could not play this track. Please try again.</p>}
       <audio
         ref={audioRef}
