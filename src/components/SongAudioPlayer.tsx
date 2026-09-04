@@ -118,6 +118,16 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
             </span>
           </div>
         </div>
+        {playing && (
+          <button
+            type="button"
+            onClick={stop}
+            aria-label={`Stop and reset ${label}`}
+            className="shrink-0 w-9 h-9 rounded-full border border-[hsl(var(--pink))]/40 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
+        )}
       </div>
       {error && <p className="text-xs text-destructive mt-2">Could not play this track. Please try again.</p>}
       <audio
@@ -129,7 +139,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
         onEnded={() => { setPlaying(false); setCurrent(0); }}
         onTimeUpdate={(e) => setCurrent((e.target as HTMLAudioElement).currentTime)}
         onLoadedMetadata={(e) => setDuration((e.target as HTMLAudioElement).duration)}
-        onError={() => { setPlaying(false); }}
+        onError={() => { setPlaying(false); isBusyRef.current = false; }}
       />
     </div>
   );
