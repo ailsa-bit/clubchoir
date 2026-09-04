@@ -160,6 +160,13 @@ const SignupIssues = () => {
     );
   }
 
+  const lookupRef = useRef<HTMLDivElement>(null);
+
+  const selectPerson = (email: string) => {
+    setQuery(email);
+    lookupRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
       <PageMeta
@@ -175,7 +182,7 @@ const SignupIssues = () => {
         Search anyone by name or email to see their account status, payment and registration — then help them right here.
       </p>
 
-      <div className="bg-card border border-border rounded-xl p-4 md:p-6 mb-6">
+      <div ref={lookupRef} className="bg-card border border-border rounded-xl p-4 md:p-6 mb-6 scroll-mt-4">
         <div className="relative mb-4">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input
