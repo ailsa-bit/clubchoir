@@ -150,6 +150,17 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
             <Download className="w-4 h-4" />
           </button>
         )}
+        {isAdmin && onDelete && (
+          <button
+            type="button"
+            onClick={() => onDelete()}
+            aria-label={`${deleteLabel} ${label}`}
+            title={deleteLabel}
+            className="shrink-0 w-9 h-9 rounded-full border border-destructive/40 text-destructive flex items-center justify-center active:scale-95 transition-transform"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
         {playing && (
           <button
             type="button"
