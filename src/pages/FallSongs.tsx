@@ -140,6 +140,11 @@ const FallSongs = () => {
 
   useEffect(() => { fetchRows(); }, []);
 
+  // Pre-fill the song name with this week's song for admin uploads
+  useEffect(() => {
+    if (selectedWeek) setUploadSong(WEEK_TITLES[selectedWeek] || "");
+  }, [selectedWeek]);
+
   const getSignedUrl = async (row: Row, forDownload: boolean): Promise<string | null> => {
     const { data: sessionData } = await supabase.auth.getSession();
     const token = sessionData?.session?.access_token;
