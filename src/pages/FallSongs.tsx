@@ -84,7 +84,6 @@ const copy = {
     lyrics: "Paroles",
     slides: "Diapositives",
     sheet: "Partitions",
-    parts: { blue: "Bleu", pink: "Rose", floaters: "Floaters", all: "Toutes les voix" },
     open: "Ouvrir",
     download: "Télécharger",
     items: "fichiers",
