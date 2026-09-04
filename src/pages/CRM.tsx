@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
+import { invokeCampaign, SessionExpiredError } from "@/lib/campaignInvoke";
 import { useAdmin } from "@/hooks/use-admin";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -437,13 +438,7 @@ const CRM = () => {
         onlyEmails: [c.email],
         skipIfAlreadySent: true,
       };
-      const { data: verification, error: verificationErr } = await supabase.functions.invoke("send-campaign", {
-        body: {
-          ...sendRequest,
-          preflightOnly: true,
-        },
-      });
-      if (verificationErr) throw verificationErr;
+      const verification = await invokeCampaign<any>({ ...sendRequest, preflightOnly: true });
       if (verification?.issues?.length) {
         const details = verification.issues
           .map((issue: { email: string; problems: string[] }) => `${issue.email}: ${issue.problems.join(", ")}`)
@@ -460,16 +455,12 @@ const CRM = () => {
         fetchAll();
         return;
       }
-      const { data: sendRes, error: emailErr } = await supabase.functions.invoke("send-campaign", {
-        body: {
-          ...sendRequest,
-          preflightFingerprint: verification.fingerprint,
-          preflightCount: verification.count,
-        },
+      const sendRes = await invokeCampaign<any>({
+        ...sendRequest,
+        preflightFingerprint: verification.fingerprint,
+        preflightCount: verification.count,
       });
-      if (emailErr) {
-        toast({ title: "Payment email failed", description: emailErr.message, variant: "destructive" });
-      } else if (sendRes?.success?.length) {
+      if (sendRes?.success?.length) {
         toast({ title: "First night email sent", description: `Emailed ${c.email}` });
       } else if (sendRes?.failed?.length) {
         toast({ title: "Payment email failed", description: `Could not email ${c.email}`, variant: "destructive" });
@@ -480,7 +471,15 @@ const CRM = () => {
         });
       }
     } catch (e: any) {
-      toast({ title: "Payment email failed", description: e?.message || "Unknown error", variant: "destructive" });
+      if (e instanceof SessionExpiredError) {
+        toast({
+          title: "Please sign in again",
+          description: "Your session expired, so no email was sent. Sign in and mark paid again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({ title: "Payment email failed", description: e?.message || "Unknown error", variant: "destructive" });
+      }
     }
     fetchAll();
   };

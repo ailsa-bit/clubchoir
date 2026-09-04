@@ -260,7 +260,7 @@ const FallSongs = () => {
     persistOrder(next);
   };
 
-  const ReorderControls = ({ list, index }: { list: Row[]; index: number }) => (
+  const renderReorderControls = (list: Row[], index: number) => (
     <span className="flex items-center gap-0.5 shrink-0">
       <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab hidden sm:block" />
       <button
@@ -332,7 +332,7 @@ const FallSongs = () => {
   const goWeek = (w: number) => setParams({ week: String(w) });
   const goWeeks = () => setParams({});
 
-  const BackBar = ({ onClick, label }: { onClick: () => void; label: string }) => (
+  const renderBackBar = (onClick: () => void, label: string) => (
     <div className="sticky top-0 z-20 -mx-4 px-4 py-2 bg-background/95 backdrop-blur border-b border-border mb-5">
       <button
         onClick={onClick}
@@ -350,8 +350,9 @@ const FallSongs = () => {
     sheet_music: { icon: <BookOpen className="w-4 h-4" />, label: c.sheet, bg: "bg-[hsl(var(--purple-light))]", text: "text-[hsl(var(--purple))]" },
   };
 
-  const FileRow = ({ row, label, list, index }: { row: Row; label: string; list: Row[]; index: number }) => (
+  const renderFileRow = (row: Row, label: string, list: Row[], index: number) => (
     <div
+      key={row.id}
       draggable={isAdmin}
       onDragStart={() => setDragId(row.id)}
       onDragOver={(e) => { if (isAdmin && dragId && dragId !== row.id) e.preventDefault(); }}
@@ -360,7 +361,7 @@ const FallSongs = () => {
       className={`rounded-lg border border-border p-2.5 ${typeMeta[row.resource_type].bg} ${dragId === row.id ? "opacity-50" : ""}`}
     >
       <div className="flex items-start gap-2">
-        {isAdmin && <ReorderControls list={list} index={index} />}
+        {isAdmin && renderReorderControls(list, index)}
         <span className="min-w-0 flex-1 text-sm break-words">{label}</span>
       </div>
       <div className="flex items-center gap-2 mt-2">
@@ -443,7 +444,7 @@ const FallSongs = () => {
                         onDragEnd={() => setDragId(null)}
                         className={`flex items-start gap-2 ${dragId === r.id ? "opacity-50" : ""}`}
                       >
-                        {isAdmin && <div className="pt-2"><ReorderControls list={audio} index={i} /></div>}
+                        {isAdmin && <div className="pt-2">{renderReorderControls(audio, i)}</div>}
                         <div className="min-w-0 flex-1">
                           <SongAudioPlayer
                             id={r.id}
@@ -461,7 +462,7 @@ const FallSongs = () => {
                       </div>
                     ))
                   ) : (
-                    list.map((r, i) => <FileRow key={r.id} row={r} label={r.file_name} list={list} index={i} />)
+                    list.map((r, i) => renderFileRow(r, r.file_name, list, i))
                   )}
                 </div>
               </CollapsibleContent>
@@ -472,7 +473,7 @@ const FallSongs = () => {
     );
   };
 
-  const UploadPanel = () => (
+  const renderUploadPanel = () => (
     <div className="rounded-xl border border-border bg-card p-4 mb-6 space-y-3">
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block">
@@ -525,7 +526,7 @@ const FallSongs = () => {
         {/* Week view: one song per week, files shown right away */}
         {selectedWeek ? (
           <>
-            <BackBar onClick={goWeeks} label={c.backToWeeks} />
+            {renderBackBar(goWeeks, c.backToWeeks)}
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {selectedWeek}</p>
             <h1 className="text-3xl font-heading font-bold mb-1">{WEEK_TITLES[selectedWeek]}</h1>
             <p className="text-muted-foreground mb-6">{weekRows.length} {c.items}</p>
@@ -534,7 +535,7 @@ const FallSongs = () => {
                 <button onClick={() => setShowUpload((s) => !s)} className="mb-3 inline-flex items-center gap-2 min-h-[44px] px-4 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold">
                   <Upload className="w-4 h-4" /> {showUpload ? c.hideAdd : c.addFiles}
                 </button>
-                {showUpload && <UploadPanel />}
+                {showUpload && renderUploadPanel()}
               </>
             )}
             {weekRows.length === 0 ? (

@@ -1021,9 +1021,14 @@ async function buildPreflight(segment: Segment, location: string, recipients: Re
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
+  const unauthorized = (msg: string) =>
+    new Response(JSON.stringify({ error: msg, code: "unauthenticated" }), {
+      status: 401, headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
+
   try {
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) throw new Error("Not authenticated");
+    if (!authHeader) return unauthorized("Your session has expired. Please sign in again.");
 
     const supabaseUser = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -1031,12 +1036,17 @@ serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } },
     );
     const { data: { user }, error: authErr } = await supabaseUser.auth.getUser();
-    if (authErr || !user) throw new Error("Not authenticated");
+    if (authErr || !user) return unauthorized("Your session has expired. Please sign in again.");
 
     const { data: role } = await supabaseUser
       .from("user_roles").select("role")
       .eq("user_id", user.id).eq("role", "admin").maybeSingle();
-    if (!role) throw new Error("Admin access required");
+    if (!role) {
+      return new Response(JSON.stringify({ error: "Admin access required" }), {
+        status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
 
     const body = await req.json();
     const segment: Segment = body.segment;

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Send, Eye, Mail, Users, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { invokeCampaign, SessionExpiredError } from "@/lib/campaignInvoke";
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -118,13 +119,24 @@ const Campaigns = () => {
     })();
   }, []);
 
+  const handleExpired = (e: unknown) => {
+    if (e instanceof SessionExpiredError) {
+      toast({
+        title: "Please sign in again",
+        description: "Your session expired, so nothing was sent. Sign in and try again.",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return true;
+    }
+    return false;
+  };
+
   const loadCounts = async () => {
     // Load all segment counts in parallel — a serial loop left cards greyed out for a long time
     await Promise.all(
       SEGMENTS.map(async (s) => {
-        const { data } = await supabase.functions.invoke("send-campaign", {
-          body: { segment: s.key, countOnly: true },
-        });
+        const data = await invokeCampaign<any>({ segment: s.key, countOnly: true }).catch(() => null);
         setCounts((c) => ({ ...c, [s.key]: data?.total ?? data?.count ?? 0 }));
         setByLocation((b) => ({ ...b, [s.key]: data?.byLocation ?? {} }));
         setNewCounts((c) => ({ ...c, [s.key]: data?.newTotal ?? 0 }));
@@ -171,14 +183,12 @@ const Campaigns = () => {
   const handlePreview = async (seg: Segment) => {
     setBusy(seg);
     try {
-      const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg, previewOnly: true, location: locFilter[seg] },
-      });
-      if (error) throw error;
+      const data = await invokeCampaign<any>({ segment: seg, previewOnly: true, location: locFilter[seg] });
       setPreviewSubject(data.subject);
       setPreviewHtml(data.html);
       setPreviewSegment(seg);
     } catch (e: any) {
+      if (handleExpired(e)) return;
       toast({ title: "Preview failed", description: e.message, variant: "destructive" });
     } finally {
       setBusy(null);
@@ -192,12 +202,10 @@ const Campaigns = () => {
     }
     setBusy(seg);
     try {
-      const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg, testEmail: userEmail, location: locFilter[seg] },
-      });
-      if (error) throw error;
+      await invokeCampaign({ segment: seg, testEmail: userEmail, location: locFilter[seg] });
       toast({ title: "Test sent!", description: `Check ${userEmail}` });
     } catch (e: any) {
+      if (handleExpired(e)) return;
       toast({ title: "Test failed", description: e.message, variant: "destructive" });
     } finally {
       setBusy(null);
@@ -209,21 +217,19 @@ const Campaigns = () => {
     setSending(seg);
     setConfirmSegment(null);
     try {
-      const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: {
-          segment: seg,
-          location: locFilter[seg],
-          preflightFingerprint: preflight.fingerprint,
-          preflightCount: preflight.count,
-        },
+      const data = await invokeCampaign<any>({
+        segment: seg,
+        location: locFilter[seg],
+        preflightFingerprint: preflight.fingerprint,
+        preflightCount: preflight.count,
       });
-      if (error) throw error;
       toast({
         title: "Campaign sent!",
         description: `${data.success?.length || 0} sent, ${data.failed?.length || 0} failed, ${data.skipped || 0} already-sent skipped.`,
       });
       loadCounts();
     } catch (e: any) {
+      if (handleExpired(e)) return;
       toast({ title: "Send failed", description: e.message, variant: "destructive" });
     } finally {
       setSending(null);
@@ -234,13 +240,11 @@ const Campaigns = () => {
   const prepareSend = async (seg: Segment) => {
     setPreflightLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("send-campaign", {
-        body: { segment: seg, location: locFilter[seg], preflightOnly: true },
-      });
-      if (error) throw error;
-      setPreflight(data as Preflight);
+      const data = await invokeCampaign<Preflight>({ segment: seg, location: locFilter[seg], preflightOnly: true });
+      setPreflight(data);
       setConfirmSegment(seg);
     } catch (e: any) {
+      if (handleExpired(e)) return;
       toast({ title: "Verification failed", description: e.message, variant: "destructive" });
     } finally {
       setPreflightLoading(false);
