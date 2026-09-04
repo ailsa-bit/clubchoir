@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   Music, FileText, BookOpen, Presentation, Download, Trash2, Upload,
-  Loader2, Search, ArrowLeft, ChevronRight, ExternalLink,
+  Loader2, Search, ArrowLeft, ChevronRight, ExternalLink, GripVertical, ChevronUp, ChevronDown,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
@@ -69,6 +69,9 @@ const copy = {
     delete: "Delete",
     signInFirst: "Please sign in again to open this file.",
     loadFail: "Could not load the resources.",
+    moveUp: "Move up",
+    moveDown: "Move down",
+    reorderHint: "Drag a file, or use the arrows, to change the order members see.",
   },
   fr: {
     title: "Ressources – session d'automne 2026",
@@ -98,6 +101,9 @@ const copy = {
     delete: "Supprimer",
     signInFirst: "Veuillez vous reconnecter pour ouvrir ce fichier.",
     loadFail: "Impossible de charger les ressources.",
+    moveUp: "Monter",
+    moveDown: "Descendre",
+    reorderHint: "Glissez un fichier ou utilisez les flèches pour changer l'ordre affiché aux membres.",
   },
 };
 
@@ -116,6 +122,7 @@ const FallSongs = () => {
   const [uploadSong, setUploadSong] = useState("");
   const [uploadKind, setUploadKind] = useState<string>("audio");
   const [uploading, setUploading] = useState<string | null>(null);
+  const [dragId, setDragId] = useState<string | null>(null);
 
   const weekParam = params.get("week");
   const selectedWeek = weekParam && WEEKS.includes(Number(weekParam)) ? Number(weekParam) : null;
@@ -399,7 +406,7 @@ const FallSongs = () => {
           list.length > 0 ? (
             <section key={key} className="space-y-2">
               <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta[key].text}`}>{typeMeta[key].label}</h3>
-              {list.map((r) => <FileRow key={r.id} row={r} label={r.file_name} />)}
+              {list.map((r, i) => <FileRow key={r.id} row={r} label={r.file_name} list={list} index={i} />)}
             </section>
           ) : null
         )}
