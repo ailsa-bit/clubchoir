@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, Loader2, RotateCcw, Download } from "lucide-react";
+import { Play, Pause, Loader2, RotateCcw, Download, Trash2 } from "lucide-react";
 
 interface Props {
   label: string;
@@ -9,6 +9,9 @@ interface Props {
   onActivate: (id: string | null) => void;
   onDownload?: () => void | Promise<void>;
   downloadLabel?: string;
+  isAdmin?: boolean;
+  onDelete?: () => void | Promise<void>;
+  deleteLabel?: string;
 }
 
 function fmt(sec: number) {
