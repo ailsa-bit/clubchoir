@@ -12,6 +12,7 @@ A week-by-week library at `/resources/fall-2026` where members find everything f
 - A search box to find a song by name across all weeks.
 - Weeks with nothing uploaded yet show a friendly "coming soon" note instead of an empty box.
 - Everything is bilingual (EN/FR) and mobile-first: large tap targets, one column on phones.
+- Clear "Back" buttons everywhere: from an open song back to its week, and from a week back to the main resources page. They sit at the top-left, stay visible while scrolling on phones, and work on every device (they don't rely on the browser's back gesture). The phone's own back button/swipe also lands where you'd expect.
 
 ## What you see (admin only)
 
