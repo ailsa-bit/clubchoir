@@ -70,8 +70,29 @@ serve(async (req) => {
       });
     }
 
-    if (!user_id) {
-      return new Response(JSON.stringify({ error: "user_id required" }), {
+    let targetUserId = user_id as string | undefined;
+
+    // Allow lookup by email when no user_id is supplied
+    if (!targetUserId && email) {
+      const { data: list, error: listError } = await adminClient.auth.admin.listUsers({
+        page: 1,
+        perPage: 1000,
+      });
+      if (listError) throw listError;
+      const match = list?.users?.find(
+        (u: any) => (u.email ?? "").toLowerCase() === String(email).toLowerCase(),
+      );
+      if (!match) {
+        return new Response(JSON.stringify({ error: "User not found for that email" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+      targetUserId = match.id;
+    }
+
+    if (!targetUserId) {
+      return new Response(JSON.stringify({ error: "user_id or email required" }), {
         status: 400,
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
@@ -79,7 +100,7 @@ serve(async (req) => {
 
     if (action === "resend") {
       // Get user email first
-      const { data: { user: targetUser }, error: getUserError } = await adminClient.auth.admin.getUserById(user_id);
+      const { data: { user: targetUser }, error: getUserError } = await adminClient.auth.admin.getUserById(targetUserId);
       if (getUserError || !targetUser) {
         return new Response(JSON.stringify({ error: "User not found" }), {
           status: 404,
@@ -101,7 +122,7 @@ serve(async (req) => {
     }
 
     // Default action: confirm email immediately
-    const { error: updateError } = await adminClient.auth.admin.updateUserById(user_id, {
+    const { error: updateError } = await adminClient.auth.admin.updateUserById(targetUserId, {
       email_confirm: true,
     });
 
