@@ -430,23 +430,13 @@ const FallSongs = () => {
     <div className="py-8 px-4">
       <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-3xl">
-        {/* Song view */}
-        {selectedWeek && selectedSong ? (
-          <>
-            <BackBar onClick={() => goWeek(selectedWeek)} label={`${c.backToWeek} ${selectedWeek}`} />
-            <SongDetail name={selectedSong} items={weekRows.filter((r) => r.song_name === selectedSong)} />
-            <div className="mt-8">
-              <button onClick={goWeeks} className="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-lg border border-border text-sm font-semibold">
-                <ArrowLeft className="w-4 h-4" /> {c.backToWeeks}
-              </button>
-            </div>
-          </>
-        ) : selectedWeek ? (
+        {/* Week view: one song per week, files shown right away */}
+        {selectedWeek ? (
           <>
             <BackBar onClick={goWeeks} label={c.backToWeeks} />
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {selectedWeek}</p>
             <h1 className="text-3xl font-heading font-bold mb-1">{WEEK_TITLES[selectedWeek]}</h1>
-            <p className="text-muted-foreground mb-6">{songsInWeek.length} {c.songs}</p>
+            <p className="text-muted-foreground mb-6">{weekRows.length} {c.items}</p>
             {isAdmin && (
               <>
                 <button onClick={() => setShowUpload((s) => !s)} className="mb-3 inline-flex items-center gap-2 min-h-[44px] px-4 rounded-lg bg-secondary text-secondary-foreground text-sm font-semibold">
@@ -455,28 +445,19 @@ const FallSongs = () => {
                 {showUpload && <UploadPanel />}
               </>
             )}
-            {songsInWeek.length === 0 ? (
+            {weekRows.length === 0 ? (
               <p className="text-muted-foreground py-10 text-center">{c.empty}</p>
             ) : (
-              <div className="space-y-3">
-                {songsInWeek.map(([name, items]) => (
-                  <button
-                    key={name}
-                    onClick={() => goSong(selectedWeek, name)}
-                    className="w-full text-left rounded-xl border border-border bg-card p-4 flex items-center gap-3 hover:border-primary/50 active:scale-[.99] transition"
-                  >
-                    <Music className="w-5 h-5 text-primary shrink-0" />
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-semibold truncate">{name}</span>
-                      <span className="block text-xs text-muted-foreground">{items.length} {c.items}</span>
-                    </span>
-                    <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
-                  </button>
-                ))}
-              </div>
+              <SongDetail name={WEEK_TITLES[selectedWeek]} items={weekRows} />
             )}
+            <div className="mt-8">
+              <button onClick={goWeeks} className="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-lg border border-border text-sm font-semibold">
+                <ArrowLeft className="w-4 h-4" /> {c.backToWeeks}
+              </button>
+            </div>
           </>
         ) : (
+
           <>
             <h1 className="text-3xl font-heading font-bold mb-2">{c.title}</h1>
             <p className="text-muted-foreground mb-6">{c.intro}</p>
