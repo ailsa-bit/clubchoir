@@ -21,7 +21,7 @@ function fmt(sec: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload, downloadLabel = "Download" }: Props) => {
+const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload, downloadLabel = "Download", isAdmin = false, onDelete, deleteLabel = "Delete" }: Props) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
