@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import SignupIssuesPanel from "@/components/SignupIssuesPanel";
@@ -286,7 +286,7 @@ const SignupIssues = () => {
         )}
       </div>
 
-      <SignupIssuesPanel />
+      <SignupIssuesPanel onSelectPerson={selectPerson} />
     </div>
   );
 };
