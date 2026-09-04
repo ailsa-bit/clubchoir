@@ -363,7 +363,7 @@ const FallSongs = () => {
   );
 
 
-  const SongDetail = ({ items }: { name: string; items: Row[] }) => {
+  const renderSongDetail = ({ items }: { name: string; items: Row[] }) => {
     const audio = items.filter((r) => r.resource_type === "audio");
     const lyrics = items.filter((r) => r.resource_type === "lyrics");
     const slides = items.filter((r) => r.resource_type === "slides");
@@ -499,7 +499,7 @@ const FallSongs = () => {
             {weekRows.length === 0 ? (
               <p className="text-muted-foreground py-10 text-center">{c.empty}</p>
             ) : (
-              <SongDetail name={WEEK_TITLES[selectedWeek]} items={weekRows} />
+              {renderSongDetail({ name: WEEK_TITLES[selectedWeek], items: weekRows })}
             )}
             <div className="mt-8">
               <button onClick={goWeeks} className="inline-flex items-center gap-2 min-h-[44px] px-4 rounded-lg border border-border text-sm font-semibold">
