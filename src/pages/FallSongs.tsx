@@ -124,6 +124,12 @@ const FallSongs = () => {
   const [uploadKind, setUploadKind] = useState<string>("audio");
   const [uploading, setUploading] = useState<string | null>(null);
   const [dragId, setDragId] = useState<string | null>(null);
+  const [openSections, setOpenSections] = useState<Record<ResourceType, boolean>>({
+    audio: true,
+    lyrics: true,
+    slides: true,
+    sheet_music: true,
+  });
 
   const weekParam = params.get("week");
   const selectedWeek = weekParam && WEEKS.includes(Number(weekParam)) ? Number(weekParam) : null;
