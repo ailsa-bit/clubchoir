@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LogIn, UserPlus, KeyRound, Eye, EyeOff, Check, Circle } from "lucide-react";
+import { LogIn, UserPlus, KeyRound, Eye, EyeOff, Check, Circle, Mail } from "lucide-react";
 import {
   Select,
   SelectContent,
