@@ -122,7 +122,6 @@ const FallSongs = () => {
 
   const weekParam = params.get("week");
   const selectedWeek = weekParam && WEEKS.includes(Number(weekParam)) ? Number(weekParam) : null;
-  const selectedSong = params.get("song");
 
   const fetchRows = async () => {
     setLoading(true);
@@ -267,7 +266,6 @@ const FallSongs = () => {
   }, [rows, search]);
 
   const goWeek = (w: number) => setParams({ week: String(w) });
-  const goSong = (w: number, name: string) => setParams({ week: String(w), song: name });
   const goWeeks = () => setParams({});
 
   const BackBar = ({ onClick, label }: { onClick: () => void; label: string }) => (
@@ -315,8 +313,6 @@ const FallSongs = () => {
 
     return (
       <div className="space-y-6">
-        <h2 className="text-2xl font-heading font-bold">{name}</h2>
-
         {audio.length > 0 && (
           <section className="space-y-2">
             <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta.audio.text}`}>{c.recordings}</h3>
@@ -480,7 +476,7 @@ const FallSongs = () => {
                   {searchResults.map((r) => (
                     <button
                       key={`${r.week}-${r.name}`}
-                      onClick={() => goSong(r.week, r.name)}
+                      onClick={() => goWeek(r.week)}
                       className="w-full text-left rounded-xl border border-border bg-card p-4 flex items-center gap-3"
                     >
                       <Music className="w-5 h-5 text-primary shrink-0" />
@@ -498,7 +494,7 @@ const FallSongs = () => {
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-3">{c.pickWeek}</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {WEEKS.map((w) => {
-                    const count = new Set(rows.filter((r) => r.week === w).map((r) => r.song_name)).size;
+                    const count = rows.filter((r) => r.week === w).length;
                     return (
                       <button
                         key={w}
@@ -508,7 +504,7 @@ const FallSongs = () => {
                         <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {w}</span>
                         <span className="block text-lg font-heading font-bold leading-tight mt-0.5">{WEEK_TITLES[w]}</span>
                         <span className="block text-xs text-muted-foreground mt-1">
-                          {count > 0 ? `${count} ${c.songs}` : "—"}
+                          {count > 0 ? `${count} ${c.items}` : "—"}
                         </span>
                       </button>
                     );
