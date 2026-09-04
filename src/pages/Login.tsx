@@ -143,7 +143,7 @@ const Login = () => {
         setError(t("login.err.alreadyRegistered"));
         setIsSignUp(false);
       } else {
-        setMessage(t("login.confirmEmail"));
+        setMessage(t("login.confirmEmail").replace("{email}", email));
         try {
           setTimeout(async () => {
             try {
