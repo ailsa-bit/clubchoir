@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   Music, FileText, BookOpen, Presentation, Download, Trash2, Upload,
-  Loader2, Search, ArrowLeft, ChevronRight, ExternalLink,
+  Loader2, Search, ArrowLeft, ChevronRight, ExternalLink, GripVertical, ChevronUp, ChevronDown,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
@@ -69,6 +69,9 @@ const copy = {
     delete: "Delete",
     signInFirst: "Please sign in again to open this file.",
     loadFail: "Could not load the resources.",
+    moveUp: "Move up",
+    moveDown: "Move down",
+    reorderHint: "Drag a file, or use the arrows, to change the order members see.",
   },
   fr: {
     title: "Ressources – session d'automne 2026",
@@ -98,6 +101,9 @@ const copy = {
     delete: "Supprimer",
     signInFirst: "Veuillez vous reconnecter pour ouvrir ce fichier.",
     loadFail: "Impossible de charger les ressources.",
+    moveUp: "Monter",
+    moveDown: "Descendre",
+    reorderHint: "Glissez un fichier ou utilisez les flèches pour changer l'ordre affiché aux membres.",
   },
 };
 
@@ -116,6 +122,7 @@ const FallSongs = () => {
   const [uploadSong, setUploadSong] = useState("");
   const [uploadKind, setUploadKind] = useState<string>("audio");
   const [uploading, setUploading] = useState<string | null>(null);
+  const [dragId, setDragId] = useState<string | null>(null);
 
   const weekParam = params.get("week");
   const selectedWeek = weekParam && WEEKS.includes(Number(weekParam)) ? Number(weekParam) : null;
@@ -202,10 +209,67 @@ const FallSongs = () => {
     toast({ title: `${c.delete}: ${row.file_name}` });
   };
 
+  // ---- Reordering (admins only) ----
+  const persistOrder = async (ordered: Row[]) => {
+    const map = new Map(ordered.map((r, i) => [r.id, i]));
+    setRows((prev) => {
+      const next = prev.map((r) => (map.has(r.id) ? { ...r, sort_order: map.get(r.id) as number } : r));
+      return next.sort(
+        (a, b) => (a.week ?? 0) - (b.week ?? 0) || a.sort_order - b.sort_order || a.created_at.localeCompare(b.created_at)
+      );
+    });
+    const results = await Promise.all(
+      ordered.map((r, i) => supabase.from("song_resources").update({ sort_order: i } as never).eq("id", r.id))
+    );
+    const failed = results.find((r) => r.error);
+    if (failed?.error) {
+      toast({ title: failed.error.message, variant: "destructive" });
+      fetchRows();
+    }
+  };
 
+  const moveRow = (list: Row[], index: number, dir: -1 | 1) => {
+    const j = index + dir;
+    if (j < 0 || j >= list.length) return;
+    const next = [...list];
+    [next[index], next[j]] = [next[j], next[index]];
+    persistOrder(next);
+  };
 
+  const dropOn = (list: Row[], targetIndex: number) => {
+    const from = list.findIndex((r) => r.id === dragId);
+    setDragId(null);
+    if (from < 0 || from === targetIndex) return;
+    const next = [...list];
+    const [moved] = next.splice(from, 1);
+    next.splice(targetIndex, 0, moved);
+    persistOrder(next);
+  };
+
+  const ReorderControls = ({ list, index }: { list: Row[]; index: number }) => (
+    <span className="flex items-center gap-0.5 shrink-0">
+      <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab hidden sm:block" />
+      <button
+        onClick={() => moveRow(list, index, -1)}
+        disabled={index === 0}
+        aria-label={c.moveUp}
+        className="min-h-[36px] w-8 rounded-md border border-border inline-flex items-center justify-center disabled:opacity-30 active:scale-95 transition"
+      >
+        <ChevronUp className="w-4 h-4" />
+      </button>
+      <button
+        onClick={() => moveRow(list, index, 1)}
+        disabled={index === list.length - 1}
+        aria-label={c.moveDown}
+        className="min-h-[36px] w-8 rounded-md border border-border inline-flex items-center justify-center disabled:opacity-30 active:scale-95 transition"
+      >
+        <ChevronDown className="w-4 h-4" />
+      </button>
+    </span>
+  );
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
     const files = Array.from(e.target.files || []);
     if (!files.length || !uploadSong.trim() || !user || !selectedWeek) return;
     const type: ResourceType = uploadKind as ResourceType;
@@ -272,8 +336,16 @@ const FallSongs = () => {
     sheet_music: { icon: <BookOpen className="w-4 h-4" />, label: c.sheet, bg: "bg-[hsl(var(--purple-light))]", text: "text-[hsl(var(--purple))]" },
   };
 
-  const FileRow = ({ row, label }: { row: Row; label: string }) => (
-    <div className="flex items-center gap-2 rounded-lg border border-border bg-card p-2.5">
+  const FileRow = ({ row, label, list, index }: { row: Row; label: string; list: Row[]; index: number }) => (
+    <div
+      draggable={isAdmin}
+      onDragStart={() => setDragId(row.id)}
+      onDragOver={(e) => { if (isAdmin && dragId && dragId !== row.id) e.preventDefault(); }}
+      onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(list, index); }}
+      onDragEnd={() => setDragId(null)}
+      className={`flex items-center gap-2 rounded-lg border border-border bg-card p-2.5 ${dragId === row.id ? "opacity-50" : ""}`}
+    >
+      {isAdmin && <ReorderControls list={list} index={index} />}
       <span className="min-w-0 flex-1 text-sm truncate">{label}</span>
       <button onClick={() => openFile(row)} className="min-h-[40px] px-3 rounded-lg bg-primary text-primary-foreground text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition">
         <ExternalLink className="w-3.5 h-3.5" /> {c.open}
@@ -290,6 +362,7 @@ const FallSongs = () => {
     </div>
   );
 
+
   const SongDetail = ({ items }: { name: string; items: Row[] }) => {
     const audio = items.filter((r) => r.resource_type === "audio");
     const lyrics = items.filter((r) => r.resource_type === "lyrics");
@@ -298,19 +371,36 @@ const FallSongs = () => {
 
     return (
       <div className="space-y-6">
+        {isAdmin && items.length > 1 && (
+          <p className="text-xs text-muted-foreground">{c.reorderHint}</p>
+        )}
+
         {audio.length > 0 && (
           <section className="space-y-2">
             <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta.audio.text}`}>{c.recordings}</h3>
-            {audio.map((r) => (
-              <SongAudioPlayer
+            {audio.map((r, i) => (
+              <div
                 key={r.id}
-                id={r.id}
-                label={r.file_name}
-                activeId={activeAudio}
-                onActivate={setActiveAudio}
-                loadUrl={() => getSignedUrl(r, false)}
-              />
+                draggable={isAdmin}
+                onDragStart={() => setDragId(r.id)}
+                onDragOver={(e) => { if (isAdmin && dragId && dragId !== r.id) e.preventDefault(); }}
+                onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(audio, i); }}
+                onDragEnd={() => setDragId(null)}
+                className={`flex items-start gap-2 ${dragId === r.id ? "opacity-50" : ""}`}
+              >
+                {isAdmin && <div className="pt-2"><ReorderControls list={audio} index={i} /></div>}
+                <div className="min-w-0 flex-1">
+                  <SongAudioPlayer
+                    id={r.id}
+                    label={r.file_name}
+                    activeId={activeAudio}
+                    onActivate={setActiveAudio}
+                    loadUrl={() => getSignedUrl(r, false)}
+                  />
+                </div>
+              </div>
             ))}
+
             {isAdmin && (
               <div className="flex flex-wrap gap-2">
                 {audio.map((r) => (
@@ -333,7 +423,7 @@ const FallSongs = () => {
           list.length > 0 ? (
             <section key={key} className="space-y-2">
               <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta[key].text}`}>{typeMeta[key].label}</h3>
-              {list.map((r) => <FileRow key={r.id} row={r} label={r.file_name} />)}
+              {list.map((r, i) => <FileRow key={r.id} row={r} label={r.file_name} list={list} index={i} />)}
             </section>
           ) : null
         )}
