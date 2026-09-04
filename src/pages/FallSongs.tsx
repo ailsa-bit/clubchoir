@@ -366,10 +366,7 @@ const FallSongs = () => {
             <option value="audio">{c.recordings}</option>
             <option value="lyrics">{c.lyrics}</option>
             <option value="slides">{c.slides}</option>
-            <option value="sheet:blue">{c.sheet} — {c.parts.blue}</option>
-            <option value="sheet:pink">{c.sheet} — {c.parts.pink}</option>
-            <option value="sheet:floaters">{c.sheet} — {c.parts.floaters}</option>
-            <option value="sheet:all">{c.sheet} — {c.parts.all}</option>
+            <option value="sheet_music">{c.sheet}</option>
           </select>
         </label>
       </div>
