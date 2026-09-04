@@ -52,7 +52,7 @@ const KIND_TONE: Record<IssueKind, string> = {
 const fmt = (d: string) =>
   new Date(d).toLocaleDateString("en-CA", { month: "short", day: "numeric" });
 
-const SignupIssuesPanel = () => {
+const SignupIssuesPanel = ({ onSelectPerson }: { onSelectPerson?: (email: string) => void }) => {
   const [loading, setLoading] = useState(true);
   const [rows, setRows] = useState<IssueRow[]>([]);
   const [sending, setSending] = useState<string | null>(null);
@@ -201,7 +201,14 @@ const SignupIssuesPanel = () => {
           {visible.map((r) => (
             <div key={r.email} className="flex flex-wrap items-center justify-between gap-3 py-2.5">
               <div className="min-w-0">
-                <div className="font-semibold text-sm truncate">{r.name}</div>
+                <button
+                  type="button"
+                  onClick={() => onSelectPerson?.(r.email)}
+                  className="font-semibold text-sm truncate text-primary hover:underline underline-offset-2 text-left"
+                  title="View member details"
+                >
+                  {r.name}
+                </button>
                 <div className="text-xs text-muted-foreground truncate">
                   {r.email} · {r.location}{r.since ? ` · since ${fmt(r.since)}` : ""}
                 </div>
