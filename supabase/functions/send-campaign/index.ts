@@ -677,30 +677,30 @@ function renderResourcesWeek1(r: Recipient) {
   const inner = `
     ${greetEn(r)}
     <p style="${P}">🎉 <strong>The resources are up!</strong> Our very first song of the session is <strong>"Lovely Day" by Bill Withers</strong> — recordings, lyrics, lyric slides and sheet music are all waiting for you in the members section.</p>
-    ${BTN(RES_URL, "Open the song resources")}
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">About the colours</div>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">If you're a <strong>returning member</strong>, you already know how the colours work — dive right in.</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">If you're a <strong>returning member</strong>, you already know how the colours work — dive right in. You'll also notice a new section called <strong>Floaters</strong>: it's an optional part for anyone looking for a bit more of a challenge. Feel free to try it out, or stick with your usual part — totally up to you!</p>
       <p style="margin:3px 0;font-size:15px;color:#831843;">If you're <strong>new</strong>, don't worry about a thing — we'll go over everything together on the first night.</p>
     </div>
     <p style="${P}">If you'd like to take some time to listen or look through the resources this week — have fun with it! And if you'd rather wait, no worries at all: <strong>we'll be learning this together on our first night next week.</strong></p>
     <p style="${P}">⏰ <strong>Quick reminder:</strong> new song resources are posted <strong>every Friday</strong>, so there's always something fresh waiting for you.</p>
     <p style="${P}">Having trouble getting into the resources? I've tested as much as I could, but I may have missed something — just write to me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll sort it out with you.</p>
     <p style="${P}">I am SO excited to kick off this session with you. 🎶</p>
+    ${BTN(RES_URL, "Open the song resources")}
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
     <p style="${P}">🎉 <strong>Les ressources sont en ligne!</strong> Notre toute première chanson de la session est <strong>« Lovely Day » de Bill Withers</strong> — enregistrements, paroles, diapositives et partitions vous attendent dans la section membres.</p>
-    ${BTN(RES_URL, "Voir les ressources")}
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Au sujet des couleurs</div>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">Si vous êtes un <strong>membre de retour</strong>, vous savez déjà comment fonctionnent les couleurs — allez-y!</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">Si vous êtes un <strong>membre de retour</strong>, vous savez déjà comment fonctionnent les couleurs — allez-y! Vous remarquerez aussi une nouvelle section appelée <strong>Floaters</strong> : c'est une partie optionnelle pour ceux et celles qui cherchent un peu plus de défi. Essayez-la si le cœur vous en dit, ou restez avec votre partie habituelle — c'est vous qui décidez!</p>
       <p style="margin:3px 0;font-size:15px;color:#831843;">Si vous êtes <strong>nouveau ou nouvelle</strong>, aucun souci — nous verrons tout ensemble lors de la première soirée.</p>
     </div>
     <p style="${P}">Envie d'écouter ou de parcourir les ressources cette semaine? Amusez-vous! Et si vous préférez attendre, aucun problème : <strong>nous apprendrons tout cela ensemble la semaine prochaine, dès la première soirée.</strong></p>
     <p style="${P}">⏰ <strong>Petit rappel :</strong> les nouvelles ressources sont publiées <strong>chaque vendredi</strong>.</p>
     <p style="${P}">Des difficultés à accéder aux ressources? J'ai fait le plus de tests possible, mais j'ai peut-être manqué quelque chose — écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous aiderai.</p>
     <p style="${P}">J'ai tellement hâte de commencer cette session avec vous. 🎶</p>
+    ${BTN(RES_URL, "Voir les ressources")}
     ${SIGN}`;
   return {
     subject: `The resources are up — "Lovely Day" is ready! / Les ressources sont en ligne!`,
