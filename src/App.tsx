@@ -50,6 +50,7 @@ import RsvpConfirm from "./pages/RsvpConfirm";
 import OpenHouseRsvps from "./pages/OpenHouseRsvps";
 import OAuthConsent from "./pages/OAuthConsent";
 import HudsonOpenHouse from "./pages/HudsonOpenHouse";
+import SignupIssues from "./pages/SignupIssues";
 
 const queryClient = new QueryClient();
 
@@ -90,6 +91,8 @@ const App = () => (
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/crm" element={<CRM />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/signup-issues" element={<SignupIssues />} />
+
 
             <Route path="/popup/studio-77" element={<PopupStudio77 />} />
             <Route path="/popup-reservations" element={<PopupReservations />} />
