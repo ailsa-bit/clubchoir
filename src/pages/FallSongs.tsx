@@ -202,10 +202,67 @@ const FallSongs = () => {
     toast({ title: `${c.delete}: ${row.file_name}` });
   };
 
+  // ---- Reordering (admins only) ----
+  const persistOrder = async (ordered: Row[]) => {
+    const map = new Map(ordered.map((r, i) => [r.id, i]));
+    setRows((prev) => {
+      const next = prev.map((r) => (map.has(r.id) ? { ...r, sort_order: map.get(r.id) as number } : r));
+      return next.sort(
+        (a, b) => (a.week ?? 0) - (b.week ?? 0) || a.sort_order - b.sort_order || a.created_at.localeCompare(b.created_at)
+      );
+    });
+    const results = await Promise.all(
+      ordered.map((r, i) => supabase.from("song_resources").update({ sort_order: i } as never).eq("id", r.id))
+    );
+    const failed = results.find((r) => r.error);
+    if (failed?.error) {
+      toast({ title: failed.error.message, variant: "destructive" });
+      fetchRows();
+    }
+  };
 
+  const moveRow = (list: Row[], index: number, dir: -1 | 1) => {
+    const j = index + dir;
+    if (j < 0 || j >= list.length) return;
+    const next = [...list];
+    [next[index], next[j]] = [next[j], next[index]];
+    persistOrder(next);
+  };
 
+  const dropOn = (list: Row[], targetIndex: number) => {
+    const from = list.findIndex((r) => r.id === dragId);
+    setDragId(null);
+    if (from < 0 || from === targetIndex) return;
+    const next = [...list];
+    const [moved] = next.splice(from, 1);
+    next.splice(targetIndex, 0, moved);
+    persistOrder(next);
+  };
+
+  const ReorderControls = ({ list, index }: { list: Row[]; index: number }) => (
+    <span className="flex items-center gap-0.5 shrink-0">
+      <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab hidden sm:block" />
+      <button
+        onClick={() => moveRow(list, index, -1)}
+        disabled={index === 0}
+        aria-label={c.moveUp}
+        className="min-h-[36px] w-8 rounded-md border border-border inline-flex items-center justify-center disabled:opacity-30 active:scale-95 transition"
+      >
+        <ChevronUp className="w-4 h-4" />
+      </button>
+      <button
+        onClick={() => moveRow(list, index, 1)}
+        disabled={index === list.length - 1}
+        aria-label={c.moveDown}
+        className="min-h-[36px] w-8 rounded-md border border-border inline-flex items-center justify-center disabled:opacity-30 active:scale-95 transition"
+      >
+        <ChevronDown className="w-4 h-4" />
+      </button>
+    </span>
+  );
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
     const files = Array.from(e.target.files || []);
     if (!files.length || !uploadSong.trim() || !user || !selectedWeek) return;
     const type: ResourceType = uploadKind as ResourceType;
