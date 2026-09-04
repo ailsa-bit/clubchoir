@@ -420,7 +420,10 @@ const translations: Record<string, Record<Language, string>> = {
   "login.signIn": { en: "Sign In", fr: "Se connecter" },
   "login.alreadyAccount": { en: "Already have an account?", fr: "Vous avez déjà un compte ?" },
   "login.noAccount": { en: "Don't have an account?", fr: "Vous n'avez pas de compte ?" },
-  "login.confirmEmail": { en: "Check your email for a confirmation link, then come back and sign in.", fr: "Vérifiez votre courriel pour un lien de confirmation, puis revenez et connectez-vous." },
+  "login.confirmEmail": {
+    en: "You're almost there! We've sent a confirmation email to {email}. Please open it and tap the Confirm My Email button, then come back and sign in. Can't find it? Check your junk or spam folder — it can hide there. Still stuck? Email ailsa@clubchoir.ca and we'll sort it out.",
+    fr: "Vous y êtes presque ! Nous avons envoyé un courriel de confirmation à {email}. Ouvrez-le et appuyez sur le bouton Confirmer mon courriel, puis revenez vous connecter. Vous ne le trouvez pas ? Vérifiez vos indésirables ou votre dossier spam — il peut s'y cacher. Toujours bloqué(e) ? Écrivez à ailsa@clubchoir.ca et nous vous aiderons."
+  },
   "login.forgotPassword": { en: "Forgot password?", fr: "Mot de passe oublié ?" },
   "login.forgotSubtitle": { en: "Enter your email and we'll send you a reset link.", fr: "Entrez votre courriel et nous vous enverrons un lien de réinitialisation." },
   "login.sendResetLink": { en: "Send Reset Link", fr: "Envoyer le lien" },
