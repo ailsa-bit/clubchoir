@@ -13,6 +13,18 @@ import SongAudioPlayer from "@/components/SongAudioPlayer";
 
 const SESSION = "fall-2026";
 const WEEKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const WEEK_TITLES: Record<number, string> = {
+  1: "Lovely Day",
+  2: "Dreams",
+  3: "Flowers",
+  4: "Time of The Season",
+  5: "When Doves Cry",
+  6: "Toxic",
+  7: "Bloom",
+  8: "J'entends Frapper",
+  9: "Losing My Religion",
+  10: "So Easy (To Fall In Love)",
+};
 
 type ResourceType = "audio" | "lyrics" | "slides" | "sheet_music";
 type Part = "blue" | "pink" | "floaters" | "all";
