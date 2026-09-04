@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, Loader2, RotateCcw } from "lucide-react";
+import { Play, Pause, Loader2, RotateCcw, Download } from "lucide-react";
 
 interface Props {
   label: string;
@@ -7,6 +7,8 @@ interface Props {
   activeId: string | null;
   id: string;
   onActivate: (id: string | null) => void;
+  onDownload?: () => void | Promise<void>;
+  downloadLabel?: string;
 }
 
 function fmt(sec: number) {
@@ -16,7 +18,7 @@ function fmt(sec: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) => {
+const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload, downloadLabel = "Download" }: Props) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -134,6 +136,17 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
             </span>
           </div>
         </div>
+        {onDownload && (
+          <button
+            type="button"
+            onClick={() => onDownload()}
+            aria-label={`${downloadLabel} ${label}`}
+            title={downloadLabel}
+            className="shrink-0 w-9 h-9 rounded-full border border-[hsl(var(--pink))]/40 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
+          >
+            <Download className="w-4 h-4" />
+          </button>
+        )}
         {playing && (
           <button
             type="button"
