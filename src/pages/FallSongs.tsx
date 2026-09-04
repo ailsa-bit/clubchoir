@@ -292,10 +292,11 @@ const FallSongs = () => {
         <Download className="w-4 h-4" />
       </button>
       {isAdmin && (
-        <button onClick={() => handleDelete(row)} aria-label="Delete" className="min-h-[40px] w-10 rounded-lg border border-destructive/40 text-destructive inline-flex items-center justify-center active:scale-95 transition">
-          <Trash2 className="w-4 h-4" />
+        <button onClick={() => handleDelete(row)} aria-label="Delete" className="min-h-[40px] px-3 rounded-lg border border-destructive/40 text-destructive text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition">
+          <Trash2 className="w-4 h-4" /> {c.delete}
         </button>
       )}
+
     </div>
   );
 
