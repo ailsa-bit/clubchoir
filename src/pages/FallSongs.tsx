@@ -204,6 +204,9 @@ const FallSongs = () => {
     if (error) { toast({ title: error.message, variant: "destructive" }); return; }
     setRows((prev) => prev.filter((r) => r.id !== row.id));
     toast({ title: `${c.delete}: ${row.file_name}` });
+  };
+
+
 
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
