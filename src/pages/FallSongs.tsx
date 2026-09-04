@@ -189,23 +189,24 @@ const FallSongs = () => {
   };
 
   const downloadFile = async (row: Row) => {
+    // Open the tab inside the tap/click so iOS and Android never block it
+    const tab = window.open("", "_blank");
     const url = await getSignedUrl(row, true);
-    if (!url) return;
-    try {
-      const resp = await fetch(url);
-      const blob = await resp.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = row.file_name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
-    } catch {
-      window.open(url, "_blank");
+    if (!url) { tab?.close(); return; }
+    if (tab) {
+      tab.location.href = url;
+      return;
     }
+    // Popup blocked: fall back to a same-gesture anchor
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = row.file_name;
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
+
 
   const handleDelete = async (row: Row) => {
     if (!confirm(c.deleteConfirm.replace("{name}", row.file_name))) return;

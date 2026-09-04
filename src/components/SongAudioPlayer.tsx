@@ -41,6 +41,21 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
     }
   }, [activeId, id]);
 
+  // Get the track link ready as soon as the section is opened, so the first
+  // tap plays immediately (iPhones and iPads block delayed playback).
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const url = await loadUrl();
+      const audio = audioRef.current;
+      if (cancelled || !url || !audio || audio.src) return;
+      audio.src = url;
+      audio.load();
+    })();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Make sure a removed player never keeps playing in the background
   useEffect(() => {
     const audio = audioRef.current;
@@ -72,12 +87,10 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
 
     isBusyRef.current = true;
     onActivate(id);
+    setError(false);
 
     if (!audio.src) {
       setLoading(true);
-      setError(false);
-      // Kick playback inside the user gesture so iOS unlocks the element
-      audio.play().catch(() => {});
       const url = await loadUrl();
       setLoading(false);
       if (!url) {
@@ -91,11 +104,20 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
     try {
       await audio.play();
     } catch {
-      setError(true);
+      // The link may have expired — fetch a fresh one and try once more
+      try {
+        const fresh = await loadUrl();
+        if (!fresh) throw new Error("no url");
+        audio.src = fresh;
+        await audio.play();
+      } catch {
+        setError(true);
+      }
     } finally {
       isBusyRef.current = false;
     }
   };
+
 
   const seek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
@@ -161,7 +183,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
             <Trash2 className="w-4 h-4" />
           </button>
         )}
-        {playing && (
+        {(playing || current > 0) && (
           <button
             type="button"
             onClick={stop}
