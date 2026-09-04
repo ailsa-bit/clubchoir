@@ -221,7 +221,9 @@ const FallSongs = () => {
 
   // ---- Reordering (admins only) ----
   const persistOrder = async (ordered: Row[]) => {
+    if (!isAdmin) return;
     const map = new Map(ordered.map((r, i) => [r.id, i]));
+
     setRows((prev) => {
       const next = prev.map((r) => (map.has(r.id) ? { ...r, sort_order: map.get(r.id) as number } : r));
       return next.sort(
