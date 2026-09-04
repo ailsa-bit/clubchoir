@@ -27,7 +27,6 @@ const WEEK_TITLES: Record<number, string> = {
 };
 
 type ResourceType = "audio" | "lyrics" | "slides" | "sheet_music";
-type Part = "blue" | "pink" | "floaters" | "all";
 
 interface Row {
   id: string;
@@ -36,7 +35,7 @@ interface Row {
   file_name: string;
   storage_path: string;
   week: number | null;
-  part: Part | null;
+  part: string | null;
   sort_order: number;
   created_at: string;
 }
@@ -56,7 +55,6 @@ const copy = {
     lyrics: "Lyrics",
     slides: "Lyric slides",
     sheet: "Sheet music",
-    parts: { blue: "Blue", pink: "Pink", floaters: "Floaters", all: "All Parts" },
     open: "Open",
     download: "Download",
     items: "items",
@@ -86,7 +84,6 @@ const copy = {
     lyrics: "Paroles",
     slides: "Diapositives",
     sheet: "Partitions",
-    parts: { blue: "Bleu", pink: "Rose", floaters: "Floaters", all: "Toutes les voix" },
     open: "Ouvrir",
     download: "Télécharger",
     items: "fichiers",
@@ -211,8 +208,7 @@ const FallSongs = () => {
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length || !uploadSong.trim() || !user || !selectedWeek) return;
-    const type: ResourceType = uploadKind.startsWith("sheet:") ? "sheet_music" : (uploadKind as ResourceType);
-    const part: Part | null = uploadKind.startsWith("sheet:") ? (uploadKind.split(":")[1] as Part) : null;
+    const type: ResourceType = uploadKind as ResourceType;
     const safeSong = uploadSong.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-zA-Z0-9\s-]/g, "").replace(/\s+/g, "-").toLowerCase();
 
@@ -226,7 +222,7 @@ const FallSongs = () => {
       const { error: storageError } = await supabase.storage.from("song-resources").upload(path, file);
       if (storageError) { toast({ title: storageError.message, variant: "destructive" }); continue; }
       const { error: dbError } = await supabase.from("song_resources").insert({
-        song_name: uploadSong.trim(), resource_type: type, part, week: selectedWeek,
+        song_name: uploadSong.trim(), resource_type: type, part: null, week: selectedWeek,
         session_label: SESSION, file_name: file.name, storage_path: path,
         location: "all", uploaded_by: user.id,
       } as never);
@@ -294,12 +290,11 @@ const FallSongs = () => {
     </div>
   );
 
-  const SongDetail = ({ name, items }: { name: string; items: Row[] }) => {
+  const SongDetail = ({ items }: { name: string; items: Row[] }) => {
     const audio = items.filter((r) => r.resource_type === "audio");
     const lyrics = items.filter((r) => r.resource_type === "lyrics");
     const slides = items.filter((r) => r.resource_type === "slides");
     const sheets = items.filter((r) => r.resource_type === "sheet_music");
-    const partOrder: Part[] = ["blue", "pink", "floaters", "all"];
 
     return (
       <div className="space-y-6">
@@ -334,30 +329,13 @@ const FallSongs = () => {
           </section>
         )}
 
-        {[{ list: lyrics, key: "lyrics" as const }, { list: slides, key: "slides" as const }].map(({ list, key }) =>
+        {[{ list: lyrics, key: "lyrics" as const }, { list: slides, key: "slides" as const }, { list: sheets, key: "sheet_music" as const }].map(({ list, key }) =>
           list.length > 0 ? (
             <section key={key} className="space-y-2">
               <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta[key].text}`}>{typeMeta[key].label}</h3>
               {list.map((r) => <FileRow key={r.id} row={r} label={r.file_name} />)}
             </section>
           ) : null
-        )}
-
-        {sheets.length > 0 && (
-          <section className="space-y-2">
-            <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta.sheet_music.text}`}>{c.sheet}</h3>
-            {partOrder.map((p) => {
-              const list = sheets.filter((r) => r.part === p);
-              if (!list.length) return null;
-              return (
-                <div key={p} className="space-y-2">
-                  <p className="text-xs font-semibold text-muted-foreground">{c.parts[p]}</p>
-                  {list.map((r) => <FileRow key={r.id} row={r} label={r.file_name} />)}
-                </div>
-              );
-            })}
-            {sheets.filter((r) => !r.part).map((r) => <FileRow key={r.id} row={r} label={r.file_name} />)}
-          </section>
         )}
       </div>
     );
@@ -388,10 +366,7 @@ const FallSongs = () => {
             <option value="audio">{c.recordings}</option>
             <option value="lyrics">{c.lyrics}</option>
             <option value="slides">{c.slides}</option>
-            <option value="sheet:blue">{c.sheet} — {c.parts.blue}</option>
-            <option value="sheet:pink">{c.sheet} — {c.parts.pink}</option>
-            <option value="sheet:floaters">{c.sheet} — {c.parts.floaters}</option>
-            <option value="sheet:all">{c.sheet} — {c.parts.all}</option>
+            <option value="sheet_music">{c.sheet}</option>
           </select>
         </label>
       </div>
