@@ -423,7 +423,8 @@ const FallSongs = () => {
         ) : selectedWeek ? (
           <>
             <BackBar onClick={goWeeks} label={c.backToWeeks} />
-            <h1 className="text-3xl font-heading font-bold mb-1">{c.week} {selectedWeek}</h1>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {selectedWeek}</p>
+            <h1 className="text-3xl font-heading font-bold mb-1">{WEEK_TITLES[selectedWeek]}</h1>
             <p className="text-muted-foreground mb-6">{songsInWeek.length} {c.songs}</p>
             {isAdmin && (
               <>
