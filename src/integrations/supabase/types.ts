@@ -605,30 +605,42 @@ export type Database = {
           file_name: string
           id: string
           location: string
+          part: string | null
           resource_type: string
+          session_label: string
           song_name: string
+          sort_order: number
           storage_path: string
           uploaded_by: string
+          week: number | null
         }
         Insert: {
           created_at?: string
           file_name: string
           id?: string
           location: string
+          part?: string | null
           resource_type: string
+          session_label?: string
           song_name: string
+          sort_order?: number
           storage_path: string
           uploaded_by: string
+          week?: number | null
         }
         Update: {
           created_at?: string
           file_name?: string
           id?: string
           location?: string
+          part?: string | null
           resource_type?: string
+          session_label?: string
           song_name?: string
+          sort_order?: number
           storage_path?: string
           uploaded_by?: string
+          week?: number | null
         }
         Relationships: []
       }
