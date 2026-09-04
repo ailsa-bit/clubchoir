@@ -13,6 +13,18 @@ import SongAudioPlayer from "@/components/SongAudioPlayer";
 
 const SESSION = "fall-2026";
 const WEEKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const WEEK_TITLES: Record<number, string> = {
+  1: "Lovely Day",
+  2: "Dreams",
+  3: "Flowers",
+  4: "Time of The Season",
+  5: "When Doves Cry",
+  6: "Toxic",
+  7: "Bloom",
+  8: "J'entends Frapper",
+  9: "Losing My Religion",
+  10: "So Easy (To Fall In Love)",
+};
 
 type ResourceType = "audio" | "lyrics" | "slides" | "sheet_music";
 type Part = "blue" | "pink" | "floaters" | "all";
@@ -127,6 +139,11 @@ const FallSongs = () => {
   };
 
   useEffect(() => { fetchRows(); }, []);
+
+  // Pre-fill the song name with this week's song for admin uploads
+  useEffect(() => {
+    if (selectedWeek) setUploadSong(WEEK_TITLES[selectedWeek] || "");
+  }, [selectedWeek]);
 
   const getSignedUrl = async (row: Row, forDownload: boolean): Promise<string | null> => {
     const { data: sessionData } = await supabase.auth.getSession();
@@ -411,7 +428,8 @@ const FallSongs = () => {
         ) : selectedWeek ? (
           <>
             <BackBar onClick={goWeeks} label={c.backToWeeks} />
-            <h1 className="text-3xl font-heading font-bold mb-1">{c.week} {selectedWeek}</h1>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {selectedWeek}</p>
+            <h1 className="text-3xl font-heading font-bold mb-1">{WEEK_TITLES[selectedWeek]}</h1>
             <p className="text-muted-foreground mb-6">{songsInWeek.length} {c.songs}</p>
             {isAdmin && (
               <>
@@ -490,7 +508,8 @@ const FallSongs = () => {
                         onClick={() => goWeek(w)}
                         className="rounded-xl border border-border bg-card p-4 text-left min-h-[88px] hover:border-primary/50 active:scale-[.98] transition"
                       >
-                        <span className="block text-lg font-heading font-bold">{c.week} {w}</span>
+                        <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {w}</span>
+                        <span className="block text-lg font-heading font-bold leading-tight mt-0.5">{WEEK_TITLES[w]}</span>
                         <span className="block text-xs text-muted-foreground mt-1">
                           {count > 0 ? `${count} ${c.songs}` : "—"}
                         </span>
