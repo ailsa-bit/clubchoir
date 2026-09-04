@@ -396,6 +396,8 @@ const FallSongs = () => {
                     activeId={activeAudio}
                     onActivate={setActiveAudio}
                     loadUrl={() => getSignedUrl(r, false)}
+                    onDownload={() => downloadFile(r)}
+                    downloadLabel={c.download}
                   />
                 </div>
               </div>
