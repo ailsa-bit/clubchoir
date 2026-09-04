@@ -290,12 +290,11 @@ const FallSongs = () => {
     </div>
   );
 
-  const SongDetail = ({ name, items }: { name: string; items: Row[] }) => {
+  const SongDetail = ({ items }: { name: string; items: Row[] }) => {
     const audio = items.filter((r) => r.resource_type === "audio");
     const lyrics = items.filter((r) => r.resource_type === "lyrics");
     const slides = items.filter((r) => r.resource_type === "slides");
     const sheets = items.filter((r) => r.resource_type === "sheet_music");
-    const partOrder: Part[] = ["blue", "pink", "floaters", "all"];
 
     return (
       <div className="space-y-6">
@@ -330,30 +329,13 @@ const FallSongs = () => {
           </section>
         )}
 
-        {[{ list: lyrics, key: "lyrics" as const }, { list: slides, key: "slides" as const }].map(({ list, key }) =>
+        {[{ list: lyrics, key: "lyrics" as const }, { list: slides, key: "slides" as const }, { list: sheets, key: "sheet_music" as const }].map(({ list, key }) =>
           list.length > 0 ? (
             <section key={key} className="space-y-2">
               <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta[key].text}`}>{typeMeta[key].label}</h3>
               {list.map((r) => <FileRow key={r.id} row={r} label={r.file_name} />)}
             </section>
           ) : null
-        )}
-
-        {sheets.length > 0 && (
-          <section className="space-y-2">
-            <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta.sheet_music.text}`}>{c.sheet}</h3>
-            {partOrder.map((p) => {
-              const list = sheets.filter((r) => r.part === p);
-              if (!list.length) return null;
-              return (
-                <div key={p} className="space-y-2">
-                  <p className="text-xs font-semibold text-muted-foreground">{c.parts[p]}</p>
-                  {list.map((r) => <FileRow key={r.id} row={r} label={r.file_name} />)}
-                </div>
-              );
-            })}
-            {sheets.filter((r) => !r.part).map((r) => <FileRow key={r.id} row={r} label={r.file_name} />)}
-          </section>
         )}
       </div>
     );
