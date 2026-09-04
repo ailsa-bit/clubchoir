@@ -26,6 +26,8 @@ Deno.serve(async (req) => {
     );
 
     const { storage_path, file_name } = await req.json();
+    // file_name present => force a download; absent => let the browser display it inline
+    const wantsDownload = typeof file_name === "string" && file_name.length > 0;
 
     if (!storage_path) {
       return new Response(JSON.stringify({ error: "storage_path required" }), {
@@ -36,9 +38,7 @@ Deno.serve(async (req) => {
 
     const { data, error } = await supabase.storage
       .from("song-resources")
-      .createSignedUrl(storage_path, 600, {
-        download: file_name || true,
-      });
+      .createSignedUrl(storage_path, 600, wantsDownload ? { download: file_name } : {});
 
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), {

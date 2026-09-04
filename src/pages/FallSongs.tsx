@@ -189,23 +189,24 @@ const FallSongs = () => {
   };
 
   const downloadFile = async (row: Row) => {
+    // Open the tab inside the tap/click so iOS and Android never block it
+    const tab = window.open("", "_blank");
     const url = await getSignedUrl(row, true);
-    if (!url) return;
-    try {
-      const resp = await fetch(url);
-      const blob = await resp.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = blobUrl;
-      a.download = row.file_name;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
-    } catch {
-      window.open(url, "_blank");
+    if (!url) { tab?.close(); return; }
+    if (tab) {
+      tab.location.href = url;
+      return;
     }
+    // Popup blocked: fall back to a same-gesture anchor
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = row.file_name;
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
+
 
   const handleDelete = async (row: Row) => {
     if (!confirm(c.deleteConfirm.replace("{name}", row.file_name))) return;
@@ -350,24 +351,29 @@ const FallSongs = () => {
       onDragOver={(e) => { if (isAdmin && dragId && dragId !== row.id) e.preventDefault(); }}
       onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(list, index); }}
       onDragEnd={() => setDragId(null)}
-      className={`flex items-center gap-2 rounded-lg border border-border p-2.5 ${typeMeta[row.resource_type].bg} ${dragId === row.id ? "opacity-50" : ""}`}
+      className={`rounded-lg border border-border p-2.5 ${typeMeta[row.resource_type].bg} ${dragId === row.id ? "opacity-50" : ""}`}
     >
-      {isAdmin && <ReorderControls list={list} index={index} />}
-      <span className="min-w-0 flex-1 text-sm truncate">{label}</span>
-      <button onClick={() => openFile(row)} className="min-h-[40px] px-3 rounded-lg bg-primary text-primary-foreground text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition">
-        <ExternalLink className="w-3.5 h-3.5" /> {c.open}
-      </button>
-      <button onClick={() => downloadFile(row)} aria-label={c.download} className="min-h-[40px] w-10 rounded-lg border border-border inline-flex items-center justify-center active:scale-95 transition">
-        <Download className="w-4 h-4" />
-      </button>
-      {isAdmin && (
-        <button onClick={() => handleDelete(row)} aria-label="Delete" className="min-h-[40px] px-3 rounded-lg border border-destructive/40 text-destructive text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition">
-          <Trash2 className="w-4 h-4" /> {c.delete}
+      <div className="flex items-start gap-2">
+        {isAdmin && <ReorderControls list={list} index={index} />}
+        <span className="min-w-0 flex-1 text-sm break-words">{label}</span>
+      </div>
+      <div className="flex items-center gap-2 mt-2">
+        <button onClick={() => openFile(row)} className="min-h-[44px] px-4 rounded-lg bg-primary text-primary-foreground text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition">
+          <ExternalLink className="w-3.5 h-3.5" /> {c.open}
         </button>
-      )}
-
+        <button onClick={() => downloadFile(row)} aria-label={c.download} title={c.download} className="min-h-[44px] w-11 rounded-lg border border-border bg-background/70 inline-flex items-center justify-center active:scale-95 transition">
+          <Download className="w-4 h-4" />
+        </button>
+        <span className="flex-1" />
+        {isAdmin && (
+          <button onClick={() => handleDelete(row)} aria-label={c.delete} title={c.delete} className="min-h-[44px] w-11 rounded-lg border border-destructive/40 bg-background/70 text-destructive inline-flex items-center justify-center active:scale-95 transition">
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
+      </div>
     </div>
   );
+
 
 
   const renderSongDetail = ({ items }: { name: string; items: Row[] }) => {
