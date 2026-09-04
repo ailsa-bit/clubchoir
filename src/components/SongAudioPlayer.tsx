@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, Loader2, RotateCcw, Download } from "lucide-react";
+import { Play, Pause, Loader2, RotateCcw, Download, Trash2 } from "lucide-react";
 
 interface Props {
   label: string;
@@ -9,6 +9,9 @@ interface Props {
   onActivate: (id: string | null) => void;
   onDownload?: () => void | Promise<void>;
   downloadLabel?: string;
+  isAdmin?: boolean;
+  onDelete?: () => void | Promise<void>;
+  deleteLabel?: string;
 }
 
 function fmt(sec: number) {
@@ -18,7 +21,7 @@ function fmt(sec: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload, downloadLabel = "Download" }: Props) => {
+const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload, downloadLabel = "Download", isAdmin = false, onDelete, deleteLabel = "Delete" }: Props) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -145,6 +148,17 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
             className="shrink-0 w-9 h-9 rounded-full border border-[hsl(var(--pink))]/40 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
           >
             <Download className="w-4 h-4" />
+          </button>
+        )}
+        {isAdmin && onDelete && (
+          <button
+            type="button"
+            onClick={() => onDelete()}
+            aria-label={`${deleteLabel} ${label}`}
+            title={deleteLabel}
+            className="shrink-0 w-9 h-9 rounded-full border border-destructive/40 text-destructive flex items-center justify-center active:scale-95 transition-transform"
+          >
+            <Trash2 className="w-4 h-4" />
           </button>
         )}
         {playing && (
