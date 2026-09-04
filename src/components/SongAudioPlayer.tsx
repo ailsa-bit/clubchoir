@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, Loader2 } from "lucide-react";
+import { Play, Pause, Loader2, RotateCcw } from "lucide-react";
 
 interface Props {
   label: string;
@@ -23,6 +23,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
   const [current, setCurrent] = useState(0);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState(false);
+  const isBusyRef = useRef(false);
 
   // Pause when another track becomes active
   useEffect(() => {
@@ -31,15 +32,24 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
     }
   }, [activeId, id]);
 
-  const toggle = async () => {
+  const stop = () => {
     const audio = audioRef.current;
     if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+    setCurrent(0);
+  };
+
+  const toggle = async () => {
+    const audio = audioRef.current;
+    if (!audio || isBusyRef.current) return;
 
     if (!audio.paused) {
       audio.pause();
       return;
     }
 
+    isBusyRef.current = true;
     onActivate(id);
 
     if (!audio.src) {
@@ -51,6 +61,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
       setLoading(false);
       if (!url) {
         setError(true);
+        isBusyRef.current = false;
         return;
       }
       audio.src = url;
@@ -60,6 +71,8 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
       await audio.play();
     } catch {
       setError(true);
+    } finally {
+      isBusyRef.current = false;
     }
   };
 
@@ -105,6 +118,16 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
             </span>
           </div>
         </div>
+        {playing && (
+          <button
+            type="button"
+            onClick={stop}
+            aria-label={`Stop and reset ${label}`}
+            className="shrink-0 w-9 h-9 rounded-full border border-[hsl(var(--pink))]/40 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
+        )}
       </div>
       {error && <p className="text-xs text-destructive mt-2">Could not play this track. Please try again.</p>}
       <audio
@@ -116,7 +139,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
         onEnded={() => { setPlaying(false); setCurrent(0); }}
         onTimeUpdate={(e) => setCurrent((e.target as HTMLAudioElement).currentTime)}
         onLoadedMetadata={(e) => setDuration((e.target as HTMLAudioElement).duration)}
-        onError={() => { setPlaying(false); }}
+        onError={() => { setPlaying(false); isBusyRef.current = false; }}
       />
     </div>
   );
