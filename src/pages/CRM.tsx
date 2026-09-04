@@ -471,7 +471,15 @@ const CRM = () => {
         });
       }
     } catch (e: any) {
-      toast({ title: "Payment email failed", description: e?.message || "Unknown error", variant: "destructive" });
+      if (e instanceof SessionExpiredError) {
+        toast({
+          title: "Please sign in again",
+          description: "Your session expired, so no email was sent. Sign in and mark paid again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({ title: "Payment email failed", description: e?.message || "Unknown error", variant: "destructive" });
+      }
     }
     fetchAll();
   };
