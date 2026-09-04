@@ -502,7 +502,8 @@ const FallSongs = () => {
                         onClick={() => goWeek(w)}
                         className="rounded-xl border border-border bg-card p-4 text-left min-h-[88px] hover:border-primary/50 active:scale-[.98] transition"
                       >
-                        <span className="block text-lg font-heading font-bold">{c.week} {w}</span>
+                        <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {w}</span>
+                        <span className="block text-lg font-heading font-bold leading-tight mt-0.5">{WEEK_TITLES[w]}</span>
                         <span className="block text-xs text-muted-foreground mt-1">
                           {count > 0 ? `${count} ${c.songs}` : "—"}
                         </span>
