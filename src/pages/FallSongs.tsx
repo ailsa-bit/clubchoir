@@ -242,16 +242,6 @@ const FallSongs = () => {
     [rows, selectedWeek]
   );
 
-  const songsInWeek = useMemo(() => {
-    const map = new Map<string, Row[]>();
-    for (const r of weekRows) {
-      const list = map.get(r.song_name) || [];
-      list.push(r);
-      map.set(r.song_name, list);
-    }
-    return Array.from(map.entries());
-  }, [weekRows]);
-
   const searchResults = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return [];
