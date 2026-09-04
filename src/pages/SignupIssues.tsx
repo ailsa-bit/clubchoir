@@ -161,7 +161,6 @@ const SignupIssues = () => {
     );
   }
 
-  const lookupRef = useRef<HTMLDivElement>(null);
 
   const selectPerson = (email: string) => {
     setQuery(email);
