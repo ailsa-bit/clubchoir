@@ -61,6 +61,7 @@ const SignupIssues = () => {
   const [members, setMembers] = useState<MemberRow[]>([]);
   const [regs, setRegs] = useState<RegRow[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
+  const lookupRef = useRef<HTMLDivElement>(null);
 
   const load = async () => {
     setLoading(true);
@@ -160,7 +161,6 @@ const SignupIssues = () => {
     );
   }
 
-  const lookupRef = useRef<HTMLDivElement>(null);
 
   const selectPerson = (email: string) => {
     setQuery(email);
