@@ -336,6 +336,7 @@ const translations: Record<string, Record<Language, string>> = {
   "thisWeek.title": { en: "This Week at Choir", fr: "Cette semaine au chœur" },
   "thisWeek.subtitle": { en: "Find your session and come sing with us.", fr: "Trouvez votre session et venez chanter avec nous." },
   "thisWeek.schedule": { en: "View Season Schedule", fr: "Voir le calendrier de la saison" },
+  "thisWeek.songResources": { en: "Go to Song Resources", fr: "Accéder aux ressources musicales" },
   "thisWeek.expect.title": { en: "What to expect", fr: "À quoi s'attendre" },
   "thisWeek.expect.desc": { en: "No auditions, no sheet music. Just show up, warm up, and sing your heart out with a room full of good people.", fr: "Pas d'auditions, pas de partitions. Présentez-vous, échauffez-vous et chantez à cœur joie avec une salle pleine de bonnes personnes." },
 

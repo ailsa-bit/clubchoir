@@ -1,7 +1,7 @@
 import PageMeta from "@/components/PageMeta";
 import { MemberWelcomeMessage } from "@/components/MemberWelcomeMessage";
 import { Link } from "react-router-dom";
-import { Music, MapPin, Clock, Calendar } from "lucide-react";
+import { Music, MapPin, Clock, Calendar, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ThisWeek = () => {
@@ -28,6 +28,15 @@ const ThisWeek = () => {
 
         <div className="mb-8">
           <MemberWelcomeMessage />
+          <div className="mt-6 flex justify-center">
+            <Link
+              to="/resources/fall-2026"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90"
+            >
+              {t("thisWeek.songResources")}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
 
         <div className="space-y-4">
