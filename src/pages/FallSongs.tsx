@@ -222,7 +222,7 @@ const FallSongs = () => {
       const { error: storageError } = await supabase.storage.from("song-resources").upload(path, file);
       if (storageError) { toast({ title: storageError.message, variant: "destructive" }); continue; }
       const { error: dbError } = await supabase.from("song_resources").insert({
-        song_name: uploadSong.trim(), resource_type: type, part, week: selectedWeek,
+        song_name: uploadSong.trim(), resource_type: type, part: null, week: selectedWeek,
         session_label: SESSION, file_name: file.name, storage_path: path,
         location: "all", uploaded_by: user.id,
       } as never);
