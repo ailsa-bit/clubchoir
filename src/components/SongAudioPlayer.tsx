@@ -32,6 +32,18 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
     }
   }, [activeId, id]);
 
+  // Make sure a removed player never keeps playing in the background
+  useEffect(() => {
+    const audio = audioRef.current;
+    return () => {
+      if (audio) {
+        audio.pause();
+        audio.src = "";
+      }
+    };
+  }, []);
+
+
   const stop = () => {
     const audio = audioRef.current;
     if (!audio) return;
