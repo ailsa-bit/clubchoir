@@ -317,7 +317,7 @@ const FallSongs = () => {
               <SongAudioPlayer
                 key={r.id}
                 id={r.id}
-                label={r.file_name.replace(/\.[^.]+$/, "")}
+                label={r.file_name}
                 activeId={activeAudio}
                 onActivate={setActiveAudio}
                 loadUrl={() => getSignedUrl(r, false)}
