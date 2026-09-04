@@ -209,7 +209,9 @@ const FallSongs = () => {
 
 
   const handleDelete = async (row: Row) => {
+    if (!isAdmin) return;
     if (!confirm(c.deleteConfirm.replace("{name}", row.file_name))) return;
+
     await supabase.storage.from("song-resources").remove([row.storage_path]);
     const { error } = await supabase.from("song_resources").delete().eq("id", row.id);
     if (error) { toast({ title: error.message, variant: "destructive" }); return; }
@@ -219,7 +221,9 @@ const FallSongs = () => {
 
   // ---- Reordering (admins only) ----
   const persistOrder = async (ordered: Row[]) => {
+    if (!isAdmin) return;
     const map = new Map(ordered.map((r, i) => [r.id, i]));
+
     setRows((prev) => {
       const next = prev.map((r) => (map.has(r.id) ? { ...r, sort_order: map.get(r.id) as number } : r));
       return next.sort(
@@ -238,6 +242,7 @@ const FallSongs = () => {
 
   const moveRow = (list: Row[], index: number, dir: -1 | 1) => {
     const j = index + dir;
+    if (!isAdmin) return;
     if (j < 0 || j >= list.length) return;
     const next = [...list];
     [next[index], next[j]] = [next[j], next[index]];
@@ -245,6 +250,7 @@ const FallSongs = () => {
   };
 
   const dropOn = (list: Row[], targetIndex: number) => {
+    if (!isAdmin) { setDragId(null); return; }
     const from = list.findIndex((r) => r.id === dragId);
     setDragId(null);
     if (from < 0 || from === targetIndex) return;
@@ -349,7 +355,7 @@ const FallSongs = () => {
       draggable={isAdmin}
       onDragStart={() => setDragId(row.id)}
       onDragOver={(e) => { if (isAdmin && dragId && dragId !== row.id) e.preventDefault(); }}
-      onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(list, index); }}
+      onDrop={(e) => { e.preventDefault(); if (isAdmin && dragId) dropOn(list, index); }}
       onDragEnd={() => setDragId(null)}
       className={`rounded-lg border border-border p-2.5 ${typeMeta[row.resource_type].bg} ${dragId === row.id ? "opacity-50" : ""}`}
     >
@@ -433,7 +439,7 @@ const FallSongs = () => {
                         draggable={isAdmin}
                         onDragStart={() => setDragId(r.id)}
                         onDragOver={(e) => { if (isAdmin && dragId && dragId !== r.id) e.preventDefault(); }}
-                        onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(audio, i); }}
+                        onDrop={(e) => { e.preventDefault(); if (isAdmin && dragId) dropOn(audio, i); }}
                         onDragEnd={() => setDragId(null)}
                         className={`flex items-start gap-2 ${dragId === r.id ? "opacity-50" : ""}`}
                       >
