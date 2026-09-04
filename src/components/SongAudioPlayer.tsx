@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, Loader2 } from "lucide-react";
+import { Play, Pause, Loader2, RotateCcw } from "lucide-react";
 
 interface Props {
   label: string;
