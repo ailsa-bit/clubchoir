@@ -10,6 +10,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import SongAudioPlayer from "@/components/SongAudioPlayer";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const SESSION = "fall-2026";
 const WEEKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
