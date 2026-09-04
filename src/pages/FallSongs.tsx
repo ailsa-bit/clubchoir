@@ -371,6 +371,10 @@ const FallSongs = () => {
 
     return (
       <div className="space-y-6">
+        {isAdmin && items.length > 1 && (
+          <p className="text-xs text-muted-foreground">{c.reorderHint}</p>
+        )}
+
         {audio.length > 0 && (
           <section className="space-y-2">
             <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta.audio.text}`}>{c.recordings}</h3>
