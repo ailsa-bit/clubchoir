@@ -68,6 +68,7 @@ const copy = {
     chooseFiles: "Choose files",
     uploading: "Uploading…",
     deleteConfirm: "Delete {name}?",
+    delete: "Delete",
     signInFirst: "Please sign in again to open this file.",
     loadFail: "Could not load the resources.",
   },
@@ -97,6 +98,7 @@ const copy = {
     chooseFiles: "Choisir des fichiers",
     uploading: "Téléversement…",
     deleteConfirm: "Supprimer {name} ?",
+    delete: "Supprimer",
     signInFirst: "Veuillez vous reconnecter pour ouvrir ce fichier.",
     loadFail: "Impossible de charger les ressources.",
   },
@@ -201,7 +203,11 @@ const FallSongs = () => {
     const { error } = await supabase.from("song_resources").delete().eq("id", row.id);
     if (error) { toast({ title: error.message, variant: "destructive" }); return; }
     setRows((prev) => prev.filter((r) => r.id !== row.id));
+    toast({ title: `${c.delete}: ${row.file_name}` });
   };
+
+
+
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -292,10 +298,11 @@ const FallSongs = () => {
         <Download className="w-4 h-4" />
       </button>
       {isAdmin && (
-        <button onClick={() => handleDelete(row)} aria-label="Delete" className="min-h-[40px] w-10 rounded-lg border border-destructive/40 text-destructive inline-flex items-center justify-center active:scale-95 transition">
-          <Trash2 className="w-4 h-4" />
+        <button onClick={() => handleDelete(row)} aria-label="Delete" className="min-h-[40px] px-3 rounded-lg border border-destructive/40 text-destructive text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition">
+          <Trash2 className="w-4 h-4" /> {c.delete}
         </button>
       )}
+
     </div>
   );
 
@@ -324,14 +331,20 @@ const FallSongs = () => {
               />
             ))}
             {isAdmin && (
-              <div className="space-y-2">
+              <div className="flex flex-wrap gap-2">
                 {audio.map((r) => (
-                  <button key={`d-${r.id}`} onClick={() => handleDelete(r)} className="text-xs text-destructive underline">
-                    Delete {r.file_name}
+                  <button
+                    key={`d-${r.id}`}
+                    onClick={() => handleDelete(r)}
+                    className="min-h-[40px] px-3 rounded-lg border border-destructive/40 text-destructive text-xs font-semibold inline-flex items-center gap-1.5 active:scale-95 transition max-w-full"
+                  >
+                    <Trash2 className="w-4 h-4 shrink-0" />
+                    <span className="truncate">{c.delete}: {r.file_name}</span>
                   </button>
                 ))}
               </div>
             )}
+
           </section>
         )}
 
