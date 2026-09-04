@@ -27,7 +27,6 @@ const WEEK_TITLES: Record<number, string> = {
 };
 
 type ResourceType = "audio" | "lyrics" | "slides" | "sheet_music";
-type Part = "blue" | "pink" | "floaters" | "all";
 
 interface Row {
   id: string;
@@ -36,7 +35,7 @@ interface Row {
   file_name: string;
   storage_path: string;
   week: number | null;
-  part: Part | null;
+  part: string | null;
   sort_order: number;
   created_at: string;
 }
@@ -56,7 +55,6 @@ const copy = {
     lyrics: "Lyrics",
     slides: "Lyric slides",
     sheet: "Sheet music",
-    parts: { blue: "Blue", pink: "Pink", floaters: "Floaters", all: "All Parts" },
     open: "Open",
     download: "Download",
     items: "items",
