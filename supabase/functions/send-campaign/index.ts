@@ -677,10 +677,11 @@ function renderResourcesWeek1(r: Recipient) {
   const inner = `
     ${greetEn(r)}
     <p style="${P}">🎉 <strong>The resources are up!</strong> Our very first song of the session is <strong>"Lovely Day" by Bill Withers</strong> — recordings, lyrics, lyric slides and sheet music are all waiting for you in the members section.</p>
-    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
-      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">About the colours</div>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">If you're a <strong>returning member</strong>, you already know how the colours work — dive right in. You'll also notice a new section called <strong>Floaters</strong>: it's an optional part for anyone looking for a bit more of a challenge. Feel free to try it out, or stick with your usual part — totally up to you!</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">If you're <strong>new</strong>, don't worry about a thing — we'll go over everything together on the first night.</p>
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:16px 20px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:10px;font-family:Quicksand,Arial,sans-serif;">About the colours</div>
+      <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#831843;">If you're a <strong>returning member</strong>, you already know how the colours work — dive right in!</p>
+      <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#831843;"><strong>New this session: Floaters.</strong> This is an <strong>optional</strong> part you can explore <em>in addition to</em> your usual part. It's there for anyone who wants a little extra challenge, but you do not need to switch parts. If you'd rather stick with your usual part, that's totally up to you — and completely fine.</p>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:#831843;">If you're <strong>new</strong>, don't worry about a thing — we'll go over everything together on the first night.</p>
     </div>
     <p style="${P}">If you'd like to take some time to listen or look through the resources this week — have fun with it! And if you'd rather wait, no worries at all: <strong>we'll be learning this together on our first night next week.</strong></p>
     <p style="${P}">⏰ <strong>Quick reminder:</strong> new song resources are posted <strong>every Friday</strong>, so there's always something fresh waiting for you.</p>
@@ -691,10 +692,11 @@ function renderResourcesWeek1(r: Recipient) {
     ${DIVIDER}
     ${greetFr(r)}
     <p style="${P}">🎉 <strong>Les ressources sont en ligne!</strong> Notre toute première chanson de la session est <strong>« Lovely Day » de Bill Withers</strong> — enregistrements, paroles, diapositives et partitions vous attendent dans la section membres.</p>
-    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
-      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Au sujet des couleurs</div>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">Si vous êtes un <strong>membre de retour</strong>, vous savez déjà comment fonctionnent les couleurs — allez-y! Vous remarquerez aussi une nouvelle section appelée <strong>Floaters</strong> : c'est une partie optionnelle pour ceux et celles qui cherchent un peu plus de défi. Essayez-la si le cœur vous en dit, ou restez avec votre partie habituelle — c'est vous qui décidez!</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">Si vous êtes <strong>nouveau ou nouvelle</strong>, aucun souci — nous verrons tout ensemble lors de la première soirée.</p>
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:16px 20px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:10px;font-family:Quicksand,Arial,sans-serif;">Au sujet des couleurs</div>
+      <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#831843;">Si vous êtes un <strong>membre de retour</strong>, vous savez déjà comment fonctionnent les couleurs — allez-y!</p>
+      <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#831843;"><strong>Nouveauté cette session : Floaters.</strong> C'est une partie <strong>optionnelle</strong> que vous pouvez explorer <em>en plus de</em> votre partie habituelle. Elle s'adresse à ceux et celles qui veulent un peu plus de défi, mais vous n'avez pas besoin de changer de partie. Si vous préférez rester avec votre partie habituelle, c'est entièrement à vous de décider — et c'est parfait ainsi.</p>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:#831843;">Si vous êtes <strong>nouveau ou nouvelle</strong>, aucun souci — nous verrons tout ensemble lors de la première soirée.</p>
     </div>
     <p style="${P}">Envie d'écouter ou de parcourir les ressources cette semaine? Amusez-vous! Et si vous préférez attendre, aucun problème : <strong>nous apprendrons tout cela ensemble la semaine prochaine, dès la première soirée.</strong></p>
     <p style="${P}">⏰ <strong>Petit rappel :</strong> les nouvelles ressources sont publiées <strong>chaque vendredi</strong>.</p>
