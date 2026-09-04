@@ -213,8 +213,11 @@ const FallSongs = () => {
 
     for (const file of files) {
       setUploading(file.name);
-      const ext = file.name.split(".").pop();
-      const path = `${SESSION}/week-${selectedWeek}/${safeSong}/${type}${part ? "-" + part : ""}-${Date.now()}.${ext}`;
+      // Keep the original file name so members see and download exactly what was uploaded
+      const safeFileName = file.name
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9._-]+/g, "-");
+      const path = `${SESSION}/week-${selectedWeek}/${safeSong}/${Date.now()}-${safeFileName}`;
       const { error: storageError } = await supabase.storage.from("song-resources").upload(path, file);
       if (storageError) { toast({ title: storageError.message, variant: "destructive" }); continue; }
       const { error: dbError } = await supabase.from("song_resources").insert({
@@ -314,7 +317,7 @@ const FallSongs = () => {
               <SongAudioPlayer
                 key={r.id}
                 id={r.id}
-                label={r.file_name.replace(/\.[^.]+$/, "")}
+                label={r.file_name}
                 activeId={activeAudio}
                 onActivate={setActiveAudio}
                 loadUrl={() => getSignedUrl(r, false)}
