@@ -363,7 +363,29 @@ const Login = () => {
             </Select>
           )}
           {error && <p className="text-sm text-destructive">{error}</p>}
-          {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
+          {message && isSignUp && !isForgotPassword ? (
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 text-sm">
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 shrink-0 rounded-full bg-primary/10 p-1.5">
+                  <Mail className="w-4 h-4 text-primary" aria-hidden="true" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-foreground leading-relaxed">{message}</p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="w-full sm:w-auto"
+                    onClick={() => { setIsSignUp(false); setMessage(""); setError(""); }}
+                  >
+                    {t("login.signIn")}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>
+          )}
           {isSignUp && !isForgotPassword && !passwordValid && password.length > 0 && (
             <p className="text-sm text-muted-foreground">
               {t("login.passwordRulesHint")}
