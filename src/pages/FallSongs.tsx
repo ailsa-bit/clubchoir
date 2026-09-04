@@ -374,16 +374,29 @@ const FallSongs = () => {
         {audio.length > 0 && (
           <section className="space-y-2">
             <h3 className={`text-sm font-semibold uppercase tracking-wide ${typeMeta.audio.text}`}>{c.recordings}</h3>
-            {audio.map((r) => (
-              <SongAudioPlayer
+            {audio.map((r, i) => (
+              <div
                 key={r.id}
-                id={r.id}
-                label={r.file_name}
-                activeId={activeAudio}
-                onActivate={setActiveAudio}
-                loadUrl={() => getSignedUrl(r, false)}
-              />
+                draggable={isAdmin}
+                onDragStart={() => setDragId(r.id)}
+                onDragOver={(e) => { if (isAdmin && dragId && dragId !== r.id) e.preventDefault(); }}
+                onDrop={(e) => { e.preventDefault(); if (dragId) dropOn(audio, i); }}
+                onDragEnd={() => setDragId(null)}
+                className={`flex items-start gap-2 ${dragId === r.id ? "opacity-50" : ""}`}
+              >
+                {isAdmin && <div className="pt-2"><ReorderControls list={audio} index={i} /></div>}
+                <div className="min-w-0 flex-1">
+                  <SongAudioPlayer
+                    id={r.id}
+                    label={r.file_name}
+                    activeId={activeAudio}
+                    onActivate={setActiveAudio}
+                    loadUrl={() => getSignedUrl(r, false)}
+                  />
+                </div>
+              </div>
             ))}
+
             {isAdmin && (
               <div className="flex flex-wrap gap-2">
                 {audio.map((r) => (
