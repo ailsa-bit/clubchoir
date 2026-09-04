@@ -730,7 +730,15 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
 
 // ---------- recipients ----------
 
+// Never-email addresses (test accounts etc.) — blocked on every path, no exceptions.
+const NEVER_EMAIL = new Set<string>(["testmember@clubchoir.ca"]);
+
 async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
+  const loaded = await loadRecipientsInner(supabase, segment);
+  return loaded.filter((r) => !NEVER_EMAIL.has(String(r.email || "").toLowerCase().trim()));
+}
+
+async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Recipient[]> {
   const { data: memberRows } = await supabase.from("members").select("email, first_name, last_name, location, crm_tags, archived_at");
   const suppressed = new Set<string>();
   // Guest-list people are invited to try the first night; they must never get payment emails/reminders
@@ -1058,6 +1066,7 @@ serve(async (req) => {
       : location === "unknown" ? all.filter((r) => !r.location)
       : all.filter((r) => r.location === location);
     if (onlyEmails.length) recipients = recipients.filter((r) => onlyEmails.includes(r.email.toLowerCase()));
+    recipients = recipients.filter((r) => !NEVER_EMAIL.has(String(r.email || "").toLowerCase().trim()));
 
 
     if (countOnly) {
