@@ -25,10 +25,14 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate }: Props) =>
   const [error, setError] = useState(false);
   const isBusyRef = useRef(false);
 
-  // Pause when another track becomes active
+  // Stop and rewind when another track becomes active
   useEffect(() => {
-    if (activeId !== id && audioRef.current && !audioRef.current.paused) {
-      audioRef.current.pause();
+    const audio = audioRef.current;
+    if (activeId !== id && audio && !audio.paused) {
+      audio.pause();
+      audio.currentTime = 0;
+      setCurrent(0);
+      setPlaying(false);
     }
   }, [activeId, id]);
 
