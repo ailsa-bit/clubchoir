@@ -58,7 +58,7 @@ const LOCATIONS: Loc[] = [
 ];
 
 const Register = () => {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const isFr = language === "fr";
 
   const [firstName, setFirstName] = useState("");
