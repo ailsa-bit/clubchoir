@@ -154,8 +154,8 @@ const PopupStudio77 = () => {
   return (
     <div className="py-12 px-4">
       <PageMeta
-        title="Pop-Up Choir at Studio 77 — Reserve Your Spot"
-        description="Join Club Choir and musician Gary White for a 2-hour pop-up choir at Studio 77, Pointe-Claire, on Sunday May 31 at 3 PM. No experience needed. $15 per person, spots limited."
+        title={isFr ? "Chorale pop-up au Studio 77 — réservez votre place" : "Pop-Up Choir at Studio 77 — Reserve Your Spot"}
+        description={isFr ? "Joignez Club Choir et le musicien Gary White pour une chorale pop-up de 2 heures au Studio 77, à Pointe-Claire, le dimanche 31 mai à 15 h. Aucune expérience requise. 15 $ par personne, places limitées." : "Join Club Choir and musician Gary White for a 2-hour pop-up choir at Studio 77, Pointe-Claire, on Sunday May 31 at 3 PM. No experience needed. $15 per person, spots limited."}
         path="/popup/studio-77"
       />
       <div className="container mx-auto max-w-7xl">

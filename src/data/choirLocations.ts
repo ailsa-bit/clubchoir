@@ -9,6 +9,8 @@ export interface ChoirLocationData {
   /** Used in <title>, h1, schema.org name */
   pageTitle: string;
   metaDescription: string;
+  pageTitleFr: string;
+  metaDescriptionFr: string;
   /** Headline shown in the hero */
   heroHeadline: { en: string; fr: string };
   heroBlurb: { en: string; fr: string };
@@ -45,6 +47,9 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     pageTitle: "Montreal Choir – Club Choir | No-Audition Adult Choir in Montréal",
     metaDescription:
       "Join Club Choir in Montreal — a friendly no-audition adult community choir that meets Monday evenings at Kensington Presbyterian Church. Fall 2026 registration is open.",
+    pageTitleFr: "Chorale Montréal – Club Choir | chorale pour adultes sans audition à Montréal",
+    metaDescriptionFr:
+      "Joignez Club Choir à Montréal — une chorale communautaire chaleureuse et sans audition pour adultes, les lundis soirs à l'église Kensington Presbyterian. Inscriptions ouvertes pour l'automne 2026.",
     heroHeadline: {
       en: "Montreal Choir – Sing with us on Monday nights",
       fr: "Chorale Montréal – Chantez avec nous le lundi soir",
@@ -83,6 +88,9 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     pageTitle: "Hudson Choir – Club Choir | NEW No-Audition Community Choir at The Hudson Legion",
     metaDescription:
       "Club Choir Hudson is coming September 2026 — a brand-new no-audition community choir meeting Tuesday nights at The Hudson Legion on Beach Road. Register your interest now.",
+    pageTitleFr: "Chorale Hudson – Club Choir | NOUVELLE chorale sans audition au Hudson Legion",
+    metaDescriptionFr:
+      "Club Choir Hudson arrive en septembre 2026 — une toute nouvelle chorale communautaire sans audition, les mardis soirs au Hudson Legion, sur Beach Road. Manifestez votre intérêt dès maintenant.",
     heroHeadline: {
       en: "Hudson Choir – Coming September 2026",
       fr: "Chorale Hudson – Dès septembre 2026",
@@ -122,6 +130,9 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     pageTitle: "Saint-Hubert Choir – Club Choir | South Shore Community Choir",
     metaDescription:
       "Join Club Choir Saint-Hubert — a no-audition adult community choir on Montreal's South Shore. Wednesday evenings at St-Gabriel Catholic Church. Fall 2026 sign-up open.",
+    pageTitleFr: "Chorale Saint-Hubert – Club Choir | chorale communautaire de la Rive-Sud",
+    metaDescriptionFr:
+      "Joignez Club Choir Saint-Hubert — une chorale communautaire pour adultes, sans audition, sur la Rive-Sud de Montréal. Les mercredis soirs à l'église St-Gabriel. Inscriptions ouvertes pour l'automne 2026.",
     heroHeadline: {
       en: "Saint-Hubert Choir – Wednesday evenings on the South Shore",
       fr: "Chorale Saint-Hubert – Mercredis soirs sur la Rive-Sud",
@@ -160,6 +171,9 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     pageTitle: "Pointe-Claire Choir – Club Choir | West Island Adult Choir",
     metaDescription:
       "Sing with Club Choir Pointe-Claire — a no-audition community choir for adults on the West Island. Thursday evenings at Valois United Church. Fall 2026 sign-up open.",
+    pageTitleFr: "Chorale Pointe-Claire – Club Choir | chorale pour adultes dans l'Ouest-de-l'Île",
+    metaDescriptionFr:
+      "Chantez avec Club Choir Pointe-Claire — une chorale communautaire sans audition pour adultes dans l'Ouest-de-l'Île. Les jeudis soirs à l'église Valois United. Inscriptions ouvertes pour l'automne 2026.",
     heroHeadline: {
       en: "Pointe-Claire Choir – Thursdays on the West Island",
       fr: "Chorale Pointe-Claire – Jeudis soirs dans l'Ouest-de-l'Île",
