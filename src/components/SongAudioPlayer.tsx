@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause, Loader2, RotateCcw, Download, Trash2 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Props {
   label: string;
@@ -21,7 +22,10 @@ function fmt(sec: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload, downloadLabel = "Download", isAdmin = false, onDelete, deleteLabel = "Delete" }: Props) => {
+const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload, downloadLabel, isAdmin = false, onDelete, deleteLabel }: Props) => {
+  const { t } = useLanguage();
+  const dlLabel = downloadLabel ?? t("audio.download");
+  const delLabel = deleteLabel ?? t("common.delete");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
@@ -133,7 +137,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
         <button
           type="button"
           onClick={toggle}
-          aria-label={playing ? `Pause ${label}` : `Play ${label}`}
+          aria-label={`${playing ? t("audio.pause") : t("audio.play")} ${label}`}
           className="shrink-0 w-12 h-12 rounded-full bg-[hsl(var(--pink))] text-[hsl(var(--pink-foreground))] flex items-center justify-center active:scale-95 transition-transform"
         >
           {loading ? (
@@ -148,7 +152,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
           <button
             type="button"
             onClick={stop}
-            aria-label={`Stop and reset ${label}`}
+            aria-label={`${t("audio.stop")} ${label}`}
             className="shrink-0 w-11 h-11 rounded-full border border-[hsl(var(--pink))]/40 bg-background/70 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
           >
             <RotateCcw className="w-4 h-4" />
@@ -159,8 +163,8 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
           <button
             type="button"
             onClick={() => onDownload()}
-            aria-label={`${downloadLabel} ${label}`}
-            title={downloadLabel}
+            aria-label={`${dlLabel} ${label}`}
+            title={dlLabel}
             className="shrink-0 w-11 h-11 rounded-full border border-[hsl(var(--pink))]/40 bg-background/70 text-[hsl(var(--pink))] flex items-center justify-center active:scale-95 transition-transform"
           >
             <Download className="w-4 h-4" />
@@ -170,8 +174,8 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
           <button
             type="button"
             onClick={() => onDelete()}
-            aria-label={`${deleteLabel} ${label}`}
-            title={deleteLabel}
+            aria-label={`${delLabel} ${label}`}
+            title={delLabel}
             className="shrink-0 w-11 h-11 rounded-full border border-destructive/40 bg-background/70 text-destructive flex items-center justify-center active:scale-95 transition-transform"
           >
             <Trash2 className="w-4 h-4" />
@@ -186,7 +190,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
           step={0.1}
           value={current}
           onChange={seek}
-          aria-label="Seek"
+          aria-label={t("audio.seek")}
           className="min-w-0 flex-1 h-2 accent-[hsl(var(--pink))] cursor-pointer"
         />
         <span className="text-xs tabular-nums text-muted-foreground shrink-0">
@@ -194,7 +198,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
         </span>
       </div>
 
-      {error && <p className="text-xs text-destructive mt-2">Could not play this track. Please try again.</p>}
+      {error && <p className="text-xs text-destructive mt-2">{t("audio.error")}</p>}
       <audio
         ref={audioRef}
         preload="none"

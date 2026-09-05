@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Helmet } from "react-helmet-async";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
 
@@ -34,6 +35,7 @@ const LocationChat = () => {
   const { isAdmin, loading: adminLoading, user } = useAdmin();
   const { location: userLocation } = useProfile();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const [activeLocation, setActiveLocation] = useState(LOCATIONS[0]);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -123,7 +125,7 @@ const LocationChat = () => {
       display_name: displayName,
     });
     if (error) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+      toast({ title: t("common.error"), description: error.message, variant: "destructive" });
     } else {
       setNewMessage("");
       // Notify admin via edge function (fire-and-forget)
@@ -150,27 +152,27 @@ const LocationChat = () => {
       }));
       const { error } = await supabase.from("chat_messages").insert(inserts);
       if (error) throw error;
-      toast({ title: "Broadcast sent!", description: "Message posted to all 4 locations." });
+      toast({ title: t("chat.broadcastSent"), description: t("chat.broadcastSentDesc") });
       setBroadcastMsg("");
       setBroadcastOpen(false);
     } catch (err: any) {
-      toast({ title: "Error", description: err.message, variant: "destructive" });
+      toast({ title: t("common.error"), description: err.message, variant: "destructive" });
     } finally {
       setBroadcasting(false);
     }
   };
 
   if (adminLoading) {
-    return <div className="py-20 text-center text-muted-foreground">Loading...</div>;
+    return <div className="py-20 text-center text-muted-foreground">{t("common.loading")}</div>;
   }
 
   if (!user) {
     return (
       <div className="py-20 text-center">
         <MessageCircle className="w-10 h-10 text-primary mx-auto mb-3" />
-        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Members Only</h1>
-        <p className="text-muted-foreground mb-4">Log in to chat with your choir community.</p>
-        <Button variant="outline" onClick={() => navigate("/profile")}>Log In</Button>
+        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("gate.membersOnly")}</h1>
+        <p className="text-muted-foreground mb-4">{t("chat.loginPrompt")}</p>
+        <Button variant="outline" onClick={() => navigate("/profile")}>{t("common.logIn")}</Button>
       </div>
     );
   }
@@ -180,8 +182,8 @@ const LocationChat = () => {
     const now = new Date();
     const diffDays = Math.floor((now.getTime() - d.getTime()) / 86400000);
     const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    if (diffDays === 0) return `Today ${time}`;
-    if (diffDays === 1) return `Yesterday ${time}`;
+    if (diffDays === 0) return `${t("chat.today")} ${time}`;
+    if (diffDays === 1) return `${t("chat.yesterday")} ${time}`;
     return `${d.toLocaleDateString([], { month: "short", day: "numeric" })} ${time}`;
   };
 
@@ -192,28 +194,28 @@ const LocationChat = () => {
         <div className="text-center mb-8">
           <MessageCircle className="w-10 h-10 text-primary mx-auto mb-3" />
           <h1 className="font-heading font-bold text-3xl text-foreground mb-2">
-            Location Chat
+            {t("chat.title")}
           </h1>
           <p className="text-muted-foreground">
-            Connect with members at your location
+            {t("chat.subtitle")}
           </p>
           {isAdmin && (
             <Dialog open={broadcastOpen} onOpenChange={setBroadcastOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm" className="mt-3">
                   <Megaphone className="w-4 h-4 mr-2" />
-                  Broadcast to All
+                  {t("chat.broadcast")}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Broadcast to All Locations</DialogTitle>
+                  <DialogTitle>{t("chat.broadcastTitle")}</DialogTitle>
                 </DialogHeader>
                 <p className="text-sm text-muted-foreground">
-                  This message will be posted to all 4 location chats.
+                  {t("chat.broadcastDesc")}
                 </p>
                 <Textarea
-                  placeholder="Write your announcement…"
+                  placeholder={t("chat.announcePlaceholder")}
                   value={broadcastMsg}
                   onChange={(e) => setBroadcastMsg(e.target.value)}
                   rows={4}
@@ -224,10 +226,10 @@ const LocationChat = () => {
                   disabled={broadcasting || !broadcastMsg.trim()}
                   className="w-full rounded-full bg-gradient-warm text-primary-foreground"
                 >
-                  {broadcasting ? "Sending…" : (
+                  {broadcasting ? t("chat.sending") : (
                     <>
                       <Megaphone className="w-4 h-4 mr-2" />
-                      Send to All Locations
+                      {t("chat.sendToAll")}
                     </>
                   )}
                 </Button>
@@ -257,7 +259,7 @@ const LocationChat = () => {
                 <div className="flex-1 overflow-y-auto p-4 space-y-3">
                   {messages.length === 0 && (
                     <p className="text-center text-muted-foreground text-sm py-8">
-                      No messages yet. Start the conversation! 🎵
+                      {t("chat.empty")}
                     </p>
                   )}
                   {messages.map((msg) => {
@@ -299,7 +301,7 @@ const LocationChat = () => {
 
                 <div className="border-t border-border p-3 flex gap-2">
                   <Input
-                    placeholder="Type a message…"
+                    placeholder={t("chat.typeMessage")}
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     onKeyDown={(e) => {

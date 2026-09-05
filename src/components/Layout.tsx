@@ -31,7 +31,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
 
   const publicNavItems = [
     { label: t("nav.home"), path: "/" },
-    { label: "About", path: "/about" },
+    { label: t("nav.about"), path: "/about" },
     { label: t("nav.events"), path: "/events" },
     { label: t("nav.corporate"), path: "/corporate" },
   ];
@@ -39,7 +39,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   // Logged-in members: keep About + Corporate accessible from top nav
   const loggedInPublicItems = [
     { label: t("nav.home"), path: "/" },
-    { label: "About", path: "/about" },
+    { label: t("nav.about"), path: "/about" },
     { label: t("nav.events"), path: "/events" },
     { label: t("nav.corporate"), path: "/corporate" },
   ];
@@ -229,7 +229,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
               {item.children && (
                 <button
                   type="button"
-                  aria-label={`Toggle ${item.label} submenu`}
+                  aria-label={`${t("nav.toggleSubmenu")} ${item.label}`}
                   aria-expanded={!!expandedMenus[item.path]}
                   onClick={() => toggleMenu(item.path)}
                   className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
@@ -319,7 +319,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
           <p className="mb-3">{t("footer.tagline")} © {new Date().getFullYear()}</p>
 
           {/* Site links for SEO & navigation */}
-          <nav aria-label="Footer" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
+          <nav aria-label={t("nav.footer")} className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
             <Link to="/" className="hover:text-foreground transition-colors">{t("footer.nav.home")}</Link>
             <Link to="/about" className="hover:text-foreground transition-colors">{t("footer.nav.about")}</Link>
             <Link to="/register" className="hover:text-foreground transition-colors">{t("footer.nav.register")}</Link>
@@ -331,7 +331,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
           </nav>
 
           {/* Per-location links for SEO ([city] choir queries) */}
-          <nav aria-label="Locations" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
+          <nav aria-label={t("nav.locations")} className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-4 text-sm">
             <span className="text-xs uppercase tracking-wider text-muted-foreground/70">{t("footer.locations")}</span>
             <Link to="/choir/montreal" className="hover:text-foreground transition-colors">{t("footer.choir.montreal")}</Link>
             <Link to="/choir/hudson" className="hover:text-foreground transition-colors inline-flex items-center gap-1">

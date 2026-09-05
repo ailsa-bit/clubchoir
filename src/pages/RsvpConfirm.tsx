@@ -5,10 +5,12 @@ import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { getAttribution } from "@/lib/attribution";
 import { trackLead } from "@/lib/metaPixel";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const FN_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/record-open-house-rsvp`;
 
 const RsvpConfirm = () => {
+  const { t } = useLanguage();
   const [params] = useSearchParams();
   const token = params.get("token") || "";
   const location = params.get("location") || "";
@@ -28,18 +30,18 @@ const RsvpConfirm = () => {
           body: JSON.stringify({ token, location, attribution: getAttribution() }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data?.error || "Something went wrong");
+        if (!res.ok) throw new Error(data?.error || t("common.something.wrong"));
         setEmail(data.email || "");
         setState("ok");
         trackLead("Open House RSVP (email link)", location);
       } catch (e: any) {
         setState("error");
-        setMessage(e?.message || "Invalid link");
+        setMessage(e?.message || t("rsvp.invalidLink"));
       }
     };
     if (!token || !location) {
       setState("error");
-      setMessage("Missing token or location.");
+      setMessage(t("rsvp.missing"));
       return;
     }
     run();
@@ -52,31 +54,34 @@ const RsvpConfirm = () => {
         {state === "loading" && (
           <>
             <Loader2 className="w-10 h-10 text-primary mx-auto mb-4 animate-spin" />
-            <p className="text-muted-foreground">Recording your RSVP…</p>
+            <p className="text-muted-foreground">{t("rsvp.recording")}</p>
           </>
         )}
         {state === "ok" && (
           <>
             <CheckCircle2 className="w-12 h-12 text-green-500 mx-auto mb-4" />
-            <h1 className="font-heading font-bold text-2xl text-foreground mb-2">You're on the list! 🎉</h1>
+            <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("rsvp.okTitle")}</h1>
             <p className="text-muted-foreground mb-4">
-              Thanks {email ? <span className="text-foreground">({email})</span> : null} — we've got you down for the <strong>{location}</strong> open house.
+              {t("rsvp.okThanks")} {email ? <span className="text-foreground">({email})</span> : null}{" "}
+              {t("rsvp.okBody").split("{location}")[0]}
+              <strong>{location}</strong>
+              {t("rsvp.okBody").split("{location}")[1]}
             </p>
             <p className="text-sm text-muted-foreground mb-6">
-              Feel free to bring a friend or neighbour — everyone is welcome. See you soon!
+              {t("rsvp.okFriend")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild variant="outline"><Link to="/">Back to homepage</Link></Button>
-              <Button asChild><Link to="/open-house">See all open houses</Link></Button>
+              <Button asChild variant="outline"><Link to="/">{t("rsvp.backHome")}</Link></Button>
+              <Button asChild><Link to="/open-house">{t("rsvp.seeAll")}</Link></Button>
             </div>
           </>
         )}
         {state === "error" && (
           <>
             <XCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
-            <h1 className="font-heading font-bold text-2xl text-foreground mb-2">We couldn't confirm your RSVP</h1>
+            <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("rsvp.errorTitle")}</h1>
             <p className="text-muted-foreground mb-6">{message}</p>
-            <Button asChild><Link to="/open-house">Sign up here instead</Link></Button>
+            <Button asChild><Link to="/open-house">{t("rsvp.signUpInstead")}</Link></Button>
           </>
         )}
       </div>

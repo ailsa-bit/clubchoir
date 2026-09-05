@@ -24,10 +24,10 @@ const ActiveMemberGate = ({ children }: ActiveMemberGateProps) => {
     return (
       <div className="py-20 px-4 text-center">
         <Lock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Members Only</h1>
-        <p className="text-muted-foreground mb-6">Sign in to access this page.</p>
+        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("gate.membersOnly")}</h1>
+        <p className="text-muted-foreground mb-6">{t("gate.signInToAccess")}</p>
         <Button onClick={() => navigate("/login")}>
-          <LogIn className="w-4 h-4 mr-2" /> Sign In
+          <LogIn className="w-4 h-4 mr-2" /> {t("common.signIn")}
         </Button>
       </div>
     );
@@ -43,12 +43,12 @@ const ActiveMemberGate = ({ children }: ActiveMemberGateProps) => {
     return (
       <div className="py-20 px-4 text-center">
         <Clock className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Account Pending</h1>
+        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("gate.pendingTitle")}</h1>
         <p className="text-muted-foreground mb-2 max-w-md mx-auto">
-          Your account is awaiting approval. An admin will review your registration shortly.
+          {t("gate.pendingDesc")}
         </p>
         <p className="text-sm text-muted-foreground">
-          If you believe this is an error, please contact <a href="mailto:ailsa@clubchoir.ca" className="text-primary hover:underline">ailsa@clubchoir.ca</a>
+          {t("gate.pendingContact")} <a href="mailto:ailsa@clubchoir.ca" className="text-primary hover:underline">ailsa@clubchoir.ca</a>
         </p>
       </div>
     );

@@ -55,12 +55,12 @@ function getSessionIcon(type: string) {
   }
 }
 
-function getSessionLabel(type: string) {
+function getSessionLabelKey(type: string) {
   switch (type) {
-    case "review": return "Review Week";
-    case "show": return "Show Night";
-    case "off": return "No Practice";
-    default: return "New Song";
+    case "review": return "schedule.type.review";
+    case "show": return "schedule.type.show";
+    case "off": return "schedule.type.off";
+    default: return "schedule.type.song";
   }
 }
 
@@ -80,7 +80,7 @@ const LocationSchedule = () => {
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [showUpload, setShowUpload] = useState(false);
   const { isAdmin } = useAdmin();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
 
   const locationName = locationSlug
     ? locationSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join("-")
@@ -111,7 +111,7 @@ const LocationSchedule = () => {
 
   if (authed === null) return (
     <div className="py-16 px-4 text-center">
-      <p className="text-muted-foreground text-sm">Loading…</p>
+      <p className="text-muted-foreground text-sm">{t("common.loading")}</p>
     </div>
   );
 
@@ -119,10 +119,10 @@ const LocationSchedule = () => {
     return (
       <div className="py-16 px-4 text-center">
         <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Members Only</h1>
-        <p className="text-muted-foreground mb-6">Sign in to view the session schedule.</p>
+        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("gate.membersOnly")}</h1>
+        <p className="text-muted-foreground mb-6">{t("schedule.signInDesc")}</p>
         <Link to="/profile" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity">
-          Sign In
+          {t("common.signIn")}
         </Link>
       </div>
     );
@@ -132,8 +132,8 @@ const LocationSchedule = () => {
     return (
       <div className="py-16 px-4 text-center">
       <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
-        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">Location not found</h1>
-        <Link to="/this-week" className="text-primary hover:underline">Back to This Week</Link>
+        <h1 className="font-heading font-bold text-2xl text-foreground mb-2">{t("schedule.notFound")}</h1>
+        <Link to="/this-week" className="text-primary hover:underline">{t("schedule.backToThisWeek")}</Link>
       </div>
     );
   }
@@ -146,7 +146,7 @@ const LocationSchedule = () => {
       <Helmet><meta name="robots" content="noindex,nofollow" /></Helmet>
       <div className="container mx-auto max-w-3xl">
         <Link to="/this-week" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to This Week
+          <ArrowLeft className="w-4 h-4" /> {t("schedule.backToThisWeek")}
         </Link>
 
         <div className={`rounded-2xl border p-6 mb-8 ${meta.bg}`}>
@@ -178,7 +178,7 @@ const LocationSchedule = () => {
               onClick={() => setShowUpload(!showUpload)}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-muted text-foreground text-sm font-medium hover:bg-muted/80 transition-colors"
             >
-              <Upload className="w-4 h-4" /> Upload Schedule CSV
+              <Upload className="w-4 h-4" /> {t("schedule.upload")}
             </button>
             {showUpload && (
               <AdminScheduleUpload
@@ -197,12 +197,12 @@ const LocationSchedule = () => {
           </div>
         )}
 
-        <h2 className="font-heading font-bold text-lg text-foreground mb-4">Season Schedule</h2>
+        <h2 className="font-heading font-bold text-lg text-foreground mb-4">{t("schedule.seasonSchedule")}</h2>
 
         {loading ? (
-          <p className="text-muted-foreground text-sm">Loading schedule…</p>
+          <p className="text-muted-foreground text-sm">{t("schedule.loading")}</p>
         ) : sessions.length === 0 ? (
-          <p className="text-muted-foreground text-sm">No sessions scheduled yet.</p>
+          <p className="text-muted-foreground text-sm">{t("schedule.empty")}</p>
         ) : (
           <div className="space-y-2">
             {sessions.map((s) => {
@@ -239,7 +239,7 @@ const LocationSchedule = () => {
                       <span className="text-xs font-medium text-foreground/80">{getSessionTime(s.location, s.week, meta.time)}</span>
                       {isCurrentWeek && (
                         <span className="text-[10px] font-bold uppercase tracking-wider bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
-                          This Week
+                          {t("schedule.thisWeek")}
                         </span>
                       )}
                     </div>
@@ -273,7 +273,7 @@ const LocationSchedule = () => {
                     type === "off" ? "bg-muted text-muted-foreground" :
                     "bg-accent/15 text-accent-foreground"
                   }`}>
-                    {getSessionLabel(type)}
+                    {t(getSessionLabelKey(type))}
                   </span>
                 </div>
               );

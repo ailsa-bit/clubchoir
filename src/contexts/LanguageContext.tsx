@@ -105,6 +105,10 @@ const translations: Record<string, Record<Language, string>> = {
   // Footer nav
   "footer.nav.home": { en: "Home", fr: "Accueil" },
   "footer.nav.about": { en: "About", fr: "À propos" },
+  "nav.about": { en: "About", fr: "À propos" },
+  "nav.toggleSubmenu": { en: "Toggle submenu", fr: "Afficher le sous-menu" },
+  "nav.footer": { en: "Footer", fr: "Pied de page" },
+  "nav.locations": { en: "Locations", fr: "Nos lieux" },
   "footer.nav.register": { en: "Register", fr: "S'inscrire" },
   "footer.nav.events": { en: "Events", fr: "Événements" },
   "footer.nav.try": { en: "Try a Session", fr: "Essayer une session" },
@@ -904,7 +908,50 @@ const translations: Record<string, Record<Language, string>> = {
   "events.herdDesc4": { en: "Let's come together to sing, connect, and support a wonderful local organization.", fr: "Réunissons-nous pour chanter, créer des liens et soutenir une merveilleuse organisation locale." },
   "events.herdVenue": { en: "A Horse Tale Rescue, Vaudreuil-Dorion", fr: "A Horse Tale Rescue, Vaudreuil-Dorion" },
   "events.herdLink": { en: "Learn more about A Horse Tale Rescue", fr: "En savoir plus sur A Horse Tale Rescue" },
+
+  // Members-only gate
+  "gate.membersOnly": { en: "Members Only", fr: "Réservé aux membres" },
+  "gate.signInToAccess": { en: "Sign in to access this page.", fr: "Connectez-vous pour accéder à cette page." },
+  "gate.pendingTitle": { en: "Account Pending", fr: "Compte en attente" },
+  "gate.pendingDesc": { en: "Your account is awaiting approval. An admin will review your registration shortly.", fr: "Votre compte est en attente d'approbation. Une personne de l'équipe examinera votre inscription sous peu." },
+  "gate.pendingContact": { en: "If you believe this is an error, please contact", fr: "Si vous croyez qu'il s'agit d'une erreur, écrivez à" },
+
+  // Location schedule
+  "schedule.signInDesc": { en: "Sign in to view the session schedule.", fr: "Connectez-vous pour voir l'horaire de la session." },
+  "schedule.notFound": { en: "Location not found", fr: "Lieu introuvable" },
+  "schedule.backToThisWeek": { en: "Back to This Week", fr: "Retour à Cette semaine" },
+  "schedule.seasonSchedule": { en: "Season Schedule", fr: "Horaire de la session" },
+  "schedule.loading": { en: "Loading schedule…", fr: "Chargement de l'horaire…" },
+  "schedule.empty": { en: "No sessions scheduled yet.", fr: "Aucune séance à l'horaire pour l'instant." },
+  "schedule.thisWeek": { en: "This Week", fr: "Cette semaine" },
+  "schedule.upload": { en: "Upload Schedule CSV", fr: "Téléverser l'horaire (CSV)" },
+  "schedule.type.review": { en: "Review Week", fr: "Semaine de révision" },
+  "schedule.type.show": { en: "Show Night", fr: "Soirée spectacle" },
+  "schedule.type.off": { en: "No Practice", fr: "Pas de répétition" },
+  "schedule.type.song": { en: "New Song", fr: "Nouvelle chanson" },
+
+  // Open house RSVP confirmation
+  "rsvp.recording": { en: "Recording your RSVP…", fr: "Enregistrement de votre réponse…" },
+  "rsvp.okTitle": { en: "You're on the list! 🎉", fr: "Vous êtes sur la liste ! 🎉" },
+  "rsvp.okThanks": { en: "Thanks", fr: "Merci" },
+  "rsvp.okBody": { en: "— we've got you down for the {location} open house.", fr: "— nous vous avons inscrit(e) aux portes ouvertes de {location}." },
+  "rsvp.okFriend": { en: "Feel free to bring a friend or neighbour — everyone is welcome. See you soon!", fr: "N'hésitez pas à venir avec un ami ou un voisin — tout le monde est bienvenu. À bientôt !" },
+  "rsvp.backHome": { en: "Back to homepage", fr: "Retour à l'accueil" },
+  "rsvp.seeAll": { en: "See all open houses", fr: "Voir toutes les portes ouvertes" },
+  "rsvp.errorTitle": { en: "We couldn't confirm your RSVP", fr: "Nous n'avons pas pu confirmer votre réponse" },
+  "rsvp.signUpInstead": { en: "Sign up here instead", fr: "Inscrivez-vous ici plutôt" },
+  "rsvp.invalidLink": { en: "Invalid link", fr: "Lien invalide" },
+  "rsvp.missing": { en: "Missing token or location.", fr: "Lien incomplet : jeton ou lieu manquant." },
+
+  // Audio player
+  "audio.play": { en: "Play", fr: "Lire" },
+  "audio.pause": { en: "Pause", fr: "Pause" },
+  "audio.stop": { en: "Stop and reset", fr: "Arrêter et revenir au début" },
+  "audio.download": { en: "Download", fr: "Télécharger" },
+  "audio.seek": { en: "Seek", fr: "Naviguer dans la piste" },
+  "audio.error": { en: "Could not play this track. Please try again.", fr: "Impossible de lire cette piste. Veuillez réessayer." },
 };
+
 
 // Keep a single context instance across HMR module reloads so that
 // components rendered from a stale module copy still find the provider.
