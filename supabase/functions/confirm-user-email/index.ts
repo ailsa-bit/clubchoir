@@ -112,9 +112,51 @@ serve(async (req) => {
       const { data: linkData, error: linkError } = await adminClient.auth.admin.generateLink({
         type: "signup",
         email: targetUser.email!,
+        options: { redirectTo: "https://clubchoir.ca/this-week" },
       });
 
       if (linkError) throw linkError;
+
+      const actionLink = linkData?.properties?.action_link ?? "";
+      if (!actionLink) throw new Error("Could not generate confirmation link");
+
+      // Actually deliver the new link — generateLink alone only creates it
+      // (and invalidates the previously emailed one).
+      const resend = new Resend(Deno.env.get("RESEND_API_KEY")!);
+      const { error: sendError } = await resend.emails.send({
+        from: "Club Choir <noreply@clubchoir.ca>",
+        to: [targetUser.email!],
+        subject: "Confirm your Club Choir email / Confirmez votre courriel",
+        html: `
+          <div style="font-family: 'Nunito', 'Quicksand', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 28px; background-color: #ffffff;">
+            <img src="https://vbbfpzszmtwhydhpgtgj.supabase.co/storage/v1/object/public/email-assets/club-choir-logo.png?v=1" alt="Club Choir" width="120" style="margin-bottom: 24px;" />
+            <h1 style="font-size: 24px; font-weight: bold; color: hsl(240, 10%, 16%); font-family: 'Quicksand', Arial, sans-serif; margin: 0 0 20px;">Confirm your email</h1>
+            <p style="font-size: 15px; color: hsl(240, 5%, 30%); line-height: 1.7; margin: 0 0 24px;">
+              One quick click and your Club Choir account is ready to go — you'll get access to the weekly schedule, recordings, lyrics and slides.
+              <br /><br />
+              Un simple clic et votre compte Club Choir est prêt — vous aurez accès à l'horaire hebdomadaire, aux enregistrements, aux paroles et aux diapositives.
+            </p>
+            <div style="margin-bottom: 28px;">
+              <a href="${actionLink}" style="display: inline-block; background-color: hsl(340, 75%, 60%); color: #ffffff; font-size: 15px; font-weight: 600; border-radius: 16px; padding: 14px 28px; text-decoration: none; font-family: 'Quicksand', Arial, sans-serif;">Confirm my email / Confirmer mon courriel</a>
+            </div>
+            <p style="font-size: 12px; color: hsl(240, 5%, 46%); line-height: 1.6; margin: 0 0 16px; word-break: break-all;">
+              If the button doesn't work, copy and paste this link into your browser:
+              <a href="${actionLink}" style="color: hsl(340, 75%, 60%); text-decoration: underline;">${actionLink}</a>
+            </p>
+            <p style="font-size: 14px; color: hsl(240, 5%, 46%); line-height: 1.6; margin: 0 0 20px;">
+              Trouble? Email <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>. / Un souci? Écrivez à <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>.
+            </p>
+            <p style="font-size: 12px; color: #999999; margin: 24px 0 0;">Tra-la-la, Ailsa</p>
+          </div>
+        `,
+      });
+
+      if (sendError) {
+        return new Response(JSON.stringify({ error: sendError.message }), {
+          status: 502,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
 
       return new Response(JSON.stringify({ success: true, message: "Confirmation email resent" }), {
         status: 200,
