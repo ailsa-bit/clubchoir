@@ -51,7 +51,7 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   {
     key: "welcome-new-paid",
     title: "Welcome — New Paid Member",
-    description: "Sent automatically when you mark someone paid in the CRM. Thanks them for their payment, gives first-night details for their location, links to the Fall 2026 song resources, and walks them through creating their member profile. Bilingual EN/FR.",
+    description: "Sent automatically when you mark someone paid in the CRM (from Sept 5, 2026 onward only — people paid before that never appear here). Thanks them for their payment, gives first-night details for their location, links to the Fall 2026 song resources, and walks them through creating their member profile. Bilingual EN/FR.",
     color: "bg-violet-50 border-violet-300",
   },
   {
