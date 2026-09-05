@@ -256,7 +256,7 @@ const PopupStudio77 = () => {
           </div>
           <img
             src={garyWhitePhoto}
-            alt="Gary White, singer and musician, in profile wearing a cap and glasses"
+            alt={t("alt.garyWhite")}
             className="w-full h-auto rounded-xl mb-5 object-cover"
             loading="lazy"
           />

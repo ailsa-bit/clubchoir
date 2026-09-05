@@ -909,6 +909,16 @@ const translations: Record<string, Record<Language, string>> = {
   "events.herdVenue": { en: "A Horse Tale Rescue, Vaudreuil-Dorion", fr: "A Horse Tale Rescue, Vaudreuil-Dorion" },
   "events.herdLink": { en: "Learn more about A Horse Tale Rescue", fr: "En savoir plus sur A Horse Tale Rescue" },
 
+  // Image descriptions (screen readers)
+  "alt.porchfest": { en: "Club Choir members singing outdoors at NDG Porchfest", fr: "Des membres de Club Choir chantant en plein air au Porchfest de NDG" },
+  "alt.ailsa": { en: "Ailsa, founder of Club Choir", fr: "Ailsa, fondatrice de Club Choir" },
+  "alt.ailsaStudio": { en: "Ailsa, founder of Club Choir, recording in a studio", fr: "Ailsa, fondatrice de Club Choir, en enregistrement en studio" },
+  "alt.celebrating": { en: "Club Choir members celebrating together", fr: "Des membres de Club Choir célébrant ensemble" },
+  "alt.performing": { en: "Club Choir performing", fr: "Club Choir en prestation" },
+  "alt.heroVideo": { en: "Club Choir members singing together at locations across Quebec — Montréal, Saint-Hubert, Pointe-Claire, and Hudson", fr: "Des membres de Club Choir chantant ensemble dans nos lieux partout au Québec — Montréal, Saint-Hubert, Pointe-Claire et Hudson" },
+  "alt.hudsonDuo": { en: "Briana Doyle and Seiji Gutierrez performing outdoors with guitar and mandolin by the water", fr: "Briana Doyle et Seiji Gutierrez en prestation extérieure avec guitare et mandoline au bord de l'eau" },
+  "alt.garyWhite": { en: "Gary White, singer and musician, in profile wearing a cap and glasses", fr: "Gary White, chanteur et musicien, de profil avec une casquette et des lunettes" },
+
   // Page meta (browser tab titles + search descriptions)
   "meta.home.title": { en: "Choir Montreal | Club Choir – No-Audition Community Choir for Adults", fr: "Chorale Montréal | Club Choir – chorale communautaire sans audition pour adultes" },
   "meta.home.desc": { en: "Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire and Saint-Hubert. Fall 2026 registration is open.", fr: "Joignez Club Choir, une chorale communautaire sans audition pour adultes à Montréal, Hudson, Pointe-Claire et Saint-Hubert. Les inscriptions pour l'automne 2026 sont ouvertes." },

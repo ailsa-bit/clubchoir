@@ -1,3 +1,4 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
 
 const POSTER_URL =
@@ -24,7 +25,7 @@ const HeroVideo = () => {
       {reducedMotion ? (
         <img
           src={POSTER_URL}
-          alt="Club Choir members singing together at locations across Quebec — Montréal, Saint-Hubert, Pointe-Claire, and Hudson"
+          alt={t("alt.heroVideo")}
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />

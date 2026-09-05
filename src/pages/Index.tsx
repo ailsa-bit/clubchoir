@@ -127,7 +127,7 @@ const Index = () => {
                 <div className="rounded-[2.5rem] overflow-hidden shadow-2xl bg-muted">
                   <img
                     src={heroStage}
-                    alt="Club Choir members singing outdoors at NDG Porchfest"
+                    alt={t("alt.porchfest")}
                     className="w-full aspect-[4/5] object-cover"
                     loading="eager"
                     fetchPriority="high"
@@ -214,7 +214,7 @@ const Index = () => {
             <div className="rounded-2xl overflow-hidden shadow-md">
               <img
                 src={founderPhoto}
-                alt="Ailsa, founder of Club Choir"
+                alt={t("alt.ailsa")}
                 className="w-full h-full object-cover aspect-[4/5] md:aspect-square"
                 loading="lazy"
                 decoding="async"
@@ -249,7 +249,7 @@ const Index = () => {
             <div className="md:order-2 rounded-2xl overflow-hidden shadow-md">
               <img
                 src={whyComeBackPhoto}
-                alt="Club Choir members celebrating together"
+                alt={t("alt.celebrating")}
                 className="w-full h-full object-cover aspect-[4/5] md:aspect-square"
                 loading="lazy"
                 decoding="async"
@@ -290,7 +290,7 @@ const Index = () => {
             <div className="md:col-span-2 rounded-2xl overflow-hidden shadow-md">
               <img
                 src={whatWeSingPhoto}
-                alt="Club Choir performing"
+                alt={t("alt.performing")}
                 className="w-full h-full object-cover aspect-square"
                 loading="lazy"
                 decoding="async"
