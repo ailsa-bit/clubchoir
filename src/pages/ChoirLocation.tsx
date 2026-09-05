@@ -81,8 +81,8 @@ const ChoirLocation = () => {
   return (
     <div className="pb-16">
       <PageMeta
-        title={data.pageTitle}
-        description={data.metaDescription}
+        title={isFr ? data.pageTitleFr : data.pageTitle}
+        description={isFr ? data.metaDescriptionFr : data.metaDescription}
         path={`/choir/${data.slug}`}
         jsonLd={jsonLd}
       />

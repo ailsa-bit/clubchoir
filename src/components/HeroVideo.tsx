@@ -1,3 +1,4 @@
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect, useRef, useState } from "react";
 
 const POSTER_URL =
@@ -8,6 +9,7 @@ const MP4_URL =
   "https://vbbfpzszmtwhydhpgtgj.supabase.co/storage/v1/object/public/homepage-media/choir-hero.mp4";
 
 const HeroVideo = () => {
+  const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -24,7 +26,7 @@ const HeroVideo = () => {
       {reducedMotion ? (
         <img
           src={POSTER_URL}
-          alt="Club Choir members singing together at locations across Quebec — Montréal, Saint-Hubert, Pointe-Claire, and Hudson"
+          alt={t("alt.heroVideo")}
           className="absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />
@@ -38,7 +40,7 @@ const HeroVideo = () => {
           playsInline
           preload="metadata"
           poster={POSTER_URL}
-          aria-label="Club Choir members singing together at locations across Quebec"
+          aria-label={t("alt.heroVideo")}
         >
           <source src={WEBM_URL} type="video/webm" />
           <source src={MP4_URL} type="video/mp4" />

@@ -162,8 +162,8 @@ const TryASession = () => {
   return (
     <div className="py-12 px-4">
       <PageMeta
-        title="Try a Free Session – Club Choir"
-        description="Try a free Club Choir session! No audition, no experience needed. Come sing with us at any of our 4 Quebec locations."
+        title={t("meta.try.title")}
+        description={t("meta.try.desc")}
         path="/try"
       />
       <div className="container mx-auto max-w-3xl">

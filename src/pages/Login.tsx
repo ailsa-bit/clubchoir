@@ -197,7 +197,7 @@ const Login = () => {
       "";
     return (
       <div className="py-16 px-4">
-        <PageMeta title="Member Login – Club Choir" description="Sign in to your Club Choir account to access songs, schedules, and your member community." path="/login" noindex />
+        <PageMeta title={t("meta.login.title")} description={t("meta.login.desc")} path="/login" noindex />
         <div className="container mx-auto max-w-sm text-center">
           <div className="w-14 h-14 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
             <LogIn className="w-7 h-7 text-primary" />
@@ -229,7 +229,7 @@ const Login = () => {
 
   return (
    <div className="py-16 px-4">
-     <PageMeta title="Member Login – Club Choir" description="Sign in to your Club Choir account to access songs, schedules, and your member community." path="/login" noindex />
+     <PageMeta title={t("meta.login.title")} description={t("meta.login.desc")} path="/login" noindex />
      <div className="container mx-auto max-w-sm">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">

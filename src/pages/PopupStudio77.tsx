@@ -154,8 +154,8 @@ const PopupStudio77 = () => {
   return (
     <div className="py-12 px-4">
       <PageMeta
-        title="Pop-Up Choir at Studio 77 — Reserve Your Spot"
-        description="Join Club Choir and musician Gary White for a 2-hour pop-up choir at Studio 77, Pointe-Claire, on Sunday May 31 at 3 PM. No experience needed. $15 per person, spots limited."
+        title={isFr ? "Chorale pop-up au Studio 77 — réservez votre place" : "Pop-Up Choir at Studio 77 — Reserve Your Spot"}
+        description={isFr ? "Joignez Club Choir et le musicien Gary White pour une chorale pop-up de 2 heures au Studio 77, à Pointe-Claire, le dimanche 31 mai à 15 h. Aucune expérience requise. 15 $ par personne, places limitées." : "Join Club Choir and musician Gary White for a 2-hour pop-up choir at Studio 77, Pointe-Claire, on Sunday May 31 at 3 PM. No experience needed. $15 per person, spots limited."}
         path="/popup/studio-77"
       />
       <div className="container mx-auto max-w-7xl">
@@ -256,7 +256,7 @@ const PopupStudio77 = () => {
           </div>
           <img
             src={garyWhitePhoto}
-            alt="Gary White, singer and musician, in profile wearing a cap and glasses"
+            alt={isFr ? "Gary White, chanteur et musicien, de profil avec une casquette et des lunettes" : "Gary White, singer and musician, in profile wearing a cap and glasses"}
             className="w-full h-auto rounded-xl mb-5 object-cover"
             loading="lazy"
           />

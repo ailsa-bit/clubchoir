@@ -109,8 +109,8 @@ const SingForTheHerd = () => {
   return (
     <div className="py-12 px-4">
       <PageMeta
-        title="Sing for the Herd — Club Choir Fundraiser Tickets"
-        description="Buy tickets to Sing for the Herd, a Club Choir fundraiser for A Horse Tale Rescue on Sunday August 2, 2026 in Vaudreuil-Dorion. Family-friendly. All proceeds support the rescue."
+        title={isFr ? "Chantons pour le troupeau — billets levée de fonds Club Choir" : "Sing for the Herd — Club Choir Fundraiser Tickets"}
+        description={isFr ? "Procurez-vous vos billets pour Chantons pour le troupeau, une levée de fonds de Club Choir au profit de A Horse Tale Rescue, le dimanche 2 août 2026 à Vaudreuil-Dorion. Événement familial. Tous les profits vont au refuge." : "Buy tickets to Sing for the Herd, a Club Choir fundraiser for A Horse Tale Rescue on Sunday August 2, 2026 in Vaudreuil-Dorion. Family-friendly. All proceeds support the rescue."}
         path="/tickets/sing-for-the-herd"
       />
       <div className="container mx-auto max-w-7xl">

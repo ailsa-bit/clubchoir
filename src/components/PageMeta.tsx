@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface PageMetaProps {
   title: string;
@@ -18,12 +19,13 @@ const PageMeta = ({
   ogImage,
   jsonLd,
 }: PageMetaProps) => {
+  const { language } = useLanguage();
   const url = `https://clubchoir.ca${path}`;
   const image = ogImage ?? "https://clubchoir.ca/og-image.jpg";
   const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 
   return (
-    <Helmet>
+    <Helmet htmlAttributes={{ lang: language }}>
       <title>{title}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={url} />
