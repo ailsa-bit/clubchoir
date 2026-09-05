@@ -58,7 +58,7 @@ const LOCATIONS: Loc[] = [
 ];
 
 const Register = () => {
-  const { language, t } = useLanguage();
+  const { language, t: tr } = useLanguage();
   const isFr = language === "fr";
 
   const [firstName, setFirstName] = useState("");
@@ -163,7 +163,7 @@ const Register = () => {
     const isSuccess = result.kind === "success";
     return (
       <div className="py-16 px-4">
-        <PageMeta title={t("meta.registerDone.title")} description={t("meta.registerDone.desc")} path="/register" />
+        <PageMeta title={tr("meta.registerDone.title")} description={tr("meta.registerDone.desc")} path="/register" />
         <div className="container mx-auto max-w-6xl">
           <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
             <ArrowLeft className="w-4 h-4" /> {t.back}
@@ -198,8 +198,8 @@ const Register = () => {
   return (
     <div className="py-12 px-4">
       <PageMeta
-        title={t("meta.register.title")}
-        description={t("meta.register.desc")}
+        title={tr("meta.register.title")}
+        description={tr("meta.register.desc")}
         path="/register"
       />
       <div className="container mx-auto max-w-6xl">
