@@ -803,9 +803,12 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
   const { data: allRegs } = await supabase
     .from("session_registrations")
-    .select("email, first_name, last_name, location, payment_status, session_label");
+    .select("email, first_name, last_name, location, payment_status, session_label, updated_at");
 
   const paidMap = new Map<string, Recipient>();
+  // "Welcome — New Paid Member" only goes to people marked paid from Sept 5, 2026 onward
+  const WELCOME_CUTOFF = new Date("2026-09-05T00:00:00-04:00").getTime();
+  const newlyPaidMap = new Map<string, Recipient>();
   const unpaidMap = new Map<string, Recipient>();
   const fallEmails = new Set<string>();
 
@@ -822,6 +825,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
     };
     if (r.payment_status === "paid") {
       if (!paidMap.has(e)) paidMap.set(e, rec);
+      if (+new Date(r.updated_at || 0) >= WELCOME_CUTOFF && !newlyPaidMap.has(e)) newlyPaidMap.set(e, rec);
     } else if (!unpaidMap.has(e)) {
       unpaidMap.set(e, rec);
     }
@@ -838,7 +842,9 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   for (const e of cashFirstNight) unpaidMap.delete(e);
 
 
-  if (segment === "fall-paid" || segment === "first-night-paid" || segment === "resources-week1-paid" || segment === "welcome-new-paid") return Array.from(paidMap.values());
+  if (segment === "welcome-new-paid") return Array.from(newlyPaidMap.values());
+
+  if (segment === "fall-paid" || segment === "first-night-paid" || segment === "resources-week1-paid") return Array.from(paidMap.values());
 
   if (segment === "first-night-guests") {
     // People tagged guest-list who haven't paid — invited to try the first night
