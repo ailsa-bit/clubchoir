@@ -88,8 +88,8 @@ const Events = () => {
   return (
     <div className="py-16 px-4">
       <PageMeta
-        title="Upcoming Choir Events & Performances – Club Choir"
-        description="Seasonal showcases, pop-up choirs and public performances by Club Choir in Montreal, Hudson, Pointe-Claire and Saint-Hubert. Friends and family welcome."
+        title={t("meta.events.title")}
+        description={t("meta.events.desc")}
         path="/events"
         jsonLd={[
           {

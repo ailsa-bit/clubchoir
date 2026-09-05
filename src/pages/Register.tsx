@@ -163,7 +163,7 @@ const Register = () => {
     const isSuccess = result.kind === "success";
     return (
       <div className="py-16 px-4">
-        <PageMeta title="Registration received – Club Choir" description="Your Fall 2026 registration is in." path="/register" />
+        <PageMeta title={t("meta.registerDone.title")} description={t("meta.registerDone.desc")} path="/register" />
         <div className="container mx-auto max-w-6xl">
           <Link to="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
             <ArrowLeft className="w-4 h-4" /> {t.back}
@@ -198,8 +198,8 @@ const Register = () => {
   return (
     <div className="py-12 px-4">
       <PageMeta
-        title="Register for Fall 2026 – Club Choir"
-        description="Sign up for a Club Choir Fall 2026 session in Montreal, Hudson, Saint-Hubert, or Pointe-Claire."
+        title={t("meta.register.title")}
+        description={t("meta.register.desc")}
         path="/register"
       />
       <div className="container mx-auto max-w-6xl">

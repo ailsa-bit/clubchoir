@@ -55,8 +55,8 @@ const Index = () => {
   return (
     <div>
       <PageMeta
-        title="Choir Montreal | Club Choir – No-Audition Community Choir for Adults"
-        description="Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire and Saint-Hubert. Fall 2026 registration is open."
+        title={t("meta.home.title")}
+        description={t("meta.home.desc")}
         path="/"
         jsonLd={{
           "@context": "https://schema.org",

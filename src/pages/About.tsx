@@ -27,8 +27,8 @@ const About = () => {
   return (
     <div className="py-12 px-4">
       <PageMeta
-        title="Our Story – Club Choir | Founder Ailsa"
-        description="Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to hundreds of adult singers across four Quebec locations — sing together, laugh together, learn together."
+        title={t("meta.about.title")}
+        description={t("meta.about.desc")}
         path="/about"
       />
 

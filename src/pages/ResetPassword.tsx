@@ -82,7 +82,7 @@ const ResetPassword = () => {
 
   return (
     <div className="py-16 px-4">
-      <PageMeta title="Reset Password – Club Choir" description="Choose a new password for your Club Choir member account." path="/reset-password" noindex />
+      <PageMeta title={t("meta.reset.title")} description={t("meta.reset.desc")} path="/reset-password" noindex />
       <div className="container mx-auto max-w-sm">
         <div className="text-center mb-8">
           <div className="w-14 h-14 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">

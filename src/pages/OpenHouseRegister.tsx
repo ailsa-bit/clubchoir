@@ -173,8 +173,8 @@ const OpenHouseRegister = () => {
   return (
     <div className="py-12 px-4">
       <PageMeta
-        title="Register for the Open House – Club Choir"
-        description="Sign up for a free Club Choir Open House evening in August — Montreal, Hudson, Saint-Hubert, or Pointe-Claire."
+        title={t("meta.openHouse.title")}
+        description={t("meta.openHouse.desc")}
         path="/open-house"
       />
       <div className="container mx-auto max-w-3xl">
