@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid";
+type Segment = "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -41,12 +41,19 @@ const EMPTY_COUNTS = {
   "first-night-paid": 0,
   "first-night-unpaid": 0,
   "resources-week1-paid": 0,
+  "welcome-new-paid": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
 const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
+  {
+    key: "welcome-new-paid",
+    title: "Welcome — New Paid Member",
+    description: "Sent automatically when you mark someone paid in the CRM. Thanks them for their payment, gives first-night details for their location, links to the Fall 2026 song resources, and walks them through creating their member profile. Bilingual EN/FR.",
+    color: "bg-violet-50 border-violet-300",
+  },
   {
     key: "resources-week1-paid",
     title: "Week 1 Resources Are Up — Paid Members",
@@ -86,12 +93,14 @@ const Campaigns = () => {
     "first-night-paid": {},
     "first-night-unpaid": {},
     "resources-week1-paid": {},
+    "welcome-new-paid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "first-night-guests": "all",
     "first-night-paid": "all",
     "first-night-unpaid": "all",
     "resources-week1-paid": "all",
+    "welcome-new-paid": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
@@ -100,6 +109,7 @@ const Campaigns = () => {
     "first-night-paid": {},
     "first-night-unpaid": {},
     "resources-week1-paid": {},
+    "welcome-new-paid": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);

@@ -431,10 +431,10 @@ const CRM = () => {
           : `${c.first_name} is marked paid. Access unlocks when they sign up.`,
       });
     }
-    // Send the "First Night — Registered & Paid" welcome email
+    // Send the "Welcome — New Paid Member" email
     try {
       const sendRequest = {
-        segment: "first-night-paid",
+        segment: "welcome-new-paid",
         onlyEmails: [c.email],
         skipIfAlreadySent: true,
       };
@@ -461,13 +461,13 @@ const CRM = () => {
         preflightCount: verification.count,
       });
       if (sendRes?.success?.length) {
-        toast({ title: "First night email sent", description: `Emailed ${c.email}` });
+        toast({ title: "Welcome email sent", description: `Emailed ${c.email}` });
       } else if (sendRes?.failed?.length) {
         toast({ title: "Payment email failed", description: `Could not email ${c.email}`, variant: "destructive" });
       } else {
         toast({
           title: "No email sent",
-          description: `${c.email} already received the first-night paid email (or isn't in that list yet).`,
+          description: `${c.email} already received the welcome email (or isn't on the verified paid list yet).`,
         });
       }
     } catch (e: any) {
