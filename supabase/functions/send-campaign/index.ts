@@ -12,7 +12,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid" | "choir-tonight";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -30,6 +30,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "first-night-unpaid": "fall-2026-first-night-unpaid-v1",
   "resources-week1-paid": "fall-2026-resources-week1-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
+  "choir-tonight": "fall-2026-choir-tonight-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -755,6 +756,54 @@ function renderResourcesWeek1(r: Recipient) {
   };
 }
 
+function renderChoirTonight(r: Recipient) {
+  const loc = LOCATIONS[r.location];
+  const city = loc ? esc(loc.city) : "";
+  const isHudson = r.location === "Hudson";
+  const startEn = isHudson ? "7:30 PM" : "7:00 PM";
+  const startFr = isHudson ? "19 h 30" : "19 h";
+  const whereEn = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "your usual location";
+  const whereFr = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "votre lieu habituel";
+  const box = (lang: "en" | "fr") => `
+    <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? `Tonight${city ? ` — ${city}` : ""}` : `Ce soir${city ? ` — ${city}` : ""}`}</div>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "Where:" : "Où :"}</strong> ${lang === "en" ? whereEn : whereFr}</p>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "We start singing at:" : "On commence à chanter à :"}</strong> ${lang === "en" ? startEn : startFr}</p>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;">${lang === "en"
+        ? "<strong>Please come a little early</strong> — there are things to pick up when you arrive (your binder, name tag and anything else waiting for you), and it goes much smoother before we begin."
+        : "<strong>Arrivez un peu à l'avance</strong> — il y a des choses à récupérer à votre arrivée (votre cartable, votre porte-nom et tout ce qui vous attend), c'est bien plus simple avant qu'on commence."}</p>
+    </div>`;
+  const bring = (lang: "en" | "fr") => `
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Quick reminders" : "Petits rappels"}</div>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">👓 ${lang === "en" ? "<strong>Your glasses</strong>, if you need them to read." : "<strong>Vos lunettes</strong>, si vous en avez besoin pour lire."}</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">✏️ ${lang === "en" ? "<strong>A pen or pencil</strong> for notes on your lyric sheets." : "<strong>Un crayon ou un stylo</strong> pour annoter vos paroles."}</p>
+      <p style="margin:3px 0;font-size:15px;color:#831843;">💧 ${lang === "en" ? "<strong>Water</strong> — singing is thirsty work!" : "<strong>De l'eau</strong> — chanter donne soif!"}</p>
+    </div>`;
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>Choir is tonight! 🎶</strong> Just a quick reminder with everything you need before you head out the door.</p>
+    ${box("en")}
+    ${bring("en")}
+    <p style="${P}">If something comes up and you can't make it tonight, just send me a note at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}"><em>If you've already let me know you won't be with us tonight, that's absolutely fine — there's a note in your file, so please ignore this message.</em></p>
+    <p style="${P}">See you soon!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>La chorale, c'est ce soir! 🎶</strong> Voici un petit rappel avec tout ce qu'il vous faut avant de partir.</p>
+    ${box("fr")}
+    ${bring("fr")}
+    <p style="${P}">Si un imprévu vous empêche de venir ce soir, écrivez-moi simplement à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}"><em>Si vous m'avez déjà avisée de votre absence ce soir, aucun souci — c'est noté à votre dossier, veuillez ignorer ce message.</em></p>
+    <p style="${P}">À tout à l'heure!</p>
+    ${SIGN}`;
+  return {
+    subject: `Choir is tonight${city ? ` — ${city}` : ""}! 🎶 / La chorale, c'est ce soir${city ? ` — ${city}` : ""}!`,
+    html: wrap(inner, "Choir is tonight — where, what time, come early, and what to bring."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
 
   if (segment === "fall-paid") return renderPaid(r);
@@ -771,6 +820,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "first-night-unpaid") return renderFirstNightUnpaid(r);
   if (segment === "resources-week1-paid") return renderResourcesWeek1(r);
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
+  if (segment === "choir-tonight") return renderChoirTonight(r);
   return renderConsidering(r);
 }
 
@@ -845,6 +895,32 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   if (segment === "welcome-new-paid") return Array.from(newlyPaidMap.values());
 
   if (segment === "fall-paid" || segment === "first-night-paid" || segment === "resources-week1-paid") return Array.from(paidMap.values());
+
+  if (segment === "choir-tonight") {
+    // Everyone singing tonight: registered/paid members plus anyone on the guest list
+    const regLoc = new Map<string, string>();
+    for (const r of allRegs || []) {
+      if (r.session_label !== "fall-2026") continue;
+      const e = String(r.email || "").trim().toLowerCase();
+      const loc = normLocation(r.location);
+      if (e && loc && !regLoc.has(e)) regLoc.set(e, loc);
+    }
+    const out = new Map<string, Recipient>(paidMap);
+    for (const m of memberRows || []) {
+      if (!m.email || m.archived_at) continue;
+      const e = String(m.email).toLowerCase();
+      if (suppressed.has(e) || out.has(e)) continue;
+      const tags = Array.isArray(m.crm_tags) ? m.crm_tags : [];
+      if (!tags.includes("guest-list")) continue;
+      out.set(e, {
+        email: e,
+        first_name: m.first_name || "",
+        last_name: m.last_name || "",
+        location: normLocation(m.location) || regLoc.get(e) || "",
+      });
+    }
+    return Array.from(out.values());
+  }
 
   if (segment === "first-night-guests") {
     // People tagged guest-list who haven't paid — invited to try the first night

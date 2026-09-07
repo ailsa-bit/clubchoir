@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid";
+type Segment = "choir-tonight" | "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -37,6 +37,7 @@ interface Preflight {
 }
 
 const EMPTY_COUNTS = {
+  "choir-tonight": 0,
   "first-night-guests": 0,
   "first-night-paid": 0,
   "first-night-unpaid": 0,
@@ -48,6 +49,12 @@ const EMPTY_COUNTS = {
 const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
+  {
+    key: "choir-tonight",
+    title: "Choir Is Tonight — Reminder",
+    description: "Same-day reminder for one location: where we're singing, what time we start, come early to pick up your binder and name tag, and bring your glasses, a pen or pencil and water. Includes Ailsa's email if someone can't make it, and a note to ignore the message if they've already said they'll be away. Goes to registered & paid members plus the guest list. Bilingual EN/FR.",
+    color: "bg-indigo-50 border-indigo-300",
+  },
   {
     key: "welcome-new-paid",
     title: "Welcome — New Paid Member",
@@ -89,6 +96,7 @@ const Campaigns = () => {
   const { toast } = useToast();
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
+    "choir-tonight": {},
     "first-night-guests": {},
     "first-night-paid": {},
     "first-night-unpaid": {},
@@ -96,6 +104,7 @@ const Campaigns = () => {
     "welcome-new-paid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
+    "choir-tonight": "all",
     "first-night-guests": "all",
     "first-night-paid": "all",
     "first-night-unpaid": "all",
@@ -105,6 +114,7 @@ const Campaigns = () => {
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
+    "choir-tonight": {},
     "first-night-guests": {},
     "first-night-paid": {},
     "first-night-unpaid": {},
