@@ -805,6 +805,39 @@ function renderChoirTonight(r: Recipient) {
   };
 }
 
+function renderGuestFollowUp(r: Recipient) {
+  const loc = LOCATIONS[r.location];
+  const city = loc ? esc(loc.city) : "";
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>Tonight was so much fun!</strong> If you made it out tonight, thank you for being a part of it. I didn't have a chance to speak to everyone, but I look forward to getting to know some of you this session.</p>
+    <p style="${P}"><strong>If I'm seeing you next week for your trial</strong>, see you there — no need to do anything else right now.</p>
+    <p style="${P}"><strong>If you've decided to join us</strong>, you can register below. Once you register, you'll receive further details about how to complete your registration.</p>
+    ${detailsBox(r, "en")}
+    ${BTN(`${SITE_URL}/fall-registration`, "Register for the fall session")}
+    ${PAYMENT_BOX_EN}
+    <p style="${P}"><em>If you have already sent in your payment, please ignore this message.</em></p>
+    <p style="${P}"><strong>If you've decided this isn't for you</strong>, I completely understand and thank you for trying it out. I hope you'll stay in touch — and maybe see you at a future Club Choir event.</p>
+    <p style="${P}">I look forward to many more fun singing nights during the fall session.</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>Ce soir était tellement amusant!</strong> Si vous êtes venu(e) ce soir, merci d'en avoir fait partie. Je n'ai pas eu la chance de parler à tout le monde, mais j'ai hâte de faire connaissance avec certains d'entre vous au cours de la session.</p>
+    <p style="${P}"><strong>Si je vous revois la semaine prochaine pour votre essai</strong>, à la semaine prochaine — vous n'avez rien d'autre à faire pour l'instant.</p>
+    <p style="${P}"><strong>Si vous avez décidé de vous joindre à nous</strong>, vous pouvez vous inscrire ci-dessous. Une fois inscrit(e), vous recevrez plus de détails sur la façon de compléter votre inscription.</p>
+    ${detailsBox(r, "fr")}
+    ${BTN(`${SITE_URL}/fall-registration`, "S'inscrire à la session d'automne")}
+    ${PAYMENT_BOX_FR}
+    <p style="${P}"><em>Si vous avez déjà envoyé votre paiement, veuillez ignorer ce message.</em></p>
+    <p style="${P}"><strong>Si vous avez décidé que ce n'est pas pour vous</strong>, je comprends tout à fait et je vous remercie d'avoir essayé. J'espère que nous resterons en contact — et peut-être à un futur événement de Club Choir.</p>
+    <p style="${P}">J'ai hâte de passer de nombreuses autres soirées de chant amusantes au cours de la session d'automne.</p>
+    ${SIGN}`;
+  return {
+    subject: `Thank you for trying Club Choir${city ? ` — ${city}` : ""} / Merci d'avoir essayé Club Choir`,
+    html: wrap(inner, "Next steps after your first night — register, come back for a trial, or just stay in touch."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
 
   if (segment === "fall-paid") return renderPaid(r);
