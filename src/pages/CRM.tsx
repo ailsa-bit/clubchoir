@@ -431,7 +431,12 @@ const CRM = () => {
           : `${c.first_name} is marked paid. Access unlocks when they sign up.`,
       });
     }
-    // Send the "Welcome — New Paid Member" email
+    // Send the "Welcome — New Paid Member" email (skipped for Montreal — admin sends those herself)
+    const isMontreal = (c.location || reg.location || "").toLowerCase().includes("montreal");
+    if (isMontreal) {
+      fetchAll();
+      return;
+    }
     try {
       const sendRequest = {
         segment: "welcome-new-paid",
