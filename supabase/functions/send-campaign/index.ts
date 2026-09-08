@@ -12,7 +12,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid" | "choir-tonight";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid" | "choir-tonight" | "guest-follow-up";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -31,6 +31,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "resources-week1-paid": "fall-2026-resources-week1-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-v1",
+  "guest-follow-up": "fall-2026-guest-follow-up-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -804,6 +805,39 @@ function renderChoirTonight(r: Recipient) {
   };
 }
 
+function renderGuestFollowUp(r: Recipient) {
+  const loc = LOCATIONS[r.location];
+  const city = loc ? esc(loc.city) : "";
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>Tonight was so much fun!</strong> If you made it out tonight, thank you for being a part of it. I didn't have a chance to speak to everyone, but I look forward to getting to know some of you this session.</p>
+    <p style="${P}"><strong>If I'm seeing you next week for your trial</strong>, see you there — no need to do anything else right now.</p>
+    <p style="${P}"><strong>If you've decided to join us</strong>, you can register below. Once you register, you'll receive further details about how to complete your registration.</p>
+    ${detailsBox(r, "en")}
+    ${BTN(`${SITE_URL}/fall-registration`, "Register for the fall session")}
+    ${PAYMENT_BOX_EN}
+    <p style="${P}"><em>If you have already sent in your payment, please ignore this message.</em></p>
+    <p style="${P}"><strong>If you've decided this isn't for you</strong>, I completely understand and thank you for trying it out. I hope you'll stay in touch — and maybe see you at a future Club Choir event.</p>
+    <p style="${P}">I look forward to many more fun singing nights during the fall session.</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>Ce soir était tellement amusant!</strong> Si vous êtes venu(e) ce soir, merci d'en avoir fait partie. Je n'ai pas eu la chance de parler à tout le monde, mais j'ai hâte de faire connaissance avec certains d'entre vous au cours de la session.</p>
+    <p style="${P}"><strong>Si je vous revois la semaine prochaine pour votre essai</strong>, à la semaine prochaine — vous n'avez rien d'autre à faire pour l'instant.</p>
+    <p style="${P}"><strong>Si vous avez décidé de vous joindre à nous</strong>, vous pouvez vous inscrire ci-dessous. Une fois inscrit(e), vous recevrez plus de détails sur la façon de compléter votre inscription.</p>
+    ${detailsBox(r, "fr")}
+    ${BTN(`${SITE_URL}/fall-registration`, "S'inscrire à la session d'automne")}
+    ${PAYMENT_BOX_FR}
+    <p style="${P}"><em>Si vous avez déjà envoyé votre paiement, veuillez ignorer ce message.</em></p>
+    <p style="${P}"><strong>Si vous avez décidé que ce n'est pas pour vous</strong>, je comprends tout à fait et je vous remercie d'avoir essayé. J'espère que nous resterons en contact — et peut-être à un futur événement de Club Choir.</p>
+    <p style="${P}">J'ai hâte de passer de nombreuses autres soirées de chant amusantes au cours de la session d'automne.</p>
+    ${SIGN}`;
+  return {
+    subject: `Thank you for trying Club Choir${city ? ` — ${city}` : ""} / Merci d'avoir essayé Club Choir`,
+    html: wrap(inner, "Next steps after your first night — register, come back for a trial, or just stay in touch."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
 
   if (segment === "fall-paid") return renderPaid(r);
@@ -816,6 +850,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "binder-count-unpaid") return renderBinderUnpaid(r);
   if (segment === "binder-count-considering") return renderBinderConsidering(r);
   if (segment === "first-night-guests") return renderFirstNightGuests(r);
+  if (segment === "guest-follow-up") return renderGuestFollowUp(r);
   if (segment === "first-night-paid") return renderFirstNightPaid(r);
   if (segment === "first-night-unpaid") return renderFirstNightUnpaid(r);
   if (segment === "resources-week1-paid") return renderResourcesWeek1(r);
@@ -948,6 +983,31 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
     return Array.from(guests.values());
   }
 
+  if (segment === "guest-follow-up") {
+    // People tagged guest-list who haven't paid or confirmed cash on the first night
+    const regLoc = new Map<string, string>();
+    for (const r of allRegs || []) {
+      if (r.session_label !== "fall-2026") continue;
+      const e = String(r.email || "").trim().toLowerCase();
+      const loc = normLocation(r.location);
+      if (e && loc && !regLoc.has(e)) regLoc.set(e, loc);
+    }
+    const guests = new Map<string, Recipient>();
+    for (const m of memberRows || []) {
+      if (!m.email || m.archived_at) continue;
+      const e = String(m.email).toLowerCase();
+      if (suppressed.has(e) || paidMap.has(e) || cashFirstNight.has(e) || guests.has(e)) continue;
+      const tags = Array.isArray(m.crm_tags) ? m.crm_tags : [];
+      if (!tags.includes("guest-list")) continue;
+      guests.set(e, {
+        email: e,
+        first_name: m.first_name || "",
+        last_name: m.last_name || "",
+        location: normLocation(m.location) || regLoc.get(e) || "",
+      });
+    }
+    return Array.from(guests.values());
+  }
 
   if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid") return Array.from(unpaidMap.values());
 
