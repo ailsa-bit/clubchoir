@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid";
+type Segment = "choir-tonight" | "first-night-guests" | "guest-follow-up" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
