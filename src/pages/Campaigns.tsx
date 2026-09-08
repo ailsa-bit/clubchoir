@@ -39,6 +39,7 @@ interface Preflight {
 const EMPTY_COUNTS = {
   "choir-tonight": 0,
   "first-night-guests": 0,
+  "guest-follow-up": 0,
   "first-night-paid": 0,
   "first-night-unpaid": 0,
   "resources-week1-paid": 0,
@@ -80,6 +81,12 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     color: "bg-rose-50 border-rose-300",
   },
   {
+    key: "guest-follow-up",
+    title: "Guest List Follow-Up — After First Night",
+    description: "Send by location after the first rehearsal. Thanks guests for coming, acknowledges those coming back for a trial, gives registration + Interac details for anyone ready to join, and a graceful sign-off for those who decide it's not for them. Includes the 'ignore if already paid' note. Targets guest-list contacts only. Bilingual EN/FR.",
+    color: "bg-teal-50 border-teal-300",
+  },
+  {
     key: "first-night-unpaid",
     title: "First Night — Registered/Interested, Unpaid",
     description: "Last-chance nudge: choir starts next week, info emails are going out now — finalize registration (Interac details included) or reply to try the first night. Bilingual EN/FR.",
@@ -98,6 +105,7 @@ const Campaigns = () => {
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "first-night-guests": {},
+    "guest-follow-up": {},
     "first-night-paid": {},
     "first-night-unpaid": {},
     "resources-week1-paid": {},
@@ -106,6 +114,7 @@ const Campaigns = () => {
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "first-night-guests": "all",
+    "guest-follow-up": "all",
     "first-night-paid": "all",
     "first-night-unpaid": "all",
     "resources-week1-paid": "all",
@@ -116,6 +125,7 @@ const Campaigns = () => {
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "first-night-guests": {},
+    "guest-follow-up": {},
     "first-night-paid": {},
     "first-night-unpaid": {},
     "resources-week1-paid": {},
