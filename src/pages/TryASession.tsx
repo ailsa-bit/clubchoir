@@ -41,7 +41,7 @@ const LOCATIONS: Loc[] = [
     dot: "bg-pink",
     ring: "ring-pink",
     day: { en: "Mondays · 7:00–8:30 PM", fr: "Lundis · 19 h – 20 h 30" },
-    venue: { en: "Kensington Presbyterian Church", fr: "Kensington Presbyterian Church" },
+    venue: { en: "Paroisse Notre-Dame-De-Grâce", fr: "Paroisse Notre-Dame-De-Grâce" },
   },
   {
     value: "Hudson – Monday",

@@ -80,7 +80,7 @@ const LOCATIONS: Record<string, LocInfo> = {
     city: "Montreal", dayEn: "Mondays", dayFr: "Lundis", time: "7:00–8:30 PM",
     datesEn: "Sept 7 – Dec 7, 2026", datesFr: "7 sept. – 7 déc. 2026",
     startEn: "Monday, September 7", startFr: "lundi 7 septembre",
-    venue: "Kensington Presbyterian Church", address: "6225 Av. Godfrey, Montréal",
+    venue: "Paroisse Notre-Dame-De-Grâce", address: "5333 avenue Notre-Dame-De-Grâce (corner Décarie), Montréal",
   },
   "Hudson": {
     city: "Hudson", dayEn: "Tuesdays", dayFr: "Mardis", time: "7:00–8:30 PM",

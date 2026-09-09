@@ -25,7 +25,7 @@ const LOCATION_INFO: Record<
     day: "Mondays",
     time: "7:00–8:30 PM",
     dates: "Sept 7 – Dec 7, 2026",
-    venue: "Kensington Presbyterian Church, 6225 Av. Godfrey, Montréal",
+    venue: "Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (corner Décarie), Montréal",
   },
   Hudson: {
     city: "Hudson",
