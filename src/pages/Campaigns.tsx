@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "first-night-guests" | "guest-follow-up" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid";
+type Segment = "choir-tonight" | "first-night-guests" | "guest-follow-up" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-late-paid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -43,7 +43,7 @@ const EMPTY_COUNTS = {
   "first-night-paid": 0,
   "first-night-unpaid": 0,
   "resources-week1-paid": 0,
-  "welcome-new-paid": 0,
+  "welcome-late-paid": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
@@ -57,9 +57,9 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     color: "bg-indigo-50 border-indigo-300",
   },
   {
-    key: "welcome-new-paid",
-    title: "Welcome — New Paid Member",
-    description: "Sent automatically when you mark someone paid in the CRM (from Sept 5, 2026 onward only — people paid before that never appear here). Thanks them for their payment, gives first-night details for their location, links to the Fall 2026 song resources, and walks them through creating their member profile. Bilingual EN/FR.",
+    key: "welcome-late-paid",
+    title: "Welcome — Joined After First Night",
+    description: "Sent automatically when you mark someone paid in the CRM. Thanks them for joining, walks them through setting up their member profile, shows their choir location details, and points them to their schedule (My Choir tab) and the Fall 2026 song resources. Includes Ailsa's email for any issues. Bilingual EN/FR.",
     color: "bg-violet-50 border-violet-300",
   },
   {
@@ -109,7 +109,7 @@ const Campaigns = () => {
     "first-night-paid": {},
     "first-night-unpaid": {},
     "resources-week1-paid": {},
-    "welcome-new-paid": {},
+    "welcome-late-paid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
@@ -118,7 +118,7 @@ const Campaigns = () => {
     "first-night-paid": "all",
     "first-night-unpaid": "all",
     "resources-week1-paid": "all",
-    "welcome-new-paid": "all",
+    "welcome-late-paid": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
@@ -129,7 +129,7 @@ const Campaigns = () => {
     "first-night-paid": {},
     "first-night-unpaid": {},
     "resources-week1-paid": {},
-    "welcome-new-paid": {},
+    "welcome-late-paid": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
