@@ -9,7 +9,7 @@ const corsHeaders = {
 };
 
 const SESSION_DETAILS: Record<string, { en: string; fr: string }> = {
-  "Montreal": { en: "Mondays, Sept 7 – Dec 7, 2026 · Kensington Presbyterian Church", fr: "Lundis, 7 sept. – 7 déc. 2026 · Kensington Presbyterian Church" },
+  "Montreal": { en: "Mondays, Sept 7 – Dec 7, 2026 · Paroisse Notre-Dame-De-Grâce", fr: "Lundis, 7 sept. – 7 déc. 2026 · Paroisse Notre-Dame-De-Grâce" },
   "Hudson": { en: "Tuesdays, Sept 8 – Dec 8, 2026 · The Hudson Legion, 57 Beach Road", fr: "Mardis, 8 sept. – 8 déc. 2026 · The Hudson Legion, 57 Beach Road" },
   "Saint-Hubert": { en: "Wednesdays, Sept 9 – Dec 9, 2026", fr: "Mercredis, 9 sept. – 9 déc. 2026" },
   "Pointe-Claire": { en: "Thursdays, Sept 10 – Dec 10, 2026", fr: "Jeudis, 10 sept. – 10 déc. 2026" },

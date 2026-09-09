@@ -14,9 +14,9 @@ var choirLocations = {
     slug: "montreal",
     city: "Montreal",
     pageTitle: "Montreal Choir \u2013 Club Choir | No-Audition Adult Choir in Montr\xE9al",
-    metaDescription: "Join Club Choir in Montreal \u2014 a friendly no-audition adult community choir that meets Monday evenings at Kensington Presbyterian Church. Fall 2026 registration is open.",
+    metaDescription: "Join Club Choir in Montreal \u2014 a friendly no-audition adult community choir that meets Monday evenings at Paroisse Notre-Dame-De-Gr\xE2ce. Fall 2026 registration is open.",
     pageTitleFr: "Chorale Montr\xE9al \u2013 Club Choir | chorale pour adultes sans audition \xE0 Montr\xE9al",
-    metaDescriptionFr: "Joignez Club Choir \xE0 Montr\xE9al \u2014 une chorale communautaire chaleureuse et sans audition pour adultes, les lundis soirs \xE0 l'\xE9glise Kensington Presbyterian. Inscriptions ouvertes pour l'automne 2026.",
+    metaDescriptionFr: "Joignez Club Choir \xE0 Montr\xE9al \u2014 une chorale communautaire chaleureuse et sans audition pour adultes, les lundis soirs \xE0 la Paroisse Notre-Dame-De-Gr\xE2ce. Inscriptions ouvertes pour l'automne 2026.",
     heroHeadline: {
       en: "Montreal Choir \u2013 Sing with us on Monday nights",
       fr: "Chorale Montr\xE9al \u2013 Chantez avec nous le lundi soir"
@@ -27,24 +27,24 @@ var choirLocations = {
     },
     about: {
       en: [
-        "Club Choir Montreal is a relaxed, no-audition choir for adults of all ages and skill levels. We meet Monday evenings at Kensington Presbyterian Church in NDG, and you don't need to read music or have any choir experience to take part. If you love singing \u2014 or have always wanted to try \u2014 you belong here.",
+        "Club Choir Montreal is a relaxed, no-audition choir for adults of all ages and skill levels. We meet Monday evenings at Paroisse Notre-Dame-De-Gr\xE2ce in NDG, and you don't need to read music or have any choir experience to take part. If you love singing \u2014 or have always wanted to try \u2014 you belong here.",
         "Every week, founder and director Ailsa leads the group through pop classics, soulful ballads, and feel-good harmonies, with live instrumental accompaniment at every rehearsal. Sessions run for 14 weeks each fall (September\u2013December) and winter (February\u2013May) and end with a fun community showcase. It's a chance to learn something new, meet wonderful people across Montreal, and leave each rehearsal a little lighter than you arrived."
       ],
       fr: [
-        "Club Choir Montr\xE9al est une chorale d\xE9tendue et sans audition pour les adultes de tous \xE2ges et niveaux. Nous nous rencontrons le lundi soir \xE0 l'\xE9glise Kensington Presbyterian \xE0 NDG, et vous n'avez pas besoin de lire la musique ou d'avoir de l'exp\xE9rience pour participer. Si vous aimez chanter \u2014 ou avez toujours voulu essayer \u2014 vous avez votre place ici.",
+        "Club Choir Montr\xE9al est une chorale d\xE9tendue et sans audition pour les adultes de tous \xE2ges et niveaux. Nous nous rencontrons le lundi soir \xE0 la Paroisse Notre-Dame-De-Gr\xE2ce \xE0 NDG, et vous n'avez pas besoin de lire la musique ou d'avoir de l'exp\xE9rience pour participer. Si vous aimez chanter \u2014 ou avez toujours voulu essayer \u2014 vous avez votre place ici.",
         "Chaque semaine, la fondatrice et directrice Ailsa guide le groupe \xE0 travers des classiques pop, des ballades soul et des harmonies entra\xEEnantes, avec un accompagnement instrumental live \xE0 chaque r\xE9p\xE9tition. Les sessions durent 14 semaines, \xE0 l'automne (septembre\u2013d\xE9cembre) et \xE0 l'hiver (f\xE9vrier\u2013mai), et se terminent par un spectacle communautaire convivial. C'est l'occasion d'apprendre, de rencontrer des gens formidables et de repartir un peu plus l\xE9ger chaque semaine."
       ]
     },
     day: { en: "Mondays", fr: "Lundis" },
     time: "7:00\u20138:30 PM",
     dates: { en: "Sept 7 \u2013 Dec 7, 2026", fr: "7 sept. \u2013 7 d\xE9c. 2026" },
-    venueName: "Kensington Presbyterian Church",
-    venueAddress: "6225 Av. Godfrey",
+    venueName: "Paroisse Notre-Dame-De-Gr\xE2ce",
+    venueAddress: "5333 avenue Notre-Dame-De-Gr\xE2ce (corner D\xE9carie)",
     venueCity: "Montr\xE9al",
     postalCode: "H4B 1K3",
     region: "QC",
     country: "CA",
-    mapsUrl: "https://maps.google.com/?q=Kensington+Presbyterian+Church+6225+Godfrey+Montreal",
+    mapsUrl: "https://maps.google.com/?q=Paroisse+Notre-Dame-De-Grace+5333+avenue+Notre-Dame-De-Grace+Montreal",
     theme: { bg: "bg-pink-light", border: "border-pink/30", dot: "bg-pink" },
     photoIds: ["stage-performance", "group-christmas", "group-rehearsal"],
     openHouse: { en: "Monday, August 3, 2026", fr: "Lundi 3 ao\xFBt 2026", time: "7:00 PM" }

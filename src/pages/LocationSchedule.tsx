@@ -33,7 +33,7 @@ const hudsonBbqNotice = {
 };
 
 const locationMeta: Record<string, LocationMeta> = {
-  "Montreal": { dot: "bg-pink", bg: "bg-pink-light border-pink/20", venue: "Kensington – Kensington Room", day: "Monday", time: "7:00–8:30 PM", address: "6225 Av. Godfrey" },
+  "Montreal": { dot: "bg-pink", bg: "bg-pink-light border-pink/20", venue: "Paroisse Notre-Dame-De-Grâce", day: "Monday", time: "7:00–8:30 PM", address: "5333 avenue Notre-Dame-De-Grâce (corner Décarie)" },
   "Hudson": { dot: "bg-orange", bg: "bg-orange-light border-orange/20", venue: "The Hudson Legion", day: "Tuesday", time: "7:00–8:30 PM", address: "57 Beach Road, Hudson, J0P 1H0", notice: hudsonBbqNotice },
   "Saint-Hubert": { dot: "bg-lime", bg: "bg-lime-light border-lime/20", venue: "St-Gabriel Catholic Church", day: "Wednesday", time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert" },
   "Pointe-Claire": { dot: "bg-purple", bg: "bg-purple-light border-purple/20", venue: "Valois United Church", day: "Thursday", time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire" },
