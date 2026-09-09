@@ -74,7 +74,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     venueName: "Paroisse Notre-Dame-De-Grâce",
     venueAddress: "5333 avenue Notre-Dame-De-Grâce (corner Décarie)",
     venueCity: "Montréal",
-    postalCode: "H4B 1K3",
+    postalCode: "H4A 1L2",
     region: "QC",
     country: "CA",
     mapsUrl: "https://maps.google.com/?q=Paroisse+Notre-Dame-De-Grace+5333+avenue+Notre-Dame-De-Grace+Montreal",

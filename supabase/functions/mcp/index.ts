@@ -41,7 +41,7 @@ var choirLocations = {
     venueName: "Paroisse Notre-Dame-De-Gr\xE2ce",
     venueAddress: "5333 avenue Notre-Dame-De-Gr\xE2ce (corner D\xE9carie)",
     venueCity: "Montr\xE9al",
-    postalCode: "H4B 1K3",
+    postalCode: "H4A 1L2",
     region: "QC",
     country: "CA",
     mapsUrl: "https://maps.google.com/?q=Paroisse+Notre-Dame-De-Grace+5333+avenue+Notre-Dame-De-Grace+Montreal",
