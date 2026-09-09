@@ -1191,6 +1191,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 // mutually-exclusive first-night campaign (an address gets only ONE first-night email).
 const EXCLUSIVE_GROUPS: string[][] = [
   ["first-night-guests", "first-night-paid", "first-night-unpaid"],
+  ["welcome-new-paid", "welcome-late-paid"],
 ];
 
 async function loadAlreadySent(
