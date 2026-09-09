@@ -49,7 +49,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
       "Join Club Choir in Montreal — a friendly no-audition adult community choir that meets Monday evenings at Paroisse Notre-Dame-De-Grâce. Fall 2026 registration is open.",
     pageTitleFr: "Chorale Montréal – Club Choir | chorale pour adultes sans audition à Montréal",
     metaDescriptionFr:
-      "Joignez Club Choir à Montréal — une chorale communautaire chaleureuse et sans audition pour adultes, les lundis soirs à l'église Kensington Presbyterian. Inscriptions ouvertes pour l'automne 2026.",
+      "Joignez Club Choir à Montréal — une chorale communautaire chaleureuse et sans audition pour adultes, les lundis soirs à la Paroisse Notre-Dame-De-Grâce. Inscriptions ouvertes pour l'automne 2026.",
     heroHeadline: {
       en: "Montreal Choir – Sing with us on Monday nights",
       fr: "Chorale Montréal – Chantez avec nous le lundi soir",
@@ -64,7 +64,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
         "Every week, founder and director Ailsa leads the group through pop classics, soulful ballads, and feel-good harmonies, with live instrumental accompaniment at every rehearsal. Sessions run for 14 weeks each fall (September–December) and winter (February–May) and end with a fun community showcase. It's a chance to learn something new, meet wonderful people across Montreal, and leave each rehearsal a little lighter than you arrived.",
       ],
       fr: [
-        "Club Choir Montréal est une chorale détendue et sans audition pour les adultes de tous âges et niveaux. Nous nous rencontrons le lundi soir à l'église Kensington Presbyterian à NDG, et vous n'avez pas besoin de lire la musique ou d'avoir de l'expérience pour participer. Si vous aimez chanter — ou avez toujours voulu essayer — vous avez votre place ici.",
+        "Club Choir Montréal est une chorale détendue et sans audition pour les adultes de tous âges et niveaux. Nous nous rencontrons le lundi soir à la Paroisse Notre-Dame-De-Grâce à NDG, et vous n'avez pas besoin de lire la musique ou d'avoir de l'expérience pour participer. Si vous aimez chanter — ou avez toujours voulu essayer — vous avez votre place ici.",
         "Chaque semaine, la fondatrice et directrice Ailsa guide le groupe à travers des classiques pop, des ballades soul et des harmonies entraînantes, avec un accompagnement instrumental live à chaque répétition. Les sessions durent 14 semaines, à l'automne (septembre–décembre) et à l'hiver (février–mai), et se terminent par un spectacle communautaire convivial. C'est l'occasion d'apprendre, de rencontrer des gens formidables et de repartir un peu plus léger chaque semaine.",
       ],
     },
@@ -77,7 +77,7 @@ export const choirLocations: Record<LocationSlug, ChoirLocationData> = {
     postalCode: "H4B 1K3",
     region: "QC",
     country: "CA",
-    mapsUrl: "https://maps.google.com/?q=Kensington+Presbyterian+Church+6225+Godfrey+Montreal",
+    mapsUrl: "https://maps.google.com/?q=Paroisse+Notre-Dame-De-Grace+5333+avenue+Notre-Dame-De-Grace+Montreal",
     theme: { bg: "bg-pink-light", border: "border-pink/30", dot: "bg-pink" },
     photoIds: ["stage-performance", "group-christmas", "group-rehearsal"],
     openHouse: { en: "Monday, August 3, 2026", fr: "Lundi 3 août 2026", time: "7:00 PM" },
