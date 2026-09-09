@@ -12,7 +12,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid" | "choir-tonight" | "guest-follow-up";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "first-night-guests" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -30,6 +30,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "first-night-unpaid": "fall-2026-first-night-unpaid-v1",
   "resources-week1-paid": "fall-2026-resources-week1-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
+  "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-v1",
   "guest-follow-up": "fall-2026-guest-follow-up-v1",
 };
@@ -693,6 +694,48 @@ function renderWelcomeNewPaid(r: Recipient) {
   };
 }
 
+// Welcome for members who paid AFTER the first session night — no first-night
+// logistics; focuses on profile setup, My Choir schedule, and song resources.
+function renderWelcomeLatePaid(r: Recipient) {
+  const RES = `${SITE_URL}/resources/fall-2026`;
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>Thank you so much for joining Club Choir!</strong> Your payment has been received and your spot for the Fall 2026 session is officially confirmed. Welcome aboard — we're so happy to have you. 🎶</p>
+    <p style="${P}">Here's everything you need to get set up:</p>
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Step 1 — Set up your member profile</div>
+      <p style="margin:3px 0;font-size:15px;color:#831843;line-height:1.6;">Everything for members lives behind your account. It takes about a minute: sign up with the <strong>same email address you're reading this on</strong>, then click the confirmation link we email you.</p>
+    </div>
+    ${BTN(`${SITE_URL}/login?signup=1`, "Set up my member profile")}
+    ${detailsBox(r, "en")}
+    <p style="${P}"><strong>Step 2 — Find your schedule.</strong> Once your account is set up, sign in and open the <strong>My Choir</strong> tab — your full session schedule with all the dates, times and the address for your location is right there.</p>
+    <p style="${P}"><strong>Step 3 — Explore the song resources.</strong> Recordings, lyrics, lyric slides and sheet music for the songs we're learning this session live in the <strong>Fall 2026 Song Resources</strong> section of the My Choir tab — and new resources are posted every Friday.</p>
+    ${BTN(RES, "Open the song resources")}
+    <p style="${P}">If you have any issues at all — signing in, confirming your email, or opening a recording — just send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll get it sorted out with you right away.</p>
+    <p style="${P}">See you at choir — I can't wait to sing with you!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>Merci beaucoup de vous joindre à Club Choir!</strong> Votre paiement a bien été reçu et votre place pour la session d'automne 2026 est officiellement confirmée. Bienvenue parmi nous — nous sommes ravis de vous accueillir. 🎶</p>
+    <p style="${P}">Voici tout ce qu'il vous faut pour commencer :</p>
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Étape 1 — Créez votre profil membre</div>
+      <p style="margin:3px 0;font-size:15px;color:#831843;line-height:1.6;">Tout le contenu des membres se trouve derrière votre compte. Ça prend environ une minute : inscrivez-vous avec la <strong>même adresse courriel</strong> que celle où vous lisez ce message, puis cliquez sur le lien de confirmation que nous vous enverrons.</p>
+    </div>
+    ${BTN(`${SITE_URL}/login?signup=1`, "Créer mon profil membre")}
+    ${detailsBox(r, "fr")}
+    <p style="${P}"><strong>Étape 2 — Consultez votre horaire.</strong> Une fois votre compte créé, connectez-vous et ouvrez l'onglet <strong>Ma chorale</strong> — votre horaire complet de la session (dates, heures et adresse de votre lieu) s'y trouve.</p>
+    <p style="${P}"><strong>Étape 3 — Explorez les ressources musicales.</strong> Enregistrements, paroles, diapositives et partitions des chansons de la session se trouvent dans la section <strong>Ressources des chansons — automne 2026</strong> de l'onglet Ma chorale — et de nouvelles ressources sont ajoutées chaque vendredi.</p>
+    ${BTN(RES, "Voir les ressources musicales")}
+    <p style="${P}">Si vous avez le moindre problème — connexion, confirmation de votre courriel ou lecture d'un enregistrement — écrivez-moi simplement à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je m'en occupe avec vous sans tarder.</p>
+    <p style="${P}">À très bientôt à la chorale — j'ai tellement hâte de chanter avec vous!</p>
+    ${SIGN}`;
+  return {
+    subject: `Welcome to Club Choir — let's get you set up! / Bienvenue à Club Choir — on vous prépare tout!`,
+    html: wrap(inner, "Thank you for joining — set up your member profile, find your schedule and explore the song resources."),
+  };
+}
+
 function renderFirstNightUnpaid(r: Recipient) {
   const loc = LOCATIONS[r.location];
   const inner = `
@@ -855,6 +898,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "first-night-unpaid") return renderFirstNightUnpaid(r);
   if (segment === "resources-week1-paid") return renderResourcesWeek1(r);
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
+  if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
   return renderConsidering(r);
 }
@@ -927,7 +971,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   for (const e of cashFirstNight) unpaidMap.delete(e);
 
 
-  if (segment === "welcome-new-paid") return Array.from(newlyPaidMap.values());
+  if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
 
   if (segment === "fall-paid" || segment === "first-night-paid" || segment === "resources-week1-paid") return Array.from(paidMap.values());
 
