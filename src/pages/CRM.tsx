@@ -431,12 +431,7 @@ const CRM = () => {
           : `${c.first_name} is marked paid. Access unlocks when they sign up.`,
       });
     }
-    // Send the "Welcome — Joined After First Night" email (skipped for Montreal — admin sends those herself)
-    const isMontreal = (c.location || reg.location || "").toLowerCase().includes("montreal");
-    if (isMontreal) {
-      fetchAll();
-      return;
-    }
+    // Send the "Welcome — Joined After First Night" email to all locations (including Montreal)
     try {
       const sendRequest = {
         segment: "welcome-late-paid",
