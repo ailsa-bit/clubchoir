@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "guest-follow-up" | "resources-week1-paid" | "welcome-late-paid";
+type Segment = "choir-tonight" | "guest-follow-up" | "resources-week1-paid" | "welcome-late-paid" | "montreal-location-move";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -41,10 +41,13 @@ const EMPTY_COUNTS = {
   "guest-follow-up": 0,
   "resources-week1-paid": 0,
   "welcome-late-paid": 0,
+  "montreal-location-move": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
-const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
+const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
+  "montreal-location-move": "Montreal",
+};
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
