@@ -571,43 +571,6 @@ function firstNightLogistics(r: Recipient, lang: "en" | "fr"): string {
   </div>`;
 }
 
-function renderFirstNightGuests(r: Recipient) {
-  const inner = `
-    ${greetEn(r)}
-    <p style="${P}"><strong>This email contains important information about the first night — please read all the way to the end.</strong></p>
-    <p style="${P}">I'm so happy you'll be joining us for the first rehearsal of the fall session! Here's everything you need to know for a great first night.</p>
-    ${firstNightLogistics(r, "en")}
-    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
-      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">What to bring</div>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">💧 <strong>Water</strong> — singing is thirsty work, stay hydrated!</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">👓 <strong>Your reading glasses</strong>, if you need them.</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 You'll be <strong>provided a binder</strong> with all the lyric sheets. If you decide to join us, the binder is yours to keep — if you're still undecided after the first night, simply leave it behind.</p>
-    </div>
-    <p style="${P}"><strong>What to expect:</strong> ${SONGS_EN}</p>
-    <p style="${P}">There's no audition and no pressure — just come as you are and enjoy the evening. And if you choose to join after the first rehearsal, you'll get <strong>full access to the members section</strong> of clubchoir.ca, with the weekly schedule, the songs we're learning, and everything else for the season.</p>
-    <p style="${P}">I can't wait to sing with you!</p>
-    ${SIGN}
-    ${DIVIDER}
-    ${greetFr(r)}
-    <p style="${P}"><strong>Ce courriel contient des informations importantes au sujet de la première soirée — merci de le lire jusqu'à la fin.</strong></p>
-    <p style="${P}">Je suis ravie que vous vous joigniez à nous pour la première répétition de la session d'automne! Voici tout ce qu'il faut savoir pour une belle première soirée.</p>
-    ${firstNightLogistics(r, "fr")}
-    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
-      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">Quoi apporter</div>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">💧 <strong>De l'eau</strong> — chanter donne soif, restez hydraté(e)!</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">👓 <strong>Vos lunettes de lecture</strong>, si vous en avez besoin.</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">🎵 On vous remettra un <strong>cartable</strong> avec toutes les paroles. Si vous décidez de vous joindre à nous, il est à vous — si vous êtes encore indécis(e) après la première soirée, laissez-le simplement sur place.</p>
-    </div>
-    <p style="${P}"><strong>À quoi s'attendre :</strong> ${SONGS_FR}</p>
-    <p style="${P}">Pas d'audition, pas de pression — venez comme vous êtes et profitez de la soirée. Et si vous choisissez de vous joindre à nous après la première répétition, vous aurez <strong>un accès complet à la section membres</strong> de clubchoir.ca : horaire hebdomadaire, chansons de la session et tout le reste.</p>
-    <p style="${P}">Au plaisir de chanter avec vous!</p>
-    ${SIGN}`;
-  return {
-    subject: `Your first night at Club Choir — everything you need to know / Votre première soirée à Club Choir`,
-    html: wrap(inner, "First night details: where, when, what to bring, and our first song of the session."),
-  };
-}
-
 function renderWelcomeNewPaid(r: Recipient) {
   const RES = `${SITE_URL}/resources/fall-2026`;
   const inner = `
