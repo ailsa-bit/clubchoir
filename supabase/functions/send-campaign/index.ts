@@ -741,6 +741,46 @@ function renderChoirTonight(r: Recipient) {
   };
 }
 
+function renderMontrealMove(r: Recipient) {
+  const NEW_VENUE_EN = "Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (corner Décarie)";
+  const NEW_VENUE_FR = "Paroisse Notre-Dame-De-Grâce, 5333, avenue Notre-Dame-de-Grâce (coin Décarie)";
+  const box = (lang: "en" | "fr") => `
+    <div style="background:#ecfdf5;border-left:4px solid #10b981;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#065f46;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Our new Montreal home — starting Monday, September 14" : "Notre nouveau lieu à Montréal — dès le lundi 14 septembre"}</div>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;"><strong>${lang === "en" ? "Where:" : "Où :"}</strong> ${lang === "en" ? NEW_VENUE_EN : NEW_VENUE_FR}</p>
+      <p style="margin:3px 0;font-size:15px;color:#0f3d2e;"><strong>${lang === "en" ? "When:" : "Quand :"}</strong> ${lang === "en" ? "Mondays, 7:00–8:30 PM — starting Monday, September 14" : "les lundis, 19 h à 20 h 30 — dès le lundi 14 septembre"}</p>
+      <p style="margin:10px 0 0;font-size:14px;color:#0f3d2e;line-height:1.6;">${lang === "en"
+        ? "✨ Bigger space that fits us comfortably · 🅿️ Parking lot · 🚇 Closer to Villa-Maria metro · 🎶 Incredible acoustics"
+        : "✨ Un espace plus grand qui nous accueille confortablement · 🅿️ Stationnement · 🚇 Plus près du métro Villa-Maria · 🎶 Une acoustique incroyable"}</p>
+    </div>`;
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>To everyone who was with us on Monday — thank you so much for a wonderful evening!</strong> And to those who weren't there but will be joining us later, we're looking forward to seeing you very soon.</p>
+    <p style="${P}">On Monday evening I made an announcement that I want to make sure everyone hears: <strong>due to circumstances beyond my control, Club Choir Montreal is moving to a new location.</strong> While it is not ideal, I truly believe this is a good move.</p>
+    ${box("en")}
+    <p style="${P}">The space is bigger and will accommodate us comfortably, there is a parking lot, we're much closer to the Villa-Maria metro, and the acoustics are incredible.</p>
+    <p style="${P}">I'm hoping this won't cause too much disruption. For some it's a little further than Kensington, and for others it's more convenient — I did my best to stay as close as possible to where we are now.</p>
+    <p style="${P}"><strong>We are meeting at the new space as of this Monday, September 14.</strong></p>
+    <p style="${P}"><em>I'll be sending out another email in case anyone misses this one — my apologies in advance for the repeat, but I would hate for anyone to miss this announcement.</em></p>
+    <p style="${P}">I'll be posting new resources tomorrow, so keep an eye out for the new weekly message and the new song resources!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>À toutes celles et ceux qui étaient avec nous lundi — merci infiniment pour cette merveilleuse soirée!</strong> Et à celles et ceux qui n'étaient pas là, mais qui se joindront à nous plus tard, nous avons bien hâte de vous voir.</p>
+    <p style="${P}">Lundi soir, j'ai fait une annonce que je veux m'assurer que tout le monde entende : <strong>pour des raisons indépendantes de ma volonté, Club Choir Montréal déménage dans un nouveau lieu.</strong> Bien que ce ne soit pas idéal, je crois sincèrement que c'est un bon changement.</p>
+    ${box("fr")}
+    <p style="${P}">L'espace est plus grand et nous accueillera confortablement, il y a un stationnement, nous sommes beaucoup plus près du métro Villa-Maria, et l'acoustique est incroyable.</p>
+    <p style="${P}">J'espère que ce changement ne causera pas trop de perturbations. Pour certains, c'est un peu plus loin que Kensington; pour d'autres, c'est plus pratique — j'ai fait de mon mieux pour rester le plus près possible de notre lieu actuel.</p>
+    <p style="${P}"><strong>Nous nous réunirons dans le nouveau lieu dès ce lundi 14 septembre.</strong></p>
+    <p style="${P}"><em>Je vous enverrai un autre courriel au cas où certains manqueraient celui-ci — je m'excuse d'avance pour la répétition, mais je ne voudrais vraiment pas que quelqu'un manque cette annonce.</em></p>
+    <p style="${P}">Je publierai de nouvelles ressources demain — surveillez le nouveau message hebdomadaire et les nouvelles ressources de chansons!</p>
+    ${SIGN}`;
+  return {
+    subject: `Important: Club Choir Montreal is moving 🏠 / Important : Club Choir Montréal déménage`,
+    html: wrap(inner, "Starting Monday, September 14 we're singing at Paroisse Notre-Dame-De-Grâce, 5333 av. Notre-Dame-de-Grâce (corner Décarie)."),
+  };
+}
+
 function renderGuestFollowUp(r: Recipient) {
   const loc = LOCATIONS[r.location];
   const city = loc ? esc(loc.city) : "";
@@ -790,6 +830,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
+  if (segment === "montreal-location-move") return renderMontrealMove(r);
   return renderConsidering(r);
 }
 
