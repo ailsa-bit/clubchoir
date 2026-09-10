@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "guest-follow-up" | "resources-week1-paid" | "welcome-late-paid";
+type Segment = "choir-tonight" | "guest-follow-up" | "resources-week1-paid" | "welcome-late-paid" | "montreal-location-move";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -41,12 +41,21 @@ const EMPTY_COUNTS = {
   "guest-follow-up": 0,
   "resources-week1-paid": 0,
   "welcome-late-paid": 0,
+  "montreal-location-move": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
-const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
+const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
+  "montreal-location-move": "Montreal",
+};
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
+  {
+    key: "montreal-location-move",
+    title: "Montreal — Venue Move Announcement",
+    description: "Announces to paid Montreal members that choir is moving to Paroisse Notre-Dame-De-Grâce (5333 av. Notre-Dame-de-Grâce, corner Décarie) starting Monday, September 14. Thanks Monday's attendees, highlights the bigger space, parking, Villa-Maria metro and acoustics, and mentions new resources coming tomorrow. Bilingual EN/FR.",
+    color: "bg-rose-50 border-rose-300",
+  },
   {
     key: "choir-tonight",
     title: "Choir Is Tonight — Reminder",
@@ -86,12 +95,14 @@ const Campaigns = () => {
     "guest-follow-up": {},
     "resources-week1-paid": {},
     "welcome-late-paid": {},
+    "montreal-location-move": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "guest-follow-up": "all",
     "resources-week1-paid": "all",
     "welcome-late-paid": "all",
+    "montreal-location-move": "Montreal",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
@@ -100,6 +111,7 @@ const Campaigns = () => {
     "guest-follow-up": {},
     "resources-week1-paid": {},
     "welcome-late-paid": {},
+    "montreal-location-move": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
