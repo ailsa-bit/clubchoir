@@ -973,7 +973,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
   if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
 
-  if (segment === "fall-paid" || segment === "first-night-paid" || segment === "resources-week1-paid") return Array.from(paidMap.values());
+  if (segment === "fall-paid" || segment === "resources-week1-paid") return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
     // Everyone singing tonight: registered/paid members plus anyone on the guest list
@@ -999,32 +999,6 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
       });
     }
     return Array.from(out.values());
-  }
-
-  if (segment === "first-night-guests") {
-    // People tagged guest-list who haven't paid — invited to try the first night
-    const regLoc = new Map<string, string>();
-    for (const r of allRegs || []) {
-      if (r.session_label !== "fall-2026") continue;
-      const e = String(r.email || "").trim().toLowerCase();
-      const loc = normLocation(r.location);
-      if (e && loc && !regLoc.has(e)) regLoc.set(e, loc);
-    }
-    const guests = new Map<string, Recipient>();
-    for (const m of memberRows || []) {
-      if (!m.email || m.archived_at) continue;
-      const e = String(m.email).toLowerCase();
-      if (suppressed.has(e) || paidMap.has(e) || guests.has(e)) continue;
-      const tags = Array.isArray(m.crm_tags) ? m.crm_tags : [];
-      if (!tags.includes("guest-list")) continue;
-      guests.set(e, {
-        email: e,
-        first_name: m.first_name || "",
-        last_name: m.last_name || "",
-        location: normLocation(m.location) || regLoc.get(e) || "",
-      });
-    }
-    return Array.from(guests.values());
   }
 
   if (segment === "guest-follow-up") {
@@ -1174,23 +1148,12 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
     add(m.email, m.first_name, m.last_name, m.location);
   }
 
-  if (segment === "first-night-unpaid") {
-    // Registered-but-unpaid plus everyone else who showed interest.
-    // Guests (guest-list) and cash-on-first-night singers must NEVER appear here.
-    const restNoGuests = Array.from(rest.values()).filter(
-      (r) => !guestList.has(r.email) && !cashFirstNight.has(r.email) && !paidMap.has(r.email),
-    );
-    return [...Array.from(unpaidMap.values()), ...restNoGuests];
-  }
-
-
   return Array.from(rest.values());
 }
 
 // Addresses that must be skipped: already sent this campaign, or already sent a
-// mutually-exclusive first-night campaign (an address gets only ONE first-night email).
+// mutually-exclusive welcome campaign.
 const EXCLUSIVE_GROUPS: string[][] = [
-  ["first-night-guests", "first-night-paid", "first-night-unpaid"],
   ["welcome-new-paid", "welcome-late-paid"],
 ];
 
