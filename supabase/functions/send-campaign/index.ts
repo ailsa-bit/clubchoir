@@ -904,6 +904,12 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
   if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
 
+  // Montreal venue move announcement: paid Montreal members only
+  if (segment === "montreal-location-move") {
+    return Array.from(paidMap.values()).filter((r) => r.location === "Montreal");
+  }
+
+
   if (segment === "fall-paid" || segment === "resources-week1-paid") return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
