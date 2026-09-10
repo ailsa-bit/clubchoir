@@ -51,6 +51,12 @@ const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
+    key: "montreal-location-move",
+    title: "Montreal — Venue Move Announcement",
+    description: "Announces to paid Montreal members that choir is moving to Paroisse Notre-Dame-De-Grâce (5333 av. Notre-Dame-de-Grâce, corner Décarie) starting Monday, September 14. Thanks Monday's attendees, highlights the bigger space, parking, Villa-Maria metro and acoustics, and mentions new resources coming tomorrow. Bilingual EN/FR.",
+    color: "bg-rose-50 border-rose-300",
+  },
+  {
     key: "choir-tonight",
     title: "Choir Is Tonight — Reminder",
     description: "Same-day reminder for one location: where we're singing, what time we start, come early to pick up your binder and name tag, and bring your glasses, a pen or pencil and water. Includes Ailsa's email if someone can't make it, and a note to ignore the message if they've already said they'll be away. Goes to registered & paid members plus the guest list. Bilingual EN/FR.",
@@ -89,12 +95,14 @@ const Campaigns = () => {
     "guest-follow-up": {},
     "resources-week1-paid": {},
     "welcome-late-paid": {},
+    "montreal-location-move": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "guest-follow-up": "all",
     "resources-week1-paid": "all",
     "welcome-late-paid": "all",
+    "montreal-location-move": "Montreal",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
@@ -103,6 +111,7 @@ const Campaigns = () => {
     "guest-follow-up": {},
     "resources-week1-paid": {},
     "welcome-late-paid": {},
+    "montreal-location-move": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
