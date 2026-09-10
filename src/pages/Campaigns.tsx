@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "first-night-guests" | "guest-follow-up" | "first-night-paid" | "first-night-unpaid" | "resources-week1-paid" | "welcome-late-paid";
+type Segment = "choir-tonight" | "guest-follow-up" | "resources-week1-paid" | "welcome-late-paid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -38,10 +38,7 @@ interface Preflight {
 
 const EMPTY_COUNTS = {
   "choir-tonight": 0,
-  "first-night-guests": 0,
   "guest-follow-up": 0,
-  "first-night-paid": 0,
-  "first-night-unpaid": 0,
   "resources-week1-paid": 0,
   "welcome-late-paid": 0,
 } as Record<Segment, number>;
@@ -69,28 +66,10 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     color: "bg-sky-50 border-sky-300",
   },
   {
-    key: "first-night-paid",
-    title: "First Night — Registered & Paid",
-    description: "Big welcome email to confirmed members: first-night logistics per location (Hudson burger night 6:00 PM / 7:30 start + parking pass, Montreal elevator), member portal setup (clubchoir.ca/profile), what to bring, and Week 1 song. Bilingual EN/FR.",
-    color: "bg-emerald-50 border-emerald-300",
-  },
-  {
-    key: "first-night-guests",
-    title: "First Night — Guest List",
-    description: "Friendly info email for guests trying the first night: where/when per location, what to bring (water, glasses), binder policy, Week 1 song (Lovely Day) + teasers, and member access if they join. Bilingual EN/FR.",
-    color: "bg-rose-50 border-rose-300",
-  },
-  {
     key: "guest-follow-up",
     title: "Guest List Follow-Up — After First Night",
     description: "Send by location after the first rehearsal. Thanks guests for coming, acknowledges those coming back for a trial, gives registration + Interac details for anyone ready to join, and a graceful sign-off for those who decide it's not for them. Includes the 'ignore if already paid' note. Targets guest-list contacts only. Bilingual EN/FR.",
     color: "bg-teal-50 border-teal-300",
-  },
-  {
-    key: "first-night-unpaid",
-    title: "First Night — Registered/Interested, Unpaid",
-    description: "Last-chance nudge: choir starts next week, info emails are going out now — finalize registration (Interac details included) or reply to try the first night. Bilingual EN/FR.",
-    color: "bg-amber-50 border-amber-300",
   },
 ];
 
@@ -104,19 +83,13 @@ const Campaigns = () => {
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
-    "first-night-guests": {},
     "guest-follow-up": {},
-    "first-night-paid": {},
-    "first-night-unpaid": {},
     "resources-week1-paid": {},
     "welcome-late-paid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
-    "first-night-guests": "all",
     "guest-follow-up": "all",
-    "first-night-paid": "all",
-    "first-night-unpaid": "all",
     "resources-week1-paid": "all",
     "welcome-late-paid": "all",
   });
@@ -124,10 +97,7 @@ const Campaigns = () => {
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
-    "first-night-guests": {},
     "guest-follow-up": {},
-    "first-night-paid": {},
-    "first-night-unpaid": {},
     "resources-week1-paid": {},
     "welcome-late-paid": {},
   });
@@ -299,7 +269,7 @@ const Campaigns = () => {
         <div className="text-center mb-8">
           <Mail className="w-10 h-10 text-primary mx-auto mb-3" />
           <h1 className="font-heading font-bold text-3xl mb-2">Fall 2026 Email Campaigns</h1>
-          <p className="text-muted-foreground">Three bilingual follow-ups after the open houses — send to everyone or one location at a time.</p>
+          <p className="text-muted-foreground">Bilingual email campaigns — send to everyone or one location at a time.</p>
           <Button variant="outline" size="sm" className="mt-4" onClick={() => navigate("/deliverability")}>
             View email deliverability
           </Button>
