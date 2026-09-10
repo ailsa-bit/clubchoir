@@ -571,9 +571,6 @@ function firstNightLogistics(r: Recipient, lang: "en" | "fr"): string {
   </div>`;
 }
 
-const SONGS_EN = `On the first night we'll learn our <strong>first song of the session: "Lovely Day" by Bill Withers</strong> — the perfect feel-good song to kick things off. Later this session we'll be singing "Dreams" (Fleetwood Mac), "Flowers" (Miley Cyrus), "When Doves Cry" (Prince) and more.`;
-const SONGS_FR = `Lors de la première soirée, nous apprendrons notre <strong>première chanson de la session : « Lovely Day » de Bill Withers</strong> — la chanson feel-good parfaite pour bien commencer. Plus tard cette session, nous chanterons « Dreams » (Fleetwood Mac), « Flowers » (Miley Cyrus), « When Doves Cry » (Prince) et bien d'autres.`;
-
 function renderFirstNightGuests(r: Recipient) {
   const inner = `
     ${greetEn(r)}
