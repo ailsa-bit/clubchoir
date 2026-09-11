@@ -61,6 +61,7 @@ const App = () => (
       <TooltipProvider>
       <Toaster />
       <Sonner />
+      <SessionKeepAlive />
       <BrowserRouter>
         <ScrollToTop />
         <AttributionTracker />
