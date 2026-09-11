@@ -1,3 +1,4 @@
+import { emailButton } from "../_shared/email-button.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { Resend } from "npm:resend@2.0.0";
 
