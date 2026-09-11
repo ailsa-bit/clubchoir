@@ -28,13 +28,21 @@ const ANNOUNCEMENTS = {
 const DEFAULT_MESSAGE = {
   en: `Hello wonderful singers! 🌟
 
-We wrapped up Week 1 last night in Pointe-Claire, and what a week it has been — filled with singing, laughter, and a ton of good times. Thank you to everyone who has made this possible. It is so uplifting, and we are truly blessed to welcome so many new members, and it's heartwarming to see so many familiar faces. A huge thank-you to each of you for such a successful start! 🎉
+Our Club Choir kickoff was a huge success! A warm welcome to all of our new members, and a welcome back to so many familiar faces. It is heartwarming to invite so many of you back, and I am truly grateful.
+
+A huge thank-you to Daniel, Gary and Fanilo — our awesome musicians across our various locations — and to the volunteers who helped out so generously this week. I simply cannot do any of this without a team.
+
+I am blessed to be able to do this with you, every week, multiple times a week. 🎶
 
 Tra-la-la,
 Ailsa 🎤✨`,
   fr: `Bonjour merveilleux chanteurs et chanteuses ! 🌟
 
-Nous avons terminé la semaine 1 hier soir à Pointe-Claire, et quelle semaine ça a été — remplie de chant, de rires et de bons moments. Merci à toutes et à tous d'avoir rendu cela possible. C'est tellement inspirant, et nous avons la chance d'accueillir tant de nouveaux membres, et ça réchauffe le cœur de voir tant de visages familiers. Un immense merci à chacun·e pour un départ aussi réussi ! 🎉
+Le lancement de Club Choir a été un immense succès ! Un chaleureux bienvenue à tous nos nouveaux membres, et un bon retour à tant de visages familiers. Ça me touche énormément de vous revoir aussi nombreux, et je vous en suis sincèrement reconnaissante.
+
+Un immense merci à Daniel, Gary et Fanilo — nos formidables musiciens dans nos différentes locations — ainsi qu'aux bénévoles qui ont donné un coup de main si généreusement cette semaine. Je ne pourrais tout simplement rien faire sans une équipe.
+
+Je me sens chanceuse de pouvoir vivre tout ça avec vous, chaque semaine, plusieurs fois par semaine. 🎶
 
 Tra-la-la,
 Ailsa 🎤✨`,
