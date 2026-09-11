@@ -13,7 +13,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week1-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "montreal-location-move";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week1-paid" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "montreal-location-move";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -27,6 +27,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   "resources-week1-paid": "fall-2026-resources-week1-paid-v1",
+  "resources-week2-paid": "fall-2026-resources-week2-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-v1",
@@ -656,6 +657,59 @@ function renderWelcomeLatePaid(r: Recipient) {
   };
 }
 
+const LOCATION_PLAYLISTS: Record<string, string> = {
+  "Montreal": "https://www.youtube.com/playlist?list=PLDPr7K5MJ3jg",
+  "Hudson": "https://www.youtube.com/playlist?list=PLEvsVN88ZheA",
+  "Saint-Hubert": "https://www.youtube.com/playlist?list=PLM-UFtmk2Vbw",
+  "Pointe-Claire": "https://www.youtube.com/playlist?list=PLQCXwmjkrGsY",
+};
+const FALL_PLAYLIST = "https://www.youtube.com/playlist?list=PLcV8Anv7jfrk";
+
+function renderResourcesWeek2(r: Recipient) {
+  const THIS_WEEK = `${SITE_URL}/this-week`;
+  const RES_URL = `${SITE_URL}/resources/fall-2026`;
+  const playlist = LOCATION_PLAYLISTS[r.location] || FALL_PLAYLIST;
+  const linkBox = (lang: "en" | "fr") => {
+    const items = lang === "en" ? [
+      { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
+      { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
+      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Dreams".`, url: RES_URL, label: "Open the song resources" },
+      { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
+    ] : [
+      { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
+      { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
+      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Dreams ».`, url: RES_URL, label: "Voir les ressources" },
+      { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
+    ];
+    return items.map((i) => `
+      <div style="display:flex;align-items:flex-start;gap:10px;margin:0 0 14px;">
+        <div style="flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#f472b6;color:#ffffff;font-weight:700;font-size:14px;line-height:26px;text-align:center;font-family:Quicksand,Arial,sans-serif;">${i.n}</div>
+        <div style="flex:1 1 auto;">
+          <p style="margin:0 0 6px;font-size:15px;line-height:1.55;color:#1f2937;">${i.t}</p>
+          <a href="${i.url}" style="color:#db2777;font-weight:600;font-size:14px;word-break:break-all;">${i.label} →</a>
+        </div>
+      </div>`).join("");
+  };
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}">🎶 <strong>Week 2 resources are up!</strong> This week we're singing <strong>"Dreams" by Fleetwood Mac</strong> — everything you need is below.</p>
+    <p style="${P}">Here are your four handy links for the week:</p>
+    ${linkBox("en")}
+    <p style="${P}">Have a fantastic weekend — see you at choir!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}">🎶 <strong>Les ressources de la semaine 2 sont en ligne!</strong> Cette semaine, nous chantons <strong>« Dreams » de Fleetwood Mac</strong> — tout ce qu'il vous faut est ci-dessous.</p>
+    <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
+    ${linkBox("fr")}
+    <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
+    ${SIGN}`;
+  return {
+    subject: `Week 2 resources are up — "Dreams" by Fleetwood Mac 🎶 / Ressources de la semaine 2 en ligne!`,
+    html: wrap(inner, `Week 2 resources for "Dreams" are live — your weekly message, location videos, song resources and session playlist.`),
+  };
+}
+
 function renderResourcesWeek1(r: Recipient) {
   const RES_URL = `${SITE_URL}/resources/fall-2026`;
   const inner = `
@@ -828,6 +882,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "binder-count-considering") return renderBinderConsidering(r);
   if (segment === "guest-follow-up") return renderGuestFollowUp(r);
   if (segment === "resources-week1-paid") return renderResourcesWeek1(r);
+  if (segment === "resources-week2-paid") return renderResourcesWeek2(r);
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
@@ -911,7 +966,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   }
 
 
-  if (segment === "fall-paid" || segment === "resources-week1-paid") return Array.from(paidMap.values());
+  if (segment === "fall-paid" || segment === "resources-week1-paid" || segment === "resources-week2-paid") return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
     // Everyone singing tonight: registered/paid members plus anyone on the guest list
