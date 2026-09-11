@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import AttributionTracker from "./components/AttributionTracker";
 import KeepQueryRedirect from "./components/KeepQueryRedirect";
+import SessionKeepAlive from "./components/SessionKeepAlive";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Layout from "./components/Layout";
 import ActiveMemberGate from "./components/ActiveMemberGate";
@@ -60,6 +61,7 @@ const App = () => (
       <TooltipProvider>
       <Toaster />
       <Sonner />
+      <SessionKeepAlive />
       <BrowserRouter>
         <ScrollToTop />
         <AttributionTracker />
