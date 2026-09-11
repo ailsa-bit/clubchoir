@@ -1,3 +1,4 @@
+import { emailButton } from "../_shared/email-button.ts";
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
@@ -122,7 +123,7 @@ function esc(s: string): string {
 const P = `margin:0 0 14px;color:#111;font-size:15px;line-height:1.65;`;
 const BTN = (href: string, label: string) => `
   <div style="text-align:center;margin:22px 0;">
-    <a href="${href}" style="display:inline-block;background:#f472b6;color:#ffffff;padding:13px 28px;border-radius:999px;text-decoration:none;font-weight:700;font-family:Quicksand,Arial,sans-serif;font-size:15px;">${label}</a>
+    ${emailButton(href, label, "#f472b6", "center")}
   </div>`;
 
 const PAYMENT_BOX_EN = `

@@ -1,3 +1,4 @@
+import { emailButton } from "../_shared/email-button.ts";
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { Resend } from "npm:resend@2.0.0";
@@ -137,7 +138,7 @@ serve(async (req) => {
               Un simple clic et votre compte Club Choir est prêt — vous aurez accès à l'horaire hebdomadaire, aux enregistrements, aux paroles et aux diapositives.
             </p>
             <div style="margin-bottom: 28px;">
-              <a href="${actionLink}" style="display: inline-block; background-color: hsl(340, 75%, 60%); color: #ffffff; font-size: 15px; font-weight: 600; border-radius: 16px; padding: 14px 28px; text-decoration: none; font-family: 'Quicksand', Arial, sans-serif;">Confirm my email / Confirmer mon courriel</a>
+              ${emailButton(actionLink, "Confirm my email / Confirmer mon courriel")}
             </div>
             <p style="font-size: 12px; color: hsl(240, 5%, 46%); line-height: 1.6; margin: 0 0 16px; word-break: break-all;">
               If the button doesn't work, copy and paste this link into your browser:

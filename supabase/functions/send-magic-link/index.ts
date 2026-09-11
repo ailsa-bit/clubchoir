@@ -1,3 +1,4 @@
+import { emailButton } from "../_shared/email-button.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "npm:resend@2.0.0";
 
@@ -44,7 +45,7 @@ Deno.serve(async (req) => {
         <h1 style="font-size: 24px; font-weight: bold; color: hsl(240, 10%, 16%); font-family: 'Quicksand', Arial, sans-serif; margin: 0 0 20px;">Your Login Link</h1>
         <p style="font-size: 15px; color: hsl(240, 5%, 46%); line-height: 1.6; margin: 0 0 28px;">Click the button below to sign in to Club Choir. This link will expire shortly.</p>
         <div style="margin-bottom: 28px;">
-          <a href="${actionLink}" style="display: inline-block; background-color: hsl(340, 75%, 60%); color: #ffffff; font-size: 15px; font-weight: 600; border-radius: 16px; padding: 14px 28px; text-decoration: none; font-family: 'Quicksand', Arial, sans-serif;">Sign In</a>
+          ${emailButton(actionLink, "Sign In")}
         </div>
         <div style="background-color: hsl(45, 60%, 96%); border-radius: 16px; padding: 20px 22px; margin: 0 0 28px;">
           <p style="font-size: 15px; font-weight: 700; color: hsl(240, 10%, 16%); font-family: 'Quicksand', Arial, sans-serif; margin: 0 0 12px;">How to proceed / Comment procéder</p>

@@ -1,6 +1,7 @@
 /// <reference types="npm:@types/react@18.3.1" />
 
 import * as React from 'npm:react@18.3.1'
+import { EmailButton } from './button.tsx'
 
 import {
   Body,
@@ -40,9 +41,7 @@ export const RecoveryEmail = ({
           We received a request to reset your Club Choir password. Click the button below to choose a new one.
         </Text>
         <Section style={{ marginBottom: '28px' }}>
-          <Link href={confirmationUrl} style={button}>
-            Reset Password
-          </Link>
+          <EmailButton href={confirmationUrl} label="Reset Password" />
         </Section>
         <Text style={smallText}>
           If the button above doesn't work, copy and paste this link into your browser:{' '}

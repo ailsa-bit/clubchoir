@@ -1,3 +1,4 @@
+import { emailButton } from "../_shared/email-button.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 import { Resend } from "npm:resend@2.0.0";
 
@@ -26,7 +27,7 @@ const emailHtml = (actionLink: string, isNew: boolean) => `
       Votre place est payée et confirmée. Cliquez ci-dessous pour ${isNew ? "créer votre mot de passe" : "choisir un nouveau mot de passe"} et accéder à la section des membres (horaire, enregistrements, paroles et diapositives).
     </p>
     <div style="margin-bottom: 28px;">
-      <a href="${actionLink}" style="display: inline-block; background-color: hsl(340, 75%, 60%); color: #ffffff; font-size: 15px; font-weight: 600; border-radius: 16px; padding: 14px 28px; text-decoration: none; font-family: 'Quicksand', Arial, sans-serif;">Set up my account / Créer mon compte</a>
+      ${emailButton(actionLink, "Set up my account / Créer mon compte")}
     </div>
     <p style="font-size: 14px; color: hsl(240, 5%, 46%); line-height: 1.6; margin: 0 0 20px;">
       Trouble getting in? Email <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>. / Un souci? Écrivez à <a href="mailto:ailsa@clubchoir.ca" style="color: hsl(340, 75%, 60%);">ailsa@clubchoir.ca</a>.
