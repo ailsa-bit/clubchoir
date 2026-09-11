@@ -61,11 +61,7 @@ Deno.serve(async (req) => {
           <p style="font-size: 15px; color: hsl(240, 5%, 46%); line-height: 1.6; margin: 0 0 28px;">
             Click the button below to choose a new password:
           </p>
-          <div style="margin-bottom: 28px;">
-            <a href="${actionLink}" style="display: inline-block; background-color: hsl(340, 75%, 60%); color: #ffffff; font-size: 15px; font-weight: 600; border-radius: 16px; padding: 14px 28px; text-decoration: none; font-family: 'Quicksand', Arial, sans-serif;">
-              Reset Password
-            </a>
-          </div>
+          ${emailButton(actionLink, "Reset Password")}
           <p style="font-size: 12px; color: hsl(240, 5%, 46%); line-height: 1.6; margin: 0 0 16px; word-break: break-all;">
             If the button above doesn't work, copy and paste this link into your browser:
             <a href="${actionLink}" style="color: hsl(340, 75%, 60%); text-decoration: underline;">${actionLink}</a>
