@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "guest-follow-up" | "resources-week1-paid" | "resources-week2-paid" | "welcome-late-paid" | "montreal-location-move";
+type Segment = "choir-tonight" | "guest-follow-up" | "resources-week2-paid" | "welcome-late-paid" | "montreal-location-move";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -39,7 +39,6 @@ interface Preflight {
 const EMPTY_COUNTS = {
   "choir-tonight": 0,
   "guest-follow-up": 0,
-  "resources-week1-paid": 0,
   "resources-week2-paid": 0,
   "welcome-late-paid": 0,
   "montreal-location-move": 0,
@@ -70,12 +69,6 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     color: "bg-violet-50 border-violet-300",
   },
   {
-    key: "resources-week1-paid",
-    title: "Week 1 Resources Are Up — Paid Members",
-    description: "Fun announcement to all registered & paid members: \"Lovely Day\" resources are live (recordings, lyrics, slides, sheet music), colour system note for returning vs new members, Friday weekly posting reminder, and Ailsa's email for access trouble. Bilingual EN/FR.",
-    color: "bg-sky-50 border-sky-300",
-  },
-  {
     key: "resources-week2-paid",
     title: "Week 2 Resources Are Up — \"Dreams\"",
     description: "Send by location to paid members. Announces Week 2 song \"Dreams\" by Fleetwood Mac with four numbered links: 1) This Week at Choir (weekly message, reminders, announcements, song story), 2) the location's YouTube playlist of end-of-session videos (link never changes — new videos added weekly), 3) direct link to the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session. Ends with \"Have a fantastic weekend!\". Bilingual EN/FR.",
@@ -100,7 +93,6 @@ const Campaigns = () => {
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "guest-follow-up": {},
-    "resources-week1-paid": {},
     "resources-week2-paid": {},
     "welcome-late-paid": {},
     "montreal-location-move": {},
@@ -108,7 +100,6 @@ const Campaigns = () => {
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "guest-follow-up": "all",
-    "resources-week1-paid": "all",
     "resources-week2-paid": "all",
     "welcome-late-paid": "all",
     "montreal-location-move": "Montreal",
@@ -118,7 +109,6 @@ const Campaigns = () => {
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "guest-follow-up": {},
-    "resources-week1-paid": {},
     "resources-week2-paid": {},
     "welcome-late-paid": {},
     "montreal-location-move": {},
