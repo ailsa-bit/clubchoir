@@ -1,6 +1,7 @@
 /// <reference types="npm:@types/react@18.3.1" />
 
 import * as React from 'npm:react@18.3.1'
+import { EmailButton } from './button.tsx'
 
 import {
   Body,
@@ -40,9 +41,7 @@ export const MagicLinkEmail = ({
           Click the button below to sign in to Club Choir. This link will expire shortly.
         </Text>
         <Section style={{ marginBottom: '28px' }}>
-          <Link href={confirmationUrl} style={button}>
-            Sign In
-          </Link>
+          <EmailButton href={confirmationUrl} label="Sign In" />
         </Section>
         <Text style={smallText}>
           If the button above doesn't work, copy and paste this link into your browser:{' '}

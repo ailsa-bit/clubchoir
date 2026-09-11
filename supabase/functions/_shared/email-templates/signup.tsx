@@ -1,6 +1,7 @@
 /// <reference types="npm:@types/react@18.3.1" />
 
 import * as React from 'npm:react@18.3.1'
+import { EmailButton } from './button.tsx'
 
 import {
   Body,
@@ -53,9 +54,7 @@ export const SignupEmail = ({
           ) by clicking the button below:
         </Text>
         <Section style={{ marginBottom: '28px' }}>
-          <Link href={confirmationUrl} style={button}>
-            Confirm My Email
-          </Link>
+          <EmailButton href={confirmationUrl} label="Confirm My Email" />
         </Section>
 
         <Section style={noticeBox}>
