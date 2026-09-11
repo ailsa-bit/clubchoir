@@ -13,7 +13,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week1-paid" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "montreal-location-move";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "montreal-location-move";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -26,7 +26,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "hudson-open-house-thanks": "hudson-open-house-aug18-thanks-v1",
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
-  "resources-week1-paid": "fall-2026-resources-week1-paid-v1",
+  
   "resources-week2-paid": "fall-2026-resources-week2-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
@@ -710,43 +710,6 @@ function renderResourcesWeek2(r: Recipient) {
   };
 }
 
-function renderResourcesWeek1(r: Recipient) {
-  const RES_URL = `${SITE_URL}/resources/fall-2026`;
-  const inner = `
-    ${greetEn(r)}
-    <p style="${P}">🎉 <strong>The resources are up!</strong> Our very first song of the session is <strong>"Lovely Day" by Bill Withers</strong> — recordings, lyrics, lyric slides and sheet music are all waiting for you in the members section.</p>
-    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:16px 20px;margin:18px 0;">
-      <div style="font-weight:700;color:#9d174d;margin-bottom:10px;font-family:Quicksand,Arial,sans-serif;">About the colours</div>
-      <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#831843;">If you're a <strong>returning member</strong>, you already know how the colours work — dive right in!</p>
-      <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#831843;"><strong>New this session: Floaters.</strong> This is an <strong>optional</strong> part you can explore <em>in addition to</em> your usual part. It's there for anyone who wants a little extra challenge, but you do not need to switch parts. If you'd rather stick with your usual part, that's totally up to you — and completely fine.</p>
-      <p style="margin:0;font-size:15px;line-height:1.6;color:#831843;">If you're <strong>new</strong>, don't worry about a thing — we'll go over everything together on the first night.</p>
-    </div>
-    <p style="${P}">If you'd like to take some time to listen or look through the resources this week — have fun with it! And if you'd rather wait, no worries at all: <strong>we'll be learning this together on our first night next week.</strong></p>
-    <p style="${P}">⏰ <strong>Quick reminder:</strong> new song resources are posted <strong>every Friday</strong>, so there's always something fresh waiting for you.</p>
-    <p style="${P}">Having trouble getting into the resources? I've tested as much as I could, but I may have missed something — just write to me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll sort it out with you.</p>
-    <p style="${P}">I am SO excited to kick off this session with you. 🎶</p>
-    ${BTN(RES_URL, "Open the song resources")}
-    ${SIGN}
-    ${DIVIDER}
-    ${greetFr(r)}
-    <p style="${P}">🎉 <strong>Les ressources sont en ligne!</strong> Notre toute première chanson de la session est <strong>« Lovely Day » de Bill Withers</strong> — enregistrements, paroles, diapositives et partitions vous attendent dans la section membres.</p>
-    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:16px 20px;margin:18px 0;">
-      <div style="font-weight:700;color:#9d174d;margin-bottom:10px;font-family:Quicksand,Arial,sans-serif;">Au sujet des couleurs</div>
-      <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#831843;">Si vous êtes un <strong>membre de retour</strong>, vous savez déjà comment fonctionnent les couleurs — allez-y!</p>
-      <p style="margin:0 0 10px;font-size:15px;line-height:1.6;color:#831843;"><strong>Nouveauté cette session : Floaters.</strong> C'est une partie <strong>optionnelle</strong> que vous pouvez explorer <em>en plus de</em> votre partie habituelle. Elle s'adresse à ceux et celles qui veulent un peu plus de défi, mais vous n'avez pas besoin de changer de partie. Si vous préférez rester avec votre partie habituelle, c'est entièrement à vous de décider — et c'est parfait ainsi.</p>
-      <p style="margin:0;font-size:15px;line-height:1.6;color:#831843;">Si vous êtes <strong>nouveau ou nouvelle</strong>, aucun souci — nous verrons tout ensemble lors de la première soirée.</p>
-    </div>
-    <p style="${P}">Envie d'écouter ou de parcourir les ressources cette semaine? Amusez-vous! Et si vous préférez attendre, aucun problème : <strong>nous apprendrons tout cela ensemble la semaine prochaine, dès la première soirée.</strong></p>
-    <p style="${P}">⏰ <strong>Petit rappel :</strong> les nouvelles ressources sont publiées <strong>chaque vendredi</strong>.</p>
-    <p style="${P}">Des difficultés à accéder aux ressources? J'ai fait le plus de tests possible, mais j'ai peut-être manqué quelque chose — écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous aiderai.</p>
-    <p style="${P}">J'ai tellement hâte de commencer cette session avec vous. 🎶</p>
-    ${BTN(RES_URL, "Voir les ressources")}
-    ${SIGN}`;
-  return {
-    subject: `The resources are up — "Lovely Day" is ready! / Les ressources sont en ligne!`,
-    html: wrap(inner, `Week 1 resources for "Lovely Day" are live in the members section — listen, review, or wait for the first night.`),
-  };
-}
 
 function renderChoirTonight(r: Recipient) {
   const loc = LOCATIONS[r.location];
@@ -881,7 +844,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "binder-count-unpaid") return renderBinderUnpaid(r);
   if (segment === "binder-count-considering") return renderBinderConsidering(r);
   if (segment === "guest-follow-up") return renderGuestFollowUp(r);
-  if (segment === "resources-week1-paid") return renderResourcesWeek1(r);
+  
   if (segment === "resources-week2-paid") return renderResourcesWeek2(r);
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
@@ -966,7 +929,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   }
 
 
-  if (segment === "fall-paid" || segment === "resources-week1-paid" || segment === "resources-week2-paid") return Array.from(paidMap.values());
+  if (segment === "fall-paid" || segment === "resources-week2-paid") return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
     // Everyone singing tonight: registered/paid members plus anyone on the guest list
