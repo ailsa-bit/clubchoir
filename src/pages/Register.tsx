@@ -28,7 +28,7 @@ const LOCATIONS: Loc[] = [
     dot: "bg-pink",
     ring: "ring-pink",
     dates: { en: "Mondays · Sept 7 – Dec 7, 2026 · 7:00–8:30 PM", fr: "Lundis · 7 sept. – 7 déc. 2026 · 19 h – 20 h 30" },
-    venue: { en: "Paroisse Notre-Dame-De-Grâce", fr: "Paroisse Notre-Dame-De-Grâce" },
+    venue: { en: "Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (corner Décarie)", fr: "Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (coin Décarie)" },
   },
   {
     name: "Hudson",
@@ -46,6 +46,7 @@ const LOCATIONS: Loc[] = [
     dot: "bg-lime",
     ring: "ring-lime",
     dates: { en: "Wednesdays · Sept 9 – Dec 9, 2026 · 7:00–8:30 PM", fr: "Mercredis · 9 sept. – 9 déc. 2026 · 19 h – 20 h 30" },
+    venue: { en: "St-Gabriel Catholic Church, 5070 Rue Gilbert", fr: "Église catholique St-Gabriel, 5070 Rue Gilbert" },
   },
   {
     name: "Pointe-Claire",
@@ -54,6 +55,7 @@ const LOCATIONS: Loc[] = [
     dot: "bg-purple",
     ring: "ring-purple",
     dates: { en: "Thursdays · Sept 10 – Dec 10, 2026 · 7:00–8:30 PM", fr: "Jeudis · 10 sept. – 10 déc. 2026 · 19 h – 20 h 30" },
+    venue: { en: "Valois United Church, 70 Av. Belmont", fr: "Église Valois United, 70 Av. Belmont" },
   },
 ];
 
