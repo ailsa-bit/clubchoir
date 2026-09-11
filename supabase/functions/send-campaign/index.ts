@@ -123,7 +123,7 @@ function esc(s: string): string {
 const P = `margin:0 0 14px;color:#111;font-size:15px;line-height:1.65;`;
 const BTN = (href: string, label: string) => `
   <div style="text-align:center;margin:22px 0;">
-    <a href="${href}" style="display:inline-block;background:#f472b6;color:#ffffff;padding:13px 28px;border-radius:999px;text-decoration:none;font-weight:700;font-family:Quicksand,Arial,sans-serif;font-size:15px;">${label}</a>
+    ${emailButton(href, label, "#f472b6", "center")}
   </div>`;
 
 const PAYMENT_BOX_EN = `

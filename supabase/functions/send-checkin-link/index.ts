@@ -45,7 +45,7 @@ serve(async (req) => {
             Here's your link to the pop-up event check-in dashboard. Open it on the device you'll use at the door — you can mark people as paid, resend tickets, and see who's checked in.
           </p>
           <p style="text-align:center;margin:28px 0;">
-            <a href="${reservationsUrl}" style="background:#f97316;color:#fff;padding:14px 26px;border-radius:10px;text-decoration:none;font-weight:700;display:inline-block;">Open Check-in Dashboard</a>
+            ${emailButton(reservationsUrl, "Open Check-in Dashboard", "#f97316", "center")}
           </p>
           <p style="font-size:13px;color:#777;word-break:break-all;text-align:center;">
             Or paste this in your browser:<br/><a href="${reservationsUrl}" style="color:#f97316;">${reservationsUrl}</a>
