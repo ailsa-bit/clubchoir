@@ -1216,25 +1216,47 @@ serve(async (req) => {
     });
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) return unauthorized("Your session has expired. Please sign in again.");
-
-    const supabaseUser = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_ANON_KEY")!,
-      { global: { headers: { Authorization: authHeader } } },
-    );
-    const { data: { user }, error: authErr } = await supabaseUser.auth.getUser();
-    if (authErr || !user) return unauthorized("Your session has expired. Please sign in again.");
-
-    const { data: role } = await supabaseUser
-      .from("user_roles").select("role")
-      .eq("user_id", user.id).eq("role", "admin").maybeSingle();
-    if (!role) {
-      return new Response(JSON.stringify({ error: "Admin access required" }), {
-        status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
+    // Scheduled (cron) callers authenticate with a token stored in the private
+    // cron_tokens table instead of an admin login.
+    const presentedToken = req.headers.get("x-cron-token") || "";
+    let isCron = false;
+    if (presentedToken) {
+      const admin = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      );
+      const { data: tokenRow } = await admin
+        .from("cron_tokens").select("token").eq("name", "send-campaign").maybeSingle();
+      isCron = !!tokenRow?.token && tokenRow.token === presentedToken;
+      if (!isCron) return unauthorized("Invalid scheduled-send token.");
     }
+
+    let user: { id: string; email?: string | null } | null = null;
+
+    if (!isCron) {
+      const authHeader = req.headers.get("Authorization");
+      if (!authHeader) return unauthorized("Your session has expired. Please sign in again.");
+
+      const supabaseUser = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_ANON_KEY")!,
+        { global: { headers: { Authorization: authHeader } } },
+      );
+      const { data: { user: authUser }, error: authErr } = await supabaseUser.auth.getUser();
+      if (authErr || !authUser) return unauthorized("Your session has expired. Please sign in again.");
+      user = authUser;
+
+      const { data: role } = await supabaseUser
+        .from("user_roles").select("role")
+        .eq("user_id", authUser.id).eq("role", "admin").maybeSingle();
+      if (!role) {
+        return new Response(JSON.stringify({ error: "Admin access required" }), {
+          status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    }
+
+
 
 
     const body = await req.json();
@@ -1306,7 +1328,7 @@ serve(async (req) => {
 
     if (testEmail) {
       const requestedTestEmail = String(testEmail).trim().toLowerCase();
-      const signedInEmail = String(user.email || "").trim().toLowerCase();
+      const signedInEmail = String(user?.email || "").trim().toLowerCase();
       if (requestedTestEmail !== TEST_RECIPIENT || signedInEmail !== TEST_RECIPIENT) {
         return new Response(JSON.stringify({ error: `Test emails are locked to ${TEST_RECIPIENT}` }), {
           status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -1361,16 +1383,29 @@ serve(async (req) => {
       });
     }
 
-    const expectedFingerprint = typeof body.preflightFingerprint === "string" ? body.preflightFingerprint : "";
-    const expectedCount = Number(body.preflightCount);
-    if (!expectedFingerprint || expectedFingerprint !== preflight.fingerprint ||
-        !Number.isInteger(expectedCount) || expectedCount !== preflight.manifest.length) {
-      return new Response(JSON.stringify({
-        error: "Send blocked: the recipient list was not verified or changed after review. Run preflight again.",
-      }), {
-        status: 409, headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
+    // Scheduled sends can't review a manifest first, so they pin the exact campaign
+    // version instead: if the campaign content/key changed, the job refuses to send.
+    if (isCron) {
+      if (typeof body.expectCampaignKey !== "string" || body.expectCampaignKey !== key) {
+        return new Response(JSON.stringify({
+          error: "Scheduled send blocked: this campaign changed since the schedule was created.",
+        }), {
+          status: 409, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    } else {
+      const expectedFingerprint = typeof body.preflightFingerprint === "string" ? body.preflightFingerprint : "";
+      const expectedCount = Number(body.preflightCount);
+      if (!expectedFingerprint || expectedFingerprint !== preflight.fingerprint ||
+          !Number.isInteger(expectedCount) || expectedCount !== preflight.manifest.length) {
+        return new Response(JSON.stringify({
+          error: "Send blocked: the recipient list was not verified or changed after review. Run preflight again.",
+        }), {
+          status: 409, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
     }
+
 
 
     const results: { success: string[]; failed: string[]; skipped: number } = {
