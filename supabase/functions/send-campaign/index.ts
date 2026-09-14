@@ -990,7 +990,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
     return Array.from(paidMap.values());
   }
 
-  if (segment === "guest-follow-up") {
+  if (segment === "guest-follow-up" || segment === "guest-last-call") {
     // People tagged guest-list who haven't paid or confirmed cash on the first night
     const regLoc = new Map<string, string>();
     for (const r of allRegs || []) {
