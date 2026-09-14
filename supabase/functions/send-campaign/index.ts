@@ -867,6 +867,8 @@ function renderGuestLastCall(r: Recipient) {
     <p style="${P}"><strong>If you didn't make it to opening night</strong> and you're still curious whether Club Choir is the right fit, this is your moment: <strong>this is the last week we will be accepting new members this session.</strong> Come to a session this week and see what it's all about — no pressure, just singing.</p>
     ${guestWhereWhen(r, "en")}
     <p style="${P}">We will not be accepting new members after this week, so if you've been meaning to come, now is the time. Just show up — or write to me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll save you a spot.</p>
+    <p style="${P}"><strong>Ready to join?</strong> If you came last week and meant to register but didn't get around to it, here's the link — it only takes a minute:</p>
+    ${BTN(`${SITE_URL}/register`, "Register for the fall session")}
     <p style="${P}"><em>If you'd like to be removed from this mailing list, or you'd rather get a reminder about our next session instead, just let me know by email — I don't want to bother you unnecessarily.</em></p>
     <p style="${P}">Hope to see you this week!</p>
     ${SIGN}
@@ -876,6 +878,8 @@ function renderGuestLastCall(r: Recipient) {
     <p style="${P}"><strong>Si vous n'avez pas pu venir à la soirée d'ouverture</strong> et que vous vous demandez encore si Club Choir vous conviendrait, c'est le moment : <strong>c'est la dernière semaine où nous acceptons de nouveaux membres pour cette session.</strong> Venez à une répétition cette semaine pour découvrir l'expérience — sans aucune pression, juste du plaisir à chanter.</p>
     ${guestWhereWhen(r, "fr")}
     <p style="${P}">Nous n'accepterons plus de nouveaux membres après cette semaine, alors si vous songiez à venir, c'est maintenant. Présentez-vous simplement — ou écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous réserverai une place.</p>
+    <p style="${P}"><strong>Prêt(e) à vous joindre à nous?</strong> Si vous êtes venu(e) la semaine dernière et aviez l'intention de vous inscrire sans l'avoir fait, voici le lien — cela ne prend qu'une minute :</p>
+    ${BTN(`${SITE_URL}/register`, "S'inscrire à la session d'automne")}
     <p style="${P}"><em>Si vous souhaitez être retiré(e) de cette liste d'envoi, ou si vous préférez plutôt recevoir un rappel pour la prochaine session, écrivez-moi simplement — je ne veux pas vous déranger inutilement.</em></p>
     <p style="${P}">Au plaisir de vous voir cette semaine!</p>
     ${SIGN}`;
