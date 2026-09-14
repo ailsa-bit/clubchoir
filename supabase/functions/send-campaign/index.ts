@@ -1317,7 +1317,7 @@ serve(async (req) => {
 
     if (testEmail) {
       const requestedTestEmail = String(testEmail).trim().toLowerCase();
-      const signedInEmail = String(user.email || "").trim().toLowerCase();
+      const signedInEmail = String(user?.email || "").trim().toLowerCase();
       if (requestedTestEmail !== TEST_RECIPIENT || signedInEmail !== TEST_RECIPIENT) {
         return new Response(JSON.stringify({ error: `Test emails are locked to ${TEST_RECIPIENT}` }), {
           status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
