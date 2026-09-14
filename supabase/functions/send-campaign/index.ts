@@ -1372,16 +1372,29 @@ serve(async (req) => {
       });
     }
 
-    const expectedFingerprint = typeof body.preflightFingerprint === "string" ? body.preflightFingerprint : "";
-    const expectedCount = Number(body.preflightCount);
-    if (!expectedFingerprint || expectedFingerprint !== preflight.fingerprint ||
-        !Number.isInteger(expectedCount) || expectedCount !== preflight.manifest.length) {
-      return new Response(JSON.stringify({
-        error: "Send blocked: the recipient list was not verified or changed after review. Run preflight again.",
-      }), {
-        status: 409, headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
+    // Scheduled sends can't review a manifest first, so they pin the exact campaign
+    // version instead: if the campaign content/key changed, the job refuses to send.
+    if (isCron) {
+      if (typeof body.expectCampaignKey !== "string" || body.expectCampaignKey !== key) {
+        return new Response(JSON.stringify({
+          error: "Scheduled send blocked: this campaign changed since the schedule was created.",
+        }), {
+          status: 409, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
+    } else {
+      const expectedFingerprint = typeof body.preflightFingerprint === "string" ? body.preflightFingerprint : "";
+      const expectedCount = Number(body.preflightCount);
+      if (!expectedFingerprint || expectedFingerprint !== preflight.fingerprint ||
+          !Number.isInteger(expectedCount) || expectedCount !== preflight.manifest.length) {
+        return new Response(JSON.stringify({
+          error: "Send blocked: the recipient list was not verified or changed after review. Run preflight again.",
+        }), {
+          status: 409, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
     }
+
 
 
     const results: { success: string[]; failed: string[]; skipped: number } = {
