@@ -13,7 +13,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "montreal-location-move";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "guest-last-call" | "montreal-location-move";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -32,6 +32,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week2-v1",
   "guest-follow-up": "fall-2026-guest-follow-up-v1",
+  "guest-last-call": "fall-2026-guest-last-call-v1",
   "montreal-location-move": "fall-2026-montreal-location-move-v1",
 };
 
@@ -841,6 +842,49 @@ function renderGuestFollowUp(r: Recipient) {
   };
 }
 
+function guestWhereWhen(r: Recipient, lang: "en" | "fr"): string {
+  const loc = LOCATIONS[r.location];
+  if (!loc) return "";
+  const title = lang === "en" ? "Where and when we sing" : "Où et quand nous chantons";
+  const rows = lang === "en"
+    ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Location:</strong> ${esc(loc.venue)}, ${esc(loc.address)}</p>
+       <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Rehearsals:</strong> ${loc.dayEn}, ${loc.time}</p>`
+    : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Lieu :</strong> ${esc(loc.venue)}, ${esc(loc.address)}</p>
+       <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Répétitions :</strong> ${loc.dayFr}, ${loc.time}</p>`;
+  return `
+  <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+    <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${title}</div>
+    ${rows}
+  </div>`;
+}
+
+function renderGuestLastCall(r: Recipient) {
+  const loc = LOCATIONS[r.location];
+  const city = loc ? esc(loc.city) : "";
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>If you came to opening night and decided not to join</strong> — thank you so much for trying out Club Choir. We truly loved having you, and you are welcome back anytime.</p>
+    <p style="${P}"><strong>If you didn't make it to opening night</strong> and you're still curious whether Club Choir is the right fit, this is your moment: <strong>this is the last week we will be accepting new members this session.</strong> Come to a session this week and see what it's all about — no pressure, just singing.</p>
+    ${guestWhereWhen(r, "en")}
+    <p style="${P}">We will not be accepting new members after this week, so if you've been meaning to come, now is the time. Just show up — or write to me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll save you a spot.</p>
+    <p style="${P}"><em>If you'd like to be removed from this mailing list, or you'd rather get a reminder about our next session instead, just let me know by email — I don't want to bother you unnecessarily.</em></p>
+    <p style="${P}">Hope to see you this week!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}"><strong>Si vous êtes venu(e) à la soirée d'ouverture et avez décidé de ne pas vous joindre à nous</strong> — merci infiniment d'avoir essayé Club Choir. Nous avons adoré vous accueillir, et vous serez toujours la bienvenue (ou le bienvenu).</p>
+    <p style="${P}"><strong>Si vous n'avez pas pu venir à la soirée d'ouverture</strong> et que vous vous demandez encore si Club Choir vous conviendrait, c'est le moment : <strong>c'est la dernière semaine où nous acceptons de nouveaux membres pour cette session.</strong> Venez à une répétition cette semaine pour découvrir l'expérience — sans aucune pression, juste du plaisir à chanter.</p>
+    ${guestWhereWhen(r, "fr")}
+    <p style="${P}">Nous n'accepterons plus de nouveaux membres après cette semaine, alors si vous songiez à venir, c'est maintenant. Présentez-vous simplement — ou écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous réserverai une place.</p>
+    <p style="${P}"><em>Si vous souhaitez être retiré(e) de cette liste d'envoi, ou si vous préférez plutôt recevoir un rappel pour la prochaine session, écrivez-moi simplement — je ne veux pas vous déranger inutilement.</em></p>
+    <p style="${P}">Au plaisir de vous voir cette semaine!</p>
+    ${SIGN}`;
+  return {
+    subject: `Last week to join Club Choir${city ? ` — ${city}` : ""} / Dernière semaine pour vous joindre à Club Choir`,
+    html: wrap(inner, "This is the last week we're accepting new members this session — come try a session."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
 
   if (segment === "fall-paid") return renderPaid(r);
@@ -853,6 +897,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "binder-count-unpaid") return renderBinderUnpaid(r);
   if (segment === "binder-count-considering") return renderBinderConsidering(r);
   if (segment === "guest-follow-up") return renderGuestFollowUp(r);
+  if (segment === "guest-last-call") return renderGuestLastCall(r);
   
   if (segment === "resources-week2-paid") return renderResourcesWeek2(r);
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
@@ -945,7 +990,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
     return Array.from(paidMap.values());
   }
 
-  if (segment === "guest-follow-up") {
+  if (segment === "guest-follow-up" || segment === "guest-last-call") {
     // People tagged guest-list who haven't paid or confirmed cash on the first night
     const regLoc = new Map<string, string>();
     for (const r of allRegs || []) {

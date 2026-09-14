@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "guest-follow-up" | "resources-week2-paid" | "welcome-late-paid" | "montreal-location-move";
+type Segment = "choir-tonight" | "guest-follow-up" | "guest-last-call" | "resources-week2-paid" | "welcome-late-paid" | "montreal-location-move";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -39,6 +39,7 @@ interface Preflight {
 const EMPTY_COUNTS = {
   "choir-tonight": 0,
   "guest-follow-up": 0,
+  "guest-last-call": 0,
   "resources-week2-paid": 0,
   "welcome-late-paid": 0,
   "montreal-location-move": 0,
@@ -84,6 +85,12 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Send by location after the first rehearsal. Thanks guests for coming, acknowledges those coming back for a trial, gives registration + Interac details for anyone ready to join, and a graceful sign-off for those who decide it's not for them. Includes the 'ignore if already paid' note. Targets guest-list contacts only. Bilingual EN/FR.",
     color: "bg-teal-50 border-teal-300",
   },
+  {
+    key: "guest-last-call",
+    title: "Guest List — Last Week to Join",
+    description: "Send by location to guest-list contacts. Thanks those who came to opening night and didn't join, and tells those who missed it that this is the last week to try a session — new members won't be accepted after this week. Includes the location's address and start time, plus an opt-out / next-session reminder note. Bilingual EN/FR.",
+    color: "bg-orange-50 border-orange-300",
+  },
 ];
 
 
@@ -97,6 +104,7 @@ const Campaigns = () => {
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "guest-follow-up": {},
+    "guest-last-call": {},
     "resources-week2-paid": {},
     "welcome-late-paid": {},
     "montreal-location-move": {},
@@ -104,6 +112,7 @@ const Campaigns = () => {
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "guest-follow-up": "all",
+    "guest-last-call": "all",
     "resources-week2-paid": "all",
     "welcome-late-paid": "all",
     "montreal-location-move": "Montreal",
@@ -113,6 +122,7 @@ const Campaigns = () => {
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "guest-follow-up": {},
+    "guest-last-call": {},
     "resources-week2-paid": {},
     "welcome-late-paid": {},
     "montreal-location-move": {},
