@@ -409,12 +409,18 @@ const CRM = () => {
       toast({ title: "Could not mark paid", description: regErr.message, variant: "destructive" });
       return;
     }
-    const { error: memberErr } = await supabase
+    // Activate the member row and remove the guest-list tag — paying guests are members now
+    const { data: memberRows } = await supabase
       .from("members")
-      .update({ status: "ACTIVE" })
+      .select("id, crm_tags")
       .ilike("email", c.email);
-    if (memberErr) {
-      console.warn("Could not activate member row:", memberErr.message);
+    for (const row of memberRows || []) {
+      const tags = (Array.isArray(row.crm_tags) ? row.crm_tags : []).filter((t: string) => t !== "guest-list");
+      const { error } = await supabase
+        .from("members")
+        .update({ status: "ACTIVE", crm_tags: tags })
+        .eq("id", row.id);
+      if (error) console.warn("Could not activate member row:", error.message);
     }
     const { data: rpc, error: rpcErr } = await supabase.rpc(
       "activate_member_for_paid_registration",
