@@ -749,6 +749,10 @@ export type Database = {
         Returns: boolean
       }
       is_active_member: { Args: { _user_id: string }; Returns: boolean }
+      run_scheduled_campaign: {
+        Args: { _campaign_key: string; _location: string; _segment: string }
+        Returns: undefined
+      }
       update_my_member_name: {
         Args: { _first_name: string; _last_name: string }
         Returns: undefined
