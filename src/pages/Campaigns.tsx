@@ -49,6 +49,10 @@ const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
   "montreal-location-move": "Montreal",
 };
 
+const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
+  "choir-tonight": "fall-2026-choir-tonight-week2-v1",
+};
+
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
     key: "montreal-location-move",
@@ -160,11 +164,14 @@ const Campaigns = () => {
     const grouped: Record<string, number> = { ...EMPTY_COUNTS };
     await Promise.all(
       SEGMENTS.map(async (s) => {
-        const { count } = await supabase
+        let query = supabase
           .from("campaign_sends")
           .select("id", { count: "exact", head: true })
           .eq("status", "sent")
           .eq("segment", s.key);
+        const campaignKey = CURRENT_CAMPAIGN_KEYS[s.key];
+        if (campaignKey) query = query.eq("campaign_key", campaignKey);
+        const { count } = await query;
         grouped[s.key] = count ?? 0;
       })
     );
