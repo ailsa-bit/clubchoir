@@ -63,7 +63,7 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   {
     key: "choir-tonight",
     title: "Week 2 Starts Tonight — Reminder",
-    description: "Warm same-day reminder sent by location. Includes the venue and start time, what to bring, binder pickup for anyone who missed opening night, profile help, Friday's resource links, guest welcome and a stay-home-if-sick note. Montreal receives a prominent new-venue reminder. Bilingual EN/FR.",
+    description: "Warm same-day reminder for paid members, sent by location. Includes the venue and start time, what to bring, binder pickup for anyone who missed opening night, profile help, Friday's resource links, guest welcome and a stay-home-if-sick note. Montreal receives a prominent new-venue reminder. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
