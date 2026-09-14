@@ -414,7 +414,6 @@ const CRM = () => {
       .from("members")
       .select("id, crm_tags")
       .ilike("email", c.email);
-    const memberErr = null;
     for (const row of memberRows || []) {
       const tags = (Array.isArray(row.crm_tags) ? row.crm_tags : []).filter((t: string) => t !== "guest-list");
       const { error } = await supabase
@@ -423,7 +422,6 @@ const CRM = () => {
         .eq("id", row.id);
       if (error) console.warn("Could not activate member row:", error.message);
     }
-    void memberErr;
     const { data: rpc, error: rpcErr } = await supabase.rpc(
       "activate_member_for_paid_registration",
       { _email: c.email, _active_until: "2026-12-10" }
