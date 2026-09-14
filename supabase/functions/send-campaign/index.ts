@@ -941,29 +941,8 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   if (segment === "fall-paid" || segment === "resources-week2-paid") return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
-    // Everyone singing tonight: registered/paid members plus anyone on the guest list
-    const regLoc = new Map<string, string>();
-    for (const r of allRegs || []) {
-      if (r.session_label !== "fall-2026") continue;
-      const e = String(r.email || "").trim().toLowerCase();
-      const loc = normLocation(r.location);
-      if (e && loc && !regLoc.has(e)) regLoc.set(e, loc);
-    }
-    const out = new Map<string, Recipient>(paidMap);
-    for (const m of memberRows || []) {
-      if (!m.email || m.archived_at) continue;
-      const e = String(m.email).toLowerCase();
-      if (suppressed.has(e) || out.has(e)) continue;
-      const tags = Array.isArray(m.crm_tags) ? m.crm_tags : [];
-      if (!tags.includes("guest-list")) continue;
-      out.set(e, {
-        email: e,
-        first_name: m.first_name || "",
-        last_name: m.last_name || "",
-        location: normLocation(m.location) || regLoc.get(e) || "",
-      });
-    }
-    return Array.from(out.values());
+    // Same-day reminders are for paid Fall 2026 members only.
+    return Array.from(paidMap.values());
   }
 
   if (segment === "guest-follow-up") {
