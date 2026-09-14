@@ -867,6 +867,8 @@ function renderGuestLastCall(r: Recipient) {
     <p style="${P}"><strong>If you didn't make it to opening night</strong> and you're still curious whether Club Choir is the right fit, this is your moment: <strong>this is the last week we will be accepting new members this session.</strong> Come to a session this week and see what it's all about — no pressure, just singing.</p>
     ${guestWhereWhen(r, "en")}
     <p style="${P}">We will not be accepting new members after this week, so if you've been meaning to come, now is the time. Just show up — or write to me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll save you a spot.</p>
+    <p style="${P}"><strong>Ready to join?</strong> If you came last week and meant to register but didn't get around to it, here's the link — it only takes a minute:</p>
+    ${BTN(`${SITE_URL}/register`, "Register for the fall session")}
     <p style="${P}"><em>If you'd like to be removed from this mailing list, or you'd rather get a reminder about our next session instead, just let me know by email — I don't want to bother you unnecessarily.</em></p>
     <p style="${P}">Hope to see you this week!</p>
     ${SIGN}
