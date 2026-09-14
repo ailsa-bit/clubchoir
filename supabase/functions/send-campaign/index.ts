@@ -30,7 +30,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "resources-week2-paid": "fall-2026-resources-week2-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week2-v1",
   "guest-follow-up": "fall-2026-guest-follow-up-v1",
   "montreal-location-move": "fall-2026-montreal-location-move-v1",
 };
@@ -715,6 +715,7 @@ function renderChoirTonight(r: Recipient) {
   const loc = LOCATIONS[r.location];
   const city = loc ? esc(loc.city) : "";
   const isHudson = r.location === "Hudson";
+  const isMontreal = r.location === "Montreal";
   const startEn = isHudson ? "7:30 PM" : "7:00 PM";
   const startFr = isHudson ? "19 h 30" : "19 h";
   const whereEn = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "your usual location";
@@ -724,9 +725,6 @@ function renderChoirTonight(r: Recipient) {
       <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? `Tonight${city ? ` — ${city}` : ""}` : `Ce soir${city ? ` — ${city}` : ""}`}</div>
       <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "Where:" : "Où :"}</strong> ${lang === "en" ? whereEn : whereFr}</p>
       <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "We start singing at:" : "On commence à chanter à :"}</strong> ${lang === "en" ? startEn : startFr}</p>
-      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;">${lang === "en"
-        ? "<strong>Please come a little early</strong> — there are things to pick up when you arrive (your binder, name tag and anything else waiting for you), and it goes much smoother before we begin."
-        : "<strong>Arrivez un peu à l'avance</strong> — il y a des choses à récupérer à votre arrivée (votre cartable, votre porte-nom et tout ce qui vous attend), c'est bien plus simple avant qu'on commence."}</p>
     </div>`;
   const bring = (lang: "en" | "fr") => `
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
@@ -735,27 +733,38 @@ function renderChoirTonight(r: Recipient) {
       <p style="margin:3px 0;font-size:15px;color:#831843;">✏️ ${lang === "en" ? "<strong>A pen or pencil</strong> for notes on your lyric sheets." : "<strong>Un crayon ou un stylo</strong> pour annoter vos paroles."}</p>
       <p style="margin:3px 0;font-size:15px;color:#831843;">💧 ${lang === "en" ? "<strong>Water</strong> — singing is thirsty work!" : "<strong>De l'eau</strong> — chanter donne soif!"}</p>
     </div>`;
+  const montrealNotice = (lang: "en" | "fr") => !isMontreal ? "" : `
+    <div style="background:#fff7ed;border-left:4px solid #f97316;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9a3412;margin-bottom:5px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Important: Montreal has moved" : "Important : Montréal a déménagé"}</div>
+      <p style="margin:0;font-size:15px;line-height:1.55;color:#7c2d12;">${lang === "en"
+        ? "Tonight we meet at <strong>Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (corner Décarie)</strong>."
+        : "Ce soir, nous nous retrouvons à la <strong>Paroisse Notre-Dame-De-Grâce, 5333, avenue Notre-Dame-de-Grâce (coin Décarie)</strong>."}</p>
+    </div>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>Choir is tonight! 🎶</strong> Just a quick reminder with everything you need before you head out the door.</p>
+    <p style="${P}"><strong>Week 2 kicks off tonight! 🎶</strong> I can't wait to sing with you again.</p>
+    ${montrealNotice("en")}
     ${box("en")}
     ${bring("en")}
-    <p style="${P}">If something comes up and you can't make it tonight, just send me a note at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
-    <p style="${P}"><em>If you've already let me know you won't be with us tonight, that's absolutely fine — there's a note in your file, so please ignore this message.</em></p>
-    <p style="${P}">See you soon!</p>
+    <p style="${P}">If you missed opening night, please come a little early to collect your binder. We'll have printed lyrics ready for everyone.</p>
+    <p style="${P}">Friday's email included the new song resources and the Week 1 video from your location. If you're having trouble connecting to your member profile, email me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll help you get connected.</p>
+    <p style="${P}">Guests are always welcome! Please stay home if you're feeling sick, and take good care of yourself.</p>
+    <p style="${P}"><strong>See you tonight!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>La chorale, c'est ce soir! 🎶</strong> Voici un petit rappel avec tout ce qu'il vous faut avant de partir.</p>
+    <p style="${P}"><strong>La semaine 2 commence ce soir! 🎶</strong> J'ai très hâte de chanter de nouveau avec vous.</p>
+    ${montrealNotice("fr")}
     ${box("fr")}
     ${bring("fr")}
-    <p style="${P}">Si un imprévu vous empêche de venir ce soir, écrivez-moi simplement à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
-    <p style="${P}"><em>Si vous m'avez déjà avisée de votre absence ce soir, aucun souci — c'est noté à votre dossier, veuillez ignorer ce message.</em></p>
-    <p style="${P}">À tout à l'heure!</p>
+    <p style="${P}">Si vous avez manqué la soirée d'ouverture, arrivez un peu à l'avance pour récupérer votre cartable. Les paroles seront imprimées pour tout le monde.</p>
+    <p style="${P}">Le courriel de vendredi contenait les nouvelles ressources musicales et la vidéo de la semaine 1 de votre lieu. Si vous avez de la difficulté à accéder à votre profil de membre, écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous aiderai à vous connecter.</p>
+    <p style="${P}">Les invités sont toujours les bienvenus! Si vous ne vous sentez pas bien, restez à la maison et prenez soin de vous.</p>
+    <p style="${P}"><strong>À ce soir!</strong></p>
     ${SIGN}`;
   return {
-    subject: `Choir is tonight${city ? ` — ${city}` : ""}! 🎶 / La chorale, c'est ce soir${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Choir is tonight — where, what time, come early, and what to bring."),
+    subject: `Week 2 kicks off tonight${city ? ` — ${city}` : ""}! 🎶 / La semaine 2 commence ce soir${city ? ` — ${city}` : ""}!`,
+    html: wrap(inner, "Week 2 kicks off tonight — a warm reminder with your location, start time and what to bring."),
   };
 }
 

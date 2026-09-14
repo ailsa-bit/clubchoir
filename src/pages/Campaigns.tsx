@@ -58,8 +58,8 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   },
   {
     key: "choir-tonight",
-    title: "Choir Is Tonight — Reminder",
-    description: "Same-day reminder for one location: where we're singing, what time we start, come early to pick up your binder and name tag, and bring your glasses, a pen or pencil and water. Includes Ailsa's email if someone can't make it, and a note to ignore the message if they've already said they'll be away. Goes to registered & paid members plus the guest list. Bilingual EN/FR.",
+    title: "Week 2 Starts Tonight — Reminder",
+    description: "Warm same-day reminder sent by location. Includes the venue and start time, what to bring, binder pickup for anyone who missed opening night, profile help, Friday's resource links, guest welcome and a stay-home-if-sick note. Montreal receives a prominent new-venue reminder. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
