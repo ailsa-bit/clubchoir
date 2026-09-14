@@ -1216,9 +1216,20 @@ serve(async (req) => {
     });
 
   try {
-    // Scheduled (cron) callers authenticate with a shared secret instead of an admin login.
-    const cronSecret = Deno.env.get("CAMPAIGN_CRON_SECRET");
-    const isCron = !!cronSecret && req.headers.get("x-cron-secret") === cronSecret;
+    // Scheduled (cron) callers authenticate with a token stored in the private
+    // cron_tokens table instead of an admin login.
+    const presentedToken = req.headers.get("x-cron-token") || "";
+    let isCron = false;
+    if (presentedToken) {
+      const admin = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      );
+      const { data: tokenRow } = await admin
+        .from("cron_tokens").select("token").eq("name", "send-campaign").maybeSingle();
+      isCron = !!tokenRow?.token && tokenRow.token === presentedToken;
+      if (!isCron) return unauthorized("Invalid scheduled-send token.");
+    }
 
     let user: { id: string; email?: string | null } | null = null;
 
