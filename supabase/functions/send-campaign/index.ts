@@ -1216,25 +1216,36 @@ serve(async (req) => {
     });
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) return unauthorized("Your session has expired. Please sign in again.");
+    // Scheduled (cron) callers authenticate with a shared secret instead of an admin login.
+    const cronSecret = Deno.env.get("CAMPAIGN_CRON_SECRET");
+    const isCron = !!cronSecret && req.headers.get("x-cron-secret") === cronSecret;
 
-    const supabaseUser = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_ANON_KEY")!,
-      { global: { headers: { Authorization: authHeader } } },
-    );
-    const { data: { user }, error: authErr } = await supabaseUser.auth.getUser();
-    if (authErr || !user) return unauthorized("Your session has expired. Please sign in again.");
+    let user: { id: string; email?: string | null } | null = null;
 
-    const { data: role } = await supabaseUser
-      .from("user_roles").select("role")
-      .eq("user_id", user.id).eq("role", "admin").maybeSingle();
-    if (!role) {
-      return new Response(JSON.stringify({ error: "Admin access required" }), {
-        status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
+    if (!isCron) {
+      const authHeader = req.headers.get("Authorization");
+      if (!authHeader) return unauthorized("Your session has expired. Please sign in again.");
+
+      const supabaseUser = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_ANON_KEY")!,
+        { global: { headers: { Authorization: authHeader } } },
+      );
+      const { data: { user: authUser }, error: authErr } = await supabaseUser.auth.getUser();
+      if (authErr || !authUser) return unauthorized("Your session has expired. Please sign in again.");
+      user = authUser;
+
+      const { data: role } = await supabaseUser
+        .from("user_roles").select("role")
+        .eq("user_id", authUser.id).eq("role", "admin").maybeSingle();
+      if (!role) {
+        return new Response(JSON.stringify({ error: "Admin access required" }), {
+          status: 403, headers: { "Content-Type": "application/json", ...corsHeaders },
+        });
+      }
     }
+
+
 
 
     const body = await req.json();
