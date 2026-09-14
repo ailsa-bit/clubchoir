@@ -104,6 +104,7 @@ const Campaigns = () => {
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "guest-follow-up": {},
+    "guest-last-call": {},
     "resources-week2-paid": {},
     "welcome-late-paid": {},
     "montreal-location-move": {},
@@ -111,6 +112,7 @@ const Campaigns = () => {
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "guest-follow-up": "all",
+    "guest-last-call": "all",
     "resources-week2-paid": "all",
     "welcome-late-paid": "all",
     "montreal-location-move": "Montreal",
@@ -120,6 +122,7 @@ const Campaigns = () => {
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "guest-follow-up": {},
+    "guest-last-call": {},
     "resources-week2-paid": {},
     "welcome-late-paid": {},
     "montreal-location-move": {},
