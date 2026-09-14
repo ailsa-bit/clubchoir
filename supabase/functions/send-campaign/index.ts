@@ -13,7 +13,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "montreal-location-move";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "guest-last-call" | "montreal-location-move";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -32,6 +32,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week2-v1",
   "guest-follow-up": "fall-2026-guest-follow-up-v1",
+  "guest-last-call": "fall-2026-guest-last-call-v1",
   "montreal-location-move": "fall-2026-montreal-location-move-v1",
 };
 
