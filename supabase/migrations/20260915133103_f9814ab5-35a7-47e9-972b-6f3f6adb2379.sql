@@ -1,0 +1,1 @@
+INSERT INTO public.session_registrations (member_id, session_label, location, first_name, last_name, email, is_returning_member, payment_status) VALUES ('1616d1ae-f702-4f20-8a40-ed60292addab', 'Fall 2026', 'Montreal', 'Catherine', 'Vidal', 'catvidal@hotmail.com', true, 'unpaid'); UPDATE public.members SET status = 'PROSPECT' WHERE id = '1616d1ae-f702-4f20-8a40-ed60292addab';
