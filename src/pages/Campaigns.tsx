@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "guest-follow-up" | "guest-last-call" | "resources-week2-paid" | "welcome-late-paid" | "montreal-location-move";
+type Segment = "choir-tonight" | "resources-week2-paid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -38,17 +38,11 @@ interface Preflight {
 
 const EMPTY_COUNTS = {
   "choir-tonight": 0,
-  "guest-follow-up": 0,
-  "guest-last-call": 0,
   "resources-week2-paid": 0,
-  "welcome-late-paid": 0,
-  "montreal-location-move": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
-const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
-  "montreal-location-move": "Montreal",
-};
+const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week2-v1",
@@ -56,40 +50,16 @@ const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
-    key: "montreal-location-move",
-    title: "Montreal — Venue Move Announcement",
-    description: "Announces to paid Montreal members that choir is moving to Paroisse Notre-Dame-De-Grâce (5333 av. Notre-Dame-de-Grâce, corner Décarie) starting Monday, September 14. Thanks Monday's attendees, highlights the bigger space, parking, Villa-Maria metro and acoustics, and mentions new resources coming tomorrow. Bilingual EN/FR.",
-    color: "bg-rose-50 border-rose-300",
-  },
-  {
     key: "choir-tonight",
     title: "Week 2 Starts Tonight — Reminder",
     description: "Warm same-day reminder for paid members, sent by location. Includes the venue and start time, what to bring, binder pickup for anyone who missed opening night, profile help, Friday's resource links, guest welcome and a stay-home-if-sick note. Montreal receives a prominent new-venue reminder. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
-    key: "welcome-late-paid",
-    title: "Welcome — Joined After First Night",
-    description: "Sent automatically when you mark someone paid in the CRM. Thanks them for joining, walks them through setting up their member profile, shows their choir location details, and points them to their schedule (My Choir tab) and the Fall 2026 song resources. Includes Ailsa's email for any issues. Bilingual EN/FR.",
-    color: "bg-violet-50 border-violet-300",
-  },
-  {
     key: "resources-week2-paid",
     title: "Week 2 Resources Are Up — \"Dreams\"",
     description: "Send by location to paid members. Announces Week 2 song \"Dreams\" by Fleetwood Mac with four numbered links: 1) This Week at Choir (weekly message, reminders, announcements, song story), 2) the location's YouTube playlist of end-of-session videos (link never changes — new videos added weekly), 3) direct link to the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session. Ends with \"Have a fantastic weekend!\". Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
-  },
-  {
-    key: "guest-follow-up",
-    title: "Guest List Follow-Up — After First Night",
-    description: "Send by location after the first rehearsal. Thanks guests for coming, acknowledges those coming back for a trial, gives registration + Interac details for anyone ready to join, and a graceful sign-off for those who decide it's not for them. Includes the 'ignore if already paid' note. Targets guest-list contacts only. Bilingual EN/FR.",
-    color: "bg-teal-50 border-teal-300",
-  },
-  {
-    key: "guest-last-call",
-    title: "Guest List — Last Week to Join",
-    description: "Send by location to guest-list contacts. Thanks those who came to opening night and didn't join, and tells those who missed it that this is the last week to try a session — new members won't be accepted after this week. Includes the location's address and start time, plus an opt-out / next-session reminder note. Bilingual EN/FR.",
-    color: "bg-orange-50 border-orange-300",
   },
 ];
 
@@ -103,29 +73,17 @@ const Campaigns = () => {
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
-    "guest-follow-up": {},
-    "guest-last-call": {},
     "resources-week2-paid": {},
-    "welcome-late-paid": {},
-    "montreal-location-move": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
-    "guest-follow-up": "all",
-    "guest-last-call": "all",
     "resources-week2-paid": "all",
-    "welcome-late-paid": "all",
-    "montreal-location-move": "Montreal",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
-    "guest-follow-up": {},
-    "guest-last-call": {},
     "resources-week2-paid": {},
-    "welcome-late-paid": {},
-    "montreal-location-move": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
