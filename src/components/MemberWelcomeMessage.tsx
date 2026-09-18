@@ -5,44 +5,31 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { PenLine, Megaphone, Save, X, CalendarDays, Music } from "lucide-react";
+import { PenLine, Save, X, CalendarDays, Music } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type Announcement = Database["public"]["Tables"]["weekly_announcements"]["Row"];
 
 const DEFAULT_TITLE = { en: "A Note from Ailsa 🎶", fr: "Un mot d'Ailsa 🎶" };
 
-const ANNOUNCEMENTS = {
-  en: [
-    "📍 Club Choir Montreal has moved from Kensington to Paroisse Notre-Dame-de-Grâce, 5333 avenue Notre-Dame-de-Grâce (corner Décarie). We're so happy to be moving to a larger venue — it gives us room to spread out. So excited!",
-    "🎵 Reminder: as a Club Choir member you have access to ALL locations. If you can't make it to your home base choir one week, you're welcome to visit another location.",
-    "💛 You can invite guests throughout Weeks 1–10! Since we're learning a new song each week, it's fun to share that with a friend.",
-  ],
-  fr: [
-    "📍 Club Choir Montréal a déménagé de Kensington à la Paroisse Notre-Dame-de-Grâce, 5333 avenue Notre-Dame-de-Grâce (coin Décarie). Nous sommes ravies d'emménager dans un plus grand local — ça nous donne de l'espace pour nous déployer. Tellement excitant !",
-    "🎵 Rappel : en tant que membre de Club Choir, vous avez accès à TOUTES les locations. Si vous ne pouvez pas venir à votre chorale de base une semaine, vous êtes bienvenue dans une autre location.",
-    "💛 Vous pouvez inviter des ami·e·s pendant les semaines 1 à 10 ! Comme nous apprenons une nouvelle chanson chaque semaine, c'est amusant de partager ça avec un·e ami·e.",
-  ],
-};
-
 const DEFAULT_MESSAGE = {
   en: `Hello wonderful singers! 🌟
 
-Our Club Choir kickoff was a huge success! A warm welcome to all of our new members, and a welcome back to so many familiar faces. It is heartwarming to invite so many of you back, and I am truly grateful.
+Another wonderful week of singing across all of our Club Choir locations! It has been such a joy to see everyone settling in, learning the songs and enjoying the music together.
 
-A huge thank-you to Daniel, Gary and Fanilo — our awesome musicians across our various locations — and to the volunteers who helped out so generously this week. I simply cannot do any of this without a team.
+A little reminder that you are always welcome to bring a friend along to a rehearsal. You can also attend any of our locations, on any week, whenever it works better for your schedule. The same song is taught at every location each week, so you never have to miss out!
 
-I am blessed to be able to do this with you, every week, multiple times a week. 🎶
+Thank you for bringing your voices, your smiles and your wonderful energy each week. I am having so much fun singing with all of you!
 
 Tra-la-la,
 Ailsa 🎤✨`,
   fr: `Bonjour merveilleux chanteurs et chanteuses ! 🌟
 
-Le lancement de Club Choir a été un immense succès ! Un chaleureux bienvenue à tous nos nouveaux membres, et un bon retour à tant de visages familiers. Ça me touche énormément de vous revoir aussi nombreux, et je vous en suis sincèrement reconnaissante.
+Une autre merveilleuse semaine de chant dans toutes nos locations Club Choir ! C'est un vrai bonheur de voir tout le monde prendre ses repères, apprendre les chansons et profiter de la musique ensemble.
 
-Un immense merci à Daniel, Gary et Fanilo — nos formidables musiciens dans nos différentes locations — ainsi qu'aux bénévoles qui ont donné un coup de main si généreusement cette semaine. Je ne pourrais tout simplement rien faire sans une équipe.
+Petit rappel : vous pouvez toujours inviter un·e ami·e à une répétition. Vous pouvez aussi participer à n'importe laquelle de nos locations, n'importe quelle semaine, lorsque cela convient mieux à votre horaire. La même chanson est enseignée dans chaque location chaque semaine, alors vous ne manquerez rien !
 
-Je me sens chanceuse de pouvoir vivre tout ça avec vous, chaque semaine, plusieurs fois par semaine. 🎶
+Merci d'apporter vos voix, vos sourires et votre merveilleuse énergie chaque semaine. J'ai tellement de plaisir à chanter avec vous !
 
 Tra-la-la,
 Ailsa 🎤✨`,
@@ -50,25 +37,24 @@ Ailsa 🎤✨`,
 
 const SONG_OF_WEEK = {
   en: {
-    title: "Song of the Week: “Dreams” — Fleetwood Mac",
-    body: `This legendary song was written by Stevie Nicks in just 10 minutes, capturing the bittersweet ache of her real-life breakup with the band's guitarist.
+    title: "Song of the Week: “Flowers” — Miley Cyrus",
+    body: `“Flowers” was written by Miley Cyrus and her co-writers in 2022 and released in 2023. It actually began as a much sadder song before becoming the confident, upbeat version we know today.
 
-To get into the vibe of this song, imagine a feeling of calm, cool confidence mixed with a little bit of heartbreak. It is about letting go of someone you love, wishing them well, but knowing they will eventually miss you.
+The message is about moving forward, knowing your worth and realizing you can give yourself the love and happiness you need.
 
-For our choir, the goal isn't to sing loudly or with heavy sadness — instead, channel a smooth, hypnotic, and storytelling tone. Relax into the steady rhythm, sing from the heart, and let's capture that cool, timeless magic Stevie Nicks is famous for! 🌙`,
+For our choir, sing it with confidence and a little bit of attitude! Don’t force the sound or make it too heavy—relax into the groove, enjoy the rhythm and let the confidence build as the song goes on. By the final chorus, we should really believe what we’re singing!`,
   },
   fr: {
-    title: "Chanson de la semaine : « Dreams » — Fleetwood Mac",
-    body: `Cette chanson légendaire a été écrite par Stevie Nicks en seulement 10 minutes, capturant la douce amertume de sa rupture réelle avec le guitariste du groupe.
+    title: "Chanson de la semaine : « Flowers » — Miley Cyrus",
+    body: `« Flowers » a été écrite par Miley Cyrus et ses coauteurs en 2022, puis lancée en 2023. Elle a d'abord été conçue comme une chanson beaucoup plus triste avant de devenir la version confiante et entraînante que nous connaissons aujourd'hui.
 
-Pour entrer dans l'ambiance de cette chanson, imaginez un sentiment de confiance calme et cool, mélangé à un peu de chagrin. Il s'agit de laisser partir quelqu'un qu'on aime, de lui souhaiter le meilleur, tout en sachant qu'il finira par vous manquer.
+Son message parle d'aller de l'avant, de reconnaître sa propre valeur et de comprendre que l'on peut s'offrir soi-même l'amour et le bonheur dont on a besoin.
 
-Pour notre chorale, le but n'est pas de chanter fort ni avec une tristesse lourde — adoptez plutôt un ton doux, hypnotique et narratif. Détendez-vous dans le rythme régulier, chantez avec le cœur, et capturons cette magie intemporelle et cool qui fait la renommée de Stevie Nicks ! 🌙`,
+Pour notre chorale, chantez-la avec confiance et un peu d'attitude ! Ne forcez pas le son et ne le rendez pas trop lourd — laissez-vous porter par le groove, profitez du rythme et laissez la confiance grandir au fil de la chanson. Au dernier refrain, nous devrions vraiment croire ce que nous chantons !`,
   },
 };
 
 const SECTION_TITLES = {
-  announcements: { en: "Important Announcements & Reminders", fr: "Annonces importantes et rappels" },
   ailsa: { en: "A Note from Ailsa 🎶", fr: "Un mot d'Ailsa 🎶" },
 };
 
@@ -155,26 +141,7 @@ export function MemberWelcomeMessage() {
 
   return (
     <div className="space-y-4">
-      {/* 1. Announcements & Reminders */}
-      <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 shadow-sm">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="rounded-full bg-primary/10 p-2.5 shrink-0">
-            <Megaphone className="w-5 h-5 text-primary" />
-          </div>
-          <h2 className="font-heading font-bold text-xl md:text-2xl text-foreground">
-            {SECTION_TITLES.announcements[language]}
-          </h2>
-        </div>
-        <ul className="space-y-3 text-base text-foreground/90 leading-relaxed">
-          {ANNOUNCEMENTS[language].map((item, i) => (
-            <li key={i} className="flex gap-2">
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* 2. A Note from Ailsa */}
+      {/* A Note from Ailsa */}
       <div className="relative rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-sm">
         <div className="flex items-start gap-3 mb-4">
           <div className="rounded-full bg-primary/10 p-2.5 shrink-0">
@@ -258,7 +225,7 @@ export function MemberWelcomeMessage() {
         )}
       </div>
 
-      {/* 3. Song of the Week */}
+      {/* Song of the Week */}
       <div className="rounded-2xl border border-pink/20 bg-pink-light p-6 shadow-sm">
         <div className="flex items-center gap-3 mb-3">
           <div className="rounded-full bg-pink/10 p-2.5 shrink-0">
