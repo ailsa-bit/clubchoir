@@ -13,7 +13,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "guest-follow-up" | "guest-last-call" | "montreal-location-move";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -31,9 +31,6 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week2-v1",
-  "guest-follow-up": "fall-2026-guest-follow-up-v1",
-  "guest-last-call": "fall-2026-guest-last-call-v1",
-  "montreal-location-move": "fall-2026-montreal-location-move-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -900,14 +897,11 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "hudson-open-house-thanks") return renderHudsonOpenHouseThanks(r);
   if (segment === "binder-count-unpaid") return renderBinderUnpaid(r);
   if (segment === "binder-count-considering") return renderBinderConsidering(r);
-  if (segment === "guest-follow-up") return renderGuestFollowUp(r);
-  if (segment === "guest-last-call") return renderGuestLastCall(r);
   
   if (segment === "resources-week2-paid") return renderResourcesWeek2(r);
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
-  if (segment === "montreal-location-move") return renderMontrealMove(r);
   return renderConsidering(r);
 }
 
@@ -980,12 +974,6 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
 
   if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
-
-  // Montreal venue move announcement: paid Montreal members only
-  if (segment === "montreal-location-move") {
-    return Array.from(paidMap.values()).filter((r) => r.location === "Montreal");
-  }
-
 
   if (segment === "fall-paid" || segment === "resources-week2-paid") return Array.from(paidMap.values());
 
