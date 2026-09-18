@@ -13,7 +13,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week2-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -27,10 +27,10 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   
-  "resources-week2-paid": "fall-2026-resources-week2-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week3-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week2-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week3-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -663,7 +663,7 @@ const LOCATION_PLAYLISTS: Record<string, string> = {
 };
 const FALL_PLAYLIST = "https://www.youtube.com/playlist?list=PLcV8Anv7jfrk";
 
-function renderResourcesWeek2(r: Recipient) {
+function renderResourcesWeek3(r: Recipient) {
   const THIS_WEEK = `${SITE_URL}/this-week`;
   const RES_URL = `${SITE_URL}/resources/fall-2026`;
   const playlist = LOCATION_PLAYLISTS[r.location] || FALL_PLAYLIST;
@@ -671,12 +671,12 @@ function renderResourcesWeek2(r: Recipient) {
     const items = lang === "en" ? [
       { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
       { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
-      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Dreams".`, url: RES_URL, label: "Open the song resources" },
+      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Flowers".`, url: RES_URL, label: "Open the song resources" },
       { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
     ] : [
       { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
       { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
-      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Dreams ».`, url: RES_URL, label: "Voir les ressources" },
+      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Flowers ».`, url: RES_URL, label: "Voir les ressources" },
       { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
     ];
     return items.map((i) => `
@@ -690,21 +690,21 @@ function renderResourcesWeek2(r: Recipient) {
   };
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">🎶 <strong>Week 2 resources are up!</strong> This week we're singing <strong>"Dreams" by Fleetwood Mac</strong> — everything you need is below.</p>
+    <p style="${P}">🎶 <strong>Week 3 resources are up!</strong> This week we're singing <strong>"Flowers" by Miley Cyrus</strong> — everything you need is below.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
     <p style="${P}">Have a fantastic weekend — see you at choir!</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">🎶 <strong>Les ressources de la semaine 2 sont en ligne!</strong> Cette semaine, nous chantons <strong>« Dreams » de Fleetwood Mac</strong> — tout ce qu'il vous faut est ci-dessous.</p>
+    <p style="${P}">🎶 <strong>Les ressources de la semaine 3 sont en ligne!</strong> Cette semaine, nous chantons <strong>« Flowers » de Miley Cyrus</strong> — tout ce qu'il vous faut est ci-dessous.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
     <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
     ${SIGN}`;
   return {
-    subject: `Week 2 resources are up — "Dreams" by Fleetwood Mac 🎶 / Ressources de la semaine 2 en ligne!`,
-    html: wrap(inner, `Week 2 resources for "Dreams" are live — your weekly message, location videos, song resources and session playlist.`),
+    subject: `Week 3 resources are up — "Flowers" by Miley Cyrus 🎶 / Ressources de la semaine 3 en ligne!`,
+    html: wrap(inner, `Week 3 resources for "Flowers" are live — your weekly message, location videos, song resources and session playlist.`),
   };
 }
 
@@ -740,29 +740,29 @@ function renderChoirTonight(r: Recipient) {
     </div>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>Week 2 kicks off tonight! 🎶</strong> I can't wait to sing with you again.</p>
+    <p style="${P}"><strong>Week 3 kicks off tonight! 🎶</strong> I can't wait to sing with you again.</p>
     ${montrealNotice("en")}
     ${box("en")}
     ${bring("en")}
     <p style="${P}">If you missed opening night, please come a little early to collect your binder. We'll have printed lyrics ready for everyone.</p>
-    <p style="${P}">Friday's email included the new song resources and the Week 1 video from your location. If you're having trouble connecting to your member profile, email me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll help you get connected.</p>
+    <p style="${P}">Friday's email included the new song resources and the latest video from your location. If you're having trouble connecting to your member profile, email me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll help you get connected.</p>
     <p style="${P}">Guests are always welcome! Please stay home if you're feeling sick, and take good care of yourself.</p>
     <p style="${P}"><strong>See you tonight!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>La semaine 2 commence ce soir! 🎶</strong> J'ai très hâte de chanter de nouveau avec vous.</p>
+    <p style="${P}"><strong>La semaine 3 commence ce soir! 🎶</strong> J'ai très hâte de chanter de nouveau avec vous.</p>
     ${montrealNotice("fr")}
     ${box("fr")}
     ${bring("fr")}
     <p style="${P}">Si vous avez manqué la soirée d'ouverture, arrivez un peu à l'avance pour récupérer votre cartable. Les paroles seront imprimées pour tout le monde.</p>
-    <p style="${P}">Le courriel de vendredi contenait les nouvelles ressources musicales et la vidéo de la semaine 1 de votre lieu. Si vous avez de la difficulté à accéder à votre profil de membre, écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous aiderai à vous connecter.</p>
+    <p style="${P}">Le courriel de vendredi contenait les nouvelles ressources musicales et la plus récente vidéo de votre lieu. Si vous avez de la difficulté à accéder à votre profil de membre, écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous aiderai à vous connecter.</p>
     <p style="${P}">Les invités sont toujours les bienvenus! Si vous ne vous sentez pas bien, restez à la maison et prenez soin de vous.</p>
     <p style="${P}"><strong>À ce soir!</strong></p>
     ${SIGN}`;
   return {
-    subject: `Week 2 kicks off tonight${city ? ` — ${city}` : ""}! 🎶 / La semaine 2 commence ce soir${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Week 2 kicks off tonight — a warm reminder with your location, start time and what to bring."),
+    subject: `Week 3 kicks off tonight${city ? ` — ${city}` : ""}! 🎶 / La semaine 3 commence ce soir${city ? ` — ${city}` : ""}!`,
+    html: wrap(inner, "Week 3 kicks off tonight — a warm reminder with your location, start time and what to bring."),
   };
 }
 
@@ -778,7 +778,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "binder-count-unpaid") return renderBinderUnpaid(r);
   if (segment === "binder-count-considering") return renderBinderConsidering(r);
   
-  if (segment === "resources-week2-paid") return renderResourcesWeek2(r);
+  if (segment === "resources-week3-paid") return renderResourcesWeek3(r);
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
@@ -855,7 +855,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
   if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
 
-  if (segment === "fall-paid" || segment === "resources-week2-paid") return Array.from(paidMap.values());
+  if (segment === "fall-paid" || segment === "resources-week3-paid") return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
     // Same-day reminders are for paid Fall 2026 members only.

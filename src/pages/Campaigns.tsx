@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "resources-week2-paid";
+type Segment = "choir-tonight" | "resources-week3-paid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -38,27 +38,28 @@ interface Preflight {
 
 const EMPTY_COUNTS = {
   "choir-tonight": 0,
-  "resources-week2-paid": 0,
+  "resources-week3-paid": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
 const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
-  "choir-tonight": "fall-2026-choir-tonight-week2-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week3-v1",
+  "resources-week3-paid": "fall-2026-resources-week3-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
     key: "choir-tonight",
-    title: "Week 2 Starts Tonight — Reminder",
+    title: "Week 3 Starts Tonight — Reminder",
     description: "Warm same-day reminder for paid members, sent by location. Includes the venue and start time, what to bring, binder pickup for anyone who missed opening night, profile help, Friday's resource links, guest welcome and a stay-home-if-sick note. Montreal receives a prominent new-venue reminder. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
-    key: "resources-week2-paid",
-    title: "Week 2 Resources Are Up — \"Dreams\"",
-    description: "Send by location to paid members. Announces Week 2 song \"Dreams\" by Fleetwood Mac with four numbered links: 1) This Week at Choir (weekly message, reminders, announcements, song story), 2) the location's YouTube playlist of end-of-session videos (link never changes — new videos added weekly), 3) direct link to the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session. Ends with \"Have a fantastic weekend!\". Bilingual EN/FR.",
+    key: "resources-week3-paid",
+    title: "Week 3 Resources Are Up — \"Flowers\"",
+    description: "Send by location to paid members. Announces Week 3 song \"Flowers\" by Miley Cyrus with four numbered links: 1) This Week at Choir (weekly message and song story), 2) the location's YouTube playlist of end-of-session videos, 3) the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];
@@ -73,17 +74,17 @@ const Campaigns = () => {
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
-    "resources-week2-paid": {},
+    "resources-week3-paid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
-    "resources-week2-paid": "all",
+    "resources-week3-paid": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
-    "resources-week2-paid": {},
+    "resources-week3-paid": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
