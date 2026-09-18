@@ -10,7 +10,7 @@ import type { Database } from "@/integrations/supabase/types";
 
 type Announcement = Database["public"]["Tables"]["weekly_announcements"]["Row"];
 
-const DEFAULT_TITLE = { en: "A Note from Ailsa 🎶", fr: "Un mot d'Ailsa 🎶" };
+const DEFAULT_TITLE = { en: "Week 3 — A Note from Ailsa 🎶", fr: "Semaine 3 — Un mot d'Ailsa 🎶" };
 
 const DEFAULT_MESSAGE = {
   en: `Hello wonderful singers! 🌟
