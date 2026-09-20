@@ -190,11 +190,16 @@ const Dashboard = () => {
     const unknown = inRange.filter((v) => prettyLocation(v.location) === "Unknown").length;
 
     const uniquePeople = new Set(rows.map((v) => v.user_id).filter(Boolean)).size;
+    const eventWord: Record<string, string> = { open: "Opened", download: "Downloaded", play: "Played", view: "Visited" };
     const recent = rows.slice(0, 20).map((v) => ({
-      label: resourceKey(v), location: prettyLocation(v.location), at: v.created_at,
+      label: v.file_name || resourceKey(v),
+      action: eventWord[v.event_type || "view"] || "Visited",
+      location: prettyLocation(v.location),
+      device: DEVICE_LABELS[v.device || "unknown"],
+      at: v.created_at,
     }));
 
-    return { rows, daily, top, byLoc, unknown, uniquePeople, recent };
+    return { rows, pageRows, fileRows, daily, top, byLoc, unknown, uniquePeople, recent, byType, topFiles, byDevice, audioPlays, downloads };
   }, [views, range, locFilter]);
 
   if (adminLoading || loading) {
