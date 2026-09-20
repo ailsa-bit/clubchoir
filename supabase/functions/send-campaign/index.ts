@@ -770,23 +770,26 @@ function renderChoirTonight(r: Recipient) {
 function renderCommunityUpdate(r: Recipient) {
   const TRY_URL = `${SITE_URL}/try`;
   const FB_URL = "https://www.facebook.com/clubchoir/";
+  const name = esc(r.first_name) || "there";
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">What a start to the session — I honestly couldn't have asked for better. Thank you to every single one of you who has joined us. Here we are heading into <strong>Week 3</strong>, and the energy in every room has been something special. 🌟</p>
-    <p style="${P}"><strong>Know someone who would love this?</strong> For the next seven weeks, a friend can come spend an evening with us — hear the music, feel the vibe, meet the gang — and see if Club Choir is their kind of thing. No commitment, no audition, just a really good evening.</p>
-    ${BTN(TRY_URL, "Try a session — share this link")}
-    <p style="${P}">And one small favour: if you haven't already, hop over and <strong>like our Facebook page</strong>. Every like helps another future singer find us.</p>
-    ${BTN(FB_URL, "Find us on Facebook")}
-    <p style="${P}">Thank you for helping our little community grow — you're the heart of it.</p>
+    <p style="${P}">I've been wanting to write you a little note, ${name}, because these past two weeks have honestly been something special — and you're a big part of that. Thank you for being here, for your voice, and for the warmth you bring into the room. Heading into <strong>Week 3</strong>, I couldn't be happier with how our community is coming together. 🌟</p>
+    <p style="${P}">You know that feeling on choir night, when the room is buzzing and everyone leaves a little lighter than they arrived? If someone in your life could use an evening like that, I'd love to meet them. Over the next few weeks, friends are welcome to drop in for an evening — no commitment, no audition, just come with an open mind and see if it feels like home.</p>
+    <p style="${P}">If you'd like to invite someone, here's the link to pass along:</p>
+    ${BTN(TRY_URL, "Try a session")}
+    <p style="${P}">And while I'm asking for favours — if you have a spare moment, we'd be so grateful for a like on our Facebook page. It's a small thing, but it's how more wonderful people like you find their way to us.</p>
+    ${BTN(FB_URL, "Visit us on Facebook")}
+    <p style="${P}">Thank you for being you, ${name}. See you at choir — I can't wait.</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">Quel début de session — je n'aurais sincèrement pas pu rêver mieux. Merci à chacune et chacun d'entre vous qui vous êtes joints à nous. Nous voilà déjà à la <strong>semaine 3</strong>, et l'énergie dans chaque salle est vraiment spéciale. 🌟</p>
-    <p style="${P}"><strong>Connaissez-vous quelqu'un qui adorerait ça?</strong> Au cours des sept prochaines semaines, un(e) ami(e) peut venir passer une soirée avec nous — entendre la musique, sentir l'ambiance, rencontrer la gang — et voir si Club Choir est fait pour elle ou lui. Sans engagement, sans audition — juste une très belle soirée.</p>
-    ${BTN(TRY_URL, "Essayer une session — partagez ce lien")}
-    <p style="${P}">Et une petite faveur : si ce n'est pas déjà fait, allez <strong>aimer notre page Facebook</strong>. Chaque mention « J'aime » aide un futur choriste de plus à nous découvrir.</p>
-    ${BTN(FB_URL, "Nous suivre sur Facebook")}
-    <p style="${P}">Merci d'aider notre petite communauté à grandir — vous en êtes le cœur.</p>
+    <p style="${P}">J'avais envie de t'écrire un petit mot, ${name}, parce que ces deux dernières semaines ont été vraiment spéciales — et tu y es pour beaucoup. Merci d'être là, pour ta voix et pour la chaleur que tu apportes dans la salle. À l'aube de la <strong>semaine 3</strong>, je ne pourrais pas être plus heureuse de voir notre communauté prendre forme. 🌟</p>
+    <p style="${P}">Tu connais ce sentiment, le soir de la chorale, quand la salle vibre et que tout le monde repart un peu plus léger? Si quelqu'un dans ta vie aurait besoin d'une soirée comme ça, j'adorerais le ou la rencontrer. Au cours des prochaines semaines, les ami(e)s sont les bienvenu(e)s pour une soirée — sans engagement, sans audition, juste venir avec l'esprit ouvert et voir si l'on s'y sent chez soi.</p>
+    <p style="${P}">Si tu veux inviter quelqu'un, voici le lien à partager :</p>
+    ${BTN(TRY_URL, "Essayer une session")}
+    <p style="${P}">Et pendant que j'y suis avec mes petites demandes — si tu as un moment, un « J'aime » sur notre page Facebook nous rendrait vraiment heureux. C'est un petit geste, mais c'est ainsi que d'autres personnes formidables comme toi nous découvrent.</p>
+    ${BTN(FB_URL, "Nous visiter sur Facebook")}
+    <p style="${P}">Merci d'être toi, ${name}. À la chorale — j'ai tellement hâte.</p>
     ${SIGN}`;
   return {
     subject: "Week 3 & two little favours 🌟 / Semaine 3 et deux petites faveurs",
