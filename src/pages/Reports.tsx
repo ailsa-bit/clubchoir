@@ -94,7 +94,7 @@ const Reports = () => {
         status: "Trial guest",
         created_at: g.created_at,
         tags: [],
-        night: g.session_date ? `${fmt(g.session_date)}${g.week ? ` (${g.week})` : ""}` : "—",
+        night: g.session_date ? `${fmt(`${g.session_date}T12:00:00`)}${g.week ? ` (${g.week})` : ""}` : "—",
         song: g.song || "—",
       }));
     else if (report === "guest-list")
