@@ -463,6 +463,7 @@ const translations: Record<string, Record<Language, string>> = {
   "home.hero.trySession": { en: "Try a session", fr: "Essayer une session" },
   "home.hero.upcomingEvents": { en: "See upcoming events", fr: "Voir les événements à venir" },
   "home.hero.seeSessions": { en: "See session dates & locations", fr: "Dates et lieux des sessions" },
+  "home.hero.tryASession": { en: "Try a session — free", fr: "Essayez une soirée — gratuit" },
   "home.hero.openHouseAugust": { en: "Open Houses — August", fr: "Portes ouvertes — août" },
   "home.hero.reassurance": {
     en: "Fall/Winter 2026 registration is closed · Next session begins in late February 2027",

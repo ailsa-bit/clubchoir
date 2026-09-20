@@ -1,155 +1,100 @@
 import PageMeta from "@/components/PageMeta";
 import ChoirFaq from "@/components/ChoirFaq";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { ArrowLeft, Calendar, MapPin, Send } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Music, Send, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { getAttribution } from "@/lib/attribution";
 import { trackLead } from "@/lib/metaPixel";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { TRIAL_LOCATIONS, formatNight, timeForNight } from "@/data/trialNights";
 
-type Loc = {
-  value: string;
-  name: string;
-  color: string;
-  border: string;
-  dot: string;
-  ring: string;
-  day: { en: string; fr: string };
-  venue?: { en: string; fr: string };
-};
-
-const LOCATIONS: Loc[] = [
-  {
-    value: "Montreal – Monday",
-    name: "Montreal",
-    color: "bg-pink-light",
-    border: "border-pink/30",
-    dot: "bg-pink",
-    ring: "ring-pink",
-    day: { en: "Mondays · 7:00–8:30 PM", fr: "Lundis · 19 h – 20 h 30" },
-    venue: { en: "Paroisse Notre-Dame-De-Grâce", fr: "Paroisse Notre-Dame-De-Grâce" },
-  },
-  {
-    value: "Hudson – Monday",
-    name: "Hudson",
-    color: "bg-orange-light",
-    border: "border-orange/30",
-    dot: "bg-orange",
-    ring: "ring-orange",
-    day: { en: "Tuesdays · 7:00–8:30 PM", fr: "Mardis · 19 h – 20 h 30" },
-    venue: { en: "The Hudson Legion, 57 Beach Road", fr: "The Hudson Legion, 57 Beach Road" },
-  },
-  {
-    value: "Saint-Hubert – Wednesday",
-    name: "Saint-Hubert",
-    color: "bg-lime-light",
-    border: "border-lime/30",
-    dot: "bg-lime",
-    ring: "ring-lime",
-    day: { en: "Wednesdays · 7:00–8:30 PM", fr: "Mercredis · 19 h – 20 h 30" },
-  },
-  {
-    value: "Pointe-Claire – Thursday",
-    name: "Pointe-Claire",
-    color: "bg-purple-light",
-    border: "border-purple/30",
-    dot: "bg-purple",
-    ring: "ring-purple",
-    day: { en: "Thursdays · 7:00–8:30 PM", fr: "Jeudis · 19 h – 20 h 30" },
-  },
-];
-
-const makeContactSchema = (t: (k: string) => string) =>
-  z.object({
-    name: z.string().trim().min(1, t("try.validation.name")).max(100),
-    email: z.string().trim().email(t("try.validation.email")).max(255),
-    location: z.string().min(1, t("try.validation.location")),
-    message: z
-      .string()
-      .trim()
-      .min(1, t("try.validation.message"))
-      .max(2000, t("try.validation.messageMax")),
-  });
-
-const contactSchema = z.object({
-  name: z.string(),
-  email: z.string(),
-  location: z.string(),
-  message: z.string(),
-});
-
-type ContactForm = z.infer<typeof contactSchema>;
+const todayIso = () => new Date().toISOString().slice(0, 10);
 
 const TryASession = () => {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const { toast } = useToast();
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const isFr = language === "fr";
   const [searchParams] = useSearchParams();
 
-  const prefilledLocation = useMemo(() => {
-    const raw = (searchParams.get("location") || "").toLowerCase();
-    if (!raw) return "";
-    const match = LOCATIONS.find((l) => l.value.toLowerCase().startsWith(raw));
-    return match?.value ?? "";
-  }, [searchParams]);
+  const preset = (searchParams.get("location") || "").toLowerCase();
+  const [locationName, setLocationName] = useState<string>(
+    TRIAL_LOCATIONS.find((l) => l.name.toLowerCase() === preset)?.name ?? "",
+  );
+  const [dateIso, setDateIso] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [notes, setNotes] = useState("");
 
-  const form = useForm<ContactForm>({
-    resolver: zodResolver(makeContactSchema(t)),
-    defaultValues: { name: "", email: "", location: prefilledLocation, message: "" },
-  });
+  const loc = TRIAL_LOCATIONS.find((l) => l.name === locationName);
+  const upcoming = (loc?.nights ?? []).filter((n) => n.date >= todayIso());
+  const chosen = upcoming.find((n) => n.date === dateIso);
 
-  const onSubmit = async (data: ContactForm) => {
+  const t = {
+    title: isFr ? "Essayez une soirée — gratuitement" : "Try a session — free",
+    subtitle: isFr
+      ? "Venez chanter avec nous une soirée et voyez si Club Choir vous convient."
+      : "Come sing with us for one evening and see if Club Choir is the right fit for you.",
+    intro: isFr
+      ? "Au cours des 7 prochaines semaines (semaines 3 à 9), vous pouvez assister à une soirée dans le lieu de votre choix, selon l'horaire de chaque endroit. Chaque semaine, la même chanson est apprise partout. Si tout vous plaît, vous pourrez faire une inscription anticipée pour la session hiver/printemps 2027."
+      : "Over the next 7 weeks (weeks 3 to 9) you're welcome to attend an evening at any of our locations, based on each location's schedule. The same song is taught everywhere each week. If it feels like the right fit, you can register early for our Winter/Spring 2027 session.",
+    noPressure: isFr
+      ? "Aucune pression pour vous engager. Venez l'esprit ouvert — nous formons un groupe très chaleureux et nous avons hâte de vous rencontrer."
+      : "There is no pressure to commit. Come with an open mind — we are a very friendly group and we look forward to meeting you.",
+    step1: isFr ? "1. Choisissez un lieu" : "1. Choose a location",
+    step2: isFr ? "2. Choisissez votre soirée" : "2. Choose your evening",
+    step3: isFr ? "3. Vos coordonnées" : "3. Your details",
+    pickLocationFirst: isFr ? "Choisissez d'abord un lieu." : "Choose a location first.",
+    first: isFr ? "Prénom" : "First name",
+    last: isFr ? "Nom" : "Last name",
+    email: "Courriel",
+    message: isFr ? "Message (facultatif)" : "Message (optional)",
+    submit: isFr ? "Ajoutez-moi à la liste d'invités" : "Add me to the guest list",
+    sending: isFr ? "Envoi..." : "Sending...",
+    back: isFr ? "Retour à l'accueil" : "Back to home",
+    thanksTitle: isFr ? "Vous êtes sur la liste d'invités ! 🎶" : "You're on the guest list! 🎶",
+  };
+
+  const valid = loc && chosen && firstName.trim() && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim());
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!valid) {
+      toast({
+        title: isFr ? "Information manquante" : "Missing information",
+        description: isFr
+          ? "Choisissez un lieu, une soirée, et entrez votre prénom et votre courriel."
+          : "Please choose a location and an evening, and enter your first name and email.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSending(true);
     try {
-      const { error } = await supabase.functions.invoke("send-contact-email", {
-        body: data,
+      const { error } = await supabase.functions.invoke("book-trial-night", {
+        body: {
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          email: email.trim(),
+          location: loc!.name,
+          session_date: chosen!.date,
+          week: chosen!.week,
+          song: `${chosen!.song} — ${chosen!.artist}`,
+          notes: notes.trim(),
+          language,
+        },
       });
       if (error) throw error;
-
-      // Record in CRM (best-effort)
-      try {
-        const cityName = (data.location.split("–")[0] || "").trim();
-        const parts = data.name.trim().split(/\s+/);
-        const firstName = parts[0] || data.name.trim();
-        const lastName = parts.slice(1).join(" ") || "-";
-        await supabase.functions.invoke("record-open-house", {
-          body: {
-            first_name: firstName,
-            last_name: lastName,
-            email: data.email,
-            location: cityName,
-            notes: data.message || "",
-            attribution: getAttribution(),
-            session_label: "try-a-session",
-          },
-        });
-      } catch (recErr) {
-        console.warn("record try-a-session failed:", recErr);
-      }
-
       setSent(true);
-      trackLead("Try a Session", (data.location.split("–")[0] || "").trim());
-      toast({ title: t("try.toast.sent.title"), description: t("try.toast.sent.desc") });
+      trackLead("Try a Session", loc!.name);
     } catch (err: any) {
       toast({
-        title: t("common.something.wrong"),
-        description: err.message || t("common.try.again"),
+        title: isFr ? "Un problème est survenu" : "Something went wrong",
+        description: err?.message || (isFr ? "Veuillez réessayer." : "Please try again."),
         variant: "destructive",
       });
     } finally {
@@ -157,181 +102,187 @@ const TryASession = () => {
     }
   };
 
-  const back = isFr ? "Retour à l'accueil" : "Back to home";
-
   return (
     <div className="py-12 px-4">
-      <PageMeta
-        title={t("meta.try.title")}
-        description={t("meta.try.desc")}
-        path="/try"
-      />
+      <PageMeta title={t.title} description={t.subtitle} path="/try" />
       <div className="container mx-auto max-w-3xl">
         <Link
           to="/"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" /> {back}
+          <ArrowLeft className="w-4 h-4" /> {t.back}
         </Link>
 
-        <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
-          {t("try.title")}
-        </h1>
-        <p className="text-center text-muted-foreground mb-8 max-w-xl mx-auto">
-          {t("try.subtitle")}
-        </p>
+        <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">{t.title}</h1>
+        <p className="text-center text-muted-foreground mb-4 max-w-xl mx-auto">{t.subtitle}</p>
 
         {sent ? (
           <div className="rounded-2xl border border-primary/30 bg-primary/5 p-8 text-center">
-            <h2 className="font-heading font-bold text-2xl text-foreground mb-2">
-              {t("try.thanks.title")}
-            </h2>
+            <h2 className="font-heading font-bold text-2xl text-foreground mb-3">{t.thanksTitle}</h2>
             <p className="text-base text-foreground/80 leading-relaxed">
-              {t("try.thanks.desc")}
+              {isFr
+                ? `Nous vous attendons à ${loc?.name} le ${formatNight(chosen!.date, true)}, ${timeForNight(loc!, chosen!.week)}. Un courriel de confirmation avec tous les détails vient de vous être envoyé.`
+                : `We'll see you in ${loc?.name} on ${formatNight(chosen!.date, false)}, ${timeForNight(loc!, chosen!.week)}. A confirmation email with all the details is on its way.`}
             </p>
+            <p className="text-sm text-foreground/70 mt-4">{t.noPressure}</p>
           </div>
         ) : (
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {/* Location picker */}
-              <FormField
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="block text-sm font-bold text-foreground mb-3">
-                      {t("try.location")} <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        {LOCATIONS.map((loc) => {
-                          const selected = field.value === loc.value;
-                          return (
-                            <button
-                              key={loc.value}
-                              type="button"
-                              onClick={() => field.onChange(loc.value)}
-                              className={`text-left rounded-2xl border-2 p-4 transition-all ${loc.color} ${
-                                selected
-                                  ? `${loc.border} ring-2 ${loc.ring} shadow-md`
-                                  : "border-transparent hover:border-border"
-                              }`}
-                              aria-pressed={selected}
-                            >
-                              <div className="flex items-center gap-2 mb-1.5">
-                                <span className={`w-2.5 h-2.5 rounded-full ${loc.dot}`} />
-                                <span className="font-heading font-bold text-foreground">
-                                  {loc.name}
-                                </span>
-                              </div>
-                              <p className="text-sm text-foreground/80 flex items-start gap-1.5">
-                                <Calendar className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-                                <span>{loc.day[isFr ? "fr" : "en"]}</span>
-                              </p>
-                              {loc.venue && (
-                                <p className="text-sm text-muted-foreground flex items-start gap-1.5 mt-1">
-                                  <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-                                  <span>{loc.venue[isFr ? "fr" : "en"]}</span>
-                                </p>
-                              )}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <>
+            <div className="rounded-2xl border border-border bg-muted/30 p-5 mb-8 space-y-3">
+              <p className="text-sm text-foreground/80 leading-relaxed">{t.intro}</p>
+              <p className="text-sm text-foreground/80 leading-relaxed font-semibold">{t.noPressure}</p>
+            </div>
 
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="block text-sm font-bold text-foreground mb-1.5">
-                      {t("try.name")} <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <input
-                        {...field}
-                        maxLength={100}
-                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <form onSubmit={onSubmit} className="space-y-8">
+              {/* Step 1 — location */}
+              <div>
+                <h2 className="font-heading font-bold text-lg text-foreground mb-3">{t.step1}</h2>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {TRIAL_LOCATIONS.map((l) => {
+                    const selected = l.name === locationName;
+                    return (
+                      <button
+                        key={l.name}
+                        type="button"
+                        onClick={() => {
+                          setLocationName(l.name);
+                          setDateIso("");
+                        }}
+                        aria-pressed={selected}
+                        className={`text-left rounded-2xl border-2 p-4 transition-all ${l.color} ${
+                          selected ? `${l.border} ring-2 ${l.ring} shadow-md` : "border-transparent hover:border-border"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className={`w-2.5 h-2.5 rounded-full ${l.dot}`} />
+                          <span className="font-heading font-bold text-foreground">{l.name}</span>
+                        </div>
+                        <p className="text-sm text-foreground/80 flex items-start gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                          <span>{l.day[isFr ? "fr" : "en"]} · {l.time}</span>
+                        </p>
+                        <p className="text-sm text-muted-foreground flex items-start gap-1.5 mt-1">
+                          <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                          <span>{l.venue}</span>
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="block text-sm font-bold text-foreground mb-1.5">
-                      {t("try.email")} <span className="text-destructive">*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <input
-                        {...field}
-                        type="email"
-                        maxLength={255}
-                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+              {/* Step 2 — evening */}
+              <div>
+                <h2 className="font-heading font-bold text-lg text-foreground mb-3">{t.step2}</h2>
+                {!loc ? (
+                  <p className="text-sm text-muted-foreground">{t.pickLocationFirst}</p>
+                ) : upcoming.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    {isFr ? "Aucune soirée d'essai restante à cet endroit." : "No trial evenings left at this location."}
+                  </p>
+                ) : (
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {upcoming.map((n) => {
+                      const selected = n.date === dateIso;
+                      return (
+                        <button
+                          key={n.date}
+                          type="button"
+                          onClick={() => setDateIso(n.date)}
+                          aria-pressed={selected}
+                          className={`text-left rounded-xl border-2 p-4 transition-all bg-card ${
+                            selected ? "border-primary ring-2 ring-primary/40 shadow-md" : "border-border hover:border-primary/40"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-xs font-semibold text-muted-foreground">
+                              {isFr ? `Semaine ${n.week}` : `Week ${n.week}`}
+                            </span>
+                            {selected && <Check className="w-4 h-4 text-primary" />}
+                          </div>
+                          <div className="font-heading font-bold text-foreground mt-1">{formatNight(n.date, isFr)}</div>
+                          <div className="text-xs text-muted-foreground">{timeForNight(loc, n.week)}</div>
+                          <p className="text-sm text-foreground/80 flex items-start gap-1.5 mt-2">
+                            <Music className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                            <span>
+                              <strong>{n.song}</strong> — {n.artist}
+                            </span>
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
                 )}
-              />
+              </div>
 
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="block text-sm font-bold text-foreground mb-1.5">
-                      {t("try.message")}
-                    </FormLabel>
-                    <FormControl>
-                      <textarea
-                        {...field}
-                        rows={4}
-                        maxLength={2000}
-                        placeholder={t("try.messagePlaceholder")}
-                        className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {/* Step 3 — details */}
+              <div className="space-y-4">
+                <h2 className="font-heading font-bold text-lg text-foreground">{t.step3}</h2>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <label className="block">
+                    <span className="block text-sm font-bold text-foreground mb-1.5">
+                      {t.first} <span className="text-destructive">*</span>
+                    </span>
+                    <input
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      maxLength={100}
+                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="block text-sm font-bold text-foreground mb-1.5">{t.last}</span>
+                    <input
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      maxLength={100}
+                      className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </label>
+                </div>
+                <label className="block">
+                  <span className="block text-sm font-bold text-foreground mb-1.5">
+                    {t.email} <span className="text-destructive">*</span>
+                  </span>
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                    maxLength={255}
+                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </label>
+                <label className="block">
+                  <span className="block text-sm font-bold text-foreground mb-1.5">{t.message}</span>
+                  <textarea
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    rows={3}
+                    maxLength={2000}
+                    className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </label>
+              </div>
 
               <Button
                 type="submit"
                 disabled={sending}
                 className="w-full sm:w-auto px-8 py-6 rounded-full bg-primary text-primary-foreground font-semibold text-base hover:bg-primary/90"
               >
-                {sending ? (
-                  t("try.sending")
-                ) : (
-                  <>
-                    <Send className="w-4 h-4 mr-2" /> {t("try.send")}
-                  </>
-                )}
+                {sending ? t.sending : (<><Send className="w-4 h-4 mr-2" /> {t.submit}</>)}
               </Button>
             </form>
-          </Form>
+          </>
         )}
       </div>
 
       <div className="bg-muted/40 mt-16 -mx-4 px-4 py-2">
         <ChoirFaq
-          title={isFr ? "Avant de nous écrire" : "Before you reach out"}
+          title={isFr ? "Avant de venir" : "Before you come"}
           subtitle={
             isFr
-              ? "Les questions les plus fréquentes des personnes qui pensent essayer une session."
-              : "The questions we get most often from people thinking about trying a session."
+              ? "Les questions les plus fréquentes des personnes qui pensent essayer une soirée."
+              : "The questions we get most often from people thinking about trying an evening."
           }
         />
       </div>

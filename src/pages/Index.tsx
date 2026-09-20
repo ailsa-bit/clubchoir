@@ -103,13 +103,13 @@ const Index = () => {
                   <Sparkles className="w-4 h-4 shrink-0" />
                   <span>{t("home.hero.registerFall")}</span>
                 </Link>
-                <a
-                  href="#sessions"
+                <Link
+                  to="/try"
                   className="min-h-14 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-orange bg-background px-4 py-3 text-center text-sm font-bold text-orange hover:bg-orange hover:text-orange-foreground transition-colors"
                 >
                   <Calendar className="w-4 h-4 shrink-0" />
-                  <span>{t("home.hero.seeSessions")}</span>
-                </a>
+                  <span>{t("home.hero.tryASession")}</span>
+                </Link>
               </div>
 
 
