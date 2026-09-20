@@ -339,6 +339,78 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* What kind of material gets used */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-6">
+          <div className="bg-card border border-border rounded-xl p-4 md:p-6">
+            <h2 className="font-heading font-bold text-lg mb-1">What members use: recordings, lyrics, slides, sheet music</h2>
+            <p className="text-xs text-muted-foreground mb-4">Opens, downloads and plays in the last {range} days. Anything near zero is a candidate to drop.</p>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={data.byType} margin={{ left: -20, right: 8, top: 8 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="type" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                  <Legend wrapperStyle={{ fontSize: 12 }} />
+                  <Bar dataKey="Opened" stackId="a" fill="hsl(var(--primary))" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="Downloaded" stackId="a" fill="hsl(38 92% 50%)" />
+                  <Bar dataKey="Played" stackId="a" fill="hsl(142 60% 40%)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 space-y-1 text-sm">
+              {data.byType.map((t) => (
+                <div key={t.type} className="flex items-center justify-between border-t border-border pt-1">
+                  <span className="text-muted-foreground">{t.type}</span>
+                  <span className="font-semibold">{t.total} uses · {t.people} member{t.people === 1 ? "" : "s"}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Phone vs computer + top files */}
+          <div className="space-y-6">
+            <div className="bg-card border border-border rounded-xl p-4 md:p-6">
+              <h2 className="font-heading font-bold text-lg mb-1">Phone, tablet or computer</h2>
+              <p className="text-xs text-muted-foreground mb-3">How members reach the resources — last {range} days.</p>
+              {data.byDevice.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No activity yet.</p>
+              ) : (
+                <div className="space-y-2 text-sm">
+                  {data.byDevice.map((d) => (
+                    <div key={d.device}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-medium">{d.device}</span>
+                        <span className="text-muted-foreground">{d.Uses} actions · {d.people} member{d.people === 1 ? "" : "s"}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full rounded-full bg-primary" style={{ width: `${Math.max(4, (d.Uses / (data.rows.length || 1)) * 100)}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-4 md:p-6">
+              <h2 className="font-heading font-bold text-lg mb-1">Most-used files</h2>
+              <p className="text-xs text-muted-foreground mb-3">Individual recordings and documents, last {range} days.</p>
+              {data.topFiles.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No files opened yet.</p>
+              ) : (
+                <div className="space-y-2 text-sm">
+                  {data.topFiles.map((f) => (
+                    <div key={f.label + f.type} className="flex items-center justify-between gap-3 border-t border-border pt-1">
+                      <span className="truncate">{f.label}</span>
+                      <span className="shrink-0 text-muted-foreground">{f.type} · {f.uses}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Recent activity */}
         <div className="bg-card border border-border rounded-xl p-4 md:p-6">
           <h2 className="font-heading font-bold text-lg mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> Latest resource opens</h2>
