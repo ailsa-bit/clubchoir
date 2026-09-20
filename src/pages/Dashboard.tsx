@@ -155,7 +155,7 @@ const Dashboard = () => {
     const byDay = new Map<string, any>(
       days.map((d) => [d, Object.fromEntries([["day", fmtDay(d)], ["Total", 0], ...LOCATIONS.map((l) => [l, 0])])]),
     );
-    rows.forEach((v) => {
+    pageRows.forEach((v) => {
       const row = byDay.get(dayKey(v.created_at));
       if (!row) return;
       row.Total++;
