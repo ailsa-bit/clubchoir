@@ -534,6 +534,36 @@ export type Database = {
         }
         Relationships: []
       }
+      resource_page_views: {
+        Row: {
+          created_at: string
+          id: string
+          location: string | null
+          page: string
+          song: string | null
+          user_id: string | null
+          week: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          page: string
+          song?: string | null
+          user_id?: string | null
+          week?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          page?: string
+          song?: string | null
+          user_id?: string | null
+          week?: number | null
+        }
+        Relationships: []
+      }
       session_registrations: {
         Row: {
           amount_paid: number | null
