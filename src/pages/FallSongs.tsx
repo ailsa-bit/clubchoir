@@ -10,6 +10,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import SongAudioPlayer from "@/components/SongAudioPlayer";
+import { trackResourceView } from "@/lib/trackResourceView";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const SESSION = "fall-2026";
@@ -155,6 +156,15 @@ const FallSongs = () => {
   // Pre-fill the song name with this week's song for admin uploads
   useEffect(() => {
     if (selectedWeek) setUploadSong(WEEK_TITLES[selectedWeek] || "");
+  }, [selectedWeek]);
+
+  // Record page/week opens so admins can see what members use most
+  useEffect(() => {
+    if (selectedWeek) {
+      trackResourceView({ page: "fall-2026", week: selectedWeek, song: WEEK_TITLES[selectedWeek] || null });
+    } else {
+      trackResourceView({ page: "fall-2026" });
+    }
   }, [selectedWeek]);
 
   const getSignedUrl = async (row: Row, forDownload: boolean): Promise<string | null> => {
