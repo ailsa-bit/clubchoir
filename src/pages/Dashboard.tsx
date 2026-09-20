@@ -171,7 +171,7 @@ const Dashboard = () => {
       return "Resources home (all weeks)";
     };
     const counts = new Map<string, { label: string; opens: number; people: Set<string> }>();
-    rows.forEach((v) => {
+    pageRows.forEach((v) => {
       const k = resourceKey(v);
       const cur = counts.get(k) || { label: k, opens: 0, people: new Set<string>() };
       cur.opens++;
