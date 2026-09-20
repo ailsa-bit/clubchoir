@@ -7,6 +7,7 @@ import { Music, FileText, BookOpen, Download, Trash2, Upload, Loader2, Search, P
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Helmet } from "react-helmet-async";
+import { trackResourceView } from "@/lib/trackResourceView";
 
 interface SongResource {
   id: string;
@@ -91,6 +92,7 @@ const Resources = () => {
   useEffect(() => {
     if (!user) { setLoading(false); return; }
     fetchResources();
+    trackResourceView({ page: "archive" });
   }, [user]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
