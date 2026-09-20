@@ -39,6 +39,7 @@ interface Preflight {
 const EMPTY_COUNTS = {
   "choir-tonight": 0,
   "resources-week3-paid": 0,
+  "community-update": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
