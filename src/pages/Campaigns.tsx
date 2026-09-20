@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "resources-week3-paid";
+type Segment = "choir-tonight" | "resources-week3-paid" | "community-update";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -47,6 +47,7 @@ const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week3-v1",
   "resources-week3-paid": "fall-2026-resources-week3-paid-v1",
+  "community-update": "fall-2026-community-update-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
@@ -62,6 +63,12 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Send by location to paid members. Announces Week 3 song \"Flowers\" by Miley Cyrus with four numbered links: 1) This Week at Choir (weekly message and song story), 2) the location's YouTube playlist of end-of-session videos, 3) the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
+  {
+    key: "community-update",
+    title: "Week 3 — Community Update",
+    description: "Warm thank-you to all paid members for a great start, inviting them to share the try-a-session link with friends over the next seven weeks (no commitment, no audition) and to like the Club Choir Facebook page. Bilingual EN/FR.",
+    color: "bg-amber-50 border-amber-300",
+  },
 ];
 
 
@@ -75,16 +82,19 @@ const Campaigns = () => {
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "resources-week3-paid": {},
+    "community-update": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "resources-week3-paid": "all",
+    "community-update": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "resources-week3-paid": {},
+    "community-update": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
