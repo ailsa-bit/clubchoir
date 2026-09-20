@@ -537,27 +537,39 @@ export type Database = {
       resource_page_views: {
         Row: {
           created_at: string
+          device: string | null
+          event_type: string
+          file_name: string | null
           id: string
           location: string | null
           page: string
+          resource_type: string | null
           song: string | null
           user_id: string | null
           week: number | null
         }
         Insert: {
           created_at?: string
+          device?: string | null
+          event_type?: string
+          file_name?: string | null
           id?: string
           location?: string | null
           page: string
+          resource_type?: string | null
           song?: string | null
           user_id?: string | null
           week?: number | null
         }
         Update: {
           created_at?: string
+          device?: string | null
+          event_type?: string
+          file_name?: string | null
           id?: string
           location?: string | null
           page?: string
+          resource_type?: string | null
           song?: string | null
           user_id?: string | null
           week?: number | null

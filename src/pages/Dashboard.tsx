@@ -10,7 +10,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Loader2, Music, Eye, Users, MapPin, ArrowRight, RefreshCw, BarChart3,
+  Loader2, Music, Eye, Users, MapPin, ArrowRight, RefreshCw, BarChart3, Download, Smartphone,
 } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
@@ -29,7 +29,24 @@ interface ViewRow {
   week: number | null;
   song: string | null;
   created_at: string;
+  event_type: string | null;
+  resource_type: string | null;
+  file_name: string | null;
+  device: string | null;
 }
+
+const TYPE_LABELS: Record<string, string> = {
+  audio: "Recordings",
+  lyrics: "Lyrics",
+  slides: "Lyric slides",
+  sheet_music: "Sheet music",
+};
+const DEVICE_LABELS: Record<string, string> = {
+  phone: "Phone",
+  tablet: "Tablet",
+  computer: "Computer",
+  unknown: "Unknown",
+};
 
 const dayKey = (d: string | Date) => {
   const t = new Date(d);
@@ -71,7 +88,7 @@ const Dashboard = () => {
     setLoading(true);
     const { data } = await supabase
       .from("resource_page_views")
-      .select("id,user_id,location,page,week,song,created_at")
+      .select("id,user_id,location,page,week,song,created_at,event_type,resource_type,file_name,device")
       .order("created_at", { ascending: false })
       .limit(5000);
     setViews(((data as unknown) as ViewRow[]) || []);
@@ -87,13 +104,58 @@ const Dashboard = () => {
       ? inRange
       : inRange.filter((v) => prettyLocation(v.location) === locFilter);
 
+    const isPageView = (v: ViewRow) => !v.event_type || v.event_type === "view";
+    const pageRows = rows.filter(isPageView);
+    const fileRows = rows.filter((v) => !isPageView(v));
+
+    // What kind of material members actually open or download
+    const byType = ["audio", "lyrics", "slides", "sheet_music"].map((t) => {
+      const r = fileRows.filter((v) => v.resource_type === t);
+      return {
+        type: TYPE_LABELS[t],
+        Opened: r.filter((v) => v.event_type === "open").length,
+        Downloaded: r.filter((v) => v.event_type === "download").length,
+        Played: r.filter((v) => v.event_type === "play").length,
+        people: new Set(r.map((v) => v.user_id).filter(Boolean)).size,
+        total: r.length,
+      };
+    });
+
+    // Individual files, ranked
+    const fileCounts = new Map<string, { label: string; type: string; uses: number; people: Set<string> }>();
+    fileRows.forEach((v) => {
+      const k = `${v.file_name || "File"}|${v.resource_type || ""}`;
+      const cur = fileCounts.get(k) || {
+        label: v.file_name || "File",
+        type: TYPE_LABELS[v.resource_type || ""] || "Other",
+        uses: 0,
+        people: new Set<string>(),
+      };
+      cur.uses++;
+      if (v.user_id) cur.people.add(v.user_id);
+      fileCounts.set(k, cur);
+    });
+    const topFiles = [...fileCounts.values()]
+      .map((x) => ({ label: x.label, type: x.type, uses: x.uses, people: x.people.size }))
+      .sort((a, b) => b.uses - a.uses)
+      .slice(0, 12);
+
+    const audioPlays = fileRows.filter((v) => v.event_type === "play").length;
+    const downloads = fileRows.filter((v) => v.event_type === "download").length;
+
+    // Phone vs computer
+    const byDevice = ["phone", "tablet", "computer", "unknown"].map((d) => {
+      const r = rows.filter((v) => (v.device || "unknown") === d);
+      return { device: DEVICE_LABELS[d], Uses: r.length, people: new Set(r.map((v) => v.user_id).filter(Boolean)).size };
+    }).filter((d) => d.Uses > 0);
+
     // Daily opens, split by location
     const days: string[] = [];
     for (let i = range - 1; i >= 0; i--) days.push(dayKey(daysAgo(i)));
     const byDay = new Map<string, any>(
       days.map((d) => [d, Object.fromEntries([["day", fmtDay(d)], ["Total", 0], ...LOCATIONS.map((l) => [l, 0])])]),
     );
-    rows.forEach((v) => {
+    pageRows.forEach((v) => {
       const row = byDay.get(dayKey(v.created_at));
       if (!row) return;
       row.Total++;
@@ -109,7 +171,7 @@ const Dashboard = () => {
       return "Resources home (all weeks)";
     };
     const counts = new Map<string, { label: string; opens: number; people: Set<string> }>();
-    rows.forEach((v) => {
+    pageRows.forEach((v) => {
       const k = resourceKey(v);
       const cur = counts.get(k) || { label: k, opens: 0, people: new Set<string>() };
       cur.opens++;
@@ -128,11 +190,16 @@ const Dashboard = () => {
     const unknown = inRange.filter((v) => prettyLocation(v.location) === "Unknown").length;
 
     const uniquePeople = new Set(rows.map((v) => v.user_id).filter(Boolean)).size;
+    const eventWord: Record<string, string> = { open: "Opened", download: "Downloaded", play: "Played", view: "Visited" };
     const recent = rows.slice(0, 20).map((v) => ({
-      label: resourceKey(v), location: prettyLocation(v.location), at: v.created_at,
+      label: v.file_name || resourceKey(v),
+      action: eventWord[v.event_type || "view"] || "Visited",
+      location: prettyLocation(v.location),
+      device: DEVICE_LABELS[v.device || "unknown"],
+      at: v.created_at,
     }));
 
-    return { rows, daily, top, byLoc, unknown, uniquePeople, recent };
+    return { rows, pageRows, fileRows, daily, top, byLoc, unknown, uniquePeople, recent, byType, topFiles, byDevice, audioPlays, downloads };
   }, [views, range, locFilter]);
 
   if (adminLoading || loading) {
@@ -177,10 +244,12 @@ const Dashboard = () => {
         </div>
 
         {/* KPIs */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-          <StatCard icon={Eye} label={`Resource opens (${range}d)`} value={data.rows.length} sub={locFilter === "all" ? "all locations" : locFilter} />
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
+          <StatCard icon={Eye} label={`Page visits (${range}d)`} value={data.pageRows.length} sub={locFilter === "all" ? "all locations" : locFilter} />
           <StatCard icon={Users} label="Members using resources" value={data.uniquePeople} sub={`in the last ${range} days`} />
-          <StatCard icon={Music} label="Most opened" value={data.top[0]?.opens ?? 0} sub={data.top[0]?.label || "No activity yet"} />
+          <StatCard icon={Music} label="Recordings played" value={data.audioPlays} sub="press-play count" />
+          <StatCard icon={Download} label="Files downloaded" value={data.downloads} sub="lyrics, slides, sheet music, audio" />
+          <StatCard icon={Smartphone} label="Most used device" value={data.byDevice[0]?.device || "—"} sub={data.byDevice[0] ? `${data.byDevice[0].Uses} of ${data.rows.length} actions` : "no activity yet"} />
         </div>
 
         {data.rows.length === 0 && (
@@ -270,18 +339,91 @@ const Dashboard = () => {
           </div>
         </div>
 
+        {/* What kind of material gets used */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-6">
+          <div className="bg-card border border-border rounded-xl p-4 md:p-6">
+            <h2 className="font-heading font-bold text-lg mb-1">What members use: recordings, lyrics, slides, sheet music</h2>
+            <p className="text-xs text-muted-foreground mb-4">Opens, downloads and plays in the last {range} days. Anything near zero is a candidate to drop.</p>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={data.byType} margin={{ left: -20, right: 8, top: 8 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="type" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                  <YAxis allowDecimals={false} tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                  <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 8, fontSize: 12 }} />
+                  <Legend wrapperStyle={{ fontSize: 12 }} />
+                  <Bar dataKey="Opened" stackId="a" fill="hsl(var(--primary))" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="Downloaded" stackId="a" fill="hsl(38 92% 50%)" />
+                  <Bar dataKey="Played" stackId="a" fill="hsl(142 60% 40%)" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="mt-4 space-y-1 text-sm">
+              {data.byType.map((t) => (
+                <div key={t.type} className="flex items-center justify-between border-t border-border pt-1">
+                  <span className="text-muted-foreground">{t.type}</span>
+                  <span className="font-semibold">{t.total} uses · {t.people} member{t.people === 1 ? "" : "s"}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Phone vs computer + top files */}
+          <div className="space-y-6">
+            <div className="bg-card border border-border rounded-xl p-4 md:p-6">
+              <h2 className="font-heading font-bold text-lg mb-1">Phone, tablet or computer</h2>
+              <p className="text-xs text-muted-foreground mb-3">How members reach the resources — last {range} days.</p>
+              {data.byDevice.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No activity yet.</p>
+              ) : (
+                <div className="space-y-2 text-sm">
+                  {data.byDevice.map((d) => (
+                    <div key={d.device}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-medium">{d.device}</span>
+                        <span className="text-muted-foreground">{d.Uses} actions · {d.people} member{d.people === 1 ? "" : "s"}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full rounded-full bg-primary" style={{ width: `${Math.max(4, (d.Uses / (data.rows.length || 1)) * 100)}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="bg-card border border-border rounded-xl p-4 md:p-6">
+              <h2 className="font-heading font-bold text-lg mb-1">Most-used files</h2>
+              <p className="text-xs text-muted-foreground mb-3">Individual recordings and documents, last {range} days.</p>
+              {data.topFiles.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No files opened yet.</p>
+              ) : (
+                <div className="space-y-2 text-sm">
+                  {data.topFiles.map((f) => (
+                    <div key={f.label + f.type} className="flex items-center justify-between gap-3 border-t border-border pt-1">
+                      <span className="truncate">{f.label}</span>
+                      <span className="shrink-0 text-muted-foreground">{f.type} · {f.uses}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Recent activity */}
         <div className="bg-card border border-border rounded-xl p-4 md:p-6">
-          <h2 className="font-heading font-bold text-lg mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> Latest resource opens</h2>
+          <h2 className="font-heading font-bold text-lg mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> Latest resource activity</h2>
           {data.recent.length === 0 ? (
             <p className="text-sm text-muted-foreground">No activity yet.</p>
           ) : (
             <div className="divide-y divide-border">
               {data.recent.map((f, i) => (
                 <div key={i} className="flex items-center justify-between gap-3 py-2 text-sm">
-                  <span className="font-medium text-foreground truncate">{f.label}</span>
+                  <span className="font-medium text-foreground truncate">{f.action}: {f.label}</span>
                   <div className="flex items-center gap-2 shrink-0">
                     <Badge variant="outline">{f.location}</Badge>
+                    <Badge variant="secondary">{f.device}</Badge>
                     <span className="text-xs text-muted-foreground w-28 text-right">
                       {new Date(f.at).toLocaleString("en-CA", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
                     </span>

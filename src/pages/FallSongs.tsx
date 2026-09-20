@@ -191,8 +191,19 @@ const FallSongs = () => {
     return result.signedUrl;
   };
 
+  const trackFile = (row: Row, event: "open" | "download" | "play") =>
+    trackResourceView({
+      page: "fall-2026",
+      week: row.week,
+      song: row.song_name,
+      event,
+      resourceType: row.resource_type,
+      fileName: row.file_name,
+    });
+
   const openFile = async (row: Row) => {
     const tab = window.open("", "_blank");
+    trackFile(row, "open");
     const url = await getSignedUrl(row, false);
     if (!url) { tab?.close(); return; }
     if (tab) tab.location.href = url; else window.location.href = url;
@@ -201,6 +212,7 @@ const FallSongs = () => {
   const downloadFile = async (row: Row) => {
     // Open the tab inside the tap/click so iOS and Android never block it
     const tab = window.open("", "_blank");
+    trackFile(row, "download");
     const url = await getSignedUrl(row, true);
     if (!url) { tab?.close(); return; }
     if (tab) {
@@ -460,7 +472,7 @@ const FallSongs = () => {
                             id={r.id}
                             label={r.file_name}
                             activeId={activeAudio}
-                            onActivate={setActiveAudio}
+                            onActivate={(nextId) => { if (nextId === r.id && activeAudio !== r.id) trackFile(r, "play"); setActiveAudio(nextId); }}
                             loadUrl={() => getSignedUrl(r, false)}
                             onDownload={() => downloadFile(r)}
                             downloadLabel={c.download}
