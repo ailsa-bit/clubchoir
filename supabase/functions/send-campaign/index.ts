@@ -13,7 +13,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "community-update";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -31,6 +31,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week3-v1",
+  "community-update": "fall-2026-community-update-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -766,6 +767,33 @@ function renderChoirTonight(r: Recipient) {
   };
 }
 
+function renderCommunityUpdate(r: Recipient) {
+  const TRY_URL = `${SITE_URL}/try`;
+  const FB_URL = "https://www.facebook.com/clubchoir/";
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}">What a start to the session — I honestly couldn't have asked for better. Thank you to every single one of you who has joined us. Here we are heading into <strong>Week 3</strong>, and the energy in every room has been something special. 🌟</p>
+    <p style="${P}"><strong>Know someone who would love this?</strong> For the next seven weeks, a friend can come spend an evening with us — hear the music, feel the vibe, meet the gang — and see if Club Choir is their kind of thing. No commitment, no audition, just a really good evening.</p>
+    ${BTN(TRY_URL, "Try a session — share this link")}
+    <p style="${P}">And one small favour: if you haven't already, hop over and <strong>like our Facebook page</strong>. Every like helps another future singer find us.</p>
+    ${BTN(FB_URL, "Find us on Facebook")}
+    <p style="${P}">Thank you for helping our little community grow — you're the heart of it.</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}">Quel début de session — je n'aurais sincèrement pas pu rêver mieux. Merci à chacune et chacun d'entre vous qui vous êtes joints à nous. Nous voilà déjà à la <strong>semaine 3</strong>, et l'énergie dans chaque salle est vraiment spéciale. 🌟</p>
+    <p style="${P}"><strong>Connaissez-vous quelqu'un qui adorerait ça?</strong> Au cours des sept prochaines semaines, un(e) ami(e) peut venir passer une soirée avec nous — entendre la musique, sentir l'ambiance, rencontrer la gang — et voir si Club Choir est fait pour elle ou lui. Sans engagement, sans audition — juste une très belle soirée.</p>
+    ${BTN(TRY_URL, "Essayer une session — partagez ce lien")}
+    <p style="${P}">Et une petite faveur : si ce n'est pas déjà fait, allez <strong>aimer notre page Facebook</strong>. Chaque mention « J'aime » aide un futur choriste de plus à nous découvrir.</p>
+    ${BTN(FB_URL, "Nous suivre sur Facebook")}
+    <p style="${P}">Merci d'aider notre petite communauté à grandir — vous en êtes le cœur.</p>
+    ${SIGN}`;
+  return {
+    subject: "Week 3 & two little favours 🌟 / Semaine 3 et deux petites faveurs",
+    html: wrap(inner, "We're off to an incredible start! Share the try-a-session link with a friend, and give our Facebook page a like."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
 
   if (segment === "fall-paid") return renderPaid(r);
@@ -782,6 +810,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
+  if (segment === "community-update") return renderCommunityUpdate(r);
   return renderConsidering(r);
 }
 
@@ -855,7 +884,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
   if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
 
-  if (segment === "fall-paid" || segment === "resources-week3-paid") return Array.from(paidMap.values());
+  if (segment === "fall-paid" || segment === "resources-week3-paid" || segment === "community-update") return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
     // Same-day reminders are for paid Fall 2026 members only.
