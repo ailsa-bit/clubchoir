@@ -80,7 +80,7 @@ type SortDir = "asc" | "desc";
 
 // Mutually exclusive buckets — a person is counted once, in their highest-commitment bucket.
 const bucketOf = (c: UnifiedContact): string => {
-  if (c.tags.includes("fall-2026") || c.paid_reg || c.unpaid_reg) return "registered";
+  if (c.tags.includes("fall-2026") || c.tags.includes("winter-spring-2027") || c.paid_reg || c.unpaid_reg) return "registered";
   if (
     c.tags.includes("open-house-2026") ||
     c.tags.includes("try-a-session") ||

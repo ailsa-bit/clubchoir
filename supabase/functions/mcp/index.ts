@@ -14,9 +14,9 @@ var choirLocations = {
     slug: "montreal",
     city: "Montreal",
     pageTitle: "Montreal Choir \u2013 Club Choir | No-Audition Adult Choir in Montr\xE9al",
-    metaDescription: "Join Club Choir in Montreal \u2014 a friendly no-audition adult community choir that meets Monday evenings at Paroisse Notre-Dame-De-Gr\xE2ce. Fall 2026 registration is open.",
+    metaDescription: "Join Club Choir in Montreal \u2014 a friendly no-audition adult community choir. Early registration for Winter/Spring 2027 is open, with the new session beginning in late February.",
     pageTitleFr: "Chorale Montr\xE9al \u2013 Club Choir | chorale pour adultes sans audition \xE0 Montr\xE9al",
-    metaDescriptionFr: "Joignez Club Choir \xE0 Montr\xE9al \u2014 une chorale communautaire chaleureuse et sans audition pour adultes, les lundis soirs \xE0 la Paroisse Notre-Dame-De-Gr\xE2ce. Inscriptions ouvertes pour l'automne 2026.",
+    metaDescriptionFr: "Joignez Club Choir \xE0 Montr\xE9al \u2014 une chorale communautaire chaleureuse et sans audition pour adultes. Les inscriptions anticip\xE9es pour l'hiver/printemps 2027 sont ouvertes; la nouvelle session commencera \xE0 la fin de f\xE9vrier.",
     heroHeadline: {
       en: "Montreal Choir \u2013 Sing with us on Monday nights",
       fr: "Chorale Montr\xE9al \u2013 Chantez avec nous le lundi soir"
@@ -37,7 +37,7 @@ var choirLocations = {
     },
     day: { en: "Mondays", fr: "Lundis" },
     time: "7:00\u20138:30 PM",
-    dates: { en: "Sept 7 \u2013 Dec 7, 2026", fr: "7 sept. \u2013 7 d\xE9c. 2026" },
+    dates: { en: "Late February 2027 \xB7 Schedule TBD", fr: "Fin f\xE9vrier 2027 \xB7 Horaire \xE0 d\xE9terminer" },
     venueName: "Paroisse Notre-Dame-De-Gr\xE2ce",
     venueAddress: "5333 avenue Notre-Dame-De-Gr\xE2ce (corner D\xE9carie)",
     venueCity: "Montr\xE9al",
@@ -53,12 +53,12 @@ var choirLocations = {
     slug: "hudson",
     city: "Hudson",
     pageTitle: "Hudson Choir \u2013 Club Choir | NEW No-Audition Community Choir at The Hudson Legion",
-    metaDescription: "Club Choir Hudson is coming September 2026 \u2014 a brand-new no-audition community choir meeting Tuesday nights at The Hudson Legion on Beach Road. Register your interest now.",
+    metaDescription: "Join Club Choir Hudson \u2014 a welcoming no-audition community choir. Early registration for Winter/Spring 2027 is open, with the new session beginning in late February.",
     pageTitleFr: "Chorale Hudson \u2013 Club Choir | NOUVELLE chorale sans audition au Hudson Legion",
-    metaDescriptionFr: "Club Choir Hudson arrive en septembre 2026 \u2014 une toute nouvelle chorale communautaire sans audition, les mardis soirs au Hudson Legion, sur Beach Road. Manifestez votre int\xE9r\xEAt d\xE8s maintenant.",
+    metaDescriptionFr: "Joignez Club Choir Hudson \u2014 une chorale communautaire chaleureuse et sans audition. Les inscriptions anticip\xE9es pour l'hiver/printemps 2027 sont ouvertes; la nouvelle session commencera \xE0 la fin de f\xE9vrier.",
     heroHeadline: {
-      en: "Hudson Choir \u2013 Coming September 2026",
-      fr: "Chorale Hudson \u2013 D\xE8s septembre 2026"
+      en: "Hudson Choir \u2013 Sing with us",
+      fr: "Chorale Hudson \u2013 Chantez avec nous"
     },
     heroBlurb: {
       en: "A brand-new no-audition adult choir is coming to Hudson at The Hudson Legion on Beach Road \u2014 a warm, welcoming community hall built for singing together.",
@@ -76,7 +76,7 @@ var choirLocations = {
     },
     day: { en: "Tuesdays", fr: "Mardis" },
     time: "7:00\u20138:30 PM",
-    dates: { en: "Sept 8 \u2013 Dec 8, 2026", fr: "8 sept. \u2013 8 d\xE9c. 2026" },
+    dates: { en: "Late February 2027 \xB7 Schedule TBD", fr: "Fin f\xE9vrier 2027 \xB7 Horaire \xE0 d\xE9terminer" },
     venueName: "The Hudson Legion",
     venueAddress: "57 Beach Road",
     venueCity: "Hudson",
@@ -93,9 +93,9 @@ var choirLocations = {
     slug: "saint-hubert",
     city: "Saint-Hubert",
     pageTitle: "Saint-Hubert Choir \u2013 Club Choir | South Shore Community Choir",
-    metaDescription: "Join Club Choir Saint-Hubert \u2014 a no-audition adult community choir on Montreal's South Shore. Wednesday evenings at St-Gabriel Catholic Church. Fall 2026 sign-up open.",
+    metaDescription: "Join Club Choir Saint-Hubert \u2014 a no-audition adult community choir on Montreal's South Shore. Early registration for Winter/Spring 2027 is open.",
     pageTitleFr: "Chorale Saint-Hubert \u2013 Club Choir | chorale communautaire de la Rive-Sud",
-    metaDescriptionFr: "Joignez Club Choir Saint-Hubert \u2014 une chorale communautaire pour adultes, sans audition, sur la Rive-Sud de Montr\xE9al. Les mercredis soirs \xE0 l'\xE9glise St-Gabriel. Inscriptions ouvertes pour l'automne 2026.",
+    metaDescriptionFr: "Joignez Club Choir Saint-Hubert \u2014 une chorale communautaire pour adultes, sans audition, sur la Rive-Sud de Montr\xE9al. Les inscriptions anticip\xE9es pour l'hiver/printemps 2027 sont ouvertes.",
     heroHeadline: {
       en: "Saint-Hubert Choir \u2013 Wednesday evenings on the South Shore",
       fr: "Chorale Saint-Hubert \u2013 Mercredis soirs sur la Rive-Sud"
@@ -116,7 +116,7 @@ var choirLocations = {
     },
     day: { en: "Wednesdays", fr: "Mercredis" },
     time: "7:00\u20138:30 PM",
-    dates: { en: "Sept 9 \u2013 Dec 9, 2026", fr: "9 sept. \u2013 9 d\xE9c. 2026" },
+    dates: { en: "Late February 2027 \xB7 Schedule TBD", fr: "Fin f\xE9vrier 2027 \xB7 Horaire \xE0 d\xE9terminer" },
     venueName: "St-Gabriel Catholic Church",
     venueAddress: "5070 Rue Gilbert",
     venueCity: "Saint-Hubert",
@@ -132,9 +132,9 @@ var choirLocations = {
     slug: "pointe-claire",
     city: "Pointe-Claire",
     pageTitle: "Pointe-Claire Choir \u2013 Club Choir | West Island Adult Choir",
-    metaDescription: "Sing with Club Choir Pointe-Claire \u2014 a no-audition community choir for adults on the West Island. Thursday evenings at Valois United Church. Fall 2026 sign-up open.",
+    metaDescription: "Sing with Club Choir Pointe-Claire \u2014 a no-audition community choir for adults on the West Island. Early registration for Winter/Spring 2027 is open.",
     pageTitleFr: "Chorale Pointe-Claire \u2013 Club Choir | chorale pour adultes dans l'Ouest-de-l'\xCEle",
-    metaDescriptionFr: "Chantez avec Club Choir Pointe-Claire \u2014 une chorale communautaire sans audition pour adultes dans l'Ouest-de-l'\xCEle. Les jeudis soirs \xE0 l'\xE9glise Valois United. Inscriptions ouvertes pour l'automne 2026.",
+    metaDescriptionFr: "Chantez avec Club Choir Pointe-Claire \u2014 une chorale communautaire sans audition pour adultes dans l'Ouest-de-l'\xCEle. Les inscriptions anticip\xE9es pour l'hiver/printemps 2027 sont ouvertes.",
     heroHeadline: {
       en: "Pointe-Claire Choir \u2013 Thursdays on the West Island",
       fr: "Chorale Pointe-Claire \u2013 Jeudis soirs dans l'Ouest-de-l'\xCEle"
@@ -155,7 +155,7 @@ var choirLocations = {
     },
     day: { en: "Thursdays", fr: "Jeudis" },
     time: "7:00\u20138:30 PM",
-    dates: { en: "Sept 10 \u2013 Dec 10, 2026", fr: "10 sept. \u2013 10 d\xE9c. 2026" },
+    dates: { en: "Late February 2027 \xB7 Schedule TBD", fr: "Fin f\xE9vrier 2027 \xB7 Horaire \xE0 d\xE9terminer" },
     venueName: "Valois United Church",
     venueAddress: "70 Av. Belmont",
     venueCity: "Pointe-Claire",

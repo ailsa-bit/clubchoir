@@ -9,7 +9,6 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const VALID_LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
 const SESSION_LABEL = "winter-spring-2027";
 
 const RegistrationSchema = z.object({
@@ -81,11 +80,8 @@ const handler = async (req: Request): Promise<Response> => {
     if (existing) {
       memberId = existing.id;
       isReturning = true;
-      // Do NOT auto-activate on registration — activation happens only after payment
-      // (via the CRM "Mark paid" action). Just update location if it changed.
-      if (existing.location !== location) {
-        await supabase.from("members").update({ location }).eq("id", existing.id);
-      }
+      // Early registration records the preferred location on the registration itself.
+      // Do not change an existing member's current-session home base.
     } else {
       // Create new member with PENDING status
       const { data: newMember, error: createError } = await supabase
