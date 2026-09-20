@@ -121,8 +121,8 @@ const TryASession = () => {
             <h2 className="font-heading font-bold text-2xl text-foreground mb-3">{t.thanksTitle}</h2>
             <p className="text-base text-foreground/80 leading-relaxed">
               {isFr
-                ? `Nous vous attendons à ${loc?.name} le ${formatNight(chosen!.date, true)}, ${timeForNight(loc!, chosen!.week)}. Un courriel de confirmation avec tous les détails vient de vous être envoyé.`
-                : `We'll see you in ${loc?.name} on ${formatNight(chosen!.date, false)}, ${timeForNight(loc!, chosen!.week)}. A confirmation email with all the details is on its way.`}
+                ? `Nous vous attendons à ${loc?.name} le ${formatNight(chosen!.date, true)}, ${timeForNight(loc!, chosen!.week)} — nous apprendrons « ${chosen!.song} » de ${chosen!.artist}. Un courriel de confirmation avec tous les détails (lieu, date, chanson) vient de vous être envoyé.`
+                : `We'll see you in ${loc?.name} on ${formatNight(chosen!.date, false)}, ${timeForNight(loc!, chosen!.week)} — we'll be learning "${chosen!.song}" by ${chosen!.artist}. A confirmation email with all the details (location, date and song) is on its way.`}
             </p>
             <p className="text-sm text-foreground/70 mt-4">{t.noPressure}</p>
           </div>
