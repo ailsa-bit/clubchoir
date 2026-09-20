@@ -44,7 +44,6 @@ import Register from "./pages/Register";
 import ChoirLocation from "./pages/ChoirLocation";
 import OpenHouseRegister from "./pages/OpenHouseRegister";
 import SingForTheHerd from "./pages/SingForTheHerd";
-import FallRegistration from "./pages/FallRegistration";
 import Campaigns from "./pages/Campaigns";
 import Deliverability from "./pages/Deliverability";
 import RsvpConfirm from "./pages/RsvpConfirm";
@@ -102,7 +101,7 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/choir/:city" element={<ChoirLocation />} />
             <Route path="/tickets/sing-for-the-herd" element={<SingForTheHerd />} />
-            <Route path="/fall-registration" element={<FallRegistration />} />
+            <Route path="/fall-registration" element={<KeepQueryRedirect to="/register" />} />
             <Route path="/campaigns" element={<Campaigns />} />
             <Route path="/deliverability" element={<Deliverability />} />
             <Route path="/rsvp" element={<RsvpConfirm />} />

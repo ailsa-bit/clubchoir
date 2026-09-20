@@ -43,10 +43,10 @@ const Index = () => {
   ];
 
   const locations = [
-    { location: "Montreal", slug: "montreal", venue: "Paroisse Notre-Dame-De-Grâce\n5333 avenue Notre-Dame-De-Grâce (corner Décarie), Montréal", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: "Sept 7 – Dec 7, 2026", isNew: false, openHouse: { en: "Mon, Aug 3 · 7:00 PM", fr: "Lun. 3 août · 19 h" } },
-    { location: "Hudson", slug: "hudson", venue: "The Hudson Legion\n57 Beach Road, Hudson", color: "bg-orange-light border-orange/20", day: t("day.tuesday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: "Sept 8 – Dec 8, 2026", isNew: true, openHouse: { en: "Tue, Aug 4 · 7:00 PM", fr: "Mar. 4 août · 19 h" } },
-    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: "Sept 9 – Dec 9, 2026", isNew: false, openHouse: { en: "Wed, Aug 5 · 7:00 PM", fr: "Mer. 5 août · 19 h" } },
-    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: "Sept 10 – Dec 10, 2026", isNew: false, openHouse: { en: "Thu, Aug 6 · 7:00 PM", fr: "Jeu. 6 août · 19 h" } },
+    { location: "Montreal", slug: "montreal", venue: "Paroisse Notre-Dame-De-Grâce\n5333 avenue Notre-Dame-De-Grâce (corner Décarie), Montréal", color: "bg-pink-light border-pink/20", day: t("day.monday"), time: "7:00–8:30 PM", dot: "bg-pink", dates: isFr ? "Fin février 2027 · Horaire à déterminer" : "Late February 2027 · Schedule TBD", isNew: false },
+    { location: "Hudson", slug: "hudson", venue: "The Hudson Legion\n57 Beach Road, Hudson", color: "bg-orange-light border-orange/20", day: t("day.tuesday"), time: "7:00–8:30 PM", dot: "bg-orange", dates: isFr ? "Fin février 2027 · Horaire à déterminer" : "Late February 2027 · Schedule TBD", isNew: true },
+    { location: "Saint-Hubert", slug: "saint-hubert", venue: "St-Gabriel Catholic Church\n5070 Rue Gilbert, Saint-Hubert", color: "bg-lime-light border-lime/20", day: t("day.wednesday"), time: "7:00–8:30 PM", dot: "bg-lime", dates: isFr ? "Fin février 2027 · Horaire à déterminer" : "Late February 2027 · Schedule TBD", isNew: false },
+    { location: "Pointe-Claire", slug: "pointe-claire", venue: "Valois United Church\n70 Av. Belmont, Pointe-Claire", color: "bg-purple-light border-purple/20", day: t("day.thursday"), time: "7:00–8:30 PM", dot: "bg-purple", dates: isFr ? "Fin février 2027 · Horaire à déterminer" : "Late February 2027 · Schedule TBD", isNew: false },
   ];
 
 
@@ -161,8 +161,8 @@ const Index = () => {
           </p>
           <p className="text-base text-muted-foreground text-center mb-8 max-w-2xl mx-auto leading-relaxed">
             {isFr
-              ? "Quatre lieux au Québec — Montréal, Hudson, Pointe-Claire et Saint-Hubert. Répétitions hebdomadaires, sans audition, ouvertes à tous les adultes."
-              : "Four locations across Quebec — Montreal, Hudson, Pointe-Claire, and Saint-Hubert. Weekly no-audition adult rehearsals, all skill levels welcome."}
+              ? "Nous n'acceptons plus de nouveaux membres pour la session automne/hiver 2026. Inscrivez-vous à l'avance pour recevoir les détails de la prochaine session en priorité."
+              : "We are no longer accepting new members for the Fall/Winter 2026 session. Register early to receive details about the next session first."}
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {locations.map((item) => (

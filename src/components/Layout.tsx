@@ -180,7 +180,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                 <Link
                   to="/register"
                   className="ml-2 px-4 py-1.5 rounded-lg text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-sm">
-                  {language === "fr" ? "Inscription" : "Register"}
+                  {language === "fr" ? "Inscription anticipée 2027" : "Early Registration 2027"}
                 </Link>
                 <Link
                   to="/login"
@@ -290,7 +290,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
                   to="/register"
                   onClick={() => setMobileOpen(false)}
                   className="block px-3 py-2.5 rounded-lg text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-center">
-                  {language === "fr" ? "Inscription" : "Register"}
+                  {language === "fr" ? "Inscription anticipée 2027" : "Early Registration 2027"}
                 </Link>
                 <Link
                   to="/login"

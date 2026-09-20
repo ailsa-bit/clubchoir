@@ -1,6 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "npm:@supabase/supabase-js@2.57.2";
+import { z } from "npm:zod@3.23.8";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,15 +9,17 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const VALID_LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
-const SESSION_LABEL = "fall-2026";
+const SESSION_LABEL = "winter-spring-2027";
 
-const SESSION_DETAILS: Record<string, { en: string; fr: string }> = {
-  "Montreal": { en: "Mondays, Sept 7 – Dec 7, 2026 · Paroisse Notre-Dame-De-Grâce", fr: "Lundis, 7 sept. – 7 déc. 2026 · Paroisse Notre-Dame-De-Grâce" },
-  "Hudson": { en: "Tuesdays, Sept 8 – Dec 8, 2026 · The Hudson Legion, 57 Beach Road", fr: "Mardis, 8 sept. – 8 déc. 2026 · The Hudson Legion, 57 Beach Road" },
-  "Saint-Hubert": { en: "Wednesdays, Sept 9 – Dec 9, 2026", fr: "Mercredis, 9 sept. – 9 déc. 2026" },
-  "Pointe-Claire": { en: "Thursdays, Sept 10 – Dec 10, 2026", fr: "Jeudis, 10 sept. – 10 déc. 2026" },
-};
+const RegistrationSchema = z.object({
+  first_name: z.string().trim().min(1).max(100),
+  last_name: z.string().trim().min(1).max(100),
+  email: z.string().trim().email().max(255),
+  location: z.enum(["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"]),
+  notes: z.string().trim().max(2000).optional().default(""),
+  language: z.enum(["en", "fr"]).optional().default("en"),
+  attribution: z.unknown().optional(),
+});
 
 
 // Optional first-touch marketing attribution captured in the browser (see src/lib/attribution.ts).
@@ -43,27 +46,16 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const body = await req.json();
-    const first_name = String(body.first_name || "").trim().slice(0, 100);
-    const last_name = String(body.last_name || "").trim().slice(0, 100);
-    const email = String(body.email || "").trim().toLowerCase().slice(0, 255);
-    const location = String(body.location || "").trim();
-    const notes = String(body.notes || "").trim().slice(0, 2000);
-    const lang = body.language === "fr" ? "fr" : "en";
-    const attribution = pickAttribution(body.attribution);
-
-    if (!first_name || !last_name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return new Response(JSON.stringify({ error: "Please provide first name, last name, and a valid email." }), {
+    const parsed = RegistrationSchema.safeParse(await req.json());
+    if (!parsed.success) {
+      return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), {
         status: 400,
         headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
-    if (!VALID_LOCATIONS.includes(location)) {
-      return new Response(JSON.stringify({ error: "Please select a valid location." }), {
-        status: 400,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
-    }
+    const { first_name, last_name, location, notes, language: lang } = parsed.data;
+    const email = parsed.data.email.toLowerCase();
+    const attribution = pickAttribution(parsed.data.attribution);
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -88,11 +80,8 @@ const handler = async (req: Request): Promise<Response> => {
     if (existing) {
       memberId = existing.id;
       isReturning = true;
-      // Do NOT auto-activate on registration — activation happens only after payment
-      // (via the CRM "Mark paid" action). Just update location if it changed.
-      if (existing.location !== location) {
-        await supabase.from("members").update({ location }).eq("id", existing.id);
-      }
+      // Early registration records the preferred location on the registration itself.
+      // Do not change an existing member's current-session home base.
     } else {
       // Create new member with PENDING status
       const { data: newMember, error: createError } = await supabase
@@ -117,11 +106,18 @@ const handler = async (req: Request): Promise<Response> => {
       memberId = newMember.id;
     }
 
+    if (!memberId) {
+      return new Response(JSON.stringify({ error: "Could not prepare your registration. Please try again." }), {
+        status: 500,
+        headers: { "Content-Type": "application/json", ...corsHeaders },
+      });
+    }
+
     // 2) Check for duplicate registration
     const { data: dup } = await supabase
       .from("session_registrations")
       .select("id")
-      .eq("member_id", memberId!)
+      .eq("member_id", memberId)
       .eq("session_label", SESSION_LABEL)
       .eq("location", location)
       .maybeSingle();
@@ -161,18 +157,16 @@ const handler = async (req: Request): Promise<Response> => {
     if (resendKey) {
       const resend = new Resend(resendKey);
       const fullName = `${first_name} ${last_name}`;
-      const sessionInfo = SESSION_DETAILS[location] || { en: "", fr: "" };
-
       // Admin notification
       try {
         await resend.emails.send({
           from: "Club Choir <noreply@clubchoir.ca>",
           to: ["ailsa@clubchoir.ca"],
           replyTo: email,
-          subject: `🎶 New Fall 2026 registration — ${location} (${isReturning ? "returning" : "NEW"})`,
+          subject: `🎶 Winter/Spring 2027 early registration — ${location} (${isReturning ? "returning" : "NEW"})`,
           html: `
             <div style="font-family: 'Nunito', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px;">
-              <h1 style="color: #333; font-size: 22px; margin-bottom: 16px;">Fall 2026 — New Registration</h1>
+              <h1 style="color: #333; font-size: 22px; margin-bottom: 16px;">Winter/Spring 2027 — Early Registration</h1>
               <div style="background: #f4f4f4; border-radius: 8px; padding: 16px; margin: 16px 0;">
                 <p style="margin: 4px 0;"><strong>Name:</strong> ${escapeHtml(fullName)}</p>
                 <p style="margin: 4px 0;"><strong>Email:</strong> ${escapeHtml(email)}</p>
@@ -185,7 +179,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <p style="margin: 0; font-size: 15px; line-height: 1.6; white-space: pre-wrap;">${escapeHtml(notes)}</p>
               </div>` : ""}
               <p style="color: #333; font-size: 14px; line-height: 1.6;">
-                They've been sent e-Transfer instructions. Mark them as paid in the CRM once payment arrives to confirm their spot.
+                They have been told that the session begins in late February 2027 and that the detailed schedule and fee are still to be determined.
               </p>
             </div>
           `,
@@ -201,20 +195,11 @@ const handler = async (req: Request): Promise<Response> => {
           : (isReturning ? `Welcome back, ${first_name}!` : `Welcome to Club Choir, ${first_name}!`);
 
         const bodyCopy = lang === "fr"
-          ? `Merci de vous être inscrit à la session d'automne 2026 à <strong>${escapeHtml(location)}</strong> ! Nous sommes ravis de chanter avec vous. Voici comment réserver votre place :`
-          : `Thanks for registering for the Fall 2026 session in <strong>${escapeHtml(location)}</strong> — we can't wait to sing with you! Here's how to lock in your spot:`;
-
-        const sessionLabel = lang === "fr" ? "Détails de la session" : "Session details";
-        const payHeading = lang === "fr" ? "💸 Confirmez votre place (virement Interac)" : "💸 Confirm your spot (Interac e-Transfer)";
-        const sendToLabel = lang === "fr" ? "Envoyer à" : "Send to";
-        const amountLabel = lang === "fr" ? "Montant" : "Amount";
-        const questionLabel = lang === "fr" ? "Question de sécurité" : "Security question";
-        const answerLabel = lang === "fr" ? "Réponse" : "Answer";
-        const questionText = lang === "fr" ? "Quel est le nom de la chorale ?" : "What is the choir name?";
-        const answerText = lang === "fr" ? "clubchoir <em>(en un mot, tout en minuscules)</em>" : "clubchoir <em>(one word, all lowercase)</em>";
+          ? `Merci pour votre inscription anticipée à la session hiver/printemps 2027 à <strong>${escapeHtml(location)}</strong> ! La nouvelle session commencera vers la fin de février 2027. L'horaire et les autres détails restent à déterminer.`
+          : `Thanks for joining early registration for the Winter/Spring 2027 session in <strong>${escapeHtml(location)}</strong>! The new session will begin near the end of February 2027. The schedule and other details are still to be determined.`;
         const noteText = lang === "fr"
-          ? `⚠️ <strong>À noter :</strong> votre place n'est pas officiellement confirmée tant que nous n'avons pas reçu votre virement. Dès que le paiement arrive, nous vous enverrons un courriel de confirmation — c'est là que ce sera officiel !`
-          : `⚠️ <strong>Heads up:</strong> your spot isn't officially confirmed until we've received your e-Transfer. As soon as your payment lands, we'll send you a confirmation email — that's when it's a done deal!`;
+          ? `<strong>Vous serez parmi les premières personnes informées</strong> dès que l'horaire et les détails de la nouvelle session seront annoncés.`
+          : `<strong>You'll be among the first to receive information</strong> as soon as the new session schedule and details are announced.`;
         const questionsText = lang === "fr"
           ? `Une question ? Envoyez-nous un courriel à <a href="mailto:ailsa@clubchoir.ca" style="color:#f97316;">ailsa@clubchoir.ca</a>.`
           : `Any questions? Send us an email at <a href="mailto:ailsa@clubchoir.ca" style="color:#f97316;">ailsa@clubchoir.ca</a>.`;
@@ -224,8 +209,8 @@ const handler = async (req: Request): Promise<Response> => {
           from: "Club Choir <noreply@clubchoir.ca>",
           to: [email],
           subject: lang === "fr"
-            ? `🎶 Inscription reçue — ${location} (Automne 2026)`
-            : `🎶 Registration received — ${location} (Fall 2026)`,
+            ? `🎶 Inscription anticipée reçue — ${location} (Hiver/Printemps 2027)`
+            : `🎶 Early registration received — ${location} (Winter/Spring 2027)`,
           html: `
             <div style="font-family: 'Nunito', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 24px; color: #333;">
               <div style="text-align: center; margin-bottom: 24px;">
@@ -233,20 +218,7 @@ const handler = async (req: Request): Promise<Response> => {
               </div>
               <h1 style="font-size: 24px; margin-bottom: 16px;">${escapeHtml(greeting)} 🎤</h1>
               <p style="font-size: 16px; line-height: 1.6;">${bodyCopy}</p>
-              <div style="background: #fff5ec; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; margin: 24px 0;">
-                <h2 style="margin: 0 0 8px; font-size: 18px; color: #c2410c;">${sessionLabel}</h2>
-                <p style="margin: 4px 0; font-size: 15px;">${escapeHtml(sessionInfo[lang])}</p>
-              </div>
-
-              <h2 style="font-size: 18px; margin-top: 28px; margin-bottom: 8px;">${payHeading}</h2>
-              <div style="background: #f4f4f4; border-radius: 8px; padding: 16px 20px; margin: 8px 0 16px;">
-                <p style="margin: 4px 0; font-size: 15px;"><strong>${sendToLabel}:</strong> ailsa@clubchoir.ca</p>
-                <p style="margin: 4px 0; font-size: 15px;"><strong>${amountLabel}:</strong> $280.00 CAD</p>
-                <p style="margin: 4px 0; font-size: 15px;"><strong>${questionLabel}:</strong> ${questionText}</p>
-                <p style="margin: 4px 0; font-size: 15px;"><strong>${answerLabel}:</strong> ${answerText}</p>
-              </div>
-
-              <div style="background: #fef3c7; border-radius: 8px; padding: 16px 20px; margin: 16px 0;">
+              <div style="background: #fef3c7; border-radius: 8px; padding: 16px 20px; margin: 24px 0;">
                 <p style="margin: 0; font-size: 15px; line-height: 1.6;">${noteText}</p>
               </div>
 

@@ -56,7 +56,7 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Home - Sessions
  "home.sessions.title": { en: "Where & When We Sing", fr: "Où et quand nous chantons" },
- "home.sessions.fall2026": { en: "Fall Session 2026", fr: "Session d'automne 2026" },
+ "home.sessions.fall2026": { en: "Winter/Spring 2027 · Early Registration", fr: "Hiver/Printemps 2027 · Inscription anticipée" },
  "home.sessions.tbc": { en: "Dates to be confirmed", fr: "Dates à confirmer" },
  "home.sessions.learnMore": { en: "View location details", fr: "Voir les détails du lieu" },
   "home.sessions.pricing": { en: "per 14-week session · Winter session starting February · Fall session starting September", fr: "par session de 14 semaines · Session d'hiver débutant en février · Session d'automne débutant en septembre" },
@@ -459,14 +459,14 @@ const translations: Record<string, Record<Language, string>> = {
   // Home - Hero CTAs
   "home.hero.startingSoon": { en: "Starting soon", fr: "Bientôt" },
   "home.hero.reserveHudson": { en: "Reserve your Hudson spot", fr: "Réservez votre place à Hudson" },
-  "home.hero.registerFall": { en: "Register for Fall 2026", fr: "Inscrivez-vous — Automne 2026" },
+  "home.hero.registerFall": { en: "Early registration for Winter/Spring 2027", fr: "Inscription anticipée — Hiver/Printemps 2027" },
   "home.hero.trySession": { en: "Try a session", fr: "Essayer une session" },
   "home.hero.upcomingEvents": { en: "See upcoming events", fr: "Voir les événements à venir" },
   "home.hero.seeSessions": { en: "See session dates & locations", fr: "Dates et lieux des sessions" },
   "home.hero.openHouseAugust": { en: "Open Houses — August", fr: "Portes ouvertes — août" },
   "home.hero.reassurance": {
-    en: "Fall 2026 registration is open · Spots fill first-come, first-served · E-transfer confirmation in July",
-    fr: "Inscriptions automne 2026 ouvertes · Premier arrivé, premier servi · Confirmation par virement en juillet",
+    en: "Fall/Winter 2026 registration is closed · Next session begins in late February 2027",
+    fr: "Les inscriptions automne/hiver 2026 sont terminées · Prochaine session à la fin de février 2027",
   },
   // Open Houses strip
   "home.openHouse.title": { en: "Come try us before you register", fr: "Venez nous essayer avant de vous inscrire" },
@@ -475,7 +475,7 @@ const translations: Record<string, Record<Language, string>> = {
     fr: "Soirées portes ouvertes gratuites début août — venez chanter, rencontrer la communauté, sans engagement.",
   },
   "home.openHouse.reserve": { en: "Reserve a spot", fr: "Réserver une place" },
-  "home.sessions.register": { en: "Register", fr: "S'inscrire" },
+  "home.sessions.register": { en: "Early registration", fr: "Inscription anticipée" },
   "home.testimonials.showMore": { en: "Read more testimonials", fr: "Lire plus de témoignages" },
   "home.testimonials.showLess": { en: "Show fewer", fr: "Voir moins" },
 
@@ -921,17 +921,17 @@ const translations: Record<string, Record<Language, string>> = {
 
   // Page meta (browser tab titles + search descriptions)
   "meta.home.title": { en: "Choir Montreal | Club Choir – No-Audition Community Choir for Adults", fr: "Chorale Montréal | Club Choir – chorale communautaire sans audition pour adultes" },
-  "meta.home.desc": { en: "Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire and Saint-Hubert. Fall 2026 registration is open.", fr: "Joignez Club Choir, une chorale communautaire sans audition pour adultes à Montréal, Hudson, Pointe-Claire et Saint-Hubert. Les inscriptions pour l'automne 2026 sont ouvertes." },
+  "meta.home.desc": { en: "Join Club Choir, a fun no-audition community choir for adults in Montreal, Hudson, Pointe-Claire and Saint-Hubert. Early registration for Winter/Spring 2027 is open.", fr: "Joignez Club Choir, une chorale communautaire sans audition pour adultes à Montréal, Hudson, Pointe-Claire et Saint-Hubert. Les inscriptions anticipées pour l'hiver/printemps 2027 sont ouvertes." },
   "meta.about.title": { en: "Our Story – Club Choir | Founder Ailsa", fr: "Notre histoire – Club Choir | Ailsa, fondatrice" },
   "meta.about.desc": { en: "Meet Ailsa, founder of Club Choir. From 21 voices in Montreal to hundreds of adult singers across four Quebec locations — sing together, laugh together, learn together.", fr: "Rencontrez Ailsa, fondatrice de Club Choir. De 21 voix à Montréal à des centaines de choristes adultes dans quatre lieux au Québec — chanter, rire et apprendre ensemble." },
   "meta.events.title": { en: "Upcoming Choir Events & Performances – Club Choir", fr: "Événements et spectacles à venir – Club Choir" },
   "meta.events.desc": { en: "Seasonal showcases, pop-up choirs and public performances by Club Choir in Montreal, Hudson, Pointe-Claire and Saint-Hubert. Friends and family welcome.", fr: "Spectacles saisonniers, chorales pop-up et prestations publiques de Club Choir à Montréal, Hudson, Pointe-Claire et Saint-Hubert. Amis et famille bienvenus." },
   "meta.corporate.title": { en: "Corporate Events – Club Choir", fr: "Événements corporatifs – Club Choir" },
   "meta.corporate.desc": { en: "Book Club Choir for your corporate event, team building, or private function. Unique musical experiences for groups of all sizes.", fr: "Réservez Club Choir pour votre événement corporatif, activité de consolidation d'équipe ou réception privée. Des expériences musicales uniques pour tous les groupes." },
-  "meta.register.title": { en: "Register for Fall 2026 – Club Choir", fr: "Inscription automne 2026 – Club Choir" },
-  "meta.register.desc": { en: "Sign up for a Club Choir Fall 2026 session in Montreal, Hudson, Saint-Hubert, or Pointe-Claire.", fr: "Inscrivez-vous à une session Club Choir automne 2026 à Montréal, Hudson, Saint-Hubert ou Pointe-Claire." },
+  "meta.register.title": { en: "Winter/Spring 2027 Early Registration – Club Choir", fr: "Inscription anticipée hiver/printemps 2027 – Club Choir" },
+  "meta.register.desc": { en: "Join early registration for Club Choir's Winter/Spring 2027 session in Montreal, Hudson, Saint-Hubert, or Pointe-Claire.", fr: "Inscrivez-vous à l'avance à la session hiver/printemps 2027 de Club Choir à Montréal, Hudson, Saint-Hubert ou Pointe-Claire." },
   "meta.registerDone.title": { en: "Registration received – Club Choir", fr: "Inscription reçue – Club Choir" },
-  "meta.registerDone.desc": { en: "Your Fall 2026 registration is in.", fr: "Votre inscription pour l'automne 2026 est enregistrée." },
+  "meta.registerDone.desc": { en: "Your Winter/Spring 2027 early registration is in.", fr: "Votre inscription anticipée pour l'hiver/printemps 2027 est enregistrée." },
   "meta.try.title": { en: "Try a Free Session – Club Choir", fr: "Essayez une séance gratuite – Club Choir" },
   "meta.try.desc": { en: "Try a free Club Choir session! No audition, no experience needed. Come sing with us at any of our 4 Quebec locations.", fr: "Essayez une séance gratuite de Club Choir ! Sans audition, sans expérience. Venez chanter avec nous dans l'un de nos 4 lieux au Québec." },
   "meta.friend.title": { en: "Bring a Friend – Club Choir", fr: "Invitez un ami – Club Choir" },
