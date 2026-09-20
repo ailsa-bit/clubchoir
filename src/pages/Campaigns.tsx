@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Send, Eye, Mail, Users, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { Send, Eye, Mail, Users, CheckCircle2, AlertCircle, Loader2, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { invokeCampaign, SessionExpiredError } from "@/lib/campaignInvoke";
 import { useAdmin } from "@/hooks/use-admin";
@@ -393,7 +393,7 @@ const Campaigns = () => {
       </Dialog>
 
       {/* Confirm send */}
-      <Dialog open={confirmSegment !== null} onOpenChange={(v) => { if (!v) { setConfirmSegment(null); setPreflight(null); } }}>
+      <Dialog open={confirmSegment !== null} onOpenChange={(v) => { if (!v && !preflightLoading) { setConfirmSegment(null); setPreflight(null); setExcludedEmails([]); } }}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
           <DialogHeader>
             <DialogTitle>Send this campaign?</DialogTitle>
@@ -401,7 +401,11 @@ const Campaigns = () => {
           <p className="text-sm text-muted-foreground">
             This verified list contains <strong>{preflight?.count ?? 0}</strong> people in the "{SEGMENTS.find((s) => s.key === confirmSegment)?.title}" segment
             {confirmSegment && locFilter[confirmSegment] !== "all" ? <> — <strong>{locFilter[confirmSegment]}</strong> only</> : " — all locations"}. Everyone who already received this campaign (or another first-night email) is skipped automatically.
+            {excludedEmails.length > 0 && (
+              <> <strong className="text-foreground">{excludedEmails.length} removed by you.</strong></>
+            )}
           </p>
+          <p className="text-xs text-muted-foreground">Click the X beside anyone you don't want to email — they'll be left out of this send only.</p>
 
           {preflight?.issues.length ? (
             <div className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
@@ -411,10 +415,15 @@ const Campaigns = () => {
               ))}
             </div>
           ) : (
-            <div className="rounded-md border border-border overflow-auto min-h-0">
+            <div className="rounded-md border border-border overflow-auto min-h-0 relative">
+              {preflightLoading && (
+                <div className="absolute inset-0 bg-background/60 flex items-center justify-center z-10">
+                  <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+                </div>
+              )}
               <table className="w-full text-sm">
                 <thead className="sticky top-0 bg-muted">
-                  <tr><th className="p-2 text-left">Name</th><th className="p-2 text-left">Email</th><th className="p-2 text-left">Location</th></tr>
+                  <tr><th className="p-2 text-left">Name</th><th className="p-2 text-left">Email</th><th className="p-2 text-left">Location</th><th className="p-2 w-10"></th></tr>
                 </thead>
                 <tbody>
                   {preflight?.manifest.map((r) => (
@@ -422,6 +431,18 @@ const Campaigns = () => {
                       <td className="p-2">{r.first_name} {r.last_name}</td>
                       <td className="p-2">{r.email}</td>
                       <td className="p-2">{r.location}</td>
+                      <td className="p-2">
+                        <button
+                          type="button"
+                          aria-label={`Remove ${r.first_name} ${r.last_name}`}
+                          title="Remove from this send"
+                          disabled={preflightLoading}
+                          onClick={() => removeRecipient(r.email)}
+                          className="text-muted-foreground hover:text-destructive disabled:opacity-40"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -430,9 +451,9 @@ const Campaigns = () => {
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmSegment(null)}>Cancel</Button>
-            <Button disabled={!preflight || preflight.count === 0 || preflight.issues.length > 0} onClick={() => confirmSegment && handleSend(confirmSegment)}>
-              <Send className="w-4 h-4 mr-1.5" /> Send now
+            <Button variant="outline" onClick={() => { setConfirmSegment(null); setPreflight(null); setExcludedEmails([]); }}>Cancel</Button>
+            <Button disabled={!preflight || preflightLoading || preflight.count === 0 || preflight.issues.length > 0} onClick={() => confirmSegment && handleSend(confirmSegment)}>
+              <Send className="w-4 h-4 mr-1.5" /> Send now to {preflight?.count ?? 0}
             </Button>
           </DialogFooter>
         </DialogContent>
