@@ -181,7 +181,7 @@ const TryASession = () => {
                     {isFr ? "Aucune soirée d'essai restante à cet endroit." : "No trial evenings left at this location."}
                   </p>
                 ) : (
-                  <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="rounded-xl border border-border bg-card overflow-hidden divide-y divide-border">
                     {upcoming.map((n) => {
                       const selected = n.date === dateIso;
                       return (
@@ -190,24 +190,29 @@ const TryASession = () => {
                           type="button"
                           onClick={() => setDateIso(n.date)}
                           aria-pressed={selected}
-                          className={`text-left rounded-xl border-2 p-4 transition-all bg-card ${
-                            selected ? "border-primary ring-2 ring-primary/40 shadow-md" : "border-border hover:border-primary/40"
+                          className={`w-full flex items-center gap-3 sm:gap-4 px-4 py-3 text-left transition-colors ${
+                            selected ? "bg-primary/10" : "hover:bg-muted/50"
                           }`}
                         >
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="text-xs font-semibold text-muted-foreground">
-                              {isFr ? `Semaine ${n.week}` : `Week ${n.week}`}
+                          <span
+                            className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                              selected ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/40"
+                            }`}
+                          >
+                            {selected && <Check className="w-3 h-3" />}
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block font-heading font-bold text-foreground">
+                              {formatNight(n.date, isFr)}
                             </span>
-                            {selected && <Check className="w-4 h-4 text-primary" />}
-                          </div>
-                          <div className="font-heading font-bold text-foreground mt-1">{formatNight(n.date, isFr)}</div>
-                          <div className="text-xs text-muted-foreground">{timeForNight(loc, n.week)}</div>
-                          <p className="text-sm text-foreground/80 flex items-start gap-1.5 mt-2">
-                            <Music className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                            <span className="block text-xs text-muted-foreground">{timeForNight(loc, n.week)}</span>
+                          </span>
+                          <span className="ml-auto flex items-center gap-1.5 text-sm text-foreground/80 text-right">
+                            <Music className="w-3.5 h-3.5 flex-shrink-0 text-muted-foreground" />
                             <span>
                               <strong>{n.song}</strong> — {n.artist}
                             </span>
-                          </p>
+                          </span>
                         </button>
                       );
                     })}
