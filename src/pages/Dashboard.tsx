@@ -413,7 +413,7 @@ const Dashboard = () => {
 
         {/* Recent activity */}
         <div className="bg-card border border-border rounded-xl p-4 md:p-6">
-          <h2 className="font-heading font-bold text-lg mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> Latest resource opens</h2>
+          <h2 className="font-heading font-bold text-lg mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4" /> Latest resource activity</h2>
           {data.recent.length === 0 ? (
             <p className="text-sm text-muted-foreground">No activity yet.</p>
           ) : (
