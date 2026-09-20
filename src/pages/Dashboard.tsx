@@ -104,6 +104,51 @@ const Dashboard = () => {
       ? inRange
       : inRange.filter((v) => prettyLocation(v.location) === locFilter);
 
+    const isPageView = (v: ViewRow) => !v.event_type || v.event_type === "view";
+    const pageRows = rows.filter(isPageView);
+    const fileRows = rows.filter((v) => !isPageView(v));
+
+    // What kind of material members actually open or download
+    const byType = ["audio", "lyrics", "slides", "sheet_music"].map((t) => {
+      const r = fileRows.filter((v) => v.resource_type === t);
+      return {
+        type: TYPE_LABELS[t],
+        Opened: r.filter((v) => v.event_type === "open").length,
+        Downloaded: r.filter((v) => v.event_type === "download").length,
+        Played: r.filter((v) => v.event_type === "play").length,
+        people: new Set(r.map((v) => v.user_id).filter(Boolean)).size,
+        total: r.length,
+      };
+    });
+
+    // Individual files, ranked
+    const fileCounts = new Map<string, { label: string; type: string; uses: number; people: Set<string> }>();
+    fileRows.forEach((v) => {
+      const k = `${v.file_name || "File"}|${v.resource_type || ""}`;
+      const cur = fileCounts.get(k) || {
+        label: v.file_name || "File",
+        type: TYPE_LABELS[v.resource_type || ""] || "Other",
+        uses: 0,
+        people: new Set<string>(),
+      };
+      cur.uses++;
+      if (v.user_id) cur.people.add(v.user_id);
+      fileCounts.set(k, cur);
+    });
+    const topFiles = [...fileCounts.values()]
+      .map((x) => ({ label: x.label, type: x.type, uses: x.uses, people: x.people.size }))
+      .sort((a, b) => b.uses - a.uses)
+      .slice(0, 12);
+
+    const audioPlays = fileRows.filter((v) => v.event_type === "play").length;
+    const downloads = fileRows.filter((v) => v.event_type === "download").length;
+
+    // Phone vs computer
+    const byDevice = ["phone", "tablet", "computer", "unknown"].map((d) => {
+      const r = rows.filter((v) => (v.device || "unknown") === d);
+      return { device: DEVICE_LABELS[d], Uses: r.length, people: new Set(r.map((v) => v.user_id).filter(Boolean)).size };
+    }).filter((d) => d.Uses > 0);
+
     // Daily opens, split by location
     const days: string[] = [];
     for (let i = range - 1; i >= 0; i--) days.push(dayKey(daysAgo(i)));
