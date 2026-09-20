@@ -107,6 +107,7 @@ const Campaigns = () => {
   const [userEmail, setUserEmail] = useState<string>("");
   const [preflight, setPreflight] = useState<Preflight | null>(null);
   const [preflightLoading, setPreflightLoading] = useState(false);
+  const [excludedEmails, setExcludedEmails] = useState<string[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -221,10 +222,11 @@ const Campaigns = () => {
         location: locFilter[seg],
         preflightFingerprint: preflight.fingerprint,
         preflightCount: preflight.count,
+        excludeEmails: excludedEmails,
       });
       toast({
         title: "Campaign sent!",
-        description: `${data.success?.length || 0} sent, ${data.failed?.length || 0} failed, ${data.skipped || 0} already-sent skipped.`,
+        description: `${data.success?.length || 0} sent, ${data.failed?.length || 0} failed, ${data.skipped || 0} skipped.`,
       });
       loadCounts();
     } catch (e: any) {
@@ -233,14 +235,18 @@ const Campaigns = () => {
     } finally {
       setSending(null);
       setPreflight(null);
+      setExcludedEmails([]);
     }
   };
 
-  const prepareSend = async (seg: Segment) => {
+  const prepareSend = async (seg: Segment, excluded: string[] = []) => {
     setPreflightLoading(true);
     try {
-      const data = await invokeCampaign<Preflight>({ segment: seg, location: locFilter[seg], preflightOnly: true });
+      const data = await invokeCampaign<Preflight>({
+        segment: seg, location: locFilter[seg], preflightOnly: true, excludeEmails: excluded,
+      });
       setPreflight(data);
+      setExcludedEmails(excluded);
       setConfirmSegment(seg);
     } catch (e: any) {
       if (handleExpired(e)) return;
@@ -248,6 +254,13 @@ const Campaigns = () => {
     } finally {
       setPreflightLoading(false);
     }
+  };
+
+  // Remove one person from the reviewed list, then re-verify so the send
+  // matches exactly what's shown.
+  const removeRecipient = async (email: string) => {
+    if (!confirmSegment || preflightLoading) return;
+    await prepareSend(confirmSegment, [...excludedEmails, email.toLowerCase()]);
   };
 
 
