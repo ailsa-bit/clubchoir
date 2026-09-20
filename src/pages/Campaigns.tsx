@@ -66,7 +66,7 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   },
   {
     key: "community-update",
-    title: "Week 3 — Community Update",
+    title: "A Thank-You — Community Update",
     description: "Warm thank-you to all paid members for a great start, inviting them to share the try-a-session link with friends over the next seven weeks (no commitment, no audition) and to like the Club Choir Facebook page. Bilingual EN/FR.",
     color: "bg-amber-50 border-amber-300",
   },
