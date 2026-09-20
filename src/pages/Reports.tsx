@@ -18,15 +18,19 @@ type Row = {
   status: string;
   created_at: string;
   tags: string[];
+  night?: string;
+  song?: string;
 };
 
 type ReportId =
   | "paid"
   | "guest-list"
+  | "trial-guests"
   | "members";
 
 const REPORTS: { id: ReportId; label: string; description: string }[] = [
   { id: "paid", label: "Attendance list — paid members", description: "Registered and paid for Fall 2026. Best for weekly attendance." },
+  { id: "trial-guests", label: "Trial night guest list", description: "People booked in to try a free evening, with the date they chose." },
   { id: "guest-list", label: "Guest list (first-night trials)", description: "Contacts tagged guest-list." },
   { id: "members", label: "Full contact list", description: "Every non-archived contact in the CRM." },
 ];
@@ -44,6 +48,7 @@ const Reports = () => {
   const [search, setSearch] = useState("");
   const [regs, setRegs] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
+  const [trials, setTrials] = useState<any[]>([]);
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) navigate("/");
@@ -51,12 +56,14 @@ const Reports = () => {
 
   const load = async () => {
     setLoading(true);
-    const [r, m] = await Promise.all([
+    const [r, m, tg] = await Promise.all([
       supabase.from("session_registrations").select("first_name,last_name,email,location,payment_status,session_label,created_at"),
       supabase.from("members").select("first_name,last_name,email,location,status,crm_tags,archived_at,created_at"),
+      supabase.from("trial_guests").select("first_name,last_name,email,location,session_date,week,song,created_at").order("session_date"),
     ]);
     setRegs(r.data || []);
     setMembers(m.data || []);
+    setTrials(tg.data || []);
     setLoading(false);
   };
 
@@ -79,6 +86,17 @@ const Reports = () => {
 
     let out: Row[] = [];
     if (report === "paid") out = fromReg(fall.filter((r) => r.payment_status === "paid" || r.payment_status === "free"));
+    else if (report === "trial-guests")
+      out = trials.map((g) => ({
+        name: fullName(g.first_name, g.last_name),
+        email: (g.email || "").trim(),
+        location: g.location || "—",
+        status: "Trial guest",
+        created_at: g.created_at,
+        tags: [],
+        night: g.session_date ? `${fmt(g.session_date)}${g.week ? ` (${g.week})` : ""}` : "—",
+        song: g.song || "—",
+      }));
     else if (report === "guest-list")
       out = members
         .filter((m) => !m.archived_at && (m.crm_tags || []).includes("guest-list"))
@@ -114,17 +132,23 @@ const Reports = () => {
       seen.add(k);
       return true;
     });
-    out.sort((a, b) => a.name.localeCompare(b.name));
+    if (report === "trial-guests") out.sort((a, b) => (a.night || "").localeCompare(b.night || "") || a.name.localeCompare(b.name));
+    else out.sort((a, b) => a.name.localeCompare(b.name));
     return out;
-  }, [report, location, search, regs, members]);
+  }, [report, location, search, regs, members, trials]);
 
   const current = REPORTS.find((r) => r.id === report)!;
   const fileBase = `${report}${location !== "all" ? `-${location.toLowerCase()}` : ""}-${new Date().toISOString().slice(0, 10)}`;
 
   const downloadCsv = () => {
     const csv = [
-      "Name,Email,Location,Status,Added",
-      ...rows.map((r) => [r.name, r.email, r.location, r.status, fmt(r.created_at)].map(esc).join(",")),
+      report === "trial-guests" ? "Name,Email,Location,Evening,Song,Status,Added" : "Name,Email,Location,Status,Added",
+      ...rows.map((r) =>
+        (report === "trial-guests"
+          ? [r.name, r.email, r.location, r.night || "", r.song || "", r.status, fmt(r.created_at)]
+          : [r.name, r.email, r.location, r.status, fmt(r.created_at)]
+        ).map(esc).join(","),
+      ),
     ].join("\n");
     const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
     const a = document.createElement("a");
@@ -210,6 +234,8 @@ const Reports = () => {
                   <th className="py-2 pr-4 font-medium">Name</th>
                   <th className="py-2 pr-4 font-medium">Email</th>
                   <th className="py-2 pr-4 font-medium">Location</th>
+                  {report === "trial-guests" && <th className="py-2 pr-4 font-medium">Evening</th>}
+                  {report === "trial-guests" && <th className="py-2 pr-4 font-medium">Song</th>}
                   <th className="py-2 pr-4 font-medium">Status</th>
                   <th className="py-2 font-medium w-28">Present</th>
                 </tr>
@@ -221,6 +247,8 @@ const Reports = () => {
                     <td className="py-2 pr-4 text-foreground font-medium">{r.name}</td>
                     <td className="py-2 pr-4 text-muted-foreground break-all">{r.email}</td>
                     <td className="py-2 pr-4 text-muted-foreground">{r.location}</td>
+                    {report === "trial-guests" && <td className="py-2 pr-4 text-foreground">{r.night}</td>}
+                    {report === "trial-guests" && <td className="py-2 pr-4 text-muted-foreground">{r.song}</td>}
                     <td className="py-2 pr-4">
                       <Badge variant={r.status === "Paid" ? "default" : "outline"}>{r.status}</Badge>
                     </td>
