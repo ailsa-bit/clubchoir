@@ -40,8 +40,8 @@ const TryASession = () => {
       ? "Venez chanter avec nous une soirée et voyez si Club Choir vous convient."
       : "Come sing with us for one evening and see if Club Choir is the right fit for you.",
     intro: isFr
-      ? "Au cours des 7 prochaines semaines (semaines 3 à 9), vous pouvez assister à une soirée dans le lieu de votre choix, selon l'horaire de chaque endroit. Chaque semaine, la même chanson est apprise partout. Si tout vous plaît, vous pourrez faire une inscription anticipée pour la session hiver/printemps 2027."
-      : "Over the next 7 weeks (weeks 3 to 9) you're welcome to attend an evening at any of our locations, based on each location's schedule. The same song is taught everywhere each week. If it feels like the right fit, you can register early for our Winter/Spring 2027 session.",
+      ? "Venez découvrir comment ça se passe ! Chaque semaine, nous apprenons une nouvelle chanson — et nous vous fournissons tout ce qu'il faut pour l'apprendre : paroles, enregistrements et tout le reste. Pas de souci, on vous guide pas à pas. Choisissez le lieu qui vous convient et venez chanter avec nous !"
+      : "Come see what it's all about! Every week we learn a brand-new song together — and we provide everything you need to learn it: lyrics, recordings, the works. No experience needed, we'll take you through it step by step. Just pick the location that works for you and come sing!",
     noPressure: isFr
       ? "Aucune pression pour vous engager. Venez l'esprit ouvert — nous formons un groupe très chaleureux et nous avons hâte de vous rencontrer."
       : "There is no pressure to commit. Come with an open mind — we are a very friendly group and we look forward to meeting you.",
