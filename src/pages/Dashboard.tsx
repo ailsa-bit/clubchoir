@@ -10,7 +10,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Loader2, Music, Eye, Users, MapPin, ArrowRight, RefreshCw, BarChart3,
+  Loader2, Music, Eye, Users, MapPin, ArrowRight, RefreshCw, BarChart3, Download, Smartphone,
 } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
