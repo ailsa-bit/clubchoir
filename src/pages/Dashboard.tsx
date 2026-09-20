@@ -88,7 +88,7 @@ const Dashboard = () => {
     setLoading(true);
     const { data } = await supabase
       .from("resource_page_views")
-      .select("id,user_id,location,page,week,song,created_at")
+      .select("id,user_id,location,page,week,song,created_at,event_type,resource_type,file_name,device")
       .order("created_at", { ascending: false })
       .limit(5000);
     setViews(((data as unknown) as ViewRow[]) || []);
