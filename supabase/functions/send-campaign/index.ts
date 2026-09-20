@@ -792,8 +792,8 @@ function renderCommunityUpdate(r: Recipient) {
     <p style="${P}">Merci d'être toi, ${name}. À la chorale — j'ai tellement hâte.</p>
     ${SIGN}`;
   return {
-    subject: "Week 3 & two little favours 🌟 / Semaine 3 et deux petites faveurs",
-    html: wrap(inner, "We're off to an incredible start! Share the try-a-session link with a friend, and give our Facebook page a like."),
+    subject: "A little thank-you, from me to you 🌟 / Un petit merci, de moi à toi",
+    html: wrap(inner, "A personal thank-you for a wonderful start — plus a warm invitation to share choir with someone you love."),
   };
 }
 
