@@ -244,10 +244,12 @@ const Dashboard = () => {
         </div>
 
         {/* KPIs */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-          <StatCard icon={Eye} label={`Resource opens (${range}d)`} value={data.rows.length} sub={locFilter === "all" ? "all locations" : locFilter} />
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-6">
+          <StatCard icon={Eye} label={`Page visits (${range}d)`} value={data.pageRows.length} sub={locFilter === "all" ? "all locations" : locFilter} />
           <StatCard icon={Users} label="Members using resources" value={data.uniquePeople} sub={`in the last ${range} days`} />
-          <StatCard icon={Music} label="Most opened" value={data.top[0]?.opens ?? 0} sub={data.top[0]?.label || "No activity yet"} />
+          <StatCard icon={Music} label="Recordings played" value={data.audioPlays} sub="press-play count" />
+          <StatCard icon={Download} label="Files downloaded" value={data.downloads} sub="lyrics, slides, sheet music, audio" />
+          <StatCard icon={Smartphone} label="Most used device" value={data.byDevice[0]?.device || "—"} sub={data.byDevice[0] ? `${data.byDevice[0].Uses} of ${data.rows.length} actions` : "no activity yet"} />
         </div>
 
         {data.rows.length === 0 && (
