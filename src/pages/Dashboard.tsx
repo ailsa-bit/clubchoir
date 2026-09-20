@@ -29,7 +29,24 @@ interface ViewRow {
   week: number | null;
   song: string | null;
   created_at: string;
+  event_type: string | null;
+  resource_type: string | null;
+  file_name: string | null;
+  device: string | null;
 }
+
+const TYPE_LABELS: Record<string, string> = {
+  audio: "Recordings",
+  lyrics: "Lyrics",
+  slides: "Lyric slides",
+  sheet_music: "Sheet music",
+};
+const DEVICE_LABELS: Record<string, string> = {
+  phone: "Phone",
+  tablet: "Tablet",
+  computer: "Computer",
+  unknown: "Unknown",
+};
 
 const dayKey = (d: string | Date) => {
   const t = new Date(d);
