@@ -65,7 +65,7 @@ const TryASession = () => {
     e.preventDefault();
     if (!valid) {
       toast({
-        title: isFr ? "Информация manquante" : "Missing information",
+        title: isFr ? "Information manquante" : "Missing information",
         description: isFr
           ? "Choisissez un lieu, une soirée, et entrez votre prénom et votre courriel."
           : "Please choose a location and an evening, and enter your first name and email.",
