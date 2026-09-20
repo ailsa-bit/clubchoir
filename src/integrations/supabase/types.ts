@@ -662,6 +662,48 @@ export type Database = {
         }
         Relationships: []
       }
+      trial_guests: {
+        Row: {
+          attended: boolean
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          location: string
+          notes: string | null
+          session_date: string
+          song: string | null
+          week: string | null
+        }
+        Insert: {
+          attended?: boolean
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name?: string
+          location: string
+          notes?: string | null
+          session_date: string
+          song?: string | null
+          week?: string | null
+        }
+        Update: {
+          attended?: boolean
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          location?: string
+          notes?: string | null
+          session_date?: string
+          song?: string | null
+          week?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
