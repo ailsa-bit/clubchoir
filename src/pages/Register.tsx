@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, CheckCircle2, AlertCircle, Calendar, MapPin } from "lucide-react";
+import { ArrowLeft, CheckCircle2, AlertCircle, Calendar } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import ChoirFaq from "@/components/ChoirFaq";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,8 +16,6 @@ type Loc = {
   border: string;
   dot: string;
   ring: string;
-  dates: { en: string; fr: string };
-  venue?: { en: string; fr: string };
 };
 
 const LOCATIONS: Loc[] = [
@@ -27,8 +25,6 @@ const LOCATIONS: Loc[] = [
     border: "border-pink/30",
     dot: "bg-pink",
     ring: "ring-pink",
-    dates: { en: "Mondays · Sept 7 – Dec 7, 2026 · 7:00–8:30 PM", fr: "Lundis · 7 sept. – 7 déc. 2026 · 19 h – 20 h 30" },
-    venue: { en: "Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (corner Décarie)", fr: "Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (coin Décarie)" },
   },
   {
     name: "Hudson",
@@ -36,8 +32,6 @@ const LOCATIONS: Loc[] = [
     border: "border-orange/30",
     dot: "bg-orange",
     ring: "ring-orange",
-    dates: { en: "Tuesdays · Sept 8 – Dec 8, 2026 · 7:00–8:30 PM", fr: "Mardis · 8 sept. – 8 déc. 2026 · 19 h – 20 h 30" },
-    venue: { en: "The Hudson Legion, 57 Beach Road", fr: "The Hudson Legion, 57 Beach Road" },
   },
   {
     name: "Saint-Hubert",
@@ -45,8 +39,6 @@ const LOCATIONS: Loc[] = [
     border: "border-lime/30",
     dot: "bg-lime",
     ring: "ring-lime",
-    dates: { en: "Wednesdays · Sept 9 – Dec 9, 2026 · 7:00–8:30 PM", fr: "Mercredis · 9 sept. – 9 déc. 2026 · 19 h – 20 h 30" },
-    venue: { en: "St-Gabriel Catholic Church, 5070 Rue Gilbert", fr: "Église catholique St-Gabriel, 5070 Rue Gilbert" },
   },
   {
     name: "Pointe-Claire",
@@ -54,8 +46,6 @@ const LOCATIONS: Loc[] = [
     border: "border-purple/30",
     dot: "bg-purple",
     ring: "ring-purple",
-    dates: { en: "Thursdays · Sept 10 – Dec 10, 2026 · 7:00–8:30 PM", fr: "Jeudis · 10 sept. – 10 déc. 2026 · 19 h – 20 h 30" },
-    venue: { en: "Valois United Church, 70 Av. Belmont", fr: "Église Valois United, 70 Av. Belmont" },
   },
 ];
 
@@ -75,28 +65,28 @@ const Register = () => {
   useEffect(() => {
     if (viewContentFired.current) return;
     viewContentFired.current = true;
-    trackViewContent("Fall 2026 Registration Page");
+    trackViewContent("Winter/Spring 2027 Early Registration Page");
   }, []);
 
   const t = {
-    title: isFr ? "Inscription — Session d'automne 2026" : "Register — Fall 2026 Session",
+    title: isFr ? "Inscription anticipée — Hiver/Printemps 2027" : "Early Registration — Winter/Spring 2027",
     subtitle: isFr
-      ? "Inscrivez-vous à l'une de nos chorales d'automne. Nous vous enverrons les instructions de virement pour confirmer votre place."
-      : "Sign up for one of our fall choirs. We'll email you e-transfer instructions to confirm your spot.",
+      ? "Nous n'acceptons plus de nouveaux membres pour la session automne/hiver 2026."
+      : "We are no longer accepting new members for the Fall/Winter 2026 session.",
     introTitle: isFr ? "Un endroit accueillant pour chanter" : "A welcoming place to sing",
     intro: isFr
-      ? "Club Choir est une chorale communautaire chaleureuse, sans audition, pour les adultes qui aiment chanter, même après une longue pause. Vous n'avez pas besoin de lire la musique ni d'être un chanteur ou une chanteuse parfaite. Choisissez le lieu qui vous convient et remplissez le formulaire ci-dessous pour réserver votre place à l'automne 2026. Nous commencerons à chanter ensemble en septembre."
-      : "Club Choir is a warm, no-audition community choir for adults who love to sing, even if they have not done it in years. You do not need to read music or be a perfect singer. Choose the location that works best for you and complete the registration below to reserve your place for Fall 2026. We start singing together in September.",
+      ? "Club Choir est une chorale communautaire chaleureuse et sans audition pour les adultes qui aiment chanter. Notre prochaine session commencera vers la fin de février 2027; l'horaire reste à déterminer. Inscrivez-vous maintenant pour être parmi les premières personnes à recevoir tous les détails dès qu'ils seront annoncés."
+      : "Club Choir is a warm, no-audition community choir for adults who love to sing. Our next session will begin near the end of February 2027, with the schedule still to be determined. Register now to be among the first to receive full details as soon as they are announced.",
     reassurances: isFr ? ["Aucune audition", "Pas besoin de lire la musique", "Venez comme vous êtes"] : ["No audition", "No music reading required", "Come as you are"],
     feeNote: isFr
-      ? "La session d'automne 2026 est de 280 $ pour 14 semaines, soit 20 $ par semaine."
-      : "The Fall 2026 session is $280 for 14 weeks, which works out to $20 per week.",
+      ? "Début prévu : fin février 2027 · Horaire et tarif à déterminer"
+      : "Expected start: late February 2027 · Schedule and fee to be determined",
     first: isFr ? "Prénom" : "First name",
     last: isFr ? "Nom" : "Last name",
     email: "Courriel",
-    chooseLocation: isFr ? "Choisissez votre chorale" : "Choose your choir",
+    chooseLocation: isFr ? "Choisissez votre lieu préféré" : "Choose your preferred location",
     optionalMessage: isFr ? "Message (facultatif)" : "Message (optional)",
-    submit: isFr ? "Soumettre l'inscription" : "Submit registration",
+    submit: isFr ? "Faire une inscription anticipée" : "Join early registration",
     submitting: isFr ? "Envoi..." : "Submitting...",
     back: isFr ? "Retour à l'accueil" : "Back to home",
     fillFields: isFr ? "Veuillez remplir tous les champs requis." : "Please fill in all required fields.",
@@ -104,15 +94,15 @@ const Register = () => {
     pickLocation: isFr ? "Veuillez choisir une chorale." : "Please choose a location.",
     errorTitle: isFr ? "Oups" : "Oops",
     errorDesc: isFr ? "Quelque chose s'est mal passé. Veuillez réessayer." : "Something went wrong. Please try again.",
-    successTitleNew: isFr ? "Bienvenue à Club Choir !" : "Welcome to Club Choir!",
-    successTitleReturning: isFr ? "Bon retour parmi nous !" : "Welcome back!",
+    successTitleNew: isFr ? "Vous êtes sur la liste !" : "You're on the early list!",
+    successTitleReturning: isFr ? "Nous avons hâte de vous retrouver !" : "We look forward to singing with you again!",
     successDesc: isFr
-      ? "Votre inscription est reçue. Ailsa vous enverra les instructions de virement en juillet pour confirmer votre place. Les places sont attribuées selon le principe du premier arrivé, premier servi."
-      : "Your registration is in. Ailsa will email you e-transfer instructions in July to confirm your spot. Spots are filled on a first-come, first-served basis.",
+      ? "Votre inscription anticipée pour l'hiver/printemps 2027 est reçue. Vous serez parmi les premières personnes informées dès que l'horaire et les détails de la nouvelle session seront annoncés."
+      : "Your early registration for Winter/Spring 2027 is received. You'll be among the first to hear as soon as the new session schedule and details are announced.",
     alreadyTitle: isFr ? "Vous êtes déjà inscrit·e" : "You're already registered",
     alreadyDesc: isFr
-      ? "Nous avons déjà une inscription pour cette chorale à votre nom. Si vous pensez que c'est une erreur, écrivez-nous."
-      : "We already have a registration for this choir under your name. If you think this is a mistake, please get in touch.",
+      ? "Nous avons déjà une inscription anticipée pour ce lieu à votre nom. Si vous pensez qu'il s'agit d'une erreur, écrivez-nous."
+      : "We already have an early registration for this location under your name. If you think this is a mistake, please get in touch.",
     contact: isFr ? "Écrire à Ailsa" : "Email Ailsa",
   };
 
@@ -260,14 +250,8 @@ const Register = () => {
                     </div>
                     <p className="text-sm text-foreground/80 flex items-start gap-1.5">
                       <Calendar className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-                      <span>{loc.dates[isFr ? "fr" : "en"]}</span>
+                      <span>{isFr ? "Fin février 2027 · Horaire à déterminer" : "Late February 2027 · Schedule to be determined"}</span>
                     </p>
-                    {loc.venue && (
-                      <p className="text-sm text-muted-foreground flex items-start gap-1.5 mt-1">
-                        <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
-                        <span>{loc.venue[isFr ? "fr" : "en"]}</span>
-                      </p>
-                    )}
                   </button>
                 );
               })}

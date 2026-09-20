@@ -16,12 +16,12 @@ const FallRegistration = () => {
     heroSub: isFr
       ? "Club Choir accueille de nouveaux chanteurs à Montréal, Hudson, Saint-Hubert et Pointe-Claire."
       : "Club Choir is welcoming new singers in Montreal, Hudson, Saint-Hubert, and Pointe-Claire.",
-    register: isFr ? "S'inscrire pour l'automne" : "Register for Fall",
+    register: isFr ? "Inscription anticipée — Hiver/Printemps 2027" : "Early registration — Winter/Spring 2027",
     openHouse: isFr ? "Détails des portes ouvertes" : "Open House Details",
     chooseLocation: isFr ? "Choisissez votre emplacement" : "Choose your location",
     rehearsal: isFr ? "Répétitions" : "Rehearsals",
     openHouseLabel: isFr ? "Portes ouvertes" : "Open House",
-    registerBtn: isFr ? "S'inscrire" : "Register",
+    registerBtn: isFr ? "Inscription anticipée" : "Early registration",
     openHouseBtn: isFr ? "Portes ouvertes" : "Open House details",
     reassureTitle: isFr ? "Une chorale pour tout le monde" : "A choir for everyone",
     reassure: [
