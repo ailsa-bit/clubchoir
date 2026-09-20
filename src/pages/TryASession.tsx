@@ -51,7 +51,7 @@ const TryASession = () => {
     pickLocationFirst: isFr ? "Choisissez d'abord un lieu." : "Choose a location first.",
     first: isFr ? "Prénom" : "First name",
     last: isFr ? "Nom" : "Last name",
-    email: "Courriel",
+    email: isFr ? "Courriel" : "Email",
     message: isFr ? "Message (facultatif)" : "Message (optional)",
     submit: isFr ? "Ajoutez-moi à la liste d'invités" : "Add me to the guest list",
     sending: isFr ? "Envoi..." : "Sending...",
