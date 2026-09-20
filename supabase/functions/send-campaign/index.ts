@@ -1231,9 +1231,23 @@ serve(async (req) => {
     const targeted = onlyEmails.length > 0;
     const alreadySent = await loadAlreadySent(supabase, segment, targeted);
 
-    const toSend = (targeted && !skipIfAlreadySent)
+    const toSendBase = (targeted && !skipIfAlreadySent)
       ? recipients
       : recipients.filter((r) => !alreadySent.has(r.email));
+
+    // The admin may remove individual people from the reviewed list; the same
+    // exclusions must accompany both the preflight and the send so the
+    // fingerprint check still protects the final recipient list.
+    const excludeSet = new Set<string>(
+      (Array.isArray(body.excludeEmails) ? body.excludeEmails : [])
+        .filter((e: unknown) => typeof e === "string")
+        .map((e: string) => e.trim().toLowerCase())
+        .filter(Boolean)
+        .slice(0, 5000),
+    );
+    const toSend = excludeSet.size
+      ? toSendBase.filter((r) => !excludeSet.has(String(r.email).toLowerCase()))
+      : toSendBase;
 
     const preflight = await buildPreflight(segment, location, toSend);
     if (preflightOnly) {
