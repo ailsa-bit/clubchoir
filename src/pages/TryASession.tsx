@@ -40,8 +40,8 @@ const TryASession = () => {
       ? "Venez chanter avec nous une soirée et voyez si Club Choir vous convient."
       : "Come sing with us for one evening and see if Club Choir is the right fit for you.",
     intro: isFr
-      ? "Au cours des 7 prochaines semaines (semaines 3 à 9), vous pouvez assister à une soirée dans le lieu de votre choix, selon l'horaire de chaque endroit. Chaque semaine, la même chanson est apprise partout. Si tout vous plaît, vous pourrez faire une inscription anticipée pour la session hiver/printemps 2027."
-      : "Over the next 7 weeks (weeks 3 to 9) you're welcome to attend an evening at any of our locations, based on each location's schedule. The same song is taught everywhere each week. If it feels like the right fit, you can register early for our Winter/Spring 2027 session.",
+      ? "Venez découvrir comment ça se passe ! Chaque semaine, nous apprenons une nouvelle chanson — et nous vous fournissons tout ce qu'il faut pour l'apprendre : paroles, enregistrements et tout le reste. Pas de souci, on vous guide pas à pas. Choisissez le lieu qui vous convient et venez chanter avec nous !"
+      : "Come see what it's all about! Every week we learn a brand-new song together — and we provide everything you need to learn it: lyrics, recordings, the works. No experience needed, we'll take you through it step by step. Just pick the location that works for you and come sing!",
     noPressure: isFr
       ? "Aucune pression pour vous engager. Venez l'esprit ouvert — nous formons un groupe très chaleureux et nous avons hâte de vous rencontrer."
       : "There is no pressure to commit. Come with an open mind — we are a very friendly group and we look forward to meeting you.",
@@ -121,8 +121,8 @@ const TryASession = () => {
             <h2 className="font-heading font-bold text-2xl text-foreground mb-3">{t.thanksTitle}</h2>
             <p className="text-base text-foreground/80 leading-relaxed">
               {isFr
-                ? `Nous vous attendons à ${loc?.name} le ${formatNight(chosen!.date, true)}, ${timeForNight(loc!, chosen!.week)}. Un courriel de confirmation avec tous les détails vient de vous être envoyé.`
-                : `We'll see you in ${loc?.name} on ${formatNight(chosen!.date, false)}, ${timeForNight(loc!, chosen!.week)}. A confirmation email with all the details is on its way.`}
+                ? `Nous vous attendons à ${loc?.name} le ${formatNight(chosen!.date, true)}, ${timeForNight(loc!, chosen!.week)} — nous apprendrons « ${chosen!.song} » de ${chosen!.artist}. Un courriel de confirmation avec tous les détails (lieu, date, chanson) vient de vous être envoyé.`
+                : `We'll see you in ${loc?.name} on ${formatNight(chosen!.date, false)}, ${timeForNight(loc!, chosen!.week)} — we'll be learning "${chosen!.song}" by ${chosen!.artist}. A confirmation email with all the details (location, date and song) is on its way.`}
             </p>
             <p className="text-sm text-foreground/70 mt-4">{t.noPressure}</p>
           </div>
@@ -181,7 +181,7 @@ const TryASession = () => {
                     {isFr ? "Aucune soirée d'essai restante à cet endroit." : "No trial evenings left at this location."}
                   </p>
                 ) : (
-                  <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="rounded-xl border border-border bg-card overflow-hidden divide-y divide-border">
                     {upcoming.map((n) => {
                       const selected = n.date === dateIso;
                       return (
@@ -190,24 +190,29 @@ const TryASession = () => {
                           type="button"
                           onClick={() => setDateIso(n.date)}
                           aria-pressed={selected}
-                          className={`text-left rounded-xl border-2 p-4 transition-all bg-card ${
-                            selected ? "border-primary ring-2 ring-primary/40 shadow-md" : "border-border hover:border-primary/40"
+                          className={`w-full flex items-center gap-3 sm:gap-4 px-4 py-3 text-left transition-colors ${
+                            selected ? "bg-primary/10" : "hover:bg-muted/50"
                           }`}
                         >
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="text-xs font-semibold text-muted-foreground">
-                              {isFr ? `Semaine ${n.week}` : `Week ${n.week}`}
+                          <span
+                            className={`flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                              selected ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/40"
+                            }`}
+                          >
+                            {selected && <Check className="w-3 h-3" />}
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block font-heading font-bold text-foreground">
+                              {formatNight(n.date, isFr)}
                             </span>
-                            {selected && <Check className="w-4 h-4 text-primary" />}
-                          </div>
-                          <div className="font-heading font-bold text-foreground mt-1">{formatNight(n.date, isFr)}</div>
-                          <div className="text-xs text-muted-foreground">{timeForNight(loc, n.week)}</div>
-                          <p className="text-sm text-foreground/80 flex items-start gap-1.5 mt-2">
-                            <Music className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                            <span className="block text-xs text-muted-foreground">{timeForNight(loc, n.week)}</span>
+                          </span>
+                          <span className="ml-auto flex items-center gap-1.5 text-sm text-foreground/80 text-right">
+                            <Music className="w-3.5 h-3.5 flex-shrink-0 text-muted-foreground" />
                             <span>
                               <strong>{n.song}</strong> — {n.artist}
                             </span>
-                          </p>
+                          </span>
                         </button>
                       );
                     })}
