@@ -472,7 +472,7 @@ const FallSongs = () => {
                             id={r.id}
                             label={r.file_name}
                             activeId={activeAudio}
-                            onActivate={setActiveAudio}
+                            onActivate={(nextId) => { if (nextId === r.id && activeAudio !== r.id) trackFile(r, "play"); setActiveAudio(nextId); }}
                             loadUrl={() => getSignedUrl(r, false)}
                             onDownload={() => downloadFile(r)}
                             downloadLabel={c.download}
