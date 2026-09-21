@@ -11,23 +11,23 @@ import { supabase } from "@/integrations/supabase/client";
 const SessionKeepAlive = () => {
   useEffect(() => {
     let refreshing = false;
+    let lastCheck = 0;
 
+    // IMPORTANT: never call supabase.auth.refreshSession() manually here.
+    // Refresh tokens are single-use: a manual refresh racing with the client's
+    // own auto-refresh (or with another open tab) makes the server reject the
+    // second call with "refresh_token_already_used", which signs the member out.
+    // getSession() uses the client's internal lock and refreshes only if needed.
     const ensureSession = async () => {
       if (refreshing) return;
+      if (Date.now() - lastCheck < 30 * 1000) return; // debounce event storms
       refreshing = true;
+      lastCheck = Date.now();
       try {
-        const { data } = await supabase.auth.getSession();
-        const session = data.session;
-        if (!session) return;
-
-        const expiresAt = (session.expires_at ?? 0) * 1000;
-        const nearExpiry = expiresAt - Date.now() < 5 * 60 * 1000; // < 5 min left
-        if (nearExpiry) {
-          await supabase.auth.refreshSession();
-        }
+        await supabase.auth.getSession();
       } catch (err) {
         // Network blip — keep the existing session, try again on next event.
-        console.warn("Session refresh skipped:", err);
+        console.warn("Session check skipped:", err);
       } finally {
         refreshing = false;
       }
