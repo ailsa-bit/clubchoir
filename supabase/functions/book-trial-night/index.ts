@@ -104,6 +104,69 @@ serve(async (req) => {
       if (insErr) throw insErr;
     }
 
+    // Also make the guest visible in the CRM (best-effort — never blocks the booking).
+    try {
+      const { data: memberRows } = await supabase
+        .from("members")
+        .select("id, crm_tags")
+        .ilike("email", email)
+        .limit(1);
+
+      let memberId: string | null = memberRows?.[0]?.id ?? null;
+
+      if (memberId) {
+        const tags: string[] = memberRows![0].crm_tags || [];
+        if (!tags.includes("try-a-session")) {
+          await supabase
+            .from("members")
+            .update({ crm_tags: [...tags, "try-a-session"] })
+            .eq("id", memberId);
+        }
+      } else {
+        const { data: created, error: cErr } = await supabase
+          .from("members")
+          .insert({
+            first_name,
+            last_name,
+            email,
+            location,
+            status: "PROSPECT",
+            source: "try-a-session",
+            crm_tags: ["try-a-session"],
+            joined: new Date().toISOString().slice(0, 10),
+            notes: notes || "",
+          })
+          .select("id")
+          .single();
+        if (cErr) console.error("trial member create err:", cErr);
+        memberId = created?.id ?? null;
+      }
+
+      const { data: dupReg } = await supabase
+        .from("session_registrations")
+        .select("id")
+        .ilike("email", email)
+        .eq("session_label", "try-a-session")
+        .eq("location", location)
+        .maybeSingle();
+
+      if (!dupReg) {
+        const { error: regErr } = await supabase.from("session_registrations").insert({
+          member_id: memberId,
+          session_label: "try-a-session",
+          location,
+          first_name,
+          last_name,
+          email,
+          notes: notes || null,
+          payment_status: "free",
+        });
+        if (regErr) console.error("trial registration insert err:", regErr);
+      }
+    } catch (crmErr) {
+      console.error("trial CRM sync err:", crmErr);
+    }
+
     const info = LOCATION_INFO[location];
     const time = info.altWeeks && week && info.altWeeks.includes(week) ? info.altTime! : info.time;
     const fullName = `${first_name} ${last_name}`.trim();
