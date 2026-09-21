@@ -719,6 +719,7 @@ function renderChoirTonight(r: Recipient) {
   const startFr = isHudson ? "19 h 30" : "19 h";
   const whereEn = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "your usual location";
   const whereFr = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "votre lieu habituel";
+  const RES = `${SITE_URL}/resources/fall-2026`;
   const box = (lang: "en" | "fr") => `
     <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? `Tonight${city ? ` — ${city}` : ""}` : `Ce soir${city ? ` — ${city}` : ""}`}</div>
@@ -747,6 +748,8 @@ function renderChoirTonight(r: Recipient) {
     ${bring("en")}
     <p style="${P}">If you missed opening night, please come a little early to collect your binder. We'll have printed lyrics ready for everyone.</p>
     <p style="${P}">Friday's email included the new song resources and the latest video from your location. If you're having trouble connecting to your member profile, email me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll help you get connected.</p>
+    <p style="${P}">Want a quick refresher before tonight? This week's recording, lyrics and lyric slides are all waiting for you in the song resources.</p>
+    ${BTN(RES, "Open the song resources")}
     <p style="${P}">Guests are always welcome! Please stay home if you're feeling sick, and take good care of yourself.</p>
     <p style="${P}"><strong>See you tonight!</strong></p>
     ${SIGN}
@@ -758,6 +761,8 @@ function renderChoirTonight(r: Recipient) {
     ${bring("fr")}
     <p style="${P}">Si vous avez manqué la soirée d'ouverture, arrivez un peu à l'avance pour récupérer votre cartable. Les paroles seront imprimées pour tout le monde.</p>
     <p style="${P}">Le courriel de vendredi contenait les nouvelles ressources musicales et la plus récente vidéo de votre lieu. Si vous avez de la difficulté à accéder à votre profil de membre, écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous aiderai à vous connecter.</p>
+    <p style="${P}">Envie d'un petit rappel avant ce soir? L'enregistrement, les paroles et les diapositives de cette semaine vous attendent dans les ressources musicales.</p>
+    ${BTN(RES, "Voir les ressources musicales")}
     <p style="${P}">Les invités sont toujours les bienvenus! Si vous ne vous sentez pas bien, restez à la maison et prenez soin de vous.</p>
     <p style="${P}"><strong>À ce soir!</strong></p>
     ${SIGN}`;
