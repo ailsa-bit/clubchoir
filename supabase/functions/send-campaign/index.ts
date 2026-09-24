@@ -12,6 +12,7 @@ const corsHeaders = {
 const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
+const GARY_WHITE_EMAIL = "garwhite@hotmail.com";
 
 type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "community-update" | "gary-white-shoutout";
 
@@ -938,7 +939,9 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   if (segment === "fall-paid" || segment === "resources-week3-paid" || segment === "community-update") return Array.from(paidMap.values());
 
   if (segment === "gary-white-shoutout") {
-    return Array.from(paidMap.values()).filter((r) => r.location === "Saint-Hubert");
+    return Array.from(paidMap.values()).filter((r) =>
+      r.location === "Saint-Hubert" || r.email.toLowerCase() === GARY_WHITE_EMAIL
+    );
   }
 
   if (segment === "choir-tonight") {
