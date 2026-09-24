@@ -13,7 +13,7 @@ const SITE_URL = "https://clubchoir.ca";
 const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "community-update";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "community-update" | "gary-white-shoutout";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -32,6 +32,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week3-v1",
   "community-update": "fall-2026-community-update-v1",
+  "gary-white-shoutout": "fall-2026-saint-hubert-gary-white-shoutout-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -802,6 +803,47 @@ function renderCommunityUpdate(r: Recipient) {
   };
 }
 
+function renderGaryWhiteShoutout(r: Recipient) {
+  const GARY_URL = "https://www.garywhite.ca";
+  const POSTER_URL = "https://clubchoir.ca/__l5e/assets-v1/b6b3de9b-f6ab-4bd8-a972-17324267c0b8/gary-white-september-performances.png";
+  const poster = `
+    <div style="margin:22px 0 26px;text-align:center;">
+      <img src="${POSTER_URL}" alt="Gary White performances at McKibbin's Dix30 and the Greenfield Park Legion" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;border-radius:10px;margin:0 auto;" />
+    </div>`;
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}">As I mentioned at practice last night, our very own <strong>Gary White</strong> is performing twice over the next two days — and I wanted to make sure you knew where to find him!</p>
+    <p style="${P}">Gary is the wonderful accompanist who keeps both our Saint-Hubert and Hudson choirs singing, smiling and on track each week. This is a little shout-out to him, and a warm invitation to go cheer him on if you can. 🎶</p>
+    <div style="background:#fff7ed;border-left:4px solid #f59e0b;border-radius:10px;padding:16px 18px;margin:20px 0;">
+      <p style="margin:0 0 10px;font-size:16px;line-height:1.55;color:#78350f;"><strong>Tonight — Thursday, September 24 at 9:00 PM</strong><br />Double Tonic at McKibbin's Dix30</p>
+      <p style="margin:0;font-size:16px;line-height:1.55;color:#78350f;"><strong>Friday, September 25 at 7:00 PM</strong><br />Gary White live at the Greenfield Park Legion<br />205 Empire, Greenfield Park</p>
+    </div>
+    <p style="${P}"><strong>Both performances are free.</strong> If you're able to drop by, I know Gary would love to see some familiar choir faces in the room.</p>
+    ${poster}
+    <p style="${P}">You can also find Gary White Music on Facebook, or visit his website for more performance dates and locations:</p>
+    ${BTN(GARY_URL, "See Gary's performance dates")}
+    <p style="${P}">Let's show Gary a little Club Choir love — have a fantastic show, Gary!</p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}">Comme je l'ai mentionné à la pratique hier soir, notre cher <strong>Gary White</strong> se produit deux fois au cours des deux prochains jours — et je voulais m'assurer que vous sachiez où le trouver!</p>
+    <p style="${P}">Gary est le merveilleux accompagnateur qui fait chanter et sourire nos chorales de Saint-Hubert et de Hudson chaque semaine, tout en nous gardant sur la bonne voie. Voici donc un petit coup de chapeau pour lui, ainsi qu'une chaleureuse invitation à aller l'encourager si vous le pouvez. 🎶</p>
+    <div style="background:#fff7ed;border-left:4px solid #f59e0b;border-radius:10px;padding:16px 18px;margin:20px 0;">
+      <p style="margin:0 0 10px;font-size:16px;line-height:1.55;color:#78350f;"><strong>Ce soir — jeudi 24 septembre à 21 h</strong><br />Double Tonic au McKibbin's Dix30</p>
+      <p style="margin:0;font-size:16px;line-height:1.55;color:#78350f;"><strong>Vendredi 25 septembre à 19 h</strong><br />Gary White en spectacle à la Légion de Greenfield Park<br />205, rue Empire, Greenfield Park</p>
+    </div>
+    <p style="${P}"><strong>Les deux spectacles sont gratuits.</strong> Si vous pouvez y passer, je sais que Gary sera heureux de voir quelques visages familiers de la chorale dans la salle.</p>
+    ${poster}
+    <p style="${P}">Vous pouvez aussi trouver Gary White Music sur Facebook ou visiter son site Web pour connaître ses prochaines dates et ses lieux de spectacle :</p>
+    ${BTN(GARY_URL, "Voir les dates de spectacle de Gary")}
+    <p style="${P}">Montrons à Gary tout l'amour de Club Choir — bon spectacle, Gary!</p>
+    ${SIGN}`;
+  return {
+    subject: "Come cheer on Gary White this week! 🎶 / Venez encourager Gary White cette semaine!",
+    html: wrap(inner, "Two free performances over the next two days — come cheer on our accompanist Gary White!"),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
 
   if (segment === "fall-paid") return renderPaid(r);
@@ -819,6 +861,7 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
   if (segment === "community-update") return renderCommunityUpdate(r);
+  if (segment === "gary-white-shoutout") return renderGaryWhiteShoutout(r);
   return renderConsidering(r);
 }
 
@@ -893,6 +936,10 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
 
   if (segment === "fall-paid" || segment === "resources-week3-paid" || segment === "community-update") return Array.from(paidMap.values());
+
+  if (segment === "gary-white-shoutout") {
+    return Array.from(paidMap.values()).filter((r) => r.location === "Saint-Hubert");
+  }
 
   if (segment === "choir-tonight") {
     // Same-day reminders are for paid Fall 2026 members only.
