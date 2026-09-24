@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "resources-week3-paid" | "community-update";
+type Segment = "choir-tonight" | "resources-week3-paid" | "community-update" | "gary-white-shoutout";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -40,15 +40,19 @@ const EMPTY_COUNTS = {
   "choir-tonight": 0,
   "resources-week3-paid": 0,
   "community-update": 0,
+  "gary-white-shoutout": 0,
 } as Record<Segment, number>;
 
 // Segments that target a single location — no location chips needed
-const SINGLE_LOCATION: Partial<Record<Segment, string>> = {};
+const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
+  "gary-white-shoutout": "Saint-Hubert",
+};
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week3-v1",
   "resources-week3-paid": "fall-2026-resources-week3-paid-v1",
   "community-update": "fall-2026-community-update-v1",
+  "gary-white-shoutout": "fall-2026-saint-hubert-gary-white-shoutout-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
@@ -70,6 +74,12 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Warm thank-you to all paid members for a great start, inviting them to share the try-a-session link with friends over the next seven weeks (no commitment, no audition) and to like the Club Choir Facebook page. Bilingual EN/FR.",
     color: "bg-amber-50 border-amber-300",
   },
+  {
+    key: "gary-white-shoutout",
+    title: "Saint-Hubert — Gary White This Week",
+    description: "A warm bilingual shout-out to Gary, with his poster and details for tonight at McKibbin's Dix30 and Friday at the Greenfield Park Legion. For paid Saint-Hubert members only; both performances are free.",
+    color: "bg-green-50 border-green-300",
+  },
 ];
 
 
@@ -84,11 +94,13 @@ const Campaigns = () => {
     "choir-tonight": {},
     "resources-week3-paid": {},
     "community-update": {},
+    "gary-white-shoutout": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "resources-week3-paid": "all",
     "community-update": "all",
+    "gary-white-shoutout": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
@@ -96,6 +108,7 @@ const Campaigns = () => {
     "choir-tonight": {},
     "resources-week3-paid": {},
     "community-update": {},
+    "gary-white-shoutout": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
