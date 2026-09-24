@@ -8,4 +8,4 @@ Add a warm bilingual campaign for paid Saint-Hubert members highlighting Gary Wh
 - [x] Include the supplied poster directly in the email.
 - [x] Add Gary’s website and mention his Facebook presence.
 - [x] Keep recipient review, one-person removal, test-only safety, and duplicate-send protection.
-- [ ] Deploy and verify the preview without sending member emails.
+- [x] Deploy and verify the preview without sending member emails.
