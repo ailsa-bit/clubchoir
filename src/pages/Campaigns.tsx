@@ -50,7 +50,7 @@ const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week3-v1",
-  "resources-week3-paid": "fall-2026-resources-week3-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week4-paid-v1",
   "community-update": "fall-2026-community-update-v1",
   "gary-white-shoutout": "fall-2026-saint-hubert-gary-white-shoutout-v1",
 };
@@ -64,8 +64,8 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   },
   {
     key: "resources-week3-paid",
-    title: "Week 3 Resources Are Up — \"Flowers\"",
-    description: "Send by location to paid members. Announces Week 3 song \"Flowers\" by Miley Cyrus with four numbered links: 1) This Week at Choir (weekly message and song story), 2) the location's YouTube playlist of end-of-session videos, 3) the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session. Bilingual EN/FR.",
+    title: "Week 4 Resources Are Up — \"When Doves Cry\"",
+    description: "Send by location to paid members. Announces Week 4 song \"When Doves Cry\" by Prince with four numbered links: 1) This Week at Choir (weekly message and song story), 2) the location's YouTube playlist of end-of-session videos, 3) the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session, plus a Google review button. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
   {

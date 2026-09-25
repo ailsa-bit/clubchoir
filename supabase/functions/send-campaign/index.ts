@@ -28,7 +28,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   
-  "resources-week3-paid": "fall-2026-resources-week3-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week4-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week3-v1",
@@ -674,12 +674,12 @@ function renderResourcesWeek3(r: Recipient) {
     const items = lang === "en" ? [
       { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
       { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
-      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Flowers".`, url: RES_URL, label: "Open the song resources" },
+      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "When Doves Cry".`, url: RES_URL, label: "Open the song resources" },
       { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
     ] : [
       { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
       { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
-      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Flowers ».`, url: RES_URL, label: "Voir les ressources" },
+      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « When Doves Cry ».`, url: RES_URL, label: "Voir les ressources" },
       { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
     ];
     return items.map((i) => `
@@ -693,21 +693,25 @@ function renderResourcesWeek3(r: Recipient) {
   };
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">🎶 <strong>Week 3 resources are up!</strong> This week we're singing <strong>"Flowers" by Miley Cyrus</strong> — everything you need is below.</p>
+    <p style="${P}">🎶 <strong>Week 4 resources are up!</strong> This week we're singing <strong>"When Doves Cry" by Prince</strong> — everything you need is below.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
+    <p style="${P}">⭐ Got a minute? A quick Google review helps new singers find Club Choir — thank you!</p>
+    ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Leave us a Google review")}
     <p style="${P}">Have a fantastic weekend — see you at choir!</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">🎶 <strong>Les ressources de la semaine 3 sont en ligne!</strong> Cette semaine, nous chantons <strong>« Flowers » de Miley Cyrus</strong> — tout ce qu'il vous faut est ci-dessous.</p>
+    <p style="${P}">🎶 <strong>Les ressources de la semaine 4 sont en ligne!</strong> Cette semaine, nous chantons <strong>« When Doves Cry » de Prince</strong> — tout ce qu'il vous faut est ci-dessous.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
+    <p style="${P}">⭐ Vous avez une minute? Un petit avis Google aide de nouveaux choristes à découvrir Club Choir — merci!</p>
+    ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Laisser un avis Google")}
     <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
     ${SIGN}`;
   return {
-    subject: `Week 3 resources are up — "Flowers" by Miley Cyrus 🎶 / Ressources de la semaine 3 en ligne!`,
-    html: wrap(inner, `Week 3 resources for "Flowers" are live — your weekly message, location videos, song resources and session playlist.`),
+    subject: `Week 4 resources are up — "When Doves Cry" by Prince 🎶 / Ressources de la semaine 4 en ligne!`,
+    html: wrap(inner, `Week 4 resources for "When Doves Cry" are live — your weekly message, location videos, song resources and session playlist.`),
   };
 }
 
