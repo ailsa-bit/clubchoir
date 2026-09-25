@@ -19,7 +19,7 @@ const DEFAULT_MESSAGE = {
 
 New resources for "When Doves Cry" are up on the song resources page — have a listen and take a look before we meet!
 
-If you have a few minutes, I'd love it if you could leave Club Choir a review on Google. It truly helps people find us, and every kind word means the world. Here is the link: ${REVIEW_URL}
+If you have a few minutes, I'd love it if you could leave Club Choir a review on Google. It truly helps people find us, and every kind word means the world — just tap the button below!
 
 A little heads-up for Montreal and Pointe-Claire: Daniel won't be with us next week, but Gary will be accompanying us in Montreal, and Joe (one of our choir members) will be joining us in Pointe-Claire. I'm so grateful to them both!
 
@@ -35,7 +35,7 @@ Ailsa 🎤✨`,
 
 Les nouvelles ressources pour « When Doves Cry » sont disponibles sur la page des ressources musicales — écoutez et jetez un coup d'œil avant de nous retrouver !
 
-Si vous avez quelques minutes, j'aimerais beaucoup que vous laissiez un avis sur Club Choir sur Google. Cela aide vraiment les gens à nous découvrir, et chaque mot gentil me touche beaucoup. Voici le lien : ${REVIEW_URL}
+Si vous avez quelques minutes, j'aimerais beaucoup que vous laissiez un avis sur Club Choir sur Google. Cela aide vraiment les gens à nous découvrir, et chaque mot gentil me touche beaucoup — appuyez sur le bouton ci-dessous !
 
 Petite note pour Montréal et Pointe-Claire : Daniel ne sera pas avec nous la semaine prochaine, mais Gary nous accompagnera à Montréal, et Joe (un de nos membres) se joindra à nous à Pointe-Claire. Je leur suis très reconnaissante !
 
