@@ -5,31 +5,45 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { PenLine, Save, X, CalendarDays, Music } from "lucide-react";
+import { PenLine, Save, X, CalendarDays, Music, Star } from "lucide-react";
 import type { Database } from "@/integrations/supabase/types";
 
 type Announcement = Database["public"]["Tables"]["weekly_announcements"]["Row"];
 
-const DEFAULT_TITLE = { en: "Week 3 — A Note from Ailsa 🎶", fr: "Semaine 3 — Un mot d'Ailsa 🎶" };
+const DEFAULT_TITLE = { en: "Week 4 — A Note from Ailsa 🎶", fr: "Semaine 4 — Un mot d'Ailsa 🎶" };
+
+const REVIEW_URL = "https://g.page/r/CU1hiLJTYmtXEAE/review";
 
 const DEFAULT_MESSAGE = {
   en: `Hello wonderful singers! 🌟
 
-Another wonderful week of singing across all of our Club Choir locations! It has been such a joy to see everyone settling in, learning the songs and enjoying the music together.
+New resources for "When Doves Cry" are up on the song resources page — have a listen and take a look before we meet!
 
-A little reminder that you are always welcome to bring a friend along to a rehearsal. You can also attend any of our locations, on any week, whenever it works better for your schedule. The same song is taught at every location each week, so you never have to miss out!
+If you have a few minutes, I'd love it if you could leave Club Choir a review on Google. It truly helps people find us, and every kind word means the world. Here is the link: ${REVIEW_URL}
 
-Thank you for bringing your voices, your smiles and your wonderful energy each week. I am having so much fun singing with all of you!
+A little heads-up for Montreal and Pointe-Claire: Daniel won't be with us next week, but Gary will be accompanying us in Montreal, and Joe (one of our choir members) will be joining us in Pointe-Claire. I'm so grateful to them both!
+
+This week's song is "When Doves Cry" — one of my favourites! I am very excited about this version, inspired by a Choir! Choir! Choir! version.
+
+A couple of reminders: please write your name in your binder, so if it gets left behind I know who to return it to.
+
+See you all next week. Enjoy the beautiful weather this weekend!
 
 Tra-la-la,
 Ailsa 🎤✨`,
   fr: `Bonjour merveilleux chanteurs et chanteuses ! 🌟
 
-Une autre merveilleuse semaine de chant dans toutes nos locations Club Choir ! C'est un vrai bonheur de voir tout le monde prendre ses repères, apprendre les chansons et profiter de la musique ensemble.
+Les nouvelles ressources pour « When Doves Cry » sont disponibles sur la page des ressources musicales — écoutez et jetez un coup d'œil avant de nous retrouver !
 
-Petit rappel : vous pouvez toujours inviter un·e ami·e à une répétition. Vous pouvez aussi participer à n'importe laquelle de nos locations, n'importe quelle semaine, lorsque cela convient mieux à votre horaire. La même chanson est enseignée dans chaque location chaque semaine, alors vous ne manquerez rien !
+Si vous avez quelques minutes, j'aimerais beaucoup que vous laissiez un avis sur Club Choir sur Google. Cela aide vraiment les gens à nous découvrir, et chaque mot gentil me touche beaucoup. Voici le lien : ${REVIEW_URL}
 
-Merci d'apporter vos voix, vos sourires et votre merveilleuse énergie chaque semaine. J'ai tellement de plaisir à chanter avec vous !
+Petite note pour Montréal et Pointe-Claire : Daniel ne sera pas avec nous la semaine prochaine, mais Gary nous accompagnera à Montréal, et Joe (un de nos membres) se joindra à nous à Pointe-Claire. Je leur suis très reconnaissante !
+
+La chanson de cette semaine est « When Doves Cry » — l'une de mes préférées ! Je suis très excitée par cette version, inspirée d'une version de Choir! Choir! Choir!
+
+Quelques petits rappels : veuillez écrire votre nom dans votre classeur, pour que je sache à qui le retourner s'il est oublié.
+
+À la semaine prochaine. Profitez du beau temps ce week-end !
 
 Tra-la-la,
 Ailsa 🎤✨`,
@@ -37,20 +51,12 @@ Ailsa 🎤✨`,
 
 const SONG_OF_WEEK = {
   en: {
-    title: "Song of the Week: “Flowers” — Miley Cyrus",
-    body: `“Flowers” was written by Miley Cyrus and her co-writers in 2022 and released in 2023. It actually began as a much sadder song before becoming the confident, upbeat version we know today.
-
-The message is about moving forward, knowing your worth and realizing you can give yourself the love and happiness you need.
-
-For our choir, sing it with confidence and a little bit of attitude! Don’t force the sound or make it too heavy—relax into the groove, enjoy the rhythm and let the confidence build as the song goes on. By the final chorus, we should really believe what we’re singing!`,
+    title: "Song of the Week: \u201CWhen Doves Cry\u201D — Prince",
+    body: `In 1984, Prince released \u201CWhen Doves Cry\u201D as part of Purple Rain, the album and film that sent him into superstardom. Beneath its bold sound is a story of a relationship in trouble: two people who love each other but keep falling into the same painful patterns. Prince turns that tension into something theatrical, with sharp guitar, an irresistible beat and a vocal that moves from cool confidence to raw emotion. This week, we get to bring all that drama to Club Choir.`,
   },
   fr: {
-    title: "Chanson de la semaine : « Flowers » — Miley Cyrus",
-    body: `« Flowers » a été écrite par Miley Cyrus et ses coauteurs en 2022, puis lancée en 2023. Elle a d'abord été conçue comme une chanson beaucoup plus triste avant de devenir la version confiante et entraînante que nous connaissons aujourd'hui.
-
-Son message parle d'aller de l'avant, de reconnaître sa propre valeur et de comprendre que l'on peut s'offrir soi-même l'amour et le bonheur dont on a besoin.
-
-Pour notre chorale, chantez-la avec confiance et un peu d'attitude ! Ne forcez pas le son et ne le rendez pas trop lourd — laissez-vous porter par le groove, profitez du rythme et laissez la confiance grandir au fil de la chanson. Au dernier refrain, nous devrions vraiment croire ce que nous chantons !`,
+    title: "Chanson de la semaine : « When Doves Cry » — Prince",
+    body: `En 1984, Prince a lancé « When Doves Cry » dans le cadre de Purple Rain, l'album et le film qui l'ont propulsé au sommet. Sous ce son audacieux se cache l'histoire d'une relation en difficulté : deux personnes qui s'aiment mais qui retombent sans cesse dans les mêmes schémas douloureux. Prince transforme cette tension en quelque chose de théâtral, avec une guitare incisive, un rythme irrésistible et un chant qui passe de la confiance cool à l'émotion brute. Cette semaine, nous allons apporter tout ce drame à Club Choir.`,
   },
 };
 
@@ -219,9 +225,20 @@ export function MemberWelcomeMessage() {
             </div>
           </div>
         ) : (
-          <div className="text-base md:text-lg text-foreground/90 whitespace-pre-line leading-relaxed">
-            {ailsaBody}
-          </div>
+          <>
+            <div className="text-base md:text-lg text-foreground/90 whitespace-pre-line leading-relaxed">
+              {ailsaBody}
+            </div>
+            <a
+              href={REVIEW_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-4 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors"
+            >
+              <Star className="w-4 h-4" />
+              {language === "fr" ? "Laisser un avis sur Google" : "Leave a review on Google"}
+            </a>
+          </>
         )}
       </div>
 
