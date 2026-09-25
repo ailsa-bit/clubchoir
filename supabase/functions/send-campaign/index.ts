@@ -1215,6 +1215,23 @@ serve(async (req) => {
       location === "all" ? all
       : location === "unknown" ? all.filter((r) => !r.location)
       : all.filter((r) => r.location === location);
+    // Gary White (accompanist, home location Hudson) must be on every Saint-Hubert mailing
+    if (location === "Saint-Hubert" && !recipients.some((r) => r.email.toLowerCase() === GARY_WHITE_EMAIL)) {
+      const { data: gary } = await supabase
+        .from("members")
+        .select("email, first_name, last_name, crm_tags")
+        .ilike("email", GARY_WHITE_EMAIL)
+        .maybeSingle();
+      const garyTags = Array.isArray(gary?.crm_tags) ? gary.crm_tags : [];
+      if (gary?.email && !garyTags.includes("no-email")) {
+        recipients.push({
+          email: String(gary.email).toLowerCase(),
+          first_name: gary.first_name || "Gary",
+          last_name: gary.last_name || "White",
+          location: "Saint-Hubert",
+        });
+      }
+    }
     if (onlyEmails.length) recipients = recipients.filter((r) => onlyEmails.includes(r.email.toLowerCase()));
     recipients = recipients.filter((r) => !NEVER_EMAIL.has(String(r.email || "").toLowerCase().trim()));
 
