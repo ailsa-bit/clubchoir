@@ -50,7 +50,7 @@ const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week3-v1",
-  "resources-week3-paid": "fall-2026-resources-week4-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week4-paid-v2",
   "community-update": "fall-2026-community-update-v1",
   "gary-white-shoutout": "fall-2026-saint-hubert-gary-white-shoutout-v1",
 };
