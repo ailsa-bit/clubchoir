@@ -100,16 +100,7 @@ const SignupIssuesPanel = ({ onSelectPerson }: { onSelectPerson?: (email: string
         }
       });
 
-      // Any other unconfirmed accounts (not paid registrations)
-      users.forEach((u) => {
-        const email = (u.email || "").toLowerCase().trim();
-        if (!email || seen.has(email)) return;
-        if (!u.email_confirmed_at) {
-          seen.add(email);
-          out.push({ email, name: email, location: "—", kind: "unconfirmed", since: u.created_at });
-        }
-      });
-
+      // Only paid members appear here — unpaid accounts should not have portal access
       out.sort((a, b) => (b.since || "").localeCompare(a.since || ""));
       setRows(out);
     } catch (e: any) {
