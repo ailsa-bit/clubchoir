@@ -42,11 +42,12 @@ export function useProfile() {
 
     // Auth state changes (token refresh, login, logout)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (event, session) => {
         if (!isMounted) return;
         if (session?.user) {
-          fetchProfile(session.user.id);
-        } else {
+          const id = session.user.id;
+          setTimeout(() => fetchProfile(id), 0);
+        } else if (event === "SIGNED_OUT") {
           lastKnownRef.current = { location: null, status: null };
           setLocation(null);
           setStatus(null);

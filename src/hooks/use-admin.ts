@@ -57,12 +57,15 @@ export function useAdmin() {
 
     // 2. Listen for auth changes (login/logout/token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (event, session) => {
         if (!isMounted) return;
         if (!initializedRef.current) {
           initializedRef.current = true;
         }
-        handleUser(session?.user ?? null);
+        // Only an explicit sign-out clears the user; ignore transient null sessions.
+        if (!session?.user && event !== "SIGNED_OUT") return;
+        // Defer DB calls out of the auth callback to avoid auth-lock deadlocks.
+        setTimeout(() => handleUser(session?.user ?? null), 0);
       }
     );
 
