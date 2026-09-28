@@ -31,7 +31,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "resources-week3-paid": "fall-2026-resources-week4-paid-v2",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week3-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week4-v1",
   "community-update": "fall-2026-community-update-v1",
   "gary-white-shoutout": "fall-2026-saint-hubert-gary-white-shoutout-v1",
 };
@@ -720,7 +720,6 @@ function renderChoirTonight(r: Recipient) {
   const loc = LOCATIONS[r.location];
   const city = loc ? esc(loc.city) : "";
   const isHudson = r.location === "Hudson";
-  const isMontreal = r.location === "Montreal";
   const startEn = isHudson ? "7:30 PM" : "7:00 PM";
   const startFr = isHudson ? "19 h 30" : "19 h";
   const whereEn = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "your usual location";
@@ -739,42 +738,29 @@ function renderChoirTonight(r: Recipient) {
       <p style="margin:3px 0;font-size:15px;color:#831843;">✏️ ${lang === "en" ? "<strong>A pen or pencil</strong> for notes on your lyric sheets." : "<strong>Un crayon ou un stylo</strong> pour annoter vos paroles."}</p>
       <p style="margin:3px 0;font-size:15px;color:#831843;">💧 ${lang === "en" ? "<strong>Water</strong> — singing is thirsty work!" : "<strong>De l'eau</strong> — chanter donne soif!"}</p>
     </div>`;
-  const montrealNotice = (lang: "en" | "fr") => !isMontreal ? "" : `
-    <div style="background:#fff7ed;border-left:4px solid #f97316;border-radius:10px;padding:14px 18px;margin:18px 0;">
-      <div style="font-weight:700;color:#9a3412;margin-bottom:5px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Important: Montreal has moved" : "Important : Montréal a déménagé"}</div>
-      <p style="margin:0;font-size:15px;line-height:1.55;color:#7c2d12;">${lang === "en"
-        ? "Tonight we meet at <strong>Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (corner Décarie)</strong>."
-        : "Ce soir, nous nous retrouvons à la <strong>Paroisse Notre-Dame-De-Grâce, 5333, avenue Notre-Dame-de-Grâce (coin Décarie)</strong>."}</p>
-    </div>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>Week 3 kicks off tonight! 🎶</strong> I can't wait to sing with you again.</p>
-    ${montrealNotice("en")}
+    <p style="${P}"><strong>Week 4 kicks off tonight! 🎶</strong> We're singing <strong>"When Doves Cry" by Prince</strong> this week, and I can't wait to hear what we make of it together.</p>
     ${box("en")}
     ${bring("en")}
-    <p style="${P}">If you missed opening night, please come a little early to collect your binder. We'll have printed lyrics ready for everyone.</p>
-    <p style="${P}">Friday's email included the new song resources and the latest video from your location. If you're having trouble connecting to your member profile, email me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> and I'll help you get connected.</p>
-    <p style="${P}">Want a quick refresher before tonight? This week's recording, lyrics and lyric slides are all waiting for you in the song resources.</p>
+    <p style="${P}">Friday's email has your new song resources and the latest video from your location. Want a listen before we sing? The recording, lyrics and lyric slides for "When Doves Cry" are waiting for you below. If you need help getting into your member profile, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Open the song resources")}
-    <p style="${P}">Guests are always welcome! Please stay home if you're feeling sick, and take good care of yourself.</p>
+    <p style="${P}">Have a friend who'd enjoy singing with us? They're welcome to join us for an evening. And if you're feeling sick, please stay home and take good care of yourself.</p>
     <p style="${P}"><strong>See you tonight!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>La semaine 3 commence ce soir! 🎶</strong> J'ai très hâte de chanter de nouveau avec vous.</p>
-    ${montrealNotice("fr")}
+    <p style="${P}"><strong>La semaine 4 commence ce soir! 🎶</strong> Cette semaine, nous chantons <strong>« When Doves Cry » de Prince</strong>, et j'ai très hâte de découvrir ce que nous en ferons ensemble.</p>
     ${box("fr")}
     ${bring("fr")}
-    <p style="${P}">Si vous avez manqué la soirée d'ouverture, arrivez un peu à l'avance pour récupérer votre cartable. Les paroles seront imprimées pour tout le monde.</p>
-    <p style="${P}">Le courriel de vendredi contenait les nouvelles ressources musicales et la plus récente vidéo de votre lieu. Si vous avez de la difficulté à accéder à votre profil de membre, écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a> et je vous aiderai à vous connecter.</p>
-    <p style="${P}">Envie d'un petit rappel avant ce soir? L'enregistrement, les paroles et les diapositives de cette semaine vous attendent dans les ressources musicales.</p>
+    <p style="${P}">Le courriel de vendredi contient les nouvelles ressources musicales et la plus récente vidéo de votre lieu. Envie d'écouter la chanson avant de chanter? L'enregistrement, les paroles et les diapositives de « When Doves Cry » vous attendent ci-dessous. Si vous avez besoin d'aide pour accéder à votre profil de membre, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Voir les ressources musicales")}
-    <p style="${P}">Les invités sont toujours les bienvenus! Si vous ne vous sentez pas bien, restez à la maison et prenez soin de vous.</p>
+    <p style="${P}">Une personne de votre entourage aimerait chanter avec nous? Elle est la bienvenue pour une soirée. Et si vous ne vous sentez pas bien, restez à la maison et prenez soin de vous.</p>
     <p style="${P}"><strong>À ce soir!</strong></p>
     ${SIGN}`;
   return {
-    subject: `Week 3 kicks off tonight${city ? ` — ${city}` : ""}! 🎶 / La semaine 3 commence ce soir${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Week 3 kicks off tonight — a warm reminder with your location, start time and what to bring."),
+    subject: `Week 4 kicks off tonight${city ? ` — ${city}` : ""}! 🎶 / La semaine 4 commence ce soir${city ? ` — ${city}` : ""}!`,
+    html: wrap(inner, "Week 4 starts tonight with When Doves Cry — your location, start time and song resources."),
   };
 }
 
