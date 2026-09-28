@@ -14,7 +14,7 @@ const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 const GARY_WHITE_EMAIL = "garwhite@hotmail.com";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "community-update" | "gary-white-shoutout";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "fall-paid": "fall-2026-confirmed-v1",
@@ -32,8 +32,6 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week4-v1",
-  "community-update": "fall-2026-community-update-v1",
-  "gary-white-shoutout": "fall-2026-saint-hubert-gary-white-shoutout-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -851,8 +849,6 @@ function renderEmail(segment: Segment, r: Recipient): { subject: string; html: s
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
-  if (segment === "community-update") return renderCommunityUpdate(r);
-  if (segment === "gary-white-shoutout") return renderGaryWhiteShoutout(r);
   return renderConsidering(r);
 }
 
@@ -926,13 +922,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
   if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
 
-  if (segment === "fall-paid" || segment === "resources-week3-paid" || segment === "community-update") return Array.from(paidMap.values());
-
-  if (segment === "gary-white-shoutout") {
-    return Array.from(paidMap.values()).filter((r) =>
-      r.location === "Saint-Hubert" || r.email.toLowerCase() === GARY_WHITE_EMAIL
-    );
-  }
+  if (segment === "fall-paid" || segment === "resources-week3-paid") return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
     // Same-day reminders are for paid Fall 2026 members only.
