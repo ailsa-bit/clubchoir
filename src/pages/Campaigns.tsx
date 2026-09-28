@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "resources-week3-paid" | "community-update" | "gary-white-shoutout";
+type Segment = "choir-tonight" | "resources-week3-paid";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -39,20 +39,11 @@ interface Preflight {
 const EMPTY_COUNTS = {
   "choir-tonight": 0,
   "resources-week3-paid": 0,
-  "community-update": 0,
-  "gary-white-shoutout": 0,
 } as Record<Segment, number>;
-
-// Segments that target a single location — no location chips needed
-const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
-  "gary-white-shoutout": "Saint-Hubert",
-};
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week4-v1",
   "resources-week3-paid": "fall-2026-resources-week4-paid-v2",
-  "community-update": "fall-2026-community-update-v1",
-  "gary-white-shoutout": "fall-2026-saint-hubert-gary-white-shoutout-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
@@ -68,18 +59,6 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
     description: "Send by location to paid members. Announces Week 4 song \"When Doves Cry\" by Prince with four numbered links: 1) This Week at Choir (weekly message and song story), 2) the location's YouTube playlist of end-of-session videos, 3) the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session, plus a Google review button. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
-  {
-    key: "community-update",
-    title: "A Thank-You — Community Update",
-    description: "Warm thank-you to all paid members for a great start, inviting them to share the try-a-session link with friends over the next seven weeks (no commitment, no audition) and to like the Club Choir Facebook page. Bilingual EN/FR.",
-    color: "bg-amber-50 border-amber-300",
-  },
-  {
-    key: "gary-white-shoutout",
-    title: "Saint-Hubert — Gary White This Week",
-    description: "A warm bilingual shout-out to Gary, with his poster and details for tonight at McKibbin's Dix30 and Friday at the Greenfield Park Legion. For paid Saint-Hubert members only; both performances are free.",
-    color: "bg-green-50 border-green-300",
-  },
 ];
 
 
@@ -93,22 +72,16 @@ const Campaigns = () => {
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "resources-week3-paid": {},
-    "community-update": {},
-    "gary-white-shoutout": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "choir-tonight": "all",
     "resources-week3-paid": "all",
-    "community-update": "all",
-    "gary-white-shoutout": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "choir-tonight": {},
     "resources-week3-paid": {},
-    "community-update": {},
-    "gary-white-shoutout": {},
   });
 
   const [previewSegment, setPreviewSegment] = useState<Segment | null>(null);
@@ -335,7 +308,7 @@ const Campaigns = () => {
 
 
                 <div className="flex flex-wrap gap-1.5 mt-4">
-                  {(SINGLE_LOCATION[s.key] ? [] : (["all", ...LOCATIONS, "unknown"] as LocationFilter[])).map((loc) => {
+                  {(["all", ...LOCATIONS, "unknown"] as LocationFilter[]).map((loc) => {
                     const n = loc === "all" ? (total ?? 0) : (buckets[loc] ?? 0);
                     if (loc === "unknown" && n === 0) return null;
                     const active = filter === loc;
