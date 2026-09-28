@@ -49,7 +49,7 @@ const SINGLE_LOCATION: Partial<Record<Segment, string>> = {
 };
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
-  "choir-tonight": "fall-2026-choir-tonight-week3-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week4-v1",
   "resources-week3-paid": "fall-2026-resources-week4-paid-v2",
   "community-update": "fall-2026-community-update-v1",
   "gary-white-shoutout": "fall-2026-saint-hubert-gary-white-shoutout-v1",
@@ -58,8 +58,8 @@ const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
     key: "choir-tonight",
-    title: "Week 3 Starts Tonight — Reminder",
-    description: "Warm same-day reminder for paid members, sent by location. Includes the venue and start time, what to bring, binder pickup for anyone who missed opening night, profile help, Friday's resource links, guest welcome and a stay-home-if-sick note. Montreal receives a prominent new-venue reminder. Bilingual EN/FR.",
+    title: "Week 4 Starts Tonight — Reminder",
+    description: "Warm same-day reminder for paid members, sent by location. Features ‘When Doves Cry’ by Prince, venue and start time, what to bring, song resources, profile help, guest welcome and a stay-home-if-sick note. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
