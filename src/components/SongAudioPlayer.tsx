@@ -100,8 +100,9 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
     const audio = audioRef.current;
     return () => {
       if (audio) {
+        recoveringRef.current = true;
         audio.pause();
-        audio.src = "";
+        audio.removeAttribute("src");
       }
     };
   }, []);
