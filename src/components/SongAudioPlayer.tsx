@@ -33,6 +33,40 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState(false);
   const isBusyRef = useRef(false);
+  const loadedAtRef = useRef(0);
+  const recoveringRef = useRef(false);
+  const STALE_MS = 8 * 60 * 1000; // play links expire after 10 minutes
+
+  const setFreshSrc = async (): Promise<boolean> => {
+    const audio = audioRef.current;
+    if (!audio) return false;
+    const url = await loadUrl();
+    if (!url) return false;
+    const at = audio.currentTime;
+    audio.src = url;
+    loadedAtRef.current = Date.now();
+    if (at > 0) {
+      const restore = () => { try { audio.currentTime = at; } catch { /* ignore */ } };
+      audio.addEventListener("loadedmetadata", restore, { once: true });
+    }
+    return true;
+  };
+
+  // If the link expires mid-song, quietly fetch a fresh one and keep playing
+  const recover = async () => {
+    const audio = audioRef.current;
+    if (!audio || recoveringRef.current) { setPlaying(false); return; }
+    recoveringRef.current = true;
+    try {
+      if (await setFreshSrc()) { await audio.play(); setError(false); }
+      else setError(true);
+    } catch {
+      setError(true);
+      setPlaying(false);
+    } finally {
+      setTimeout(() => { recoveringRef.current = false; }, 3000);
+    }
+  };
 
   // Stop and rewind when another track becomes active
   useEffect(() => {
@@ -54,6 +88,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
       const audio = audioRef.current;
       if (cancelled || !url || !audio || audio.src) return;
       audio.src = url;
+      loadedAtRef.current = Date.now();
       audio.load();
     })();
     return () => { cancelled = true; };
@@ -65,8 +100,9 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
     const audio = audioRef.current;
     return () => {
       if (audio) {
+        recoveringRef.current = true;
         audio.pause();
-        audio.src = "";
+        audio.removeAttribute("src");
       }
     };
   }, []);
@@ -93,16 +129,15 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
     onActivate(id);
     setError(false);
 
-    if (!audio.src) {
+    if (!audio.src || audio.error || Date.now() - loadedAtRef.current > STALE_MS) {
       setLoading(true);
-      const url = await loadUrl();
+      const ok = await setFreshSrc();
       setLoading(false);
-      if (!url) {
+      if (!ok) {
         setError(true);
         isBusyRef.current = false;
         return;
       }
-      audio.src = url;
     }
 
     try {
@@ -110,9 +145,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
     } catch {
       // The link may have expired — fetch a fresh one and try once more
       try {
-        const fresh = await loadUrl();
-        if (!fresh) throw new Error("no url");
-        audio.src = fresh;
+        if (!(await setFreshSrc())) throw new Error("no url");
         await audio.play();
       } catch {
         setError(true);
@@ -208,7 +241,7 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
         onEnded={() => { setPlaying(false); setCurrent(0); }}
         onTimeUpdate={(e) => setCurrent((e.target as HTMLAudioElement).currentTime)}
         onLoadedMetadata={(e) => setDuration((e.target as HTMLAudioElement).duration)}
-        onError={() => { setPlaying(false); isBusyRef.current = false; }}
+        onError={() => { if (!isBusyRef.current && audioRef.current?.src) recover(); else setPlaying(false); }}
       />
     </div>
   );
