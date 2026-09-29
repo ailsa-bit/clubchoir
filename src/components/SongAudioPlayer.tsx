@@ -35,6 +35,9 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
   const isBusyRef = useRef(false);
   const loadedAtRef = useRef(0);
   const recoveringRef = useRef(false);
+  const wantsPlayRef = useRef(false);
+  const activeIdRef = useRef(activeId);
+  activeIdRef.current = activeId;
   const STALE_MS = 8 * 60 * 1000; // play links expire after 10 minutes
 
   const setFreshSrc = async (): Promise<boolean> => {
@@ -236,12 +239,16 @@ const SongAudioPlayer = ({ label, loadUrl, activeId, id, onActivate, onDownload,
         ref={audioRef}
         preload="none"
         playsInline
-        onPlay={() => { setPlaying(true); onActivate(id); }}
-        onPause={() => setPlaying(false)}
-        onEnded={() => { setPlaying(false); setCurrent(0); }}
+        onPlay={() => { wantsPlayRef.current = true; setPlaying(true); onActivate(id); }}
+        onPause={() => { if (!recoveringRef.current) wantsPlayRef.current = false; setPlaying(false); }}
+        onEnded={() => { wantsPlayRef.current = false; setPlaying(false); setCurrent(0); }}
         onTimeUpdate={(e) => setCurrent((e.target as HTMLAudioElement).currentTime)}
         onLoadedMetadata={(e) => setDuration((e.target as HTMLAudioElement).duration)}
-        onError={() => { if (!isBusyRef.current && audioRef.current?.src) recover(); else setPlaying(false); }}
+        onError={() => {
+          // Only auto-recover if the member was actually listening; never start playback on its own
+          if (!isBusyRef.current && wantsPlayRef.current && activeIdRef.current === id && audioRef.current?.src) recover();
+          else setPlaying(false);
+        }}
       />
     </div>
   );
