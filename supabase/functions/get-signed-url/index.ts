@@ -25,11 +25,18 @@ Deno.serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
-    const { storage_path, file_name } = await req.json();
+    let body: any;
+    try { body = await req.json(); } catch {
+      return new Response(JSON.stringify({ error: "Invalid request" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    const { storage_path, file_name } = body ?? {};
     // file_name present => force a download; absent => let the browser display it inline
     const wantsDownload = typeof file_name === "string" && file_name.length > 0;
 
-    if (!storage_path) {
+    if (!storage_path || typeof storage_path !== "string") {
       return new Response(JSON.stringify({ error: "storage_path required" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -41,8 +48,10 @@ Deno.serve(async (req) => {
       .createSignedUrl(storage_path, 600, wantsDownload ? { download: file_name } : {});
 
     if (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
+      const notFound = /not.?found/i.test(error.message);
+      console.error("get-signed-url storage error", storage_path, error.message);
+      return new Response(JSON.stringify({ error: notFound ? "File not found" : "You don't have access to this file" }), {
+        status: notFound ? 404 : 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
