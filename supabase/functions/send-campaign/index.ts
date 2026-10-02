@@ -28,7 +28,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   
-  "resources-week3-paid": "fall-2026-resources-week4-paid-v2",
+  "resources-week3-paid": "fall-2026-resources-week5-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week4-v1",
@@ -667,17 +667,18 @@ const FALL_PLAYLIST = "https://www.youtube.com/playlist?list=PLcV8Anv7jfrk";
 function renderResourcesWeek3(r: Recipient) {
   const THIS_WEEK = `${SITE_URL}/this-week`;
   const RES_URL = `${SITE_URL}/resources/fall-2026`;
+  const SOCIAL_RSVP_URL = `${SITE_URL}/this-week#choir-social-rsvp`;
   const playlist = LOCATION_PLAYLISTS[r.location] || FALL_PLAYLIST;
   const linkBox = (lang: "en" | "fr") => {
     const items = lang === "en" ? [
       { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
       { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
-      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "When Doves Cry".`, url: RES_URL, label: "Open the song resources" },
+      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Time of the Season".`, url: RES_URL, label: "Open the song resources" },
       { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
     ] : [
       { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
       { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
-      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « When Doves Cry ».`, url: RES_URL, label: "Voir les ressources" },
+      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Time of the Season ».`, url: RES_URL, label: "Voir les ressources" },
       { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
     ];
     return items.map((i) => `
@@ -691,25 +692,37 @@ function renderResourcesWeek3(r: Recipient) {
   };
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">🎶 <strong>Week 4 resources are up!</strong> This week we're singing <strong>"When Doves Cry" by Prince</strong> — everything you need is below.</p>
+    <p style="${P}">🎶 <strong>Week 5 resources are up!</strong> This week we're getting into the groove with <strong>"Time of the Season" by The Zombies</strong>, while continuing our work on "When Doves Cry." Everything you need is below.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
+    <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
+      <p style="${P}"><strong>Save the date for our choir social! 🎤</strong></p>
+      <p style="${P}">All four locations are invited to The Wheel Club on <strong>Sunday, November 1, from 2:00–5:00 PM</strong> for karaoke, food, drinks and a fun afternoon together — no rehearsal, just singing and celebrating!</p>
+      <p style="${P}">Please let me know if you'll be able to join us. You can choose yes, no or maybe, and change your answer anytime before the event.</p>
+      ${BTN(SOCIAL_RSVP_URL, "Answer the choir social RSVP")}
+    </div>
     <p style="${P}">⭐ Got a minute? A quick Google review helps new singers find Club Choir — thank you!</p>
     ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Leave us a Google review")}
     <p style="${P}">Have a fantastic weekend — see you at choir!</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">🎶 <strong>Les ressources de la semaine 4 sont en ligne!</strong> Cette semaine, nous chantons <strong>« When Doves Cry » de Prince</strong> — tout ce qu'il vous faut est ci-dessous.</p>
+    <p style="${P}">🎶 <strong>Les ressources de la semaine 5 sont en ligne!</strong> Cette semaine, nous retrouvons le rythme avec <strong>« Time of the Season » de The Zombies</strong>, tout en poursuivant notre travail sur « When Doves Cry ». Tout ce qu'il vous faut est ci-dessous.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
+    <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
+      <p style="${P}"><strong>Réservez la date pour notre rencontre de la chorale! 🎤</strong></p>
+      <p style="${P}">Les membres de nos quatre lieux sont invités au Wheel Club le <strong>dimanche 1er novembre, de 14 h à 17 h</strong>, pour du karaoké, de la nourriture, des boissons et un bel après-midi ensemble — pas de répétition, seulement du chant et une belle célébration!</p>
+      <p style="${P}">Dites-moi si vous pourrez vous joindre à nous. Vous pouvez répondre oui, non ou peut-être, puis modifier votre réponse en tout temps avant l'événement.</p>
+      ${BTN(SOCIAL_RSVP_URL, "Répondre pour la rencontre")}
+    </div>
     <p style="${P}">⭐ Vous avez une minute? Un petit avis Google aide de nouveaux choristes à découvrir Club Choir — merci!</p>
     ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Laisser un avis Google")}
     <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
     ${SIGN}`;
   return {
-    subject: `Week 4 resources are up — "When Doves Cry" by Prince 🎶 / Ressources de la semaine 4 en ligne!`,
-    html: wrap(inner, `Week 4 resources for "When Doves Cry" are live — your weekly message, location videos, song resources and session playlist.`),
+    subject: `Week 5 resources are up — "Time of the Season" 🎶 / Ressources de la semaine 5 en ligne!`,
+    html: wrap(inner, `Week 5 resources for "Time of the Season" are live, plus your invitation to the November 1 choir social.`),
   };
 }
 
