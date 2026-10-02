@@ -10,7 +10,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Loader2, Music, Eye, Users, MapPin, ArrowRight, RefreshCw, BarChart3, Download, Smartphone,
+  Loader2, Music, Eye, Users, MapPin, ArrowRight, RefreshCw, BarChart3, Download, Smartphone, CalendarCheck, Check,
 } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
@@ -33,6 +33,11 @@ interface ViewRow {
   resource_type: string | null;
   file_name: string | null;
   device: string | null;
+}
+
+interface RsvpRow {
+  response: string;
+  location: string | null;
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -76,6 +81,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [views, setViews] = useState<ViewRow[]>([]);
+  const [rsvps, setRsvps] = useState<RsvpRow[]>([]);
   const [range, setRange] = useState<7 | 14 | 30>(14);
   const [locFilter, setLocFilter] = useState<string>("all");
 
@@ -86,12 +92,12 @@ const Dashboard = () => {
 
   const fetchAll = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("resource_page_views")
-      .select("id,user_id,location,page,week,song,created_at,event_type,resource_type,file_name,device")
-      .order("created_at", { ascending: false })
-      .limit(5000);
-    setViews(((data as unknown) as ViewRow[]) || []);
+    const [viewResult, rsvpResult] = await Promise.all([
+      supabase.from("resource_page_views").select("id,user_id,location,page,week,song,created_at,event_type,resource_type,file_name,device").order("created_at", { ascending: false }).limit(5000),
+      supabase.from("member_event_rsvps").select("response,location").eq("event_key", "wheel-club-social-2026-11-01"),
+    ]);
+    setViews(((viewResult.data as unknown) as ViewRow[]) || []);
+    setRsvps(((rsvpResult.data as unknown) as RsvpRow[]) || []);
     setLoading(false);
   };
 
@@ -214,6 +220,21 @@ const Dashboard = () => {
       <Helmet><title>Admin Dashboard | Club Choir</title><meta name="robots" content="noindex" /></Helmet>
 
       <div className="container mx-auto max-w-6xl px-4 py-8">
+        <div className="mb-6 rounded-xl border border-primary/30 bg-primary/5 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="flex items-center gap-2 font-heading text-xl font-bold"><CalendarCheck className="h-5 w-5 text-primary" />November 1 choir social</h2>
+              <p className="mt-1 text-sm text-muted-foreground">Wheel Club RSVP responses from all four locations.</p>
+            </div>
+            <Button size="sm" asChild><Link to="/reports">View RSVP list <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <StatCard icon={Check} label="Yes" value={rsvps.filter((r) => r.response === "yes").length} />
+            <StatCard icon={CalendarCheck} label="Maybe" value={rsvps.filter((r) => r.response === "maybe").length} />
+            <StatCard icon={Users} label="Cannot attend" value={rsvps.filter((r) => r.response === "no").length} />
+            <StatCard icon={MapPin} label="Total replies" value={rsvps.length} />
+          </div>
+        </div>
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div>
             <h1 className="font-heading font-bold text-3xl text-foreground">Resource activity</h1>
