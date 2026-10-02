@@ -328,6 +328,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             <Link to="/bring-a-friend" className="hover:text-foreground transition-colors">{t("footer.nav.bringFriend")}</Link>
             <Link to="/corporate" className="hover:text-foreground transition-colors">{t("footer.nav.corporate")}</Link>
             <Link to="/subscribe" className="hover:text-foreground transition-colors">{t("footer.nav.mailing")}</Link>
+            <Link to="/terms" className="hover:text-foreground transition-colors">{language === "fr" ? "Conditions et remboursements" : "Terms & Refunds"}</Link>
           </nav>
 
           {/* Per-location links for SEO ([city] choir queries) */}
