@@ -30,7 +30,9 @@ const EN: Section[] = [
   {
     h: "Photos and Videos",
     p: [
-      "We sometimes take photos or videos during rehearsals and events to share our choir's joy. If you prefer not to appear, just let Ailsa know.",
+      "We sometimes take photos and videos during rehearsals and events.",
+      "With your registration, you agree that Club Choir may share these photos and videos on our website, social media (such as Facebook and Instagram) and other promotional materials to help people discover our choir.",
+      "If you would prefer not to appear in photos or videos used for promotion, just let Ailsa know and we will happily respect your wishes.",
     ],
   },
   {
@@ -74,7 +76,9 @@ const FR: Section[] = [
   {
     h: "Photos et vidéos",
     p: [
-      "Nous prenons parfois des photos ou des vidéos pendant les répétitions et les événements. Si vous préférez ne pas y apparaître, faites-le savoir à Ailsa.",
+      "Nous prenons parfois des photos et des vidéos pendant les répétitions et les événements.",
+      "Avec votre inscription, vous acceptez que Club Choir partage ces photos et vidéos sur notre site web, sur les réseaux sociaux (comme Facebook et Instagram) et dans d'autres documents promotionnels, afin de faire découvrir notre chorale.",
+      "Si vous préférez ne pas apparaître dans les photos ou vidéos utilisées à des fins promotionnelles, faites-le simplement savoir à Ailsa et nous respecterons votre souhait avec plaisir.",
     ],
   },
   {
