@@ -31,7 +31,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "resources-week3-paid": "fall-2026-resources-week5-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week4-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week5-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -751,27 +751,29 @@ function renderChoirTonight(r: Recipient) {
     </div>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>Week 4 kicks off tonight! 🎶</strong> We're singing <strong>"When Doves Cry" by Prince</strong> this week, and I can't wait to hear what we make of it together.</p>
+    <p style="${P}"><strong>It's choir night! 🎶</strong> After such a wonderful week singing with Gary, I'm excited to get everyone back together and into the groove.</p>
+    <p style="${P}">Tonight we'll begin <strong>"Time of the Season" by The Zombies</strong> and keep building on <strong>"When Doves Cry."</strong> Come ready to listen, answer and lock in with the group — this one is going to be so much fun to sing together.</p>
     ${box("en")}
     ${bring("en")}
-    <p style="${P}">Friday's email has your new song resources and the latest video from your location. Want a listen before we sing? The recording, lyrics and lyric slides for "When Doves Cry" are waiting for you below. If you need help getting into your member profile, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}">Want a quick listen before we meet? Your recordings, lyrics and lyric slides are waiting on the resource page. If you need help signing in, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Open the song resources")}
-    <p style="${P}">Have a friend who'd enjoy singing with us? They're welcome to join us for an evening. And if you're feeling sick, please stay home and take good care of yourself.</p>
-    <p style="${P}"><strong>See you tonight!</strong></p>
+    <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
+    <p style="${P}"><strong>See you tonight — I can't wait to sing this one with you!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>La semaine 4 commence ce soir! 🎶</strong> Cette semaine, nous chantons <strong>« When Doves Cry » de Prince</strong>, et j'ai très hâte de découvrir ce que nous en ferons ensemble.</p>
+    <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> Après une si belle semaine de chant avec Gary, j'ai très hâte de vous retrouver et de reprendre le rythme ensemble.</p>
+    <p style="${P}">Ce soir, nous commencerons <strong>« Time of the Season » de The Zombies</strong> et poursuivrons notre travail sur <strong>« When Doves Cry ».</strong> Venez prêts à écouter, à répondre et à trouver le groove ensemble — cette chanson sera tellement agréable à chanter en groupe.</p>
     ${box("fr")}
     ${bring("fr")}
-    <p style="${P}">Le courriel de vendredi contient les nouvelles ressources musicales et la plus récente vidéo de votre lieu. Envie d'écouter la chanson avant de chanter? L'enregistrement, les paroles et les diapositives de « When Doves Cry » vous attendent ci-dessous. Si vous avez besoin d'aide pour accéder à votre profil de membre, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Voir les ressources musicales")}
-    <p style="${P}">Une personne de votre entourage aimerait chanter avec nous? Elle est la bienvenue pour une soirée. Et si vous ne vous sentez pas bien, restez à la maison et prenez soin de vous.</p>
-    <p style="${P}"><strong>À ce soir!</strong></p>
+    <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
+    <p style="${P}"><strong>À ce soir — j'ai très hâte de chanter cette chanson avec vous!</strong></p>
     ${SIGN}`;
   return {
-    subject: `Week 4 kicks off tonight${city ? ` — ${city}` : ""}! 🎶 / La semaine 4 commence ce soir${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Week 4 starts tonight with When Doves Cry — your location, start time and song resources."),
+    subject: `It's choir night${city ? ` — ${city}` : ""}! 🎶 / C'est soir de chorale${city ? ` — ${city}` : ""}!`,
+    html: wrap(inner, "Week 5 is here — tonight we begin Time of the Season and keep building When Doves Cry."),
   };
 }
 
