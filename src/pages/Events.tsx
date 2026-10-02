@@ -132,6 +132,48 @@ const Events = () => {
           {t("events.subtitle")}
         </p>
 
+        {/* Seasonal Showcases — top of page */}
+        <h2 className="font-heading font-bold text-2xl text-foreground mb-6 text-center">
+          {t("events.communityEvents")}
+        </h2>
+        <div className="grid sm:grid-cols-2 gap-5 mb-12">
+          {events.map((event, i) => {
+            const title = getText(event.title, language);
+            return (
+              <div
+                key={i}
+                className={`rounded-2xl border p-6 ${event.color} transition-shadow hover:shadow-md`}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <span className={`w-2.5 h-2.5 rounded-full ${event.dot}`} />
+                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    {getText(event.location, language)}
+                  </span>
+                </div>
+                <h3 className="font-heading font-bold text-lg text-foreground mb-1">{title}</h3>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {getText(event.date, language)}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5" />
+                    {getText(event.location, language)}
+                  </span>
+                </div>
+                <p className="text-sm text-foreground/80 mb-4">{getText(event.description, language)}</p>
+                <button
+                  onClick={() => handleShare(title)}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  {t("events.share")}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+
         {/* Fall 2026 Registration CTA */}
         <Card className="mb-6 border-primary/30 bg-primary/5">
           <CardHeader className="pb-3">
