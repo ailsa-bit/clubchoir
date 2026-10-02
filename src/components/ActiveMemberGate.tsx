@@ -4,6 +4,7 @@ import { useProfile } from "@/hooks/use-profile";
 import { Button } from "@/components/ui/button";
 import { Lock, Clock, LogIn } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import TermsAcceptanceGate from "@/components/TermsAcceptanceGate";
 
 interface ActiveMemberGateProps {
   children: React.ReactNode;
@@ -54,7 +55,7 @@ const ActiveMemberGate = ({ children }: ActiveMemberGateProps) => {
     );
   }
 
-  return <>{children}</>;
+  return <TermsAcceptanceGate userId={user.id}>{children}</TermsAcceptanceGate>;
 };
 
 export default ActiveMemberGate;

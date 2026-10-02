@@ -443,27 +443,33 @@ export type Database = {
           active_until: string | null
           created_at: string
           display_name: string | null
+          email_consent_at: string | null
           id: string
           location: string | null
           status: string
+          terms_accepted_at: string | null
           user_id: string
         }
         Insert: {
           active_until?: string | null
           created_at?: string
           display_name?: string | null
+          email_consent_at?: string | null
           id?: string
           location?: string | null
           status?: string
+          terms_accepted_at?: string | null
           user_id: string
         }
         Update: {
           active_until?: string | null
           created_at?: string
           display_name?: string | null
+          email_consent_at?: string | null
           id?: string
           location?: string | null
           status?: string
+          terms_accepted_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -841,6 +847,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_member_terms: { Args: never; Returns: undefined }
       activate_member_for_paid_registration: {
         Args: { _active_until?: string; _email: string }
         Returns: {
