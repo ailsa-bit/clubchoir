@@ -20,16 +20,19 @@ type Row = {
   tags: string[];
   night?: string;
   song?: string;
+  response?: string;
 };
 
 type ReportId =
   | "paid"
   | "guest-list"
   | "trial-guests"
+  | "social-rsvp"
   | "members";
 
 const REPORTS: { id: ReportId; label: string; description: string }[] = [
   { id: "paid", label: "Attendance list — paid members", description: "Registered and paid for Fall 2026. Best for weekly attendance." },
+  { id: "social-rsvp", label: "November 1 choir social RSVPs", description: "Yes, no and maybe responses for the Wheel Club social." },
   { id: "trial-guests", label: "Trial night guest list", description: "People booked in to try a free evening, with the date they chose." },
   { id: "guest-list", label: "Guest list (first-night trials)", description: "Contacts tagged guest-list." },
   { id: "members", label: "Full contact list", description: "Every non-archived contact in the CRM." },
@@ -49,6 +52,8 @@ const Reports = () => {
   const [regs, setRegs] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
   const [trials, setTrials] = useState<any[]>([]);
+  const [rsvps, setRsvps] = useState<any[]>([]);
+  const [responseFilter, setResponseFilter] = useState("all");
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) navigate("/");
@@ -56,14 +61,16 @@ const Reports = () => {
 
   const load = async () => {
     setLoading(true);
-    const [r, m, tg] = await Promise.all([
+    const [r, m, tg, er] = await Promise.all([
       supabase.from("session_registrations").select("first_name,last_name,email,location,payment_status,session_label,created_at"),
       supabase.from("members").select("first_name,last_name,email,location,status,crm_tags,archived_at,created_at"),
       supabase.from("trial_guests").select("first_name,last_name,email,location,session_date,week,song,created_at").order("session_date"),
+      supabase.from("member_event_rsvps").select("display_name,email,location,response,created_at,updated_at").eq("event_key", "wheel-club-social-2026-11-01"),
     ]);
     setRegs(r.data || []);
     setMembers(m.data || []);
     setTrials(tg.data || []);
+    setRsvps(er.data || []);
     setLoading(false);
   };
 
@@ -86,6 +93,16 @@ const Reports = () => {
 
     let out: Row[] = [];
     if (report === "paid") out = fromReg(fall.filter((r) => r.payment_status === "paid" || r.payment_status === "free"));
+    else if (report === "social-rsvp")
+      out = rsvps.map((r) => ({
+        name: r.display_name || "—",
+        email: r.email || "",
+        location: r.location || "—",
+        status: r.response === "yes" ? "Yes — attending" : r.response === "maybe" ? "Interested — not sure" : "No — cannot attend",
+        response: r.response,
+        created_at: r.updated_at || r.created_at,
+        tags: [],
+      }));
     else if (report === "trial-guests")
       out = trials.map((g) => ({
         name: fullName(g.first_name, g.last_name),
@@ -122,6 +139,7 @@ const Reports = () => {
     }
 
     if (location !== "all") out = out.filter((r) => (r.location || "").toLowerCase() === location.toLowerCase());
+    if (report === "social-rsvp" && responseFilter !== "all") out = out.filter((r) => r.response === responseFilter);
     const q = search.trim().toLowerCase();
     if (q) out = out.filter((r) => r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q));
 
@@ -135,7 +153,7 @@ const Reports = () => {
     if (report === "trial-guests") out.sort((a, b) => (a.night || "").localeCompare(b.night || "") || a.name.localeCompare(b.name));
     else out.sort((a, b) => a.name.localeCompare(b.name));
     return out;
-  }, [report, location, search, regs, members, trials]);
+  }, [report, location, responseFilter, search, regs, members, trials, rsvps]);
 
   const current = REPORTS.find((r) => r.id === report)!;
   const fileBase = `${report}${location !== "all" ? `-${location.toLowerCase()}` : ""}-${new Date().toISOString().slice(0, 10)}`;
@@ -202,6 +220,13 @@ const Reports = () => {
             </Button>
           ))}
         </div>
+        {report === "social-rsvp" && (
+          <div className="flex flex-wrap gap-2">
+            {[["all", "All responses"], ["yes", "Yes"], ["maybe", "Maybe"], ["no", "No"]].map(([value, label]) => (
+              <Button key={value} size="sm" variant={responseFilter === value ? "default" : "outline"} onClick={() => setResponseFilter(value)}>{label}</Button>
+            ))}
+          </div>
+        )}
         <Input placeholder="Search name or email…" value={search} onChange={(e) => setSearch(e.target.value)} className="w-full sm:w-64" />
         <div className="flex gap-2 ml-auto">
           <Button size="sm" variant="outline" onClick={() => window.print()} disabled={rows.length === 0}>

@@ -10,40 +10,28 @@ import type { Database } from "@/integrations/supabase/types";
 
 type Announcement = Database["public"]["Tables"]["weekly_announcements"]["Row"];
 
-const DEFAULT_TITLE = { en: "Week 4 — A Note from Ailsa 🎶", fr: "Semaine 4 — Un mot d'Ailsa 🎶" };
+const DEFAULT_TITLE = { en: "Week 5 — A Note from Ailsa 🎶", fr: "Semaine 5 — Un mot d'Ailsa 🎶" };
 
 const REVIEW_URL = "https://g.page/r/CU1hiLJTYmtXEAE/review";
 
 const DEFAULT_MESSAGE = {
   en: `Hello wonderful singers! 🌟
 
-New resources for "When Doves Cry" are up on the song resources page — have a listen and take a look before we meet!
+What a great week of singing with Gary at all four locations! Thank you for bringing such wonderful energy.
 
-If you have a few minutes, I'd love it if you could leave Club Choir a review on Google. It truly helps people find us, and every kind word means the world — just tap the button below!
+This week, we're getting back into the groove with our Week 5 song, "Time of the Season." We'll also keep working on "When Doves Cry," so please have another listen to the resources before we meet.
 
-A little heads-up for Montreal and Pointe-Claire: Daniel won't be with us next week, but Gary will be accompanying us in Montreal, and Joe (one of our choir members) will be joining us in Pointe-Claire. I'm so grateful to them both!
-
-This week's song is "When Doves Cry" — one of my favourites! I am very excited about this version, inspired by a Choir! Choir! Choir! version.
-
-A couple of reminders: please write your name in your binder, so if it gets left behind I know who to return it to.
-
-See you all next week. Enjoy the beautiful weather this weekend!
+I can't wait to sing with you again next week!
 
 Tra-la-la,
 Ailsa 🎤✨`,
   fr: `Bonjour merveilleux chanteurs et chanteuses ! 🌟
 
-Les nouvelles ressources pour « When Doves Cry » sont disponibles sur la page des ressources musicales — écoutez et jetez un coup d'œil avant de nous retrouver !
+Quelle belle semaine de chant avec Gary dans nos quatre lieux ! Merci d'avoir apporté une si belle énergie.
 
-Si vous avez quelques minutes, j'aimerais beaucoup que vous laissiez un avis sur Club Choir sur Google. Cela aide vraiment les gens à nous découvrir, et chaque mot gentil me touche beaucoup — appuyez sur le bouton ci-dessous !
+Cette semaine, nous retrouvons notre rythme avec la chanson de la semaine 5, « Time of the Season ». Nous continuerons aussi à travailler « When Doves Cry », alors prenez le temps de réécouter les ressources avant notre rencontre.
 
-Petite note pour Montréal et Pointe-Claire : Daniel ne sera pas avec nous la semaine prochaine, mais Gary nous accompagnera à Montréal, et Joe (un de nos membres) se joindra à nous à Pointe-Claire. Je leur suis très reconnaissante !
-
-La chanson de cette semaine est « When Doves Cry » — l'une de mes préférées ! Je suis très excitée par cette version, inspirée d'une version de Choir! Choir! Choir!
-
-Quelques petits rappels : veuillez écrire votre nom dans votre classeur, pour que je sache à qui le retourner s'il est oublié.
-
-À la semaine prochaine. Profitez du beau temps ce week-end !
+J'ai très hâte de chanter de nouveau avec vous la semaine prochaine !
 
 Tra-la-la,
 Ailsa 🎤✨`,
@@ -51,12 +39,12 @@ Ailsa 🎤✨`,
 
 const SONG_OF_WEEK = {
   en: {
-    title: "Song of the Week: \u201CWhen Doves Cry\u201D — Prince",
-    body: `In 1984, Prince released \u201CWhen Doves Cry\u201D as part of Purple Rain, the album and film that sent him into superstardom. Beneath its bold sound is a story of a relationship in trouble: two people who love each other but keep falling into the same painful patterns. Prince turns that tension into something theatrical, with sharp guitar, an irresistible beat and a vocal that moves from cool confidence to raw emotion. This week, we get to bring all that drama to Club Choir.`,
+    title: "Song of the Week: “Time of the Season” — The Zombies",
+    body: `Released in 1968 on the album Odessey and Oracle, “Time of the Season” is a true late-'60s classic. That groovy bassline, the handclaps and the famous call-and-response backing vocals make it instantly recognizable. It's especially fun for a choir because the groove depends on everyone listening, answering and locking in together — exactly the kind of musical conversation we love at Club Choir.`,
   },
   fr: {
-    title: "Chanson de la semaine : « When Doves Cry » — Prince",
-    body: `En 1984, Prince a lancé « When Doves Cry » dans le cadre de Purple Rain, l'album et le film qui l'ont propulsé au sommet. Sous ce son audacieux se cache l'histoire d'une relation en difficulté : deux personnes qui s'aiment mais qui retombent sans cesse dans les mêmes schémas douloureux. Prince transforme cette tension en quelque chose de théâtral, avec une guitare incisive, un rythme irrésistible et un chant qui passe de la confiance cool à l'émotion brute. Cette semaine, nous allons apporter tout ce drame à Club Choir.`,
+    title: "Chanson de la semaine : « Time of the Season » — The Zombies",
+    body: `Parue en 1968 sur l'album Odessey and Oracle, « Time of the Season » est un véritable classique de la fin des années 60. Sa ligne de basse entraînante, ses claquements de mains et ses célèbres chœurs en appel-réponse la rendent immédiatement reconnaissable. Elle est particulièrement amusante à chanter en chorale, car le groove repose sur l'écoute, les réponses et la synchronisation de tout le monde — exactement le genre de conversation musicale que nous aimons à Club Choir.`,
   },
 };
 
@@ -229,15 +217,7 @@ export function MemberWelcomeMessage() {
             <div className="text-base md:text-lg text-foreground/90 whitespace-pre-line leading-relaxed">
               {ailsaBody}
             </div>
-            <a
-              href={REVIEW_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-4 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors"
-            >
-              <Star className="w-4 h-4" />
-              {language === "fr" ? "Laisser un avis sur Google" : "Leave a review on Google"}
-            </a>
+
           </>
         )}
       </div>
@@ -253,6 +233,13 @@ export function MemberWelcomeMessage() {
         <div className="text-base text-foreground/90 whitespace-pre-line leading-relaxed">
           {song.body}
         </div>
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-6 text-center shadow-sm">
+        <Star className="mx-auto mb-2 h-6 w-6 text-primary" />
+        <h2 className="font-heading text-xl font-bold text-foreground">{language === "fr" ? "Vous aimez Club Choir ?" : "Enjoying Club Choir?"}</h2>
+        <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">{language === "fr" ? "Si vous avez un moment, vous pouvez laisser un avis Google en tout temps. Vos mots aident d'autres personnes à découvrir Club Choir. Merci !" : "If you have a moment, you’re welcome to leave a Google review anytime. Your words help more people discover Club Choir. Thank you!"}</p>
+        <Button asChild className="mt-4"><a href={REVIEW_URL} target="_blank" rel="noopener noreferrer"><Star className="mr-2 h-4 w-4" />{language === "fr" ? "Laisser un avis Google" : "Leave a Google review"}</a></Button>
       </div>
     </div>
   );
