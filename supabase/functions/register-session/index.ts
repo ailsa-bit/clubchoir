@@ -19,6 +19,8 @@ const RegistrationSchema = z.object({
   notes: z.string().trim().max(2000).optional().default(""),
   language: z.enum(["en", "fr"]).optional().default("en"),
   attribution: z.unknown().optional(),
+  accept_terms: z.literal(true),
+  email_consent: z.literal(true),
 });
 
 
@@ -141,6 +143,8 @@ const handler = async (req: Request): Promise<Response> => {
         email,
         notes: notes || null,
         is_returning_member: isReturning,
+        terms_accepted_at: new Date().toISOString(),
+        email_consent_at: new Date().toISOString(),
         ...attribution,
       });
 
