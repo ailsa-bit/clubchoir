@@ -43,7 +43,7 @@ const EMPTY_COUNTS = {
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week4-v1",
-  "resources-week3-paid": "fall-2026-resources-week4-paid-v2",
+  "resources-week3-paid": "fall-2026-resources-week5-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
@@ -55,8 +55,8 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   },
   {
     key: "resources-week3-paid",
-    title: "Week 4 Resources Are Up — \"When Doves Cry\"",
-    description: "Send by location to paid members. Announces Week 4 song \"When Doves Cry\" by Prince with four numbered links: 1) This Week at Choir (weekly message and song story), 2) the location's YouTube playlist of end-of-session videos, 3) the Fall 2026 song resources, and 4) the playlist of all songs we're learning this session, plus a Google review button. Bilingual EN/FR.",
+    title: "Week 5 Resources Are Up — \"Time of the Season\"",
+    description: "Send by location to paid members. Announces Week 5 song \"Time of the Season\" by The Zombies, includes the weekly links, and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];
