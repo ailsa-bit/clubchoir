@@ -1,12 +1,8 @@
-# Gary White Saint-Hubert Performance Email
+# Choir Social RSVP
 
-## Goal
-Add a warm bilingual campaign for paid Saint-Hubert members highlighting Gary White’s two free September 24–25 performances.
-
-## Tasks
-- [x] Include both performance dates, times, and venues.
-- [x] Include the supplied poster directly in the email.
-- [x] Add Gary’s website and mention his Facebook presence.
-- [x] Keep recipient review, one-person removal, test-only safety, and duplicate-send protection.
-- [x] Deploy and verify the preview without sending member emails.
-- [x] Add Gary White himself to the recipient list while keeping his Hudson home location unchanged.
+- [ ] Add secure, editable member RSVPs for the November 1 social.
+- [ ] Place the bilingual event invitation and response buttons at the top of My Choir.
+- [ ] Add RSVP totals to the admin dashboard and a searchable/exportable RSVP list to Reports & Lists.
+- [ ] Publish the bilingual Week 5 note and “Time of the Season” song story.
+- [ ] Add a permanent bilingual Google review invitation below the weekly messages.
+- [ ] Verify member and admin experiences.
