@@ -42,15 +42,15 @@ const EMPTY_COUNTS = {
 } as Record<Segment, number>;
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
-  "choir-tonight": "fall-2026-choir-tonight-week4-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week5-v1",
   "resources-week3-paid": "fall-2026-resources-week5-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
     key: "choir-tonight",
-    title: "Week 4 Starts Tonight — Reminder",
-    description: "Warm same-day reminder for paid members, sent by location. Features ‘When Doves Cry’ by Prince, venue and start time, what to bring, song resources, profile help, guest welcome and a stay-home-if-sick note. Bilingual EN/FR.",
+    title: "Week 5 — See You at Choir Tonight",
+    description: "Fresh same-day note for paid members, sent by location. Features ‘Time of the Season,’ continued work on ‘When Doves Cry,’ venue details, simple reminders and the resource link. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
