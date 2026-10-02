@@ -158,6 +158,8 @@ export type Database = {
       member_event_rsvps: {
         Row: {
           created_at: string
+          display_name: string
+          email: string
           event_key: string
           id: string
           location: string | null
@@ -167,6 +169,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          display_name?: string
+          email?: string
           event_key: string
           id?: string
           location?: string | null
@@ -176,6 +180,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          display_name?: string
+          email?: string
           event_key?: string
           id?: string
           location?: string | null
