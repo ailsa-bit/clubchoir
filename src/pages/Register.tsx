@@ -58,6 +58,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [location, setLocation] = useState<string>("");
   const [notes, setNotes] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [emailConsent, setEmailConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { kind: "success" | "already"; returning: boolean }>(null);
   const viewContentFired = useRef(false);
@@ -123,6 +125,15 @@ const Register = () => {
       toast({ title: t.pickLocation, variant: "destructive" });
       return;
     }
+    if (!acceptTerms || !emailConsent) {
+      toast({
+        title: isFr
+          ? "Veuillez cocher les deux cases pour vous inscrire."
+          : "Please check both boxes to register.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSubmitting(true);
     try {
       const { data, error } = await supabase.functions.invoke("register-session", {
@@ -134,6 +145,8 @@ const Register = () => {
           notes: notes.trim(),
           language,
           attribution: getAttribution(),
+          accept_terms: acceptTerms,
+          email_consent: emailConsent,
         },
       });
       if (error) throw error;
