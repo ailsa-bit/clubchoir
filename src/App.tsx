@@ -41,6 +41,7 @@ import PopupReservations from "./pages/PopupReservations";
 import CheckIn from "./pages/CheckIn";
 import About from "./pages/About";
 import Register from "./pages/Register";
+import Terms from "./pages/Terms";
 import ChoirLocation from "./pages/ChoirLocation";
 import OpenHouseRegister from "./pages/OpenHouseRegister";
 import SingForTheHerd from "./pages/SingForTheHerd";
@@ -73,6 +74,7 @@ const App = () => (
             
             <Route path="/events" element={<Events />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/resources" element={<ActiveMemberGate><Navigate to="/resources/fall-2026" replace /></ActiveMemberGate>} />
             <Route path="/resources/fall-2026" element={<ActiveMemberGate><FallSongs /></ActiveMemberGate>} />
             <Route path="/corporate" element={<Corporate />} />

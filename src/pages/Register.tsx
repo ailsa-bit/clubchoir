@@ -58,6 +58,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [location, setLocation] = useState<string>("");
   const [notes, setNotes] = useState("");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [emailConsent, setEmailConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<null | { kind: "success" | "already"; returning: boolean }>(null);
   const viewContentFired = useRef(false);
@@ -123,6 +125,15 @@ const Register = () => {
       toast({ title: t.pickLocation, variant: "destructive" });
       return;
     }
+    if (!acceptTerms || !emailConsent) {
+      toast({
+        title: isFr
+          ? "Veuillez cocher les deux cases pour vous inscrire."
+          : "Please check both boxes to register.",
+        variant: "destructive",
+      });
+      return;
+    }
     setSubmitting(true);
     try {
       const { data, error } = await supabase.functions.invoke("register-session", {
@@ -134,6 +145,8 @@ const Register = () => {
           notes: notes.trim(),
           language,
           attribution: getAttribution(),
+          accept_terms: acceptTerms,
+          email_consent: emailConsent,
         },
       });
       if (error) throw error;
@@ -317,6 +330,40 @@ const Register = () => {
               className="w-full px-4 py-2.5 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
+
+          <div className="space-y-3 rounded-xl border border-border bg-muted/30 p-4">
+            <label className="flex items-start gap-3 text-sm text-foreground cursor-pointer">
+              <input
+                type="checkbox"
+                checked={acceptTerms}
+                onChange={(e) => setAcceptTerms(e.target.checked)}
+                className="mt-1 h-5 w-5 shrink-0 accent-primary"
+              />
+              <span>
+                {isFr ? "J'ai lu et j'accepte les " : "I have read and agree to the "}
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="font-bold text-primary underline">
+                  {isFr ? "conditions d'utilisation et la politique de remboursement" : "Terms & Conditions and Refund Policy"}
+                </a>
+                {isFr
+                  ? " (remboursement complet avant la semaine 3; aucun remboursement à partir de la semaine 3)."
+                  : " (full refund before Week 3; no refunds from Week 3 on)."}
+              </span>
+            </label>
+            <label className="flex items-start gap-3 text-sm text-foreground cursor-pointer">
+              <input
+                type="checkbox"
+                checked={emailConsent}
+                onChange={(e) => setEmailConsent(e.target.checked)}
+                className="mt-1 h-5 w-5 shrink-0 accent-primary"
+              />
+              <span>
+                {isFr
+                  ? "J'autorise Club Choir à m'envoyer des courriels, uniquement à des fins liées à Club Choir (horaires, ressources, rappels et nouvelles de la chorale). Mon adresse ne sera jamais partagée ni vendue."
+                  : "I give Club Choir permission to email me, for Club Choir purposes only (schedules, song resources, reminders and choir news). My email will never be shared or sold."}
+              </span>
+            </label>
+          </div>
+
 
           <Button
             type="submit"

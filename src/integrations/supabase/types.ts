@@ -618,6 +618,7 @@ export type Database = {
           attribution_captured_at: string | null
           created_at: string
           email: string
+          email_consent_at: string | null
           first_name: string
           id: string
           is_returning_member: boolean
@@ -630,6 +631,7 @@ export type Database = {
           payment_status: string
           referrer: string | null
           session_label: string
+          terms_accepted_at: string | null
           updated_at: string
           utm_campaign: string | null
           utm_content: string | null
@@ -642,6 +644,7 @@ export type Database = {
           attribution_captured_at?: string | null
           created_at?: string
           email: string
+          email_consent_at?: string | null
           first_name: string
           id?: string
           is_returning_member?: boolean
@@ -654,6 +657,7 @@ export type Database = {
           payment_status?: string
           referrer?: string | null
           session_label: string
+          terms_accepted_at?: string | null
           updated_at?: string
           utm_campaign?: string | null
           utm_content?: string | null
@@ -666,6 +670,7 @@ export type Database = {
           attribution_captured_at?: string | null
           created_at?: string
           email?: string
+          email_consent_at?: string | null
           first_name?: string
           id?: string
           is_returning_member?: boolean
@@ -678,6 +683,7 @@ export type Database = {
           payment_status?: string
           referrer?: string | null
           session_label?: string
+          terms_accepted_at?: string | null
           updated_at?: string
           utm_campaign?: string | null
           utm_content?: string | null
