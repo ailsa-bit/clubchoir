@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
@@ -45,15 +45,30 @@ const fmt = (d: string) => new Date(d).toLocaleDateString("en-CA", { month: "sho
 const Reports = () => {
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const [report, setReport] = useState<ReportId>("paid");
+  const [report, setReport] = useState<ReportId>(() => {
+    const r = searchParams.get("report");
+    return r && REPORTS.some((x) => x.id === r) ? (r as ReportId) : "paid";
+  });
   const [location, setLocation] = useState<string>("all");
   const [search, setSearch] = useState("");
   const [regs, setRegs] = useState<any[]>([]);
   const [members, setMembers] = useState<any[]>([]);
   const [trials, setTrials] = useState<any[]>([]);
   const [rsvps, setRsvps] = useState<any[]>([]);
-  const [responseFilter, setResponseFilter] = useState("all");
+  const [responseFilter, setResponseFilter] = useState<string>(() => {
+    const v = searchParams.get("response");
+    return v && ["all", "yes", "maybe", "no"].includes(v) ? v : "all";
+  });
+
+  useEffect(() => {
+    const r = searchParams.get("report");
+    if (r && REPORTS.some((x) => x.id === r)) setReport(r as ReportId);
+    const v = searchParams.get("response");
+    if (v && ["all", "yes", "maybe", "no"].includes(v)) setResponseFilter(v);
+  }, [searchParams]);
+
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) navigate("/");
