@@ -6,6 +6,7 @@ import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, Download, Printer, FileText, RefreshCw } from "lucide-react";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
@@ -21,6 +22,7 @@ type Row = {
   night?: string;
   song?: string;
   response?: string;
+  id?: string;
 };
 
 type ReportId =
@@ -28,6 +30,7 @@ type ReportId =
   | "guest-list"
   | "trial-guests"
   | "social-rsvp"
+  | "terms"
   | "members";
 
 const REPORTS: { id: ReportId; label: string; description: string }[] = [
@@ -35,6 +38,7 @@ const REPORTS: { id: ReportId; label: string; description: string }[] = [
   { id: "social-rsvp", label: "November 1 choir social RSVPs", description: "Yes, no and maybe responses for the Wheel Club social." },
   { id: "trial-guests", label: "Trial night guest list", description: "People booked in to try a free evening, with the date they chose." },
   { id: "guest-list", label: "Guest list (first-night trials)", description: "Contacts tagged guest-list." },
+  { id: "terms", label: "Terms & email permission accepted", description: "Members who checked the terms and email permission boxes, with dates." },
   { id: "members", label: "Full contact list", description: "Every non-archived contact in the CRM." },
 ];
 
@@ -57,6 +61,12 @@ const Reports = () => {
   const [members, setMembers] = useState<any[]>([]);
   const [trials, setTrials] = useState<any[]>([]);
   const [rsvps, setRsvps] = useState<any[]>([]);
+  const [terms, setTerms] = useState<any[]>([]);
+  const [addEmail, setAddEmail] = useState("");
+  const [addResponse, setAddResponse] = useState("yes");
+  const [savingRsvp, setSavingRsvp] = useState(false);
+  const { toast } = useToast();
+  const EVENT_KEY = "wheel-club-social-2026-11-01";
   const [responseFilter, setResponseFilter] = useState<string>(() => {
     const v = searchParams.get("response");
     return v && ["all", "yes", "maybe", "no"].includes(v) ? v : "all";
@@ -76,16 +86,18 @@ const Reports = () => {
 
   const load = async () => {
     setLoading(true);
-    const [r, m, tg, er] = await Promise.all([
+    const [r, m, tg, er, tr] = await Promise.all([
       supabase.from("session_registrations").select("first_name,last_name,email,location,payment_status,session_label,created_at"),
       supabase.from("members").select("first_name,last_name,email,location,status,crm_tags,archived_at,created_at"),
       supabase.from("trial_guests").select("first_name,last_name,email,location,session_date,week,song,created_at").order("session_date"),
-      supabase.from("member_event_rsvps").select("display_name,email,location,response,created_at,updated_at").eq("event_key", "wheel-club-social-2026-11-01"),
+      supabase.from("member_event_rsvps").select("id,display_name,email,location,response,created_at,updated_at").eq("event_key", "wheel-club-social-2026-11-01"),
+      supabase.rpc("admin_terms_report" as any),
     ]);
     setRegs(r.data || []);
     setMembers(m.data || []);
     setTrials(tg.data || []);
     setRsvps(er.data || []);
+    setTerms((tr.data as any[]) || []);
     setLoading(false);
   };
 
@@ -115,7 +127,17 @@ const Reports = () => {
         location: r.location || "—",
         status: r.response === "yes" ? "Yes — attending" : r.response === "maybe" ? "Interested — not sure" : "No — cannot attend",
         response: r.response,
+        id: r.id,
         created_at: r.updated_at || r.created_at,
+        tags: [],
+      }));
+    else if (report === "terms")
+      out = terms.map((t) => ({
+        name: t.display_name || t.email || "—",
+        email: t.email || "",
+        location: t.location || "—",
+        status: t.terms_accepted_at && t.email_consent_at ? "Both accepted" : t.terms_accepted_at ? "Terms only" : "Email only",
+        created_at: t.terms_accepted_at || t.email_consent_at,
         tags: [],
       }));
     else if (report === "trial-guests")
@@ -168,7 +190,23 @@ const Reports = () => {
     if (report === "trial-guests") out.sort((a, b) => (a.night || "").localeCompare(b.night || "") || a.name.localeCompare(b.name));
     else out.sort((a, b) => a.name.localeCompare(b.name));
     return out;
-  }, [report, location, responseFilter, search, regs, members, trials, rsvps]);
+  }, [report, location, responseFilter, search, regs, members, trials, rsvps, terms]);
+
+  const setRsvp = async (email: string, response: string, id?: string) => {
+    setSavingRsvp(true);
+    let error;
+    if (id) ({ error } = await supabase.from("member_event_rsvps").update({ response }).eq("id", id));
+    else {
+      const m = members.find((x) => (x.email || "").toLowerCase() === email.toLowerCase());
+      if (!m) { toast({ title: "Member not found", variant: "destructive" }); setSavingRsvp(false); return; }
+      const existing = rsvps.find((x) => (x.email || "").toLowerCase() === email.toLowerCase());
+      if (existing) ({ error } = await supabase.from("member_event_rsvps").update({ response }).eq("id", existing.id));
+      else ({ error } = await supabase.from("member_event_rsvps").insert({ event_key: EVENT_KEY, response, email: email.toLowerCase(), display_name: fullName(m.first_name, m.last_name), location: m.location || null } as any));
+    }
+    setSavingRsvp(false);
+    if (error) toast({ title: "Couldn't save RSVP", description: error.message, variant: "destructive" });
+    else { toast({ title: "RSVP saved" }); setAddEmail(""); load(); }
+  };
 
   const current = REPORTS.find((r) => r.id === report)!;
   const fileBase = `${report}${location !== "all" ? `-${location.toLowerCase()}` : ""}-${new Date().toISOString().slice(0, 10)}`;
@@ -253,6 +291,20 @@ const Reports = () => {
         </div>
       </div>
 
+      {report === "social-rsvp" && (
+        <div className="flex flex-wrap items-center gap-2 mb-4 p-4 rounded-xl border border-border bg-card print:hidden">
+          <span className="font-heading font-semibold text-sm">Add or change a reply:</span>
+          <Input list="rsvp-members" placeholder="Type member name or email…" value={addEmail} onChange={(e) => setAddEmail(e.target.value)} className="w-full sm:w-72" />
+          <datalist id="rsvp-members">
+            {members.filter((m) => !m.archived_at && m.email).map((m) => <option key={m.email} value={m.email}>{fullName(m.first_name, m.last_name)} — {m.location}</option>)}
+          </datalist>
+          <select value={addResponse} onChange={(e) => setAddResponse(e.target.value)} className="h-9 rounded-md border border-input bg-background px-2 text-sm">
+            <option value="yes">Yes</option><option value="maybe">Maybe</option><option value="no">No</option>
+          </select>
+          <Button size="sm" disabled={!addEmail.trim() || savingRsvp} onClick={() => setRsvp(addEmail.trim(), addResponse)}>Save reply</Button>
+        </div>
+      )}
+
       <div className="bg-card border border-border rounded-xl p-4 md:p-6 print:border-0 print:p-0">
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           <h2 className="font-heading font-bold text-lg">{current.label}</h2>
@@ -290,7 +342,12 @@ const Reports = () => {
                     {report === "trial-guests" && <td className="py-2 pr-4 text-foreground">{r.night}</td>}
                     {report === "trial-guests" && <td className="py-2 pr-4 text-muted-foreground">{r.song}</td>}
                     <td className="py-2 pr-4">
-                      <Badge variant={r.status === "Paid" ? "default" : "outline"}>{r.status}</Badge>
+                      {report === "social-rsvp" && r.id ? (
+                        <select value={r.response} disabled={savingRsvp} onChange={(e) => setRsvp(r.email, e.target.value, r.id)} className="h-8 rounded-md border border-input bg-background px-2 text-sm print:hidden">
+                          <option value="yes">Yes — attending</option><option value="maybe">Interested — not sure</option><option value="no">No — cannot attend</option>
+                        </select>
+                      ) : null}
+                      <Badge variant={r.status === "Paid" ? "default" : "outline"} className={report === "social-rsvp" ? "hidden print:inline-flex" : ""}>{r.status}</Badge>
                     </td>
                     <td className="py-2"><span className="inline-block w-16 border-b border-border h-4" /></td>
                   </tr>

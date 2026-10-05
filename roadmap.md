@@ -7,5 +7,5 @@
 - [x] Add a permanent bilingual Google review invitation below the weekly messages.
 - [x] Verify member and admin experiences.
 
-- [ ] Admin can add/change Nov 1 RSVPs
-- [ ] Reports: terms + email consent acceptance list
+- [x] Admin can add/change Nov 1 RSVPs
+- [x] Reports: terms + email consent acceptance list
