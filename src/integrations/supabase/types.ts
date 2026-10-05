@@ -165,7 +165,7 @@ export type Database = {
           location: string | null
           response: string
           updated_at: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -176,7 +176,7 @@ export type Database = {
           location?: string | null
           response: string
           updated_at?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -187,7 +187,7 @@ export type Database = {
           location?: string | null
           response?: string
           updated_at?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -853,6 +853,16 @@ export type Database = {
         Returns: {
           activated: boolean
           matched_user_id: string
+        }[]
+      }
+      admin_terms_report: {
+        Args: never
+        Returns: {
+          display_name: string
+          email: string
+          email_consent_at: string
+          location: string
+          terms_accepted_at: string
         }[]
       }
       expire_stale_members: { Args: never; Returns: number }
