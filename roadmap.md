@@ -6,3 +6,6 @@
 - [x] Publish the bilingual Week 5 note and “Time of the Season” song story.
 - [x] Add a permanent bilingual Google review invitation below the weekly messages.
 - [x] Verify member and admin experiences.
+
+- [ ] Admin can add/change Nov 1 RSVPs
+- [ ] Reports: terms + email consent acceptance list
