@@ -544,7 +544,7 @@ function firstNightLogistics(r: Recipient, lang: "en" | "fr"): string {
     extra = lang === "en"
       ? `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">Hudson is back to its regular schedule — <strong>7:00 to 8:30 PM</strong>. No more burger night!</p>
          <p style="margin:6px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Parking:</strong> if you park in the restricted area, you'll be given a <strong>parking pass</strong> when you sign in.</p>`
-      : `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">La Légion tient sa <strong>soirée burgers</strong> ce soir-là, c'est pourquoi nous commençons un peu plus tard. Je serai sur place dès <strong>18 h</strong> pour savourer un burger — arrivez plus tôt si vous voulez vous joindre à moi! 🍔</p>
+      : `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">Hudson retrouve son horaire habituel — <strong>19 h à 20 h 30</strong>. Les soirées burgers sont terminées !</p>
          <p style="margin:6px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Stationnement :</strong> si vous vous garez dans la zone réservée, on vous remettra un <strong>laissez-passer de stationnement</strong> à l'accueil.</p>`;
   } else if (r.location === "Montreal") {
     timeLine = lang === "en"
