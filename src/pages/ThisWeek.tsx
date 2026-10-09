@@ -2,11 +2,11 @@ import PageMeta from "@/components/PageMeta";
 import { MemberWelcomeMessage } from "@/components/MemberWelcomeMessage";
 import { ChoirSocialRsvp } from "@/components/ChoirSocialRsvp";
 import { Link } from "react-router-dom";
-import { Music, MapPin, Clock, Calendar, ArrowRight } from "lucide-react";
+import { Music, MapPin, Clock, Calendar, ArrowRight, Bell } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ThisWeek = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const sessions = [
     { location: "Montreal", slug: "montreal", venue: "Paroisse Notre-Dame-De-Grâce", day: t("day.monday"), time: "7:00–8:30 PM", address: "5333 avenue Notre-Dame-De-Grâce (corner Décarie)", dot: "bg-pink", bg: "bg-pink-light border-pink/20", dates: "Sept 7 – Dec 7, 2026" },
@@ -21,6 +21,22 @@ const ThisWeek = () => {
       <PageMeta title={t("meta.thisWeek.title")} description={t("meta.thisWeek.desc")} path="/this-week" />
       <div className="container mx-auto max-w-4xl lg:max-w-5xl px-4">
         {new Date() <= new Date("2026-11-02T04:59:59Z") && <ChoirSocialRsvp />}
+        <section aria-labelledby="special-messages-title" className="mb-8 rounded-xl border border-orange/30 bg-orange-light p-5 md:p-7">
+          <h2 id="special-messages-title" className="mb-4 flex items-center gap-2 font-heading text-xl font-bold text-foreground">
+            <Bell className="h-5 w-5 shrink-0 text-foreground" />
+            {language === "fr" ? "Messages spéciaux" : "Special messages"}
+          </h2>
+          <div className="space-y-4 text-foreground">
+            <div>
+              <h3 className="font-heading text-lg font-bold">Hudson</h3>
+              <p className="mt-1 leading-relaxed">{language === "fr" ? "À partir de ce mardi 13 octobre, nous recommençons à 19 h ! Nous retrouvons notre horaire habituel : de 19 h à 20 h 30. Les soirées burgers sont terminées." : "Starting this Tuesday, October 13, we’ll be back to a 7:00 PM start! Our regular schedule is 7:00–8:30 PM. No more burger night."}</p>
+            </div>
+            <div>
+              <h3 className="font-heading text-lg font-bold">{language === "fr" ? "Montréal" : "Montreal"}</h3>
+              <p className="mt-1 leading-relaxed">{language === "fr" ? "Nous nous retrouverons à notre heure habituelle, de 19 h à 20 h 30, ce lundi 12 octobre, même si c’est l’Action de grâce. J’ai hâte de chanter avec vous !" : "We’re meeting at our usual time, 7:00–8:30 PM, this Monday, October 12, even though it’s Thanksgiving. Looking forward to singing with you!"}</p>
+            </div>
+          </div>
+        </section>
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
           {t("thisWeek.title")}
         </h1>

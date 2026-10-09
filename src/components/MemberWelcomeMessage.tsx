@@ -10,28 +10,30 @@ import type { Database } from "@/integrations/supabase/types";
 
 type Announcement = Database["public"]["Tables"]["weekly_announcements"]["Row"];
 
-const DEFAULT_TITLE = { en: "Week 5 — A Note from Ailsa 🎶", fr: "Semaine 5 — Un mot d'Ailsa 🎶" };
+const DEFAULT_TITLE = { en: "Week 6 — A Note from Ailsa 🎶", fr: "Semaine 6 — Un mot d'Ailsa 🎶" };
 
 const REVIEW_URL = "https://g.page/r/CU1hiLJTYmtXEAE/review";
+
+const WARMUP_URL = "https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF";
 
 const DEFAULT_MESSAGE = {
   en: `Hello wonderful singers! 🌟
 
-What a great week of singing with Gary at all four locations! Thank you for bringing such wonderful energy.
+This week, I’ve included a playlist of very helpful, easy warm-ups for every level. There’s also one that’s a little more advanced, for anyone who would like to give it a try!
 
-This week, we're getting back into the groove with our Week 5 song, "Time of the Season." We'll also keep working on "When Doves Cry," so please have another listen to the resources before we meet.
+I use these every day, several times a day, and I’m so happy to share them with you. Take a little time for your voice, enjoy the warm-ups, and see how they feel.
 
-I can't wait to sing with you again next week!
+I can’t wait to sing with you again!
 
 Tra-la-la,
 Ailsa 🎤✨`,
   fr: `Bonjour merveilleux chanteurs et chanteuses ! 🌟
 
-Quelle belle semaine de chant avec Gary dans nos quatre lieux ! Merci d'avoir apporté une si belle énergie.
+Cette semaine, je vous propose une liste de lecture d’échauffements vocaux très utiles et faciles, pour tous les niveaux. Il y en a aussi un un peu plus avancé, pour les personnes qui ont envie de l’essayer !
 
-Cette semaine, nous retrouvons notre rythme avec la chanson de la semaine 5, « Time of the Season ». Nous continuerons aussi à travailler « When Doves Cry », alors prenez le temps de réécouter les ressources avant notre rencontre.
+Je les fais tous les jours, plusieurs fois par jour, et je suis très heureuse de les partager avec vous. Prenez un petit moment pour votre voix, profitez de ces échauffements et voyez comment vous vous sentez.
 
-J'ai très hâte de chanter de nouveau avec vous la semaine prochaine !
+J’ai très hâte de chanter de nouveau avec vous !
 
 Tra-la-la,
 Ailsa 🎤✨`,
@@ -136,7 +138,7 @@ export function MemberWelcomeMessage() {
   return (
     <div className="space-y-4">
       {/* A Note from Ailsa */}
-      <div className="relative rounded-2xl border border-amber-200 bg-amber-50 p-6 shadow-sm">
+      <div className="relative rounded-2xl border border-lime/30 bg-lime-light p-6 shadow-sm">
         <div className="flex items-start gap-3 mb-4">
           <div className="rounded-full bg-primary/10 p-2.5 shrink-0">
             <PenLine className="w-5 h-5 text-primary" />
@@ -217,6 +219,12 @@ export function MemberWelcomeMessage() {
             <div className="text-base md:text-lg text-foreground/90 whitespace-pre-line leading-relaxed">
               {ailsaBody}
             </div>
+            <Button asChild className="mt-5">
+              <a href={WARMUP_URL} target="_blank" rel="noopener noreferrer">
+                <Music className="mr-2 h-4 w-4" />
+                {language === "fr" ? "Échauffements vocaux avec Ailsa" : "Warm up with Ailsa"}
+              </a>
+            </Button>
 
           </>
         )}
