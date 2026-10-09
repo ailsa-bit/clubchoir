@@ -539,10 +539,10 @@ function firstNightLogistics(r: Recipient, lang: "en" | "fr"): string {
   let extra = "";
   if (r.location === "Hudson") {
     timeLine = lang === "en"
-      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc!.startEn} — please arrive at least 15 minutes early (or from <strong>6:00 PM</strong> for the burger night), singing starts at <strong>7:30 PM</strong></p>`
-      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc!.startFr} — arrivez au moins 15 minutes à l'avance (ou dès <strong>18 h</strong> pour la soirée burgers), on commence à chanter à <strong>19 h 30</strong></p>`;
+      ? `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>When:</strong> ${loc!.startEn} — please arrive at least 15 minutes early, singing starts at <strong>7:00 PM</strong></p>`
+      : `<p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>Quand :</strong> ${loc!.startFr} — arrivez au moins 15 minutes à l'avance, on commence à chanter à <strong>19 h</strong></p>`;
     extra = lang === "en"
-      ? `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">The Legion is hosting its scheduled <strong>burger night</strong> that evening, which is why we start a little later. I'll be there from <strong>6:00 PM</strong> enjoying a burger — arrive earlier if you'd like to join me! 🍔</p>
+      ? `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">Hudson is back to its regular schedule — <strong>7:00 to 8:30 PM</strong>. No more burger night!</p>
          <p style="margin:6px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Parking:</strong> if you park in the restricted area, you'll be given a <strong>parking pass</strong> when you sign in.</p>`
       : `<p style="margin:10px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;">La Légion tient sa <strong>soirée burgers</strong> ce soir-là, c'est pourquoi nous commençons un peu plus tard. Je serai sur place dès <strong>18 h</strong> pour savourer un burger — arrivez plus tôt si vous voulez vous joindre à moi! 🍔</p>
          <p style="margin:6px 0 0;font-size:14px;color:#1e3a8a;line-height:1.6;"><strong>Stationnement :</strong> si vous vous garez dans la zone réservée, on vous remettra un <strong>laissez-passer de stationnement</strong> à l'accueil.</p>`;
@@ -730,9 +730,8 @@ function renderResourcesWeek3(r: Recipient) {
 function renderChoirTonight(r: Recipient) {
   const loc = LOCATIONS[r.location];
   const city = loc ? esc(loc.city) : "";
-  const isHudson = r.location === "Hudson";
-  const startEn = isHudson ? "7:30 PM" : "7:00 PM";
-  const startFr = isHudson ? "19 h 30" : "19 h";
+  const startEn = "7:00 PM";
+  const startFr = "19 h";
   const whereEn = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "your usual location";
   const whereFr = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "votre lieu habituel";
   const RES = `${SITE_URL}/resources/fall-2026`;
