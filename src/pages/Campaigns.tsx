@@ -42,21 +42,21 @@ const EMPTY_COUNTS = {
 } as Record<Segment, number>;
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
-  "choir-tonight": "fall-2026-choir-tonight-week5-v1",
-  "resources-week3-paid": "fall-2026-resources-week5-paid-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week6-v1",
+  "resources-week3-paid": "fall-2026-resources-week6-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
     key: "choir-tonight",
-    title: "Week 5 — See You at Choir Tonight",
-    description: "Fresh same-day note for paid members, sent by location. Features ‘Time of the Season,’ continued work on ‘When Doves Cry,’ venue details, simple reminders and the resource link. Bilingual EN/FR.",
+    title: "Week 6 — See You at Choir Tonight",
+    description: "Fresh same-day note for paid members, sent by location. Welcomes Daniel back, begins ‘Toxic,’ keeps building ‘Time of the Season,’ with venue details, simple reminders and the resource link. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
     key: "resources-week3-paid",
-    title: "Week 5 Resources Are Up — \"Time of the Season\"",
-    description: "Send by location to paid members. Announces Week 5 song \"Time of the Season\" by The Zombies, includes the weekly links, and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
+    title: "Week 6 Resources Are Up — \"Toxic\"",
+    description: "Send by location to paid members. Announces Week 6 song \"Toxic\" (Melanie Martinez / Jennel Garcia style, our Club Choir twist), includes the weekly links and the Singeo warm-up playlist, and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];
