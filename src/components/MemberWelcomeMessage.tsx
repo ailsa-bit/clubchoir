@@ -230,7 +230,7 @@ export function MemberWelcomeMessage() {
             <Button asChild className="mt-5">
               <a href={WARMUP_URL} target="_blank" rel="noopener noreferrer">
                 <Music className="mr-2 h-4 w-4" />
-                {language === "fr" ? "Échauffements vocaux avec Ailsa" : "Warm up with Ailsa"}
+                {language === "fr" ? "Échauffements vocaux avec Singeo" : "Warm up with Singeo"}
               </a>
             </Button>
 
