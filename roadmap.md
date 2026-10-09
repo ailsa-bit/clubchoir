@@ -9,3 +9,7 @@
 
 - [x] Admin can add/change Nov 1 RSVPs
 - [x] Reports: terms + email consent acceptance list
+
+- [x] Refresh social invitation colour and thank-you reminder.
+- [x] Add Hudson and Montreal special schedule bulletin.
+- [x] Update bilingual weekly note with warm-up playlist and verify page.
