@@ -17,23 +17,27 @@ const REVIEW_URL = "https://g.page/r/CU1hiLJTYmtXEAE/review";
 const WARMUP_URL = "https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF";
 
 const DEFAULT_MESSAGE = {
-  en: `Hello wonderful singers! 🌟
+  en: `Hello wonderful singers! �SCI
 
-This week, I’ve included a playlist of very helpful, easy warm-ups for every level. There’s also one that’s a little more advanced, for anyone who would like to give it a try!
+A very warm welcome back to Daniel! We're so happy to have you back at the piano.
 
-I use these every day, several times a day, and I’m so happy to share them with you. Take a little time for your voice, enjoy the warm-ups, and see how they feel.
+This week, I've included a playlist of very helpful, easy warm-ups for every level. There's also one that's a little more advanced, for anyone who would like to give it a try!
 
-I can’t wait to sing with you again!
+I use these every day, several times a day, and I'm so happy to share them with you. Take a little time for your voice, enjoy the warm-ups, and see how they feel.
+
+I can't wait to sing with you again!
 
 Tra-la-la,
 Ailsa 🎤✨`,
   fr: `Bonjour merveilleux chanteurs et chanteuses ! 🌟
 
-Cette semaine, je vous propose une liste de lecture d’échauffements vocaux très utiles et faciles, pour tous les niveaux. Il y en a aussi un un peu plus avancé, pour les personnes qui ont envie de l’essayer !
+Un très chaleureux bonjour de retour à Daniel ! Nous sommes si heureux de te retrouver au piano.
+
+Cette semaine, je vous propose une liste de lecture d'échauffements vocaux très utiles et faciles, pour tous les niveaux. Il y en a aussi un un peu plus avancé, pour les personnes qui ont envie de l'essayer !
 
 Je les fais tous les jours, plusieurs fois par jour, et je suis très heureuse de les partager avec vous. Prenez un petit moment pour votre voix, profitez de ces échauffements et voyez comment vous vous sentez.
 
-J’ai très hâte de chanter de nouveau avec vous !
+J'ai très hâte de chanter de nouveau avec vous !
 
 Tra-la-la,
 Ailsa 🎤✨`,
@@ -41,12 +45,16 @@ Ailsa 🎤✨`,
 
 const SONG_OF_WEEK = {
   en: {
-    title: "Song of the Week: “Time of the Season” — The Zombies",
-    body: `Released in 1968 on the album Odessey and Oracle, “Time of the Season” is a true late-'60s classic. That groovy bassline, the handclaps and the famous call-and-response backing vocals make it instantly recognizable. It's especially fun for a choir because the groove depends on everyone listening, answering and locking in together — exactly the kind of musical conversation we love at Club Choir.`,
+    title: "Song of the Week: “Toxic” — Britney Spears",
+    body: `Fun fact: “Toxic” was written by Cathy Dennis, Christian Karlsson, Pontus Winnberg, and Henrik Jonback and performed by Britney Spears in 2004, but it almost wasn't hers at all — it was written with Janet Jackson in mind, and Kylie Minogue passed on it too! That wild string hook is sampled from a 1981 Bollywood song, and the track went on to win Britney her very first Grammy.
+
+We're singing a hybrid of Melanie Martinez's dreamy ukulele version and Jennel Garcia's take — stripped down, full of heart, and with our own Club Choir twist. Same iconic melody, brand new flavor. Can't wait to dive in with you!`,
   },
   fr: {
-    title: "Chanson de la semaine : « Time of the Season » — The Zombies",
-    body: `Parue en 1968 sur l'album Odessey and Oracle, « Time of the Season » est un véritable classique de la fin des années 60. Sa ligne de basse entraînante, ses claquements de mains et ses célèbres chœurs en appel-réponse la rendent immédiatement reconnaissable. Elle est particulièrement amusante à chanter en chorale, car le groove repose sur l'écoute, les réponses et la synchronisation de tout le monde — exactement le genre de conversation musicale que nous aimons à Club Choir.`,
+    title: "Chanson de la semaine : « Toxic » — Britney Spears",
+    body: `Petit fait amusant : « Toxic » a été écrite par Cathy Dennis, Christian Karlsson, Pontus Winnberg et Henrik Jonback, et interprétée par Britney Spears en 2004 — mais elle a failli ne jamais lui appartenir : elle a été écrite avec Janet Jackson en tête, et Kylie Minogue l'a aussi refusée ! Ce fameux enchaînement de cordes est samplé d'une chanson Bollywood de 1981, et la chanson a valu à Britney son tout premier Grammy.
+
+Nous chanterons un mélange de la version onirique au ukulélé de Melanie Martinez et de la reprise de Jennel Garcia — épurée, pleine de cœur, avec notre propre touche Club Choir. Même mélodie culte, toute nouvelle saveur. J'ai hâte de m'y plonger avec vous !`,
   },
 };
 
