@@ -27,14 +27,9 @@ interface LocationMeta {
   notice?: { en: string; fr: string };
 }
 
-const hudsonBbqNotice = {
-  en: "The Hudson Legion hosts a BBQ night on Tuesdays. We can only begin singing at 7:30 PM, but Ailsa will be there early — feel free to arrive beforehand and enjoy burgers with the community!",
-  fr: "Le Hudson Legion organise une soirée BBQ les mardis. Nous ne pouvons commencer à chanter qu'à 19 h 30, mais Ailsa sera là en avance — n'hésitez pas à arriver plus tôt et profiter des burgers avec la communauté !",
-};
-
 const locationMeta: Record<string, LocationMeta> = {
   "Montreal": { dot: "bg-pink", bg: "bg-pink-light border-pink/20", venue: "Paroisse Notre-Dame-De-Grâce", day: "Monday", time: "7:00–8:30 PM", address: "5333 avenue Notre-Dame-De-Grâce (corner Décarie)" },
-  "Hudson": { dot: "bg-orange", bg: "bg-orange-light border-orange/20", venue: "The Hudson Legion", day: "Tuesday", time: "7:00–8:30 PM", address: "57 Beach Road, Hudson, J0P 1H0", notice: hudsonBbqNotice },
+  "Hudson": { dot: "bg-orange", bg: "bg-orange-light border-orange/20", venue: "The Hudson Legion", day: "Tuesday", time: "7:00–8:30 PM", address: "57 Beach Road, Hudson, J0P 1H0" },
   "Saint-Hubert": { dot: "bg-lime", bg: "bg-lime-light border-lime/20", venue: "St-Gabriel Catholic Church", day: "Wednesday", time: "7:00–8:30 PM", address: "5070 Rue Gilbert, Saint-Hubert" },
   "Pointe-Claire": { dot: "bg-purple", bg: "bg-purple-light border-purple/20", venue: "Valois United Church", day: "Thursday", time: "7:00–8:30 PM", address: "70 Belmont Ave, Pointe-Claire" },
 };
@@ -64,12 +59,8 @@ function getSessionLabelKey(type: string) {
   }
 }
 
-// Hudson Legion hosts a BBQ on Tuesday nights for the first six weeks of the fall session,
-// so Hudson weeks 1–6 run 7:30–9:00 PM instead of the usual 7:00–8:30 PM.
-function getSessionTime(location: string, week: string, defaultTime: string): string {
-  if (location === "Hudson" && /^Week [1-6]$/i.test(week)) {
-    return "7:30–9:00 PM";
-  }
+// All locations run 7:00–8:30 PM (Hudson's early-session Legion BBQ nights are over).
+function getSessionTime(_location: string, _week: string, defaultTime: string): string {
   return defaultTime;
 }
 

@@ -20,8 +20,6 @@ const LOCATION_INFO: Record<string, { day: string; dayFr: string; time: string; 
     day: "Tuesday",
     dayFr: "mardi",
     time: "7:00–8:30 PM",
-    altTime: "7:30–9:00 PM",
-    altWeeks: [3, 4, 5, 6],
     venue: "The Hudson Legion, 57 Beach Road, Hudson",
   },
   "Saint-Hubert": {

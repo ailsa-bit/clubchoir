@@ -7,7 +7,6 @@ export type TrialLocation = {
   name: string;
   day: { en: string; fr: string };
   time: string;
-  // Hudson runs 7:30–9:00 PM for weeks 1–6 (Legion BBQ night)
   altTime?: { time: string; weeks: number[] };
   venue: string;
   color: string;
@@ -46,7 +45,6 @@ export const TRIAL_LOCATIONS: TrialLocation[] = [
     name: "Hudson",
     day: { en: "Tuesdays", fr: "Les mardis" },
     time: "7:00–8:30 PM",
-    altTime: { time: "7:30–9:00 PM", weeks: [3, 4, 5, 6] },
     venue: "The Hudson Legion, 57 Beach Road, Hudson",
     color: "bg-orange-light",
     border: "border-orange/30",
