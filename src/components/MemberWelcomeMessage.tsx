@@ -17,9 +17,9 @@ const REVIEW_URL = "https://g.page/r/CU1hiLJTYmtXEAE/review";
 const WARMUP_URL = "https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF";
 
 const DEFAULT_MESSAGE = {
-  en: `Hello wonderful singers! �SCI
+  en: `Hello wonderful singers! 🌟
 
-A very warm welcome back to Daniel! We're so happy to have you back at the piano.
+A very warm welcome back to Daniel — it's so good to have him back at the piano!
 
 This week, I've included a playlist of very helpful, easy warm-ups for every level. There's also one that's a little more advanced, for anyone who would like to give it a try!
 
