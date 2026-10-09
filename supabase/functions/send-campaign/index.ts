@@ -28,10 +28,10 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   
-  "resources-week3-paid": "fall-2026-resources-week5-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week6-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week5-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week6-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -673,12 +673,12 @@ function renderResourcesWeek3(r: Recipient) {
     const items = lang === "en" ? [
       { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
       { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
-      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Time of the Season".`, url: RES_URL, label: "Open the song resources" },
+      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Toxic".`, url: RES_URL, label: "Open the song resources" },
       { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
     ] : [
       { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
       { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
-      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Time of the Season ».`, url: RES_URL, label: "Voir les ressources" },
+      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Toxic ».`, url: RES_URL, label: "Voir les ressources" },
       { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
     ];
     return items.map((i) => `
@@ -692,7 +692,7 @@ function renderResourcesWeek3(r: Recipient) {
   };
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">🎶 <strong>Week 5 resources are up!</strong> This week we're getting into the groove with <strong>"Time of the Season" by The Zombies</strong>, while continuing our work on "When Doves Cry." Everything you need is below.</p>
+    <p style="${P}">🎶 <strong>Week 6 resources are up!</strong> This week we're diving into <strong>"Toxic"</strong> — the Britney Spears classic, reimagined in the dreamy, stripped-back style of Melanie Martinez and Jennel Garcia, with our own Club Choir twist — while continuing our work on "Time of the Season." Everything you need is below.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
@@ -707,7 +707,7 @@ function renderResourcesWeek3(r: Recipient) {
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">🎶 <strong>Les ressources de la semaine 5 sont en ligne!</strong> Cette semaine, nous retrouvons le rythme avec <strong>« Time of the Season » de The Zombies</strong>, tout en poursuivant notre travail sur « When Doves Cry ». Tout ce qu'il vous faut est ci-dessous.</p>
+    <p style="${P}">🎶 <strong>Les ressources de la semaine 6 sont en ligne!</strong> Cette semaine, nous plongeons dans <strong>« Toxic »</strong> — le classique de Britney Spears, réimaginé dans le style doux et dépouillé de Melanie Martinez et Jennel Garcia, avec notre touche Club Choir — tout en poursuivant notre travail sur « Time of the Season ». Tout ce qu'il vous faut est ci-dessous.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
@@ -721,8 +721,8 @@ function renderResourcesWeek3(r: Recipient) {
     <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
     ${SIGN}`;
   return {
-    subject: `Week 5 resources are up — "Time of the Season" 🎶 / Ressources de la semaine 5 en ligne!`,
-    html: wrap(inner, `Week 5 resources for "Time of the Season" are live, plus your invitation to the November 1 choir social.`),
+    subject: `Week 6 resources are up — "Toxic" 🎶 / Ressources de la semaine 6 en ligne!`,
+    html: wrap(inner, `Week 6 resources for "Toxic" are live, plus your invitation to the November 1 choir social.`),
   };
 }
 
@@ -750,8 +750,8 @@ function renderChoirTonight(r: Recipient) {
     </div>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>It's choir night! 🎶</strong> After such a wonderful week singing with Gary, I'm excited to get everyone back together and into the groove.</p>
-    <p style="${P}">Tonight we'll begin <strong>"Time of the Season" by The Zombies</strong> and keep building on <strong>"When Doves Cry."</strong> Come ready to listen, answer and lock in with the group — this one is going to be so much fun to sing together.</p>
+    <p style="${P}"><strong>It's choir night! 🎶</strong> Daniel is back with us this week — a warm welcome back! — and I can't wait to get everyone singing together again.</p>
+    <p style="${P}">Tonight we'll begin <strong>"Toxic"</strong> — the Britney Spears hit, in the dreamy, stripped-back style of Melanie Martinez and Jennel Garcia, with our own Club Choir twist — and keep building on <strong>"Time of the Season."</strong> Same iconic melody, brand new feeling. This one is going to be so much fun!</p>
     ${box("en")}
     ${bring("en")}
     <p style="${P}">Want a quick listen before we meet? Your recordings, lyrics and lyric slides are waiting on the resource page. If you need help signing in, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
@@ -761,8 +761,8 @@ function renderChoirTonight(r: Recipient) {
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> Après une si belle semaine de chant avec Gary, j'ai très hâte de vous retrouver et de reprendre le rythme ensemble.</p>
-    <p style="${P}">Ce soir, nous commencerons <strong>« Time of the Season » de The Zombies</strong> et poursuivrons notre travail sur <strong>« When Doves Cry ».</strong> Venez prêts à écouter, à répondre et à trouver le groove ensemble — cette chanson sera tellement agréable à chanter en groupe.</p>
+    <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> Daniel est de retour avec nous cette semaine — bon retour, Daniel! — et j'ai très hâte de chanter ensemble à nouveau.</p>
+    <p style="${P}">Ce soir, nous commencerons <strong>« Toxic »</strong> — le succès de Britney Spears, dans le style doux et dépouillé de Melanie Martinez et Jennel Garcia, avec notre touche Club Choir — et nous poursuivrons notre travail sur <strong>« Time of the Season ».</strong> La même mélodie emblématique, une toute nouvelle saveur. Ce sera tellement amusant!</p>
     ${box("fr")}
     ${bring("fr")}
     <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
@@ -772,7 +772,7 @@ function renderChoirTonight(r: Recipient) {
     ${SIGN}`;
   return {
     subject: `It's choir night${city ? ` — ${city}` : ""}! 🎶 / C'est soir de chorale${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Week 5 is here — tonight we begin Time of the Season and keep building When Doves Cry."),
+    html: wrap(inner, "Week 6 is here — tonight we begin Toxic and keep building Time of the Season."),
   };
 }
 
