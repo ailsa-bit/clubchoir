@@ -376,20 +376,123 @@ const SendEmail = () => {
             <p className="text-xs text-muted-foreground">{body.length}/5000 characters</p>
           </div>
 
-          {/* Send */}
-          <Button
-            onClick={handleSend}
-            disabled={sending || !uniqueSelected.length}
-            className="w-full rounded-full bg-gradient-warm text-primary-foreground"
-          >
-            {sending ? "Sending…" : (
-              <>
-                <Send className="w-4 h-4 mr-2" />
-                Send to {uniqueSelected.length} member{uniqueSelected.length !== 1 ? "s" : ""}
-              </>
-            )}
-          </Button>
+          {/* Preview + Send */}
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setPreviewOpen(true)}
+              disabled={!uniqueSelected.length}
+              className="flex-1 rounded-full"
+            >
+              <Eye className="w-4 h-4 mr-2" />
+              Preview
+            </Button>
+            <Button
+              onClick={handleSend}
+              disabled={sending || !uniqueSelected.length}
+              className="flex-1 rounded-full bg-gradient-warm text-primary-foreground"
+            >
+              {sending ? "Sending…" : (
+                <>
+                  <Send className="w-4 h-4 mr-2" />
+                  Send to {uniqueSelected.length} member{uniqueSelected.length !== 1 ? "s" : ""}
+                </>
+              )}
+            </Button>
+          </div>
         </div>
+
+        {/* Preview dialog */}
+        <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+          <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="font-heading">Email preview</DialogTitle>
+              <DialogDescription>
+                This is exactly what your members will receive. Nothing has been sent yet.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm font-medium text-foreground">To</p>
+                <p className="text-sm text-muted-foreground">
+                  {uniqueSelected.length} member{uniqueSelected.length !== 1 ? "s" : ""}
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-border bg-muted/40 p-3">
+                <p className="text-sm font-medium text-foreground">Subject</p>
+                <p className="text-sm text-muted-foreground break-words">
+                  {subject.trim() || <span className="italic">(no subject yet)</span>}
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-border bg-card p-4">
+                <p className="text-sm font-medium text-foreground mb-2">Message</p>
+                {body.trim() ? (
+                  <div className="text-sm text-foreground whitespace-pre-line leading-relaxed">
+                    {body}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground italic">(no message yet)</p>
+                )}
+              </div>
+
+              <Collapsible open={recipientListOpen} onOpenChange={setRecipientListOpen}>
+                <CollapsibleTrigger asChild>
+                  <Button variant="ghost" size="sm" className="w-full justify-between text-muted-foreground">
+                    <span className="flex items-center gap-2">
+                      <Users className="w-4 h-4" />
+                      View the full recipient list
+                    </span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${recipientListOpen ? "rotate-180" : ""}`} />
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="border border-border rounded-xl mt-2 max-h-60 overflow-y-auto">
+                    {members
+                      .filter((m) => m.email && uniqueSelected.includes(m.email))
+                      .map((m) => (
+                        <div
+                          key={m.id}
+                          className="flex items-center justify-between px-3 py-1.5 text-sm"
+                        >
+                          <span className="text-foreground">{m.first_name} {m.last_name}</span>
+                          <span className="text-muted-foreground text-xs">{m.email}</span>
+                        </div>
+                      ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1 rounded-full"
+                  onClick={() => setPreviewOpen(false)}
+                >
+                  Keep editing
+                </Button>
+                <Button
+                  onClick={() => {
+                    setPreviewOpen(false);
+                    handleSend();
+                  }}
+                  disabled={sending || !uniqueSelected.length}
+                  className="flex-1 rounded-full bg-gradient-warm text-primary-foreground"
+                >
+                  {sending ? "Sending…" : (
+                    <>
+                      <Send className="w-4 h-4 mr-2" />
+                      Looks good — send
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
