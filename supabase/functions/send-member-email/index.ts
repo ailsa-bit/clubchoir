@@ -52,19 +52,32 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Missing required fields: recipients, subject, body");
     }
 
-    if (recipients.length > 100) {
-      throw new Error("Maximum 100 recipients per batch");
+    if (recipients.length > 150) {
+      throw new Error("Maximum 150 recipients per send");
     }
 
-    // Send emails in batches of 10 to avoid rate limits
-    const results: { success: string[]; failed: string[] } = { success: [], failed: [] };
-    const batchSize = 10;
+    // Skip anyone who already received an email with this exact subject in the last 3 days
+    const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+    const since = new Date(Date.now() - 3 * 24 * 3600 * 1000).toISOString();
+    const { data: prior } = await admin
+      .from("resend_email_events")
+      .select("recipient_email")
+      .eq("subject", subject)
+      .in("event_type", ["email.sent", "email.delivered"])
+      .gte("received_at", since);
+    const already = new Set((prior ?? []).map((r: any) => String(r.recipient_email || "").toLowerCase()));
 
-    for (let i = 0; i < recipients.length; i += batchSize) {
-      const batch = recipients.slice(i, i + batchSize);
-      const promises = batch.map(async (to) => {
+    const results: { success: string[]; failed: string[]; skipped: string[] } = { success: [], failed: [], skipped: [] };
+    const unique = [...new Set(recipients.map((r) => r.trim().toLowerCase()))];
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+    // Send one at a time, respecting the email provider's rate limit, and check every result
+    for (const to of unique) {
+      if (already.has(to)) { results.skipped.push(to); continue; }
+      let ok = false;
+      for (let attempt = 0; attempt < 4 && !ok; attempt++) {
         try {
-          await resend.emails.send({
+          const { error } = await resend.emails.send({
             from: "Club Choir <noreply@clubchoir.ca>",
             to: [to],
             subject,
@@ -83,12 +96,17 @@ const handler = async (req: Request): Promise<Response> => {
               </div>
             `,
           });
-          results.success.push(to);
-        } catch {
-          results.failed.push(to);
+          if (error) {
+            console.error(`Send to ${to} failed (attempt ${attempt + 1}):`, JSON.stringify(error));
+            await sleep(1500 * (attempt + 1));
+          } else ok = true;
+        } catch (e) {
+          console.error(`Send to ${to} threw:`, e);
+          await sleep(1500 * (attempt + 1));
         }
-      });
-      await Promise.all(promises);
+      }
+      (ok ? results.success : results.failed).push(to);
+      await sleep(600);
     }
 
     return new Response(JSON.stringify(results), {

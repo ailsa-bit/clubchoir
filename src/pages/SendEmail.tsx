@@ -184,10 +184,12 @@ const SendEmail = () => {
 
       const successCount = data?.success?.length || 0;
       const failCount = data?.failed?.length || 0;
+      const skipCount = data?.skipped?.length || 0;
 
       toast({
-        title: "Emails sent!",
-        description: `${successCount} delivered${failCount ? `, ${failCount} failed` : ""}`,
+        title: failCount ? "Some emails did not send" : "Emails sent!",
+        description: `${successCount} sent${skipCount ? `, ${skipCount} skipped (already received this subject)` : ""}${failCount ? `, ${failCount} failed — send again to retry only those` : ""}`,
+        variant: failCount ? "destructive" : undefined,
       });
 
       if (!failCount) {
