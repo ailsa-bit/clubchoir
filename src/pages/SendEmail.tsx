@@ -1,6 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Mail, Send, Users, ChevronDown } from "lucide-react";
+import { Mail, Send, Users, ChevronDown, Eye } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@/components/ui/button";
