@@ -60,13 +60,33 @@ const SendEmail = () => {
       setLoadingMembers(true);
       setFetchError(null);
       try {
-        const { data, error } = await supabase
-          .from("members")
-          .select("id, first_name, last_name, email, location, status")
-          .order("last_name");
+        const [{ data, error }, { data: paidRegs, error: regErr }] = await Promise.all([
+          supabase
+            .from("members")
+            .select("id, first_name, last_name, email, location, status, crm_tags, archived_at")
+            .is("archived_at", null)
+            .order("last_name"),
+          supabase
+            .from("session_registrations")
+            .select("email")
+            .eq("session_label", "fall-2026")
+            .eq("payment_status", "paid"),
+        ]);
 
         if (error) throw error;
-        setMembers((data as MemberRow[]) || []);
+        if (regErr) throw regErr;
+        const paid = new Set((paidRegs || []).map((r: any) => (r.email || "").toLowerCase()));
+        const rows = ((data as any[]) || [])
+          .filter((m) => !(m.crm_tags || []).includes("no-email"))
+          .map((m) => ({
+            ...m,
+            // "Active" here means paid for the current session, same as the weekly campaigns.
+            status:
+              (m.status || "").toUpperCase() === "ACTIVE" && paid.has((m.email || "").toLowerCase())
+                ? "ACTIVE"
+                : "INACTIVE",
+          }));
+        setMembers(rows as MemberRow[]);
       } catch (err: any) {
         setFetchError(err.message || "Failed to load members.");
         toast({ title: "Error loading members", description: err.message, variant: "destructive" });
