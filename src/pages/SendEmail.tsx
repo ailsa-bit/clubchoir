@@ -56,6 +56,7 @@ const SendEmail = () => {
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [sending, setSending] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [includeInactive, setIncludeInactive] = useState(false);
   const [locationFilter, setLocationFilter] = useState("ALL");
   const [selectedEmails, setSelectedEmails] = useState<Set<string>>(new Set());
