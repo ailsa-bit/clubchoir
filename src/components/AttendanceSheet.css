@@ -1,0 +1,48 @@
+.attendance-flow {
+  column-count: 2;
+  column-gap: 2rem;
+}
+
+.attendance-entry {
+  break-inside: avoid;
+}
+
+.attendance-row {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 4rem;
+  align-items: center;
+  column-gap: 0.5rem;
+  padding-block: 0.25rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.attendance-with-location {
+  grid-template-columns: 2rem minmax(0, 1fr) 5rem 4rem;
+}
+
+@media screen and (max-width: 767px) {
+  .attendance-flow { column-count: 1; }
+}
+
+@media print {
+  .attendance-flow {
+    column-count: 2;
+    column-fill: auto;
+    column-gap: 8mm;
+  }
+
+  .attendance-report {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  body:has(.attendance-report) header,
+  body:has(.attendance-report) footer,
+  body:has(.attendance-report) nav {
+    display: none !important;
+  }
+
+  .attendance-row {
+    padding-block: 1.5mm;
+  }
+}
