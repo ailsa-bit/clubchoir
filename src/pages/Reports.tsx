@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Download, Printer, FileText, RefreshCw } from "lucide-react";
+import { AttendanceSheet } from "@/components/AttendanceSheet";
 
 const LOCATIONS = ["Montreal", "Saint-Hubert", "Pointe-Claire", "Hudson"];
 const SESSION = "fall-2026";
@@ -230,7 +231,7 @@ const Reports = () => {
     else { toast({ title: "RSVP saved" }); setAddEmail(""); load(); }
   };
 
-  const current = REPORTS.find((r) => r.id === report)!;
+  const current = REPORTS.find((r) => r.id === report) ?? REPORTS[0];
   const fileBase = `${report}${location !== "all" ? `-${location.toLowerCase()}` : ""}-${new Date().toISOString().slice(0, 10)}`;
 
   const downloadCsv = () => {
@@ -256,7 +257,7 @@ const Reports = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className={`container mx-auto px-4 py-8 max-w-6xl ${report === "paid" ? "attendance-report" : ""}`}>
       <Helmet>
         <title>Reports & Lists | Club Choir Admin</title>
         <meta name="description" content="Generate attendance lists, guest lists and contact reports for Club Choir sessions and open houses." />
@@ -341,46 +342,7 @@ const Reports = () => {
           <p className="text-sm text-muted-foreground">No one matches this report yet.</p>
         ) : (
           report === "paid" ? (
-            (() => {
-              const half = Math.ceil(rows.length / 2);
-              const cols = [rows.slice(0, half), rows.slice(half)];
-              return (
-                <div className="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-x-8 gap-y-0">
-                  {cols.map((col, ci) => (
-                    <table key={ci} className="w-full">
-                      <thead>
-                        <tr className="text-left text-muted-foreground border-b border-border text-sm">
-                          <th className="py-1 pr-3 font-medium w-10">#</th>
-                          <th className="py-1 pr-4 font-medium">Name</th>
-                          {location === "all" && <th className="py-1 pr-4 font-medium">Location</th>}
-                          <th className="py-1 font-medium w-24">Present</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {col.map((r, j) => {
-                          const gi = ci * half + j;
-                          const firstGuest = r.status === "Trial guest" && (gi === 0 || rows[gi - 1].status !== "Trial guest");
-                          return [
-                            firstGuest && (
-                              <tr key={`h-${gi}`}><td colSpan={4} className="pt-4 pb-1 font-heading font-bold text-base border-b border-border">Trial night guests</td></tr>
-                            ),
-                            <tr key={`${r.email}-${gi}`} className="border-b border-border">
-                              <td className="py-1 pr-3 text-muted-foreground text-sm">{gi + 1}</td>
-                              <td className="py-1 pr-4 text-foreground font-semibold text-lg print:text-base leading-tight">
-                                {r.name}
-                                {r.status === "Trial guest" && r.night && <span className="ml-2 text-xs font-normal text-muted-foreground">(trial {r.night})</span>}
-                              </td>
-                              {location === "all" && <td className="py-1 pr-4 text-muted-foreground text-sm">{r.location}</td>}
-                              <td className="py-1"><span className="inline-block w-16 border-b border-border h-4" /></td>
-                            </tr>,
-                          ];
-                        })}
-                      </tbody>
-                    </table>
-                  ))}
-                </div>
-              );
-            })()
+            <AttendanceSheet rows={rows} showLocation={location === "all"} />
           ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
