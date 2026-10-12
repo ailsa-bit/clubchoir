@@ -36,6 +36,13 @@
     max-width: none !important;
   }
 
+  body:has(.attendance-report) #root,
+  body:has(.attendance-report) #root > div,
+  body:has(.attendance-report) main {
+    display: block !important;
+    min-height: 0 !important;
+  }
+
   body:has(.attendance-report) header,
   body:has(.attendance-report) footer,
   body:has(.attendance-report) nav {
