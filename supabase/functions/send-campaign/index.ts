@@ -754,7 +754,7 @@ function renderChoirTonight(r: Recipient) {
     </div>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>It's choir night! 🎶</strong> Daniel is back with us this week — a warm welcome back! — and I can't wait to get everyone singing together again.</p>
+    <p style="${P}"><strong>It's choir night! 🎶</strong> I hope everyone had a wonderful Thanksgiving weekend filled with family, food and a little rest.</p>
     <p style="${P}">Tonight we'll begin <strong>"Toxic"</strong> — the Britney Spears hit, in the dreamy, stripped-back style of Melanie Martinez and Jennel Garcia, with our own Club Choir twist — and keep building on <strong>"Time of the Season."</strong> Same iconic melody, brand new feeling. This one is going to be so much fun!</p>
     ${box("en")}
     ${bring("en")}
