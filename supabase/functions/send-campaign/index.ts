@@ -760,6 +760,8 @@ function renderChoirTonight(r: Recipient) {
     ${bring("en")}
     <p style="${P}">Want a quick listen before we meet? Your recordings, lyrics and lyric slides are waiting on the resource page. If you need help signing in, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Open the song resources")}
+    <p style="${P}">🎤 <strong>New: vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
+    ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
     <p style="${P}"><strong>See you tonight — I can't wait to sing this one with you!</strong></p>
     ${SIGN}
