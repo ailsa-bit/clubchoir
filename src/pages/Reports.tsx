@@ -341,37 +341,46 @@ const Reports = () => {
           <p className="text-sm text-muted-foreground">No one matches this report yet.</p>
         ) : (
           report === "paid" ? (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="text-left text-muted-foreground border-b border-border text-sm">
-                    <th className="py-1 pr-3 font-medium w-10">#</th>
-                    <th className="py-1 pr-4 font-medium">Name</th>
-                    {location === "all" && <th className="py-1 pr-4 font-medium">Location</th>}
-                    <th className="py-1 font-medium w-24">Present</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((r, i) => {
-                    const firstGuest = r.status === "Trial guest" && (i === 0 || rows[i - 1].status !== "Trial guest");
-                    return [
-                      firstGuest && (
-                        <tr key={`h-${i}`}><td colSpan={4} className="pt-4 pb-1 font-heading font-bold text-base border-b border-border">Trial night guests</td></tr>
-                      ),
-                      <tr key={`${r.email}-${i}`} className="border-b border-border">
-                        <td className="py-1 pr-3 text-muted-foreground text-sm">{i + 1}</td>
-                        <td className="py-1 pr-4 text-foreground font-semibold text-lg print:text-base leading-tight">
-                          {r.name}
-                          {r.status === "Trial guest" && r.night && <span className="ml-2 text-xs font-normal text-muted-foreground">(trial {r.night})</span>}
-                        </td>
-                        {location === "all" && <td className="py-1 pr-4 text-muted-foreground text-sm">{r.location}</td>}
-                        <td className="py-1"><span className="inline-block w-16 border-b border-border h-4" /></td>
-                      </tr>,
-                    ];
-                  })}
-                </tbody>
-              </table>
-            </div>
+            (() => {
+              const half = Math.ceil(rows.length / 2);
+              const cols = [rows.slice(0, half), rows.slice(half)];
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-0">
+                  {cols.map((col, ci) => (
+                    <table key={ci} className="w-full">
+                      <thead>
+                        <tr className="text-left text-muted-foreground border-b border-border text-sm">
+                          <th className="py-1 pr-3 font-medium w-10">#</th>
+                          <th className="py-1 pr-4 font-medium">Name</th>
+                          {location === "all" && <th className="py-1 pr-4 font-medium">Location</th>}
+                          <th className="py-1 font-medium w-24">Present</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {col.map((r, j) => {
+                          const gi = ci * half + j;
+                          const firstGuest = r.status === "Trial guest" && (gi === 0 || rows[gi - 1].status !== "Trial guest");
+                          return [
+                            firstGuest && (
+                              <tr key={`h-${gi}`}><td colSpan={4} className="pt-4 pb-1 font-heading font-bold text-base border-b border-border">Trial night guests</td></tr>
+                            ),
+                            <tr key={`${r.email}-${gi}`} className="border-b border-border">
+                              <td className="py-1 pr-3 text-muted-foreground text-sm">{gi + 1}</td>
+                              <td className="py-1 pr-4 text-foreground font-semibold text-lg print:text-base leading-tight">
+                                {r.name}
+                                {r.status === "Trial guest" && r.night && <span className="ml-2 text-xs font-normal text-muted-foreground">(trial {r.night})</span>}
+                              </td>
+                              {location === "all" && <td className="py-1 pr-4 text-muted-foreground text-sm">{r.location}</td>}
+                              <td className="py-1"><span className="inline-block w-16 border-b border-border h-4" /></td>
+                            </tr>,
+                          ];
+                        })}
+                      </tbody>
+                    </table>
+                  ))}
+                </div>
+              );
+            })()
           ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
