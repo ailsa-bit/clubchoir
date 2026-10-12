@@ -31,7 +31,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "resources-week3-paid": "fall-2026-resources-week6-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week6-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week6-v2",
 };
 
 // Aug 18, 2026 Hudson Open House
