@@ -345,7 +345,7 @@ const Reports = () => {
               const half = Math.ceil(rows.length / 2);
               const cols = [rows.slice(0, half), rows.slice(half)];
               return (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-0">
+                <div className="grid grid-cols-1 md:grid-cols-2 print:grid-cols-2 gap-x-8 gap-y-0">
                   {cols.map((col, ci) => (
                     <table key={ci} className="w-full">
                       <thead>
