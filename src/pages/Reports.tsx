@@ -193,7 +193,9 @@ const Reports = () => {
 
     if (report === "paid") {
       const paidEmails = new Set(out.map((r) => r.email.toLowerCase()));
+      const today = new Date().toISOString().slice(0, 10);
       let guests: Row[] = trials
+        .filter((g) => !g.session_date || g.session_date >= today)
         .filter((g) => !paidEmails.has((g.email || "").trim().toLowerCase()))
         .map((g) => ({
           name: fullName(g.first_name, g.last_name),
