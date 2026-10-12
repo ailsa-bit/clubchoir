@@ -773,6 +773,8 @@ function renderChoirTonight(r: Recipient) {
     ${bring("fr")}
     <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Voir les ressources musicales")}
+    <p style="${P}">🎤 <strong>Nouveau : des échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
+    ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
     <p style="${P}"><strong>À ce soir — j'ai très hâte de chanter cette chanson avec vous!</strong></p>
     ${SIGN}`;
