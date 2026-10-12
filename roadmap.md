@@ -13,3 +13,6 @@
 - [x] Refresh social invitation colour and thank-you reminder.
 - [x] Add Hudson and Montreal special schedule bulletin.
 - [x] Update bilingual weekly note with warm-up playlist and verify page.
+
+- [ ] Correct the four Montreal attendance names.
+- [ ] Make print numbering continue down each page's first and second columns, and verify a two-page printout.
