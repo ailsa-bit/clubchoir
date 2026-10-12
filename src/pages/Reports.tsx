@@ -187,8 +187,28 @@ const Reports = () => {
       seen.add(k);
       return true;
     });
-    if (report === "trial-guests") out.sort((a, b) => (a.night || "").localeCompare(b.night || "") || a.name.localeCompare(b.name));
-    else out.sort((a, b) => a.name.localeCompare(b.name));
+    const byName = (a: Row, b: Row) => a.name.localeCompare(b.name, "en", { sensitivity: "base" });
+    if (report === "trial-guests") out.sort((a, b) => (a.night || "").localeCompare(b.night || "") || byName(a, b));
+    else out.sort(byName);
+
+    if (report === "paid") {
+      const paidEmails = new Set(out.map((r) => r.email.toLowerCase()));
+      let guests: Row[] = trials
+        .filter((g) => !paidEmails.has((g.email || "").trim().toLowerCase()))
+        .map((g) => ({
+          name: fullName(g.first_name, g.last_name),
+          email: (g.email || "").trim(),
+          location: g.location || "—",
+          status: "Trial guest",
+          created_at: g.created_at,
+          tags: [],
+          night: g.session_date ? fmt(`${g.session_date}T12:00:00`) : "—",
+        }));
+      if (location !== "all") guests = guests.filter((r) => (r.location || "").toLowerCase() === location.toLowerCase());
+      if (q) guests = guests.filter((r) => r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q));
+      guests.sort(byName);
+      out = [...out, ...guests];
+    }
     return out;
   }, [report, location, responseFilter, search, regs, members, trials, rsvps, terms]);
 
@@ -318,6 +338,39 @@ const Reports = () => {
         ) : rows.length === 0 ? (
           <p className="text-sm text-muted-foreground">No one matches this report yet.</p>
         ) : (
+          report === "paid" ? (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left text-muted-foreground border-b border-border text-sm">
+                    <th className="py-1 pr-3 font-medium w-10">#</th>
+                    <th className="py-1 pr-4 font-medium">Name</th>
+                    {location === "all" && <th className="py-1 pr-4 font-medium">Location</th>}
+                    <th className="py-1 font-medium w-24">Present</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((r, i) => {
+                    const firstGuest = r.status === "Trial guest" && (i === 0 || rows[i - 1].status !== "Trial guest");
+                    return [
+                      firstGuest && (
+                        <tr key={`h-${i}`}><td colSpan={4} className="pt-4 pb-1 font-heading font-bold text-base border-b border-border">Trial night guests</td></tr>
+                      ),
+                      <tr key={`${r.email}-${i}`} className="border-b border-border">
+                        <td className="py-1 pr-3 text-muted-foreground text-sm">{i + 1}</td>
+                        <td className="py-1 pr-4 text-foreground font-semibold text-lg print:text-base leading-tight">
+                          {r.name}
+                          {r.status === "Trial guest" && r.night && <span className="ml-2 text-xs font-normal text-muted-foreground">(trial {r.night})</span>}
+                        </td>
+                        {location === "all" && <td className="py-1 pr-4 text-muted-foreground text-sm">{r.location}</td>}
+                        <td className="py-1"><span className="inline-block w-16 border-b border-border h-4" /></td>
+                      </tr>,
+                    ];
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -355,6 +408,7 @@ const Reports = () => {
               </tbody>
             </table>
           </div>
+          )
         )}
       </div>
     </div>
