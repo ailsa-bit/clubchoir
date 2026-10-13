@@ -776,6 +776,7 @@ function renderChoirTonight(r: Recipient) {
     <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> J'espère que tout le monde a passé un merveilleux week-end de l'Action de grâce, entouré de famille, avec de bons repas et un peu de repos.</p>
     <p style="${P}">Ce soir, nous commencerons <strong>« Toxic »</strong> — le succès de Britney Spears, dans le style doux et dépouillé de Melanie Martinez et Jennel Garcia, avec notre touche Club Choir — et nous poursuivrons notre travail sur <strong>« Time of the Season ».</strong> La même mélodie emblématique, une toute nouvelle saveur. Ce sera tellement amusant!</p>
     ${box("fr")}
+    ${hudsonNote("fr")}
     ${bring("fr")}
     <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Voir les ressources musicales")}
