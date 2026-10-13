@@ -739,6 +739,11 @@ function renderChoirTonight(r: Recipient) {
   const whereEn = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "your usual location";
   const whereFr = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "votre lieu habituel";
   const RES = `${SITE_URL}/resources/fall-2026`;
+  const hudsonNote = (lang: "en" | "fr") => r.location !== "Hudson" ? "" : `
+    <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#92400e;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Hudson — please note!" : "Hudson — attention !"}</div>
+      <p style="margin:3px 0;font-size:15px;color:#92400e;">${lang === "en" ? `As of this week, we start at <strong>7:00 PM sharp (not 7:30)</strong> and finish at 8:30 PM. Please arrive a few minutes early so we can begin on time!` : `À partir de cette semaine, nous commençons à <strong>19 h précises (et non 19 h 30)</strong> et nous terminons à 20 h 30. Arrivez quelques minutes en avance pour que nous puissions commencer à l'heure!`}</p>
+    </div>`;
   const box = (lang: "en" | "fr") => `
     <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? `Tonight${city ? ` — ${city}` : ""}` : `Ce soir${city ? ` — ${city}` : ""}`}</div>
