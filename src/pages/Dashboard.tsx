@@ -453,7 +453,9 @@ const Dashboard = () => {
             <div className="divide-y divide-border">
               {data.recent.map((f, i) => (
                 <div key={i} className="flex items-center justify-between gap-3 py-2 text-sm">
-                  <span className="font-medium text-foreground truncate">{f.action}: {f.label}</span>
+                  <span className="font-medium text-foreground truncate">
+                    <span className="text-primary">{f.name}</span> — {f.action}: {f.label}
+                  </span>
                   <div className="flex items-center gap-2 shrink-0">
                     <Badge variant="outline">{f.location}</Badge>
                     <Badge variant="secondary">{f.device}</Badge>
