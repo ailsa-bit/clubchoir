@@ -211,13 +211,14 @@ const Dashboard = () => {
     const recent = rows.slice(0, 20).map((v) => ({
       label: v.file_name || resourceKey(v),
       action: eventWord[v.event_type || "view"] || "Visited",
+      name: (v.user_id && names[v.user_id]) || "Unknown member",
       location: prettyLocation(v.location),
       device: DEVICE_LABELS[v.device || "unknown"],
       at: v.created_at,
     }));
 
     return { rows, pageRows, fileRows, daily, top, byLoc, unknown, uniquePeople, recent, byType, topFiles, byDevice, audioPlays, downloads };
-  }, [views, range, locFilter]);
+  }, [views, range, locFilter, names]);
 
   if (adminLoading || loading) {
     return <div className="py-24 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div>;
