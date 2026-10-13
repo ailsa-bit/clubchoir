@@ -86,6 +86,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [views, setViews] = useState<ViewRow[]>([]);
   const [rsvps, setRsvps] = useState<RsvpRow[]>([]);
+  const [names, setNames] = useState<Record<string, string>>({});
   const [range, setRange] = useState<7 | 14 | 30>(14);
   const [locFilter, setLocFilter] = useState<string>("all");
 
@@ -96,12 +97,18 @@ const Dashboard = () => {
 
   const fetchAll = async () => {
     setLoading(true);
-    const [viewResult, rsvpResult] = await Promise.all([
+    const [viewResult, rsvpResult, profileResult] = await Promise.all([
       supabase.from("resource_page_views").select("id,user_id,location,page,week,song,created_at,event_type,resource_type,file_name,device").order("created_at", { ascending: false }).limit(5000),
       supabase.from("member_event_rsvps").select("response,location").eq("event_key", "wheel-club-social-2026-11-01"),
+      supabase.from("profiles").select("user_id,display_name"),
     ]);
     setViews(((viewResult.data as unknown) as ViewRow[]) || []);
     setRsvps(((rsvpResult.data as unknown) as RsvpRow[]) || []);
+    const nameMap: Record<string, string> = {};
+    ((profileResult.data as { user_id: string; display_name: string | null }[]) || []).forEach((p) => {
+      if (p.display_name) nameMap[p.user_id] = p.display_name;
+    });
+    setNames(nameMap);
     setLoading(false);
   };
 
