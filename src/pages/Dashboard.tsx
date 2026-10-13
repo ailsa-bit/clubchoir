@@ -86,6 +86,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [views, setViews] = useState<ViewRow[]>([]);
   const [rsvps, setRsvps] = useState<RsvpRow[]>([]);
+  const [names, setNames] = useState<Record<string, string>>({});
   const [range, setRange] = useState<7 | 14 | 30>(14);
   const [locFilter, setLocFilter] = useState<string>("all");
 
@@ -96,12 +97,18 @@ const Dashboard = () => {
 
   const fetchAll = async () => {
     setLoading(true);
-    const [viewResult, rsvpResult] = await Promise.all([
+    const [viewResult, rsvpResult, profileResult] = await Promise.all([
       supabase.from("resource_page_views").select("id,user_id,location,page,week,song,created_at,event_type,resource_type,file_name,device").order("created_at", { ascending: false }).limit(5000),
       supabase.from("member_event_rsvps").select("response,location").eq("event_key", "wheel-club-social-2026-11-01"),
+      supabase.from("profiles").select("user_id,display_name"),
     ]);
     setViews(((viewResult.data as unknown) as ViewRow[]) || []);
     setRsvps(((rsvpResult.data as unknown) as RsvpRow[]) || []);
+    const nameMap: Record<string, string> = {};
+    ((profileResult.data as { user_id: string; display_name: string | null }[]) || []).forEach((p) => {
+      if (p.display_name) nameMap[p.user_id] = p.display_name;
+    });
+    setNames(nameMap);
     setLoading(false);
   };
 
@@ -204,13 +211,14 @@ const Dashboard = () => {
     const recent = rows.slice(0, 20).map((v) => ({
       label: v.file_name || resourceKey(v),
       action: eventWord[v.event_type || "view"] || "Visited",
+      name: (v.user_id && names[v.user_id]) || "Unknown member",
       location: prettyLocation(v.location),
       device: DEVICE_LABELS[v.device || "unknown"],
       at: v.created_at,
     }));
 
     return { rows, pageRows, fileRows, daily, top, byLoc, unknown, uniquePeople, recent, byType, topFiles, byDevice, audioPlays, downloads };
-  }, [views, range, locFilter]);
+  }, [views, range, locFilter, names]);
 
   if (adminLoading || loading) {
     return <div className="py-24 text-center text-muted-foreground"><Loader2 className="w-6 h-6 animate-spin mx-auto" /></div>;
@@ -445,7 +453,9 @@ const Dashboard = () => {
             <div className="divide-y divide-border">
               {data.recent.map((f, i) => (
                 <div key={i} className="flex items-center justify-between gap-3 py-2 text-sm">
-                  <span className="font-medium text-foreground truncate">{f.action}: {f.label}</span>
+                  <span className="font-medium text-foreground truncate">
+                    <span className="text-primary">{f.name}</span> — {f.action}: {f.label}
+                  </span>
                   <div className="flex items-center gap-2 shrink-0">
                     <Badge variant="outline">{f.location}</Badge>
                     <Badge variant="secondary">{f.device}</Badge>
