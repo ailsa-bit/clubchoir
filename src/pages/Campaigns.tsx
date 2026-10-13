@@ -50,7 +50,7 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   {
     key: "choir-tonight",
     title: "Week 6 — See You at Choir Tonight",
-    description: "Fresh same-day note for paid members, sent by location. Welcomes Daniel back, begins ‘Toxic,’ keeps building ‘Time of the Season,’ with venue details, simple reminders and the resource link. Bilingual EN/FR.",
+    description: "Fresh same-day note for paid members, sent by location. Begins ‘Toxic,’ keeps building ‘Time of the Season,’ with venue details, a Hudson-only reminder about the new 7:00 PM start, simple reminders and the resource link. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
