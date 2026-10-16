@@ -10,11 +10,11 @@ import type { Database } from "@/integrations/supabase/types";
 
 type Announcement = Database["public"]["Tables"]["weekly_announcements"]["Row"];
 
-const DEFAULT_TITLE = { en: "Week 6 — A Note from Ailsa 🎶", fr: "Semaine 6 — Un mot d'Ailsa 🎶" };
+const DEFAULT_TITLE = { en: "Week 7 — A Note from Ailsa 🎶", fr: "Semaine 7 — Un mot d'Ailsa 🎶" };
 
 const REVIEW_URL = "https://g.page/r/CU1hiLJTYmtXEAE/review";
 
-const WARMUP_URL = "https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF";
+const PLAYLIST_URL = "https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t";
 
 const DEFAULT_MESSAGE = {
   en: `Hello wonderful singers! 🌟
@@ -45,16 +45,12 @@ Ailsa 🎤✨`,
 
 const SONG_OF_WEEK = {
   en: {
-    title: "Song of the Week: “Toxic” — Britney Spears",
-    body: `Fun fact: “Toxic” was written by Cathy Dennis, Christian Karlsson, Pontus Winnberg, and Henrik Jonback and performed by Britney Spears in 2004, but it almost wasn't hers at all — it was written with Janet Jackson in mind, and Kylie Minogue passed on it too! That wild string hook is sampled from a 1981 Bollywood song, and the track went on to win Britney her very first Grammy.
-
-We're singing a hybrid of Melanie Martinez's dreamy ukulele version and Jennel Garcia's take — stripped down, full of heart, and with our own Club Choir twist. Same iconic melody, brand new flavor. Can't wait to dive in with you!`,
+    title: "Song of the Week: “Bloom” — The Paper Kites",
+    body: `This week we're singing “Bloom” — the 2010 debut single from Melbourne indie-folk band The Paper Kites, the song that first put them on the map and later went Gold. Built on fingerpicked guitar and Sam Bentley and Christina Lacy's intertwining voices, “Bloom” is one of those songs that lives entirely inside its harmonies, which makes it a perfect Club Choir pick. Our kind of song: soft, luminous and quietly demanding, with room for every voice to find its place.`,
   },
   fr: {
-    title: "Chanson de la semaine : « Toxic » — Britney Spears",
-    body: `Petit fait amusant : « Toxic » a été écrite par Cathy Dennis, Christian Karlsson, Pontus Winnberg et Henrik Jonback, et interprétée par Britney Spears en 2004 — mais elle a failli ne jamais lui appartenir : elle a été écrite avec Janet Jackson en tête, et Kylie Minogue l'a aussi refusée ! Ce fameux enchaînement de cordes est samplé d'une chanson Bollywood de 1981, et la chanson a valu à Britney son tout premier Grammy.
-
-Nous chanterons un mélange de la version onirique au ukulélé de Melanie Martinez et de la reprise de Jennel Garcia — épurée, pleine de cœur, avec notre propre touche Club Choir. Même mélodie culte, toute nouvelle saveur. J'ai hâte de m'y plonger avec vous !`,
+    title: "Chanson de la semaine : « Bloom » — The Paper Kites",
+    body: `Cette semaine, nous chantons « Bloom », le premier single du groupe indie-folk de Melbourne The Paper Kites, paru en 2010 : la chanson qui les a fait connaître et qui a ensuite été certifiée Or. Portée par une guitare jouée aux doigts et par les voix entrelacées de Sam Bentley et Christina Lacy, « Bloom » vit entièrement dans ses harmonies, ce qui en fait un choix parfait pour Club Choir. Notre genre de chanson : douce, lumineuse et subtilement exigeante, avec de la place pour que chaque voix trouve la sienne.`,
   },
 };
 
@@ -228,9 +224,9 @@ export function MemberWelcomeMessage() {
               {ailsaBody}
             </div>
             <Button asChild className="mt-5">
-              <a href={WARMUP_URL} target="_blank" rel="noopener noreferrer">
+              <a href={PLAYLIST_URL} target="_blank" rel="noopener noreferrer">
                 <Music className="mr-2 h-4 w-4" />
-                {language === "fr" ? "Échauffements vocaux avec Singeo" : "Warm up with Singeo"}
+                Ailsa Fall Session
               </a>
             </Button>
 
