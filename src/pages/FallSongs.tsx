@@ -577,6 +577,13 @@ const FallSongs = () => {
             <h1 className="text-3xl font-heading font-bold mb-2">{c.title}</h1>
             <p className="text-muted-foreground mb-6">{c.intro}</p>
 
+            <section className="mb-6 rounded-xl border border-pink/20 bg-pink-light p-5">
+              <h2 className="font-heading text-xl font-bold text-foreground mb-3">{language === "fr" ? "Ressources YouTube" : "YouTube Resources"}</h2>
+              <div className="flex flex-wrap gap-3">
+                <a href="https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{language === "fr" ? "Échauffements vocaux avec Singeo" : "Warm up with Singeo"}</a>
+              </div>
+            </section>
+
             <div className="relative mb-6">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
