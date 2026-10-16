@@ -31,7 +31,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "resources-week3-paid": "fall-2026-resources-week6-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week6-v3",
+  "choir-tonight": "fall-2026-choir-tonight-week7-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -743,11 +743,6 @@ function renderChoirTonight(r: Recipient) {
   const whereEn = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "your usual location";
   const whereFr = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "votre lieu habituel";
   const RES = `${SITE_URL}/resources/fall-2026`;
-  const hudsonNote = (lang: "en" | "fr") => r.location !== "Hudson" ? "" : `
-    <div style="background:#fffbeb;border-left:4px solid #f59e0b;border-radius:10px;padding:14px 18px;margin:18px 0;">
-      <div style="font-weight:700;color:#92400e;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Hudson — please note!" : "Hudson — attention !"}</div>
-      <p style="margin:3px 0;font-size:15px;color:#92400e;">${lang === "en" ? `As of this week, we start at <strong>7:00 PM sharp (not 7:30)</strong> and finish at 8:30 PM. Please arrive a few minutes early to collect your lyric sheets and parking pass, and take time to settle in before we start!` : `À partir de cette semaine, nous commençons à <strong>19 h précises (et non 19 h 30)</strong> et nous terminons à 20 h 30. Arrivez quelques minutes en avance pour récupérer vos feuilles de paroles et votre laissez-passer de stationnement, et prenez le temps de vous installer avant que nous commencions!`}</p>
-    </div>`;
   const box = (lang: "en" | "fr") => `
     <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? `Tonight${city ? ` — ${city}` : ""}` : `Ce soir${city ? ` — ${city}` : ""}`}</div>
@@ -763,35 +758,33 @@ function renderChoirTonight(r: Recipient) {
     </div>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>It's choir night! 🎶</strong> I hope everyone had a wonderful Thanksgiving weekend filled with family, food and a little rest.</p>
-    <p style="${P}">Tonight we'll begin <strong>"Toxic"</strong> — the Britney Spears hit, in the dreamy, stripped-back style of Melanie Martinez and Jennel Garcia, with our own Club Choir twist — and keep building on <strong>"Time of the Season."</strong> Same iconic melody, brand new feeling. This one is going to be so much fun!</p>
+    <p style="${P}"><strong>It's choir night! 🎶</strong> We're back for another beautiful week of singing together.</p>
+    <p style="${P}">Tonight we'll begin <strong>"Bloom"</strong> — the luminous Paper Kites song that lives entirely inside its harmonies — and keep building on <strong>"Toxic."</strong> Soft, quietly demanding, with room for every voice to find its place. This one is going to be so beautiful!</p>
     ${box("en")}
-    ${hudsonNote("en")}
     ${bring("en")}
     <p style="${P}">Want a quick listen before we meet? Your recordings, lyrics and lyric slides are waiting on the resource page. If you need help signing in, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Open the song resources")}
-    <p style="${P}">🎤 <strong>New: vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
+    <p style="${P}">🎤 <strong>Vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
     <p style="${P}"><strong>See you tonight — I can't wait to sing this one with you!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> J'espère que tout le monde a passé un merveilleux week-end de l'Action de grâce, entouré de famille, avec de bons repas et un peu de repos.</p>
-    <p style="${P}">Ce soir, nous commencerons <strong>« Toxic »</strong> — le succès de Britney Spears, dans le style doux et dépouillé de Melanie Martinez et Jennel Garcia, avec notre touche Club Choir — et nous poursuivrons notre travail sur <strong>« Time of the Season ».</strong> La même mélodie emblématique, une toute nouvelle saveur. Ce sera tellement amusant!</p>
+    <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> Nous voilà repartis pour une nouvelle belle semaine de chant ensemble.</p>
+    <p style="${P}">Ce soir, nous commencerons <strong>« Bloom »</strong> — la chanson lumineuse de The Paper Kites qui vit entièrement dans ses harmonies — et nous poursuivrons notre travail sur <strong>« Toxic ».</strong> Douce, discrètement exigeante, avec une place pour chaque voix. Ce sera tellement beau!</p>
     ${box("fr")}
-    ${hudsonNote("fr")}
     ${bring("fr")}
     <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Voir les ressources musicales")}
-    <p style="${P}">🎤 <strong>Nouveau : des échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
+    <p style="${P}">🎤 <strong>Échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
     <p style="${P}"><strong>À ce soir — j'ai très hâte de chanter cette chanson avec vous!</strong></p>
     ${SIGN}`;
   return {
     subject: `It's choir night${city ? ` — ${city}` : ""}! 🎶 / C'est soir de chorale${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Week 6 is here — tonight we begin Toxic and keep building Time of the Season."),
+    html: wrap(inner, "Week 7 is here — tonight we begin Bloom and keep building Toxic."),
   };
 }
 
