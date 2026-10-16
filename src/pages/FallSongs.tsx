@@ -14,6 +14,7 @@ import { trackResourceView } from "@/lib/trackResourceView";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const SESSION = "fall-2026";
+const AILSA_FALL_SESSION_URL = "https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t";
 const WEEKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const WEEK_TITLES: Record<number, string> = {
   1: "Lovely Day",
@@ -581,6 +582,8 @@ const FallSongs = () => {
               <h2 className="font-heading text-xl font-bold text-foreground mb-3">{language === "fr" ? "Ressources YouTube" : "YouTube Resources"}</h2>
               <div className="flex flex-wrap gap-3">
                 <a href="https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{language === "fr" ? "Échauffements vocaux avec Singeo" : "Warm up with Singeo"}</a>
+                <a href={AILSA_FALL_SESSION_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{language === "fr" ? "Session d'automne d'Ailsa" : "Ailsa Fall Session"}</a>
+                <a href="https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{language === "fr" ? "Automne 2026 (original)" : "Fall 2026 (Original)"}</a>
               </div>
             </section>
 
