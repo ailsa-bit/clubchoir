@@ -43,7 +43,7 @@ const EMPTY_COUNTS = {
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week6-v3",
-  "resources-week3-paid": "fall-2026-resources-week6-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week7-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
@@ -55,8 +55,8 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   },
   {
     key: "resources-week3-paid",
-    title: "Week 6 Resources Are Up — \"Toxic\"",
-    description: "Send by location to paid members. Announces Week 6 song \"Toxic\" (Melanie Martinez / Jennel Garcia style, our Club Choir twist), includes the weekly links and the Singeo warm-up playlist, and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
+    title: "Week 7 Resources Are Up — \"Bloom\"",
+    description: "Send by location to paid members. Announces Week 7 song \"Bloom\" by The Paper Kites, includes the weekly links, the new YouTube Resources section on the song resources page (Ailsa Fall Session, Fall 2026 Original and the Singeo warm-up playlist), and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];

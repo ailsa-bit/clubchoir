@@ -673,12 +673,12 @@ function renderResourcesWeek3(r: Recipient) {
     const items = lang === "en" ? [
       { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
       { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
-      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Toxic".`, url: RES_URL, label: "Open the song resources" },
+      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Bloom".`, url: RES_URL, label: "Open the song resources" },
       { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
     ] : [
       { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
       { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
-      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Toxic ».`, url: RES_URL, label: "Voir les ressources" },
+      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Bloom ».`, url: RES_URL, label: "Voir les ressources" },
       { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
     ];
     return items.map((i) => `
@@ -692,10 +692,12 @@ function renderResourcesWeek3(r: Recipient) {
   };
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">🎶 <strong>Week 6 resources are up!</strong> This week we're diving into <strong>"Toxic"</strong> — the Britney Spears classic, reimagined in the dreamy, stripped-back style of Melanie Martinez and Jennel Garcia, with our own Club Choir twist — while continuing our work on "Time of the Season." Everything you need is below.</p>
+    <p style="${P}">🎶 <strong>Week 7 resources are up!</strong> This week we're singing <strong>"Bloom"</strong> — The Paper Kites' soft, luminous indie-folk gem that lives entirely inside its harmonies — while we keep building on "Toxic." Everything you need is below.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
-    <p style="${P}">🎤 <strong>New: vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
+    <p style="${P}">🎬 <strong>New on the song resources page: a YouTube Resources section!</strong> All of our YouTube links now live in one place on the resources page — including the <strong>Ailsa Fall Session</strong> playlist (I'll keep adding every song we've learned, with more updates over the weekend), the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups below. Easy to find, any time.</p>
+    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa Fall Session")}
+    ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Fall 2026 (Original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
       <p style="${P}"><strong>Save the date for our choir social! 🎤</strong></p>
@@ -709,10 +711,12 @@ function renderResourcesWeek3(r: Recipient) {
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">🎶 <strong>Les ressources de la semaine 6 sont en ligne!</strong> Cette semaine, nous plongeons dans <strong>« Toxic »</strong> — le classique de Britney Spears, réimaginé dans le style doux et dépouillé de Melanie Martinez et Jennel Garcia, avec notre touche Club Choir — tout en poursuivant notre travail sur « Time of the Season ». Tout ce qu'il vous faut est ci-dessous.</p>
+    <p style="${P}">🎶 <strong>Les ressources de la semaine 7 sont en ligne!</strong> Cette semaine, nous chantons <strong>« Bloom »</strong> — la perle indie-folk douce et lumineuse de The Paper Kites, qui vit entièrement dans ses harmonies — tout en poursuivant notre travail sur « Toxic ». Tout ce qu'il vous faut est ci-dessous.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
-    <p style="${P}">🎤 <strong>Nouveau : des échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
+    <p style="${P}">🎬 <strong>Nouveau sur la page des ressources : une section Ressources YouTube!</strong> Tous nos liens YouTube se trouvent maintenant au même endroit sur la page des ressources — dont la liste de lecture <strong>Ailsa Fall Session</strong> (j'y ajouterai toutes les chansons que nous avons apprises, avec d'autres mises à jour en fin de semaine), la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo ci-dessous. Facile à retrouver, en tout temps.</p>
+    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa Fall Session")}
+    ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Automne 2026 (original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
       <p style="${P}"><strong>Réservez la date pour notre rencontre de la chorale! 🎤</strong></p>
@@ -725,8 +729,8 @@ function renderResourcesWeek3(r: Recipient) {
     <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
     ${SIGN}`;
   return {
-    subject: `Week 6 resources are up — "Toxic" 🎶 / Ressources de la semaine 6 en ligne!`,
-    html: wrap(inner, `Week 6 resources for "Toxic" are live, plus your invitation to the November 1 choir social.`),
+    subject: `Week 7 resources are up — "Bloom" 🎶 / Ressources de la semaine 7 en ligne!`,
+    html: wrap(inner, `Week 7 resources for "Bloom" are live, with the new YouTube Resources links and your invitation to the November 1 choir social.`),
   };
 }
 
