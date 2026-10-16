@@ -14,6 +14,7 @@ import { trackResourceView } from "@/lib/trackResourceView";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const SESSION = "fall-2026";
+const AILSA_FALL_SESSION_URL = "https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t";
 const WEEKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const WEEK_TITLES: Record<number, string> = {
   1: "Lovely Day",
