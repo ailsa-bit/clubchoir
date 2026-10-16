@@ -28,7 +28,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   
-  "resources-week3-paid": "fall-2026-resources-week6-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week7-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week7-v1",
