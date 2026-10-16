@@ -578,9 +578,9 @@ const FallSongs = () => {
             <p className="text-muted-foreground mb-6">{c.intro}</p>
 
             <section className="mb-6 rounded-xl border border-pink/20 bg-pink-light p-5">
-              <h2 className="font-heading text-xl font-bold text-foreground mb-3">{lang === "fr" ? "Ressources YouTube" : "YouTube Resources"}</h2>
+              <h2 className="font-heading text-xl font-bold text-foreground mb-3">{language === "fr" ? "Ressources YouTube" : "YouTube Resources"}</h2>
               <div className="flex flex-wrap gap-3">
-                <a href="https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{lang === "fr" ? "Échauffements vocaux avec Singeo" : "Warm up with Singeo"}</a>
+                <a href="https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{language === "fr" ? "Échauffements vocaux avec Singeo" : "Warm up with Singeo"}</a>
               </div>
             </section>
 
