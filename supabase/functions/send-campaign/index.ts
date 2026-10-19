@@ -696,7 +696,7 @@ function renderResourcesWeek3(r: Recipient) {
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
     <p style="${P}">🎬 <strong>New on the song resources page: a YouTube Resources section!</strong> All of our YouTube links now live in one place on the resources page — including the <strong>Ailsa Fall Session</strong> playlist (I'll keep adding every song we've learned, with more updates over the weekend), the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups below. Easy to find, any time.</p>
-    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa Fall Session")}
+    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Fall 2026 (Original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
@@ -715,7 +715,7 @@ function renderResourcesWeek3(r: Recipient) {
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
     <p style="${P}">🎬 <strong>Nouveau sur la page des ressources : une section Ressources YouTube!</strong> Tous nos liens YouTube se trouvent maintenant au même endroit sur la page des ressources — dont la liste de lecture <strong>Ailsa Fall Session</strong> (j'y ajouterai toutes les chansons que nous avons apprises, avec d'autres mises à jour en fin de semaine), la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo ci-dessous. Facile à retrouver, en tout temps.</p>
-    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa Fall Session")}
+    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Automne 2026 (original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
@@ -767,7 +767,7 @@ function renderChoirTonight(r: Recipient) {
     <p style="${P}">🎤 <strong>Vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <p style="${P}">🎬 <strong>Ailsa's recordings!</strong> There's now a playlist of me recording our songs — a handy way to hear a part, learn a song or simply sing along at home. I'll keep adding to it as we go.</p>
-    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa Fall Session")}
+    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
     <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
     <p style="${P}"><strong>See you tonight — I can't wait to sing this one with you!</strong></p>
     ${SIGN}
@@ -782,7 +782,7 @@ function renderChoirTonight(r: Recipient) {
     <p style="${P}">🎤 <strong>Échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <p style="${P}">🎬 <strong>Les enregistrements d'Ailsa!</strong> Il y a maintenant une liste de lecture avec mes enregistrements de nos chansons — une façon pratique d'entendre une voix, d'apprendre une chanson ou simplement de chanter à la maison. Je l'enrichis au fil des semaines.</p>
-    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa Fall Session")}
+    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
     <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
     <p style="${P}"><strong>À ce soir — j'ai très hâte de chanter cette chanson avec vous!</strong></p>
     ${SIGN}`;
