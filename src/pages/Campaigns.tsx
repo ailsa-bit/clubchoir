@@ -56,7 +56,7 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   {
     key: "resources-week3-paid",
     title: "Week 7 Resources Are Up — \"Bloom\"",
-    description: "Send by location to paid members. Announces Week 7 song \"Bloom\" by The Paper Kites, includes the weekly links, the new YouTube Resources section on the song resources page (Ailsa Fall Session, Fall 2026 Original and the Singeo warm-up playlist), and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
+    description: "Send by location to paid members. Announces Week 7 song \"Bloom\" by The Paper Kites, includes the weekly links, the new YouTube Resources section on the song resources page (Ailsa's YouTube recordings, Fall 2026 Original and the Singeo warm-up playlist), and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];

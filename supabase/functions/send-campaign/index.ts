@@ -695,7 +695,7 @@ function renderResourcesWeek3(r: Recipient) {
     <p style="${P}">🎶 <strong>Week 7 resources are up!</strong> This week we're singing <strong>"Bloom"</strong> — The Paper Kites' soft, luminous indie-folk gem that lives entirely inside its harmonies — while we keep building on "Toxic." Everything you need is below.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
-    <p style="${P}">🎬 <strong>New on the song resources page: a YouTube Resources section!</strong> All of our YouTube links now live in one place on the resources page — including the <strong>Ailsa Fall Session</strong> playlist (I'll keep adding every song we've learned, with more updates over the weekend), the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups below. Easy to find, any time.</p>
+    <p style="${P}">🎬 <strong>New on the song resources page: a YouTube Resources section!</strong> All of our YouTube links now live in one place on the resources page — including <strong>Ailsa's YouTube recordings</strong> (I'll keep adding every song we've learned, with more updates over the weekend), the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups below. Easy to find, any time.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Fall 2026 (Original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
@@ -714,7 +714,7 @@ function renderResourcesWeek3(r: Recipient) {
     <p style="${P}">🎶 <strong>Les ressources de la semaine 7 sont en ligne!</strong> Cette semaine, nous chantons <strong>« Bloom »</strong> — la perle indie-folk douce et lumineuse de The Paper Kites, qui vit entièrement dans ses harmonies — tout en poursuivant notre travail sur « Toxic ». Tout ce qu'il vous faut est ci-dessous.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
-    <p style="${P}">🎬 <strong>Nouveau sur la page des ressources : une section Ressources YouTube!</strong> Tous nos liens YouTube se trouvent maintenant au même endroit sur la page des ressources — dont la liste de lecture <strong>Ailsa Fall Session</strong> (j'y ajouterai toutes les chansons que nous avons apprises, avec d'autres mises à jour en fin de semaine), la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo ci-dessous. Facile à retrouver, en tout temps.</p>
+    <p style="${P}">🎬 <strong>Nouveau sur la page des ressources : une section Ressources YouTube!</strong> Tous nos liens YouTube se trouvent maintenant au même endroit sur la page des ressources — dont <strong>les enregistrements YouTube d'Ailsa</strong> (j'y ajouterai toutes les chansons que nous avons apprises, avec d'autres mises à jour en fin de semaine), la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo ci-dessous. Facile à retrouver, en tout temps.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Automne 2026 (original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
