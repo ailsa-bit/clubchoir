@@ -226,7 +226,7 @@ export function MemberWelcomeMessage() {
             <Button asChild className="mt-5">
               <a href={PLAYLIST_URL} target="_blank" rel="noopener noreferrer">
                 <Music className="mr-2 h-4 w-4" />
-                Ailsa Fall Session
+                {language === "fr" ? "Ailsa (enregistrements YouTube)" : "Ailsa (YouTube Recordings)"}
               </a>
             </Button>
 
