@@ -766,6 +766,8 @@ function renderChoirTonight(r: Recipient) {
     ${BTN(RES, "Open the song resources")}
     <p style="${P}">🎤 <strong>Vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
+    <p style="${P}">🎬 <strong>Ailsa's recordings!</strong> There's now a playlist of me recording our songs — a handy way to hear a part, learn a song or simply sing along at home. I'll keep adding to it as we go.</p>
+    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa Fall Session")}
     <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
     <p style="${P}"><strong>See you tonight — I can't wait to sing this one with you!</strong></p>
     ${SIGN}
@@ -779,6 +781,8 @@ function renderChoirTonight(r: Recipient) {
     ${BTN(RES, "Voir les ressources musicales")}
     <p style="${P}">🎤 <strong>Échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
+    <p style="${P}">🎬 <strong>Les enregistrements d'Ailsa!</strong> Il y a maintenant une liste de lecture avec mes enregistrements de nos chansons — une façon pratique d'entendre une voix, d'apprendre une chanson ou simplement de chanter à la maison. Je l'enrichis au fil des semaines.</p>
+    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa Fall Session")}
     <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
     <p style="${P}"><strong>À ce soir — j'ai très hâte de chanter cette chanson avec vous!</strong></p>
     ${SIGN}`;
