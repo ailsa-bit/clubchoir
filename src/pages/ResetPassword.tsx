@@ -3,15 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { KeyRound } from "lucide-react";
+import { KeyRound, Eye, EyeOff } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const visibilityLabel = (visible: boolean) => language === "fr"
+    ? (visible ? "Masquer le mot de passe" : "Afficher le mot de passe")
+    : (visible ? "Hide password" : "Show password");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -93,22 +98,46 @@ const ResetPassword = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="relative">
           <Input
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder={t("login.newPassword")}
+            aria-label={t("login.newPassword")}
+            autoComplete="new-password"
+            className="pr-12"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
           />
+          <Button type="button" variant="ghost" size="icon"
+            className="absolute right-0 top-0 text-muted-foreground"
+            onClick={() => setShowPassword((visible) => !visible)}
+            aria-label={visibilityLabel(showPassword)} title={visibilityLabel(showPassword)}
+            aria-pressed={showPassword}>
+            {showPassword ? <EyeOff /> : <Eye />}
+          </Button>
+          </div>
+          <div className="relative">
           <Input
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             placeholder={t("login.confirmPassword")}
+            aria-label={t("login.confirmPassword")}
+            autoComplete="new-password"
+            className="pr-12"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
             minLength={6}
           />
+          <Button type="button" variant="ghost" size="icon"
+            className="absolute right-0 top-0 text-muted-foreground"
+            onClick={() => setShowConfirmPassword((visible) => !visible)}
+            aria-label={visibilityLabel(showConfirmPassword)} title={visibilityLabel(showConfirmPassword)}
+            aria-pressed={showConfirmPassword}>
+            {showConfirmPassword ? <EyeOff /> : <Eye />}
+          </Button>
+          </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
           {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
           <Button type="submit" className="w-full" disabled={loading}>
