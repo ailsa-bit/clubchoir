@@ -27,6 +27,7 @@ const WEEK_TITLES: Record<number, string> = {
   8: "J'entends Frapper",
   9: "Losing My Religion",
   10: "So Easy (To Fall In Love)",
+};
 const SONG_YOUTUBE: Record<number, string> = {
   1: "https://youtu.be/4KcvYn_Q0ow?si=_4Ng9D40L_VsqrMu",
   2: "https://youtu.be/oKDVJJUSzjk?si=h-W0VSgoxflQ5b28",
