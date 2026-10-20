@@ -123,6 +123,7 @@ const Reports = () => {
 
     let out: Row[] = [];
     if (report === "paid") out = fromReg(fall.filter((r) => r.payment_status === "paid" || r.payment_status === "free"));
+    else if (report === "early-2027") out = fromReg(regs.filter((r) => r.session_label === "winter-spring-2027"));
     else if (report === "social-rsvp")
       out = rsvps.map((r) => ({
         name: r.display_name || "—",
