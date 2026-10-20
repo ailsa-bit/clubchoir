@@ -28,6 +28,7 @@ type Row = {
 
 type ReportId =
   | "paid"
+  | "early-2027"
   | "guest-list"
   | "trial-guests"
   | "social-rsvp"
@@ -36,6 +37,7 @@ type ReportId =
 
 const REPORTS: { id: ReportId; label: string; description: string }[] = [
   { id: "paid", label: "Attendance list — paid members", description: "Registered and paid for Fall 2026. Best for weekly attendance." },
+  { id: "early-2027", label: "Winter/Spring 2027 early registrations", description: "People who signed up through the early registration link for the February 2027 session." },
   { id: "social-rsvp", label: "November 1 choir social RSVPs", description: "Yes, no and maybe responses for the Wheel Club social." },
   { id: "trial-guests", label: "Trial night guest list", description: "People booked in to try a free evening, with the date they chose." },
   { id: "guest-list", label: "Guest list (first-night trials)", description: "Contacts tagged guest-list." },
