@@ -562,8 +562,8 @@ const FallSongs = () => {
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {selectedWeek}</p>
             <h1 className="text-3xl font-heading font-bold mb-1">{WEEK_TITLES[selectedWeek]}</h1>
             {SONG_YOUTUBE[selectedWeek] && (
-              <a href={SONG_YOUTUBE[selectedWeek]} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mb-4 text-sm font-semibold text-primary hover:underline">
-                <ExternalLink className="w-4 h-4" /> {language === "fr" ? "Voir sur YouTube" : "Watch on YouTube"}
+              <a href={SONG_YOUTUBE[selectedWeek]} target="_blank" rel="noopener noreferrer" className="mb-4 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground shadow-sm hover:opacity-90 transition">
+                <ExternalLink className="w-4 h-4" /> {language === "fr" ? "Enregistrement d'Ailsa sur YouTube" : "Ailsa's recording on YouTube"}
               </a>
             )}
             <p className="text-muted-foreground mb-6">{weekRows.length} {c.items}</p>
@@ -656,9 +656,9 @@ const FallSongs = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                            className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-bold text-primary-foreground shadow-sm hover:opacity-90 transition"
                           >
-                            <ExternalLink className="w-3.5 h-3.5" /> {language === "fr" ? "Voir sur YouTube" : "Watch on YouTube"}
+                            <ExternalLink className="w-3.5 h-3.5" /> {language === "fr" ? "Enregistrement d'Ailsa sur YouTube" : "Ailsa's recording on YouTube"}
                           </a>
                         )}
                       </div>
