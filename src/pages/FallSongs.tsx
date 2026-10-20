@@ -28,6 +28,15 @@ const WEEK_TITLES: Record<number, string> = {
   9: "Losing My Religion",
   10: "So Easy (To Fall In Love)",
 };
+const SONG_YOUTUBE: Record<number, string> = {
+  1: "https://youtu.be/4KcvYn_Q0ow?si=_4Ng9D40L_VsqrMu",
+  2: "https://youtu.be/oKDVJJUSzjk?si=h-W0VSgoxflQ5b28",
+  3: "https://youtu.be/KnMRmHMYeYs?si=32RmUQaGNGIaKEk6",
+  4: "https://youtu.be/xp2nQiFG600?si=POpHBa7QBLZVZlsA",
+  5: "https://youtu.be/QrRwD1_Gn1c?si=b0xsE9P8oMl2kNhS",
+  6: "https://youtu.be/d2lzg7d6mbw?si=0JlloV43Xhhw9tk8",
+  7: "https://youtu.be/rvl6G3mOJYE?si=jfBb1LrkT3Jz-10F",
+};
 
 type ResourceType = "audio" | "lyrics" | "slides" | "sheet_music";
 
@@ -552,6 +561,11 @@ const FallSongs = () => {
             {renderBackBar(goWeeks, c.backToWeeks)}
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {selectedWeek}</p>
             <h1 className="text-3xl font-heading font-bold mb-1">{WEEK_TITLES[selectedWeek]}</h1>
+            {SONG_YOUTUBE[selectedWeek] && (
+              <a href={SONG_YOUTUBE[selectedWeek]} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 mb-4 text-sm font-semibold text-primary hover:underline">
+                <ExternalLink className="w-4 h-4" /> {language === "fr" ? "Voir sur YouTube" : "Watch on YouTube"}
+              </a>
+            )}
             <p className="text-muted-foreground mb-6">{weekRows.length} {c.items}</p>
             {isAdmin && (
               <>
@@ -625,17 +639,29 @@ const FallSongs = () => {
                   {WEEKS.map((w) => {
                     const count = rows.filter((r) => r.week === w).length;
                     return (
-                      <button
+                      <div
                         key={w}
-                        onClick={() => goWeek(w)}
                         className="rounded-xl border border-border bg-card p-4 text-left min-h-[88px] hover:border-primary/50 active:scale-[.98] transition"
                       >
-                        <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {w}</span>
-                        <span className="block text-lg font-heading font-bold leading-tight mt-0.5">{WEEK_TITLES[w]}</span>
-                        <span className="block text-xs text-muted-foreground mt-1">
-                          {count > 0 ? `${count} ${c.items}` : "—"}
-                        </span>
-                      </button>
+                        <button onClick={() => goWeek(w)} className="block w-full text-left">
+                          <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {w}</span>
+                          <span className="block text-lg font-heading font-bold leading-tight mt-0.5">{WEEK_TITLES[w]}</span>
+                          <span className="block text-xs text-muted-foreground mt-1">
+                            {count > 0 ? `${count} ${c.items}` : "—"}
+                          </span>
+                        </button>
+                        {SONG_YOUTUBE[w] && (
+                          <a
+                            href={SONG_YOUTUBE[w]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" /> {language === "fr" ? "Voir sur YouTube" : "Watch on YouTube"}
+                          </a>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
