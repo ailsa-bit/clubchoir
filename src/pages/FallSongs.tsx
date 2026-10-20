@@ -27,6 +27,14 @@ const WEEK_TITLES: Record<number, string> = {
   8: "J'entends Frapper",
   9: "Losing My Religion",
   10: "So Easy (To Fall In Love)",
+const SONG_YOUTUBE: Record<number, string> = {
+  1: "https://youtu.be/4KcvYn_Q0ow?si=_4Ng9D40L_VsqrMu",
+  2: "https://youtu.be/oKDVJJUSzjk?si=h-W0VSgoxflQ5b28",
+  3: "https://youtu.be/KnMRmHMYeYs?si=32RmUQaGNGIaKEk6",
+  4: "https://youtu.be/xp2nQiFG600?si=POpHBa7QBLZVZlsA",
+  5: "https://youtu.be/QrRwD1_Gn1c?si=b0xsE9P8oMl2kNhS",
+  6: "https://youtu.be/d2lzg7d6mbw?si=0JlloV43Xhhw9tk8",
+  7: "https://youtu.be/rvl6G3mOJYE?si=jfBb1LrkT3Jz-10F",
 };
 
 type ResourceType = "audio" | "lyrics" | "slides" | "sheet_music";
