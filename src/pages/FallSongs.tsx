@@ -638,17 +638,29 @@ const FallSongs = () => {
                   {WEEKS.map((w) => {
                     const count = rows.filter((r) => r.week === w).length;
                     return (
-                      <button
+                      <div
                         key={w}
-                        onClick={() => goWeek(w)}
                         className="rounded-xl border border-border bg-card p-4 text-left min-h-[88px] hover:border-primary/50 active:scale-[.98] transition"
                       >
-                        <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {w}</span>
-                        <span className="block text-lg font-heading font-bold leading-tight mt-0.5">{WEEK_TITLES[w]}</span>
-                        <span className="block text-xs text-muted-foreground mt-1">
-                          {count > 0 ? `${count} ${c.items}` : "—"}
-                        </span>
-                      </button>
+                        <button onClick={() => goWeek(w)} className="block w-full text-left">
+                          <span className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{c.week} {w}</span>
+                          <span className="block text-lg font-heading font-bold leading-tight mt-0.5">{WEEK_TITLES[w]}</span>
+                          <span className="block text-xs text-muted-foreground mt-1">
+                            {count > 0 ? `${count} ${c.items}` : "—"}
+                          </span>
+                        </button>
+                        {SONG_YOUTUBE[w] && (
+                          <a
+                            href={SONG_YOUTUBE[w]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" /> {language === "fr" ? "Voir sur YouTube" : "Watch on YouTube"}
+                          </a>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
