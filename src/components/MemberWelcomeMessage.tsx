@@ -10,34 +10,30 @@ import type { Database } from "@/integrations/supabase/types";
 
 type Announcement = Database["public"]["Tables"]["weekly_announcements"]["Row"];
 
-const DEFAULT_TITLE = { en: "Week 7 — A Note from Ailsa 🎶", fr: "Semaine 7 — Un mot d'Ailsa 🎶" };
+const DEFAULT_TITLE = { en: "Week 8 — A Note from Ailsa 🎶", fr: "Semaine 8 — Un mot d'Ailsa 🎶" };
 
 const REVIEW_URL = "https://g.page/r/CU1hiLJTYmtXEAE/review";
 
 const PLAYLIST_URL = "https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t";
 
 const DEFAULT_MESSAGE = {
-  en: `Hello wonderful singers! 🌟
+  en: `Hello choir family! 🌟
 
-A very warm welcome back to Daniel — it's so good to have him back at the piano!
+This week we're taking on a BIG one: "J'entends frapper" — and it's going to be SO much fun! This one needs lots of energy and lots of focus, so bring your full voice and your best rock-'n'-roll spirit. Let's knock the roof off! 🥁
 
-This week, I've included a playlist of very helpful, easy warm-ups for every level. There's also one that's a little more advanced, for anyone who would like to give it a try!
+Big news: I'm preparing the invitation for each of our shows! It will come in a format you can easily share with friends and family by text and email. I'll send the email with the attachments this Sunday, so make sure you check your inbox — I'll also add a copy to the portal so you can download it anytime.
 
-I use these every day, several times a day, and I'm so happy to share them with you. Take a little time for your voice, enjoy the warm-ups, and see how they feel.
-
-I can't wait to sing with you again!
+Let's sing, let's shine, and let's bring the energy!
 
 Tra-la-la,
 Ailsa 🎤✨`,
-  fr: `Bonjour merveilleux chanteurs et chanteuses ! 🌟
+  fr: `Bonjour ma chorale ! 🌟
 
-Un très chaleureux bonjour de retour à Daniel ! Nous sommes si heureux de te retrouver au piano.
+Cette semaine, on attaque un GROS morceau : « J'entends frapper » — et ça va être tellement le fun ! Il nous faut beaucoup d'énergie et beaucoup de concentration, alors apportez votre voix au complet et votre meilleur esprit rock. Faisons vibrer la maison ! 🥁
 
-Cette semaine, je vous propose une liste de lecture d'échauffements vocaux très utiles et faciles, pour tous les niveaux. Il y en a aussi un un peu plus avancé, pour les personnes qui ont envie de l'essayer !
+Grande nouvelle : je prépare l'invitation pour chacun de nos spectacles ! Elle sera dans un format facile à partager avec vos amis et votre famille par texto et par courriel. Je vous enverrai le courriel avec les pièces jointes ce dimanche, alors pensez à vérifier votre boîte de réception — une copie sera aussi disponible sur le portail pour téléchargement en tout temps.
 
-Je les fais tous les jours, plusieurs fois par jour, et je suis très heureuse de les partager avec vous. Prenez un petit moment pour votre voix, profitez de ces échauffements et voyez comment vous vous sentez.
-
-J'ai très hâte de chanter de nouveau avec vous !
+Chantons, brillons, et apportons l'énergie !
 
 Tra-la-la,
 Ailsa 🎤✨`,
@@ -45,12 +41,12 @@ Ailsa 🎤✨`,
 
 const SONG_OF_WEEK = {
   en: {
-    title: "Song of the Week: “Bloom” — The Paper Kites",
-    body: `This week we're singing “Bloom” — the 2010 debut single from Melbourne indie-folk band The Paper Kites, the song that first put them on the map and later went Gold. Built on fingerpicked guitar and Sam Bentley and Christina Lacy's intertwining voices, “Bloom” is one of those songs that lives entirely inside its harmonies, which makes it a perfect Club Choir pick. Our kind of song: soft, luminous and quietly demanding, with room for every voice to find its place.`,
+    title: "Song of the Week: “J'entends frapper” by Michel Pagliaro",
+    body: `The biggest-selling single in Quebec music history. Montreal's own Michel Pagliaro released “J'entends frapper” in 1972, and this Chuck Berry-charged rocker was such a hit it reached #1 in English-speaking Kingston. The lyrics reflect a turning point where luck and fortune finally seem to shift for the better after facing disappointment or being abandoned by others. The chorus emphasizes that success or survival depends on personal drive and hard work rather than pure luck, and it calls for people to come together “la main dans la main” to share and support one another.`,
   },
   fr: {
-    title: "Chanson de la semaine : « Bloom » — The Paper Kites",
-    body: `Cette semaine, nous chantons « Bloom », le premier single du groupe indie-folk de Melbourne The Paper Kites, paru en 2010 : la chanson qui les a fait connaître et qui a ensuite été certifiée Or. Portée par une guitare jouée aux doigts et par les voix entrelacées de Sam Bentley et Christina Lacy, « Bloom » vit entièrement dans ses harmonies, ce qui en fait un choix parfait pour Club Choir. Notre genre de chanson : douce, lumineuse et subtilement exigeante, avec de la place pour que chaque voix trouve la sienne.`,
+    title: "Chanson de la semaine : « J'entends frapper » de Michel Pagliaro",
+    body: `Le plus grand succès de l'histoire de la musique québécoise. Le Montréalais Michel Pagliaro a lancé « J'entends frapper » en 1972, et ce rocher chargé à la Chuck Berry a connu un tel succès qu'il a atteint le no 1 à Kingston, dans le monde anglophone. Les paroles reflètent un moment tournant où la chance et la fortune semblent enfin tourner pour le mieux après des déceptions ou des abandons. Le refrain souligne que le succès ou la survie repose sur la détermination et le travail personnel plutôt que sur la pure chance, et il invite les gens à se réunir « la main dans la main » pour partager et se soutenir les uns les autres.`,
   },
 };
 
