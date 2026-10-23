@@ -16,3 +16,7 @@
 
 - [x] Correct the four Montreal attendance names.
 - [x] Make print numbering continue down each page's first and second columns, and verify a two-page printout.
+
+## Week 8 email campaigns
+- [ ] Update resources and choir-night emails for J'entends frapper, recording links and showcase invitation news.
+- [ ] Reset both campaigns with new Week 8 tracking keys; deploy and verify previews without sending.
