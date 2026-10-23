@@ -696,7 +696,7 @@ function renderResourcesWeek3(r: Recipient) {
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
     <p style="${P}">My recording of <strong>"J'entends frapper"</strong> is now on the Week 8 song card and in the Ailsa recordings playlist — ready for a listen or a sing-along!</p>
-    ${BTN("https://youtu.be/uahZbV3445U?si=o0y146JgIaGX7uCU", "Ailsa's recording on YouTube")} 
+    ${BTN("https://youtu.be/uahZbV3445U?si=YXqjRgh0ZsFwosqy", "Ailsa's recording on YouTube")} 
     <p style="${P}">🎬 <strong>New on the song resources page: a YouTube Resources section!</strong> All of our YouTube links now live in one place on the resources page — including <strong>Ailsa's YouTube recordings</strong> (including "J'entends frapper," now on its own song card and in the playlist), the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups below. Easy to find, any time.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Fall 2026 (Original)")}
@@ -719,7 +719,7 @@ function renderResourcesWeek3(r: Recipient) {
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
     <p style="${P}">Mon enregistrement de <strong>« J'entends frapper »</strong> est maintenant sur la fiche de la semaine 8 et dans la liste des enregistrements d'Ailsa — pour écouter ou chanter avec moi!</p>
-    ${BTN("https://youtu.be/uahZbV3445U?si=o0y146JgIaGX7uCU", "Enregistrement d'Ailsa sur YouTube")} 
+    ${BTN("https://youtu.be/uahZbV3445U?si=YXqjRgh0ZsFwosqy", "Enregistrement d'Ailsa sur YouTube")} 
     <p style="${P}">🎬 <strong>Nouveau sur la page des ressources : une section Ressources YouTube!</strong> Tous nos liens YouTube se trouvent maintenant au même endroit sur la page des ressources — dont <strong>les enregistrements YouTube d'Ailsa</strong> (dont « J'entends frapper », maintenant sur sa fiche de chanson et dans la liste de lecture), la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo ci-dessous. Facile à retrouver, en tout temps.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Automne 2026 (original)")}
@@ -773,7 +773,7 @@ function renderChoirTonight(r: Recipient) {
     <p style="${P}">Want a quick listen before we meet? Your recordings, lyrics and lyric slides are waiting on the resource page. If you need help signing in, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Open the song resources")}
     <p style="${P}">My recording of <strong>"J'entends frapper"</strong> is now on the Week 8 song card and in the Ailsa recordings playlist — ready for a listen or a sing-along!</p>
-    ${BTN("https://youtu.be/uahZbV3445U?si=o0y146JgIaGX7uCU", "Ailsa's recording on YouTube")} 
+    ${BTN("https://youtu.be/uahZbV3445U?si=YXqjRgh0ZsFwosqy", "Ailsa's recording on YouTube")} 
     <p style="${P}">🎤 <strong>Vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <p style="${P}">🎬 <strong>Ailsa's recordings!</strong> There's now a playlist of me recording our songs — a handy way to hear a part, learn a song or simply sing along at home. I'll keep adding to it as we go.</p>
@@ -792,7 +792,7 @@ function renderChoirTonight(r: Recipient) {
     <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Voir les ressources musicales")}
     <p style="${P}">Mon enregistrement de <strong>« J'entends frapper »</strong> est maintenant sur la fiche de la semaine 8 et dans la liste des enregistrements d'Ailsa — pour écouter ou chanter avec moi!</p>
-    ${BTN("https://youtu.be/uahZbV3445U?si=o0y146JgIaGX7uCU", "Enregistrement d'Ailsa sur YouTube")} 
+    ${BTN("https://youtu.be/uahZbV3445U?si=YXqjRgh0ZsFwosqy", "Enregistrement d'Ailsa sur YouTube")} 
     <p style="${P}">🎤 <strong>Échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <p style="${P}">🎬 <strong>Les enregistrements d'Ailsa!</strong> Il y a maintenant une liste de lecture avec mes enregistrements de nos chansons — une façon pratique d'entendre une voix, d'apprendre une chanson ou simplement de chanter à la maison. Je l'enrichis au fil des semaines.</p>
