@@ -20,3 +20,4 @@
 ## Week 8 email campaigns
 - [ ] Update resources and choir-night emails for J'entends frapper, recording links and showcase invitation news.
 - [ ] Reset both campaigns with new Week 8 tracking keys; deploy and verify previews without sending.
+- [ ] Replace J'entends frapper YouTube link on resources and in both unsent Week 8 emails; verify.
