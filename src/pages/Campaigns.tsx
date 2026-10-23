@@ -42,21 +42,21 @@ const EMPTY_COUNTS = {
 } as Record<Segment, number>;
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
-  "choir-tonight": "fall-2026-choir-tonight-week7-v1",
-  "resources-week3-paid": "fall-2026-resources-week7-paid-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week8-v1",
+  "resources-week3-paid": "fall-2026-resources-week8-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
     key: "choir-tonight",
-    title: "Week 7 — See You at Choir Tonight",
-    description: "Fresh same-day note for paid members, sent by location. Begins ‘Bloom’ by The Paper Kites, keeps building ‘Toxic,’ with venue details, simple reminders, the Singeo vocal warm-up playlist and the resource link. Bilingual EN/FR.",
+    title: "Week 8 — See You at Choir Tonight",
+    description: "Week 8 same-day reminder for paid members, sent by location. J’entends frapper by Michel Pagliaro, with energy and focus, venue details, song resources, Ailsa’s recording, Singeo warm-ups and showcase invitation news. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
     key: "resources-week3-paid",
-    title: "Week 7 Resources Are Up — \"Bloom\"",
-    description: "Send by location to paid members. Announces Week 7 song \"Bloom\" by The Paper Kites, includes the weekly links, the new YouTube Resources section on the song resources page (Ailsa's YouTube recordings, Fall 2026 Original and the Singeo warm-up playlist), and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
+    title: "Week 8 Resources Are Up — \"J'entends frapper\"",
+    description: "Send by location to paid members. Announces Week 8 song \"J'entends frapper\" by Michel Pagliaro, includes the weekly links, the new Week 8 recording and Sunday showcase invitation news, the new YouTube Resources section on the song resources page (Ailsa's YouTube recordings, Fall 2026 Original and the Singeo warm-up playlist), and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];
