@@ -36,6 +36,7 @@ const SONG_YOUTUBE: Record<number, string> = {
   5: "https://youtu.be/QrRwD1_Gn1c?si=b0xsE9P8oMl2kNhS",
   6: "https://youtu.be/d2lzg7d6mbw?si=0JlloV43Xhhw9tk8",
   7: "https://youtu.be/rvl6G3mOJYE?si=jfBb1LrkT3Jz-10F",
+  8: "https://youtu.be/uahZbV3445U?si=o0y146JgIaGX7uCU",
 };
 
 type ResourceType = "audio" | "lyrics" | "slides" | "sheet_music";
