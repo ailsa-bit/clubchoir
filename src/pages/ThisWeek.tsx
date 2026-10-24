@@ -21,8 +21,8 @@ const ThisWeek = () => {
     <div className="py-16 px-4">
       <PageMeta title={t("meta.thisWeek.title")} description={t("meta.thisWeek.desc")} path="/this-week" />
       <div className="container mx-auto max-w-4xl lg:max-w-5xl px-4">
-        {new Date() <= new Date("2026-11-02T04:59:59Z") && <ChoirSocialRsvp />}
         <ShowcaseInvitations />
+        {new Date() <= new Date("2026-11-02T04:59:59Z") && <ChoirSocialRsvp />}
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
           {t("thisWeek.title")}
         </h1>

@@ -5,6 +5,7 @@ import { useProfile } from "@/hooks/use-profile";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
 import { Download, Loader2, Mail, Trash2, Upload } from "lucide-react";
+import "./ShowcaseInvitations.css";
 
 export const INVITE_SESSION = "showcase-2026-invitations";
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"];
@@ -14,6 +15,20 @@ const VERSIONS = [
   { key: "landscape-en", en: "Landscape — English", fr: "Paysage — anglais" },
   { key: "landscape-fr", en: "Landscape — French", fr: "Paysage — français" },
 ];
+
+const FLAKES = ["\u2744\uFE0E", "\u273B", "\u274B", "\u273B", "\u2744\uFE0E", "\u273C", "\u2744\uFE0E", "\u273B", "\u274B", "\u273B", "\u2744\uFE0E", "\u273C"];
+const FLAKES_SIDE = ["\u273B", "\u2744\uFE0E", "\u274B", "\u2744\uFE0E", "\u273B", "\u2744\uFE0E", "\u274B", "\u2744\uFE0E"];
+
+function FlakeBand({ sides, count }: { sides: string; count: number }) {
+  const set = count === FLAKES.length ? FLAKES : FLAKES_SIDE;
+  return (
+    <div className={`cc-invite-band ${sides}`} aria-hidden="true">
+      {set.map((f, i) => (
+        <span key={i} className={`cc-invite-glyph ${i % 3 === 0 ? "cc-invite-glyph-lg" : ""}`}>{f}</span>
+      ))}
+    </div>
+  );
+}
 
 interface Invite { id: string; location: string; part: string | null; file_name: string; storage_path: string; }
 
@@ -93,64 +108,71 @@ export function ShowcaseInvitations() {
   };
 
   return (
-    <section className="rounded-2xl border border-primary/20 bg-card p-6 mb-8">
-      <div className="flex items-center gap-2 mb-2">
-        <Mail className="w-5 h-5 text-primary" />
-        <h2 className="font-heading font-bold text-xl text-foreground">
-          {fr ? "Invitations au spectacle" : "Showcase Invitations"}
-        </h2>
+    <section className="cc-invite-frame mb-8">
+      <FlakeBand sides="cc-invite-band-row cc-invite-top" count={FLAKES.length} />
+      <FlakeBand sides="cc-invite-band-row cc-invite-bottom" count={FLAKES.length} />
+      <FlakeBand sides="cc-invite-band-col cc-invite-left" count={FLAKES_SIDE.length} />
+      <FlakeBand sides="cc-invite-band-col cc-invite-right" count={FLAKES_SIDE.length} />
+
+      <div className="cc-invite-inner">
+        <div className="flex items-center gap-2 mb-2">
+          <Mail className="w-5 h-5 text-primary" />
+          <h2 className="font-heading font-bold text-xl text-foreground">
+            {fr ? "Invitations au spectacle" : "Showcase Invitations"}
+          </h2>
+        </div>
+        <p className="text-sm text-muted-foreground mb-4">
+          {fr ? "Téléchargez votre invitation et partagez-la avec vos amis et votre famille par texto ou courriel."
+              : "Download your invitation and share it with friends and family by text or email."}
+        </p>
+
+        {isAdmin && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {LOCATIONS.map((l) => (
+              <button key={l} onClick={() => setAdminLoc(l)}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium ${adminLoc === l ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>
+                {l} ({invites.filter((i) => i.location === l).length}/4)
+              </button>
+            ))}
+          </div>
+        )}
+
+        {loading ? <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" /> : (
+          <div className="grid gap-3 sm:grid-cols-2">
+            {VERSIONS.map((v) => {
+              const inv = forLoc.find((i) => i.part === v.key);
+              if (!inv && !isAdmin) return null;
+              return (
+                <div key={v.key} className="rounded-xl border border-border bg-card p-4 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-medium text-foreground">{fr ? v.fr : v.en}</p>
+                    {isAdmin && <p className="text-xs text-muted-foreground truncate">{inv ? inv.file_name : "Not uploaded yet"}</p>}
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    {inv && (
+                      <button onClick={() => download(inv)} disabled={busy === inv.id}
+                        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold">
+                        {busy === inv.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                        {fr ? "Télécharger" : "Download"}
+                      </button>
+                    )}
+                    {isAdmin && (
+                      <>
+                        <label className="p-2 rounded-xl bg-muted cursor-pointer" title={inv ? "Replace" : "Upload"}>
+                          {busy === v.key ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                          <input type="file" accept=".pdf,.png,.jpg,.jpeg,.webp" className="hidden"
+                            onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(v.key, f); e.target.value = ""; }} />
+                        </label>
+                        {inv && <button onClick={() => remove(inv)} className="p-2 rounded-xl text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>}
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
-      <p className="text-sm text-muted-foreground mb-4">
-        {fr ? "Téléchargez votre invitation et partagez-la avec vos amis et votre famille par texto ou courriel."
-            : "Download your invitation and share it with friends and family by text or email."}
-      </p>
-
-      {isAdmin && (
-        <div className="flex flex-wrap gap-2 mb-4">
-          {LOCATIONS.map((l) => (
-            <button key={l} onClick={() => setAdminLoc(l)}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium ${adminLoc === l ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>
-              {l} ({invites.filter((i) => i.location === l).length}/4)
-            </button>
-          ))}
-        </div>
-      )}
-
-      {loading ? <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" /> : (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {VERSIONS.map((v) => {
-            const inv = forLoc.find((i) => i.part === v.key);
-            if (!inv && !isAdmin) return null;
-            return (
-              <div key={v.key} className="rounded-xl border border-border bg-background p-4 flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-medium text-foreground">{fr ? v.fr : v.en}</p>
-                  {isAdmin && <p className="text-xs text-muted-foreground truncate">{inv ? inv.file_name : "Not uploaded yet"}</p>}
-                </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  {inv && (
-                    <button onClick={() => download(inv)} disabled={busy === inv.id}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold">
-                      {busy === inv.id ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                      {fr ? "Télécharger" : "Download"}
-                    </button>
-                  )}
-                  {isAdmin && (
-                    <>
-                      <label className="p-2 rounded-xl bg-muted cursor-pointer" title={inv ? "Replace" : "Upload"}>
-                        {busy === v.key ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                        <input type="file" accept=".pdf,.png,.jpg,.jpeg,.webp" className="hidden"
-                          onChange={(e) => { const f = e.target.files?.[0]; if (f) upload(v.key, f); e.target.value = ""; }} />
-                      </label>
-                      {inv && <button onClick={() => remove(inv)} className="p-2 rounded-xl text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>}
-                    </>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
     </section>
   );
 }
