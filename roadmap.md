@@ -24,5 +24,5 @@
 - [x] Add showcase venue addresses to Events page cards (from uploaded invitations)
 
 ## Showcase invitation campaign
-- [ ] Prepare bilingual location-specific invitation campaign with four attachments, download links, My Choir and November 1 karaoke invitation.
-- [ ] Verify every location's preview and attachment downloads without sending member emails.
+- [x] Prepare bilingual location-specific invitation campaign with four attachments, download links, My Choir and November 1 karaoke invitation.
+- [x] Verify every location's preview and attachment downloads without sending member emails (16 PNG downloads, 243 eligible recipients, nine tests passed).
