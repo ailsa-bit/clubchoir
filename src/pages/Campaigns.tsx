@@ -214,16 +214,30 @@ const Campaigns = () => {
     setSending(seg);
     setConfirmSegment(null);
     try {
-      const data = await invokeCampaign<any>({
-        segment: seg,
-        location: locFilter[seg],
-        preflightFingerprint: preflight.fingerprint,
-        preflightCount: preflight.count,
-        excludeEmails: excludedEmails,
-      });
+      let sent = 0, failed = 0, skipped: number | null = null;
+      let pf: Preflight = preflight;
+      for (let round = 0; round < 30; round++) {
+        const data = await invokeCampaign<any>({
+          segment: seg,
+          location: locFilter[seg],
+          preflightFingerprint: pf.fingerprint,
+          preflightCount: pf.count,
+          excludeEmails: excludedEmails,
+        });
+        sent += data.success?.length || 0;
+        failed += data.failed?.length || 0;
+        if (skipped === null) skipped = data.skipped || 0;
+        if (!data.remaining) break;
+        toast({ title: "Still sending…", description: `${sent} sent so far, ${data.remaining} to go. Please keep this page open.` });
+        // Re-verify the remaining people (already-emailed ones drop off automatically).
+        pf = await invokeCampaign<Preflight>({
+          segment: seg, location: locFilter[seg], preflightOnly: true, excludeEmails: excludedEmails,
+        });
+        if (pf.issues.length || !pf.count) break;
+      }
       toast({
         title: "Campaign sent!",
-        description: `${data.success?.length || 0} sent, ${data.failed?.length || 0} failed, ${data.skipped || 0} skipped.`,
+        description: `${sent} sent, ${failed} failed, ${skipped || 0} skipped.`,
       });
       loadCounts();
     } catch (e: any) {

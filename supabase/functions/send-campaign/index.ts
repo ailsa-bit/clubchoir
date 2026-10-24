@@ -1480,7 +1480,12 @@ serve(async (req) => {
     </div>`;
 
     const batchSize = segment === SHOWCASE_SEGMENT ? 1 : 5;
+    // Stay well under the 150s request limit; the page calls again for the rest
+    // (already-sent people are skipped automatically).
+    const deadline = Date.now() + 100_000;
+    let remaining = 0;
     for (let i = 0; i < toSend.length; i += batchSize) {
+      if (Date.now() > deadline) { remaining = toSend.length - i; break; }
       const batch = toSend.slice(i, i + batchSize);
       await Promise.all(batch.map(async (r) => {
         try {
@@ -1521,7 +1526,7 @@ serve(async (req) => {
       await new Promise((res) => setTimeout(res, segment === SHOWCASE_SEGMENT ? 650 : 350));
     }
 
-    return new Response(JSON.stringify(results), {
+    return new Response(JSON.stringify({ ...results, remaining }), {
       status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   } catch (e: any) {
