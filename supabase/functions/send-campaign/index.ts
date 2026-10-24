@@ -1,3 +1,4 @@
+import { SHOWCASE_SEGMENT, SHOWCASE_CAMPAIGN_KEY, INVITATION_SESSION, invitationsForLocation, type EmailInvitation } from "./showcase-invitations.ts";
 import { emailButton } from "../_shared/email-button.ts";
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
@@ -14,9 +15,10 @@ const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 const GARY_WHITE_EMAIL = "garwhite@hotmail.com";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "showcase-invitations";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
+  "showcase-invitations": SHOWCASE_CAMPAIGN_KEY,
   "fall-paid": "fall-2026-confirmed-v1",
   "fall-unpaid": "fall-2026-payment-outstanding-v1",
   "fall-considering": "fall-2026-still-considering-v1",
@@ -879,7 +881,63 @@ function renderGaryWhiteShoutout(r: Recipient) {
   };
 }
 
-function renderEmail(segment: Segment, r: Recipient): { subject: string; html: string } {
+async function loadShowcaseInvitations(supabase: any, locations: string[]): Promise<Record<string, EmailInvitation[]>> {
+  const { data, error } = await supabase.from("song_resources")
+    .select("location, part, file_name, storage_path")
+    .eq("session_label", INVITATION_SESSION).eq("resource_type", "invitation");
+  if (error) throw new Error("Could not load showcase invitations. Please try again.");
+  const result: Record<string, EmailInvitation[]> = {};
+  for (const location of [...new Set(locations)]) {
+    result[location] = await Promise.all(invitationsForLocation(data || [], location).map(async (row) => {
+      const { data: signed, error: signError } = await supabase.storage.from("song-resources")
+        .createSignedUrl(row.storage_path, 60 * 60 * 24 * 365, { download: row.file_name });
+      if (signError || !signed?.signedUrl) throw new Error(`${location}: could not prepare ${row.file_name}.`);
+      const response = await fetch(signed.signedUrl, { method: "HEAD" });
+      if (!response.ok) throw new Error(`${location}: invitation file is unavailable. Please upload it again.`);
+      return { ...row, url: signed.signedUrl };
+    }));
+  }
+  return result;
+}
+
+function renderShowcaseInvitations(r: Recipient, invitations: EmailInvitation[]) {
+  const links = (lang: "en" | "fr") => invitations.map((inv) => {
+    const portrait = inv.part?.startsWith("portrait");
+    const english = inv.part?.endsWith("en");
+    const label = lang === "en"
+      ? `${portrait ? "Portrait" : "Landscape"} — ${english ? "English" : "French"}`
+      : `${portrait ? "Portrait" : "Paysage"} — ${english ? "anglais" : "français"}`;
+    return BTN(inv.url, `${lang === "en" ? "Download" : "Télécharger"} ${label}`);
+  }).join("");
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}"><strong>Our showcase invitations are ready!</strong> It’s time to invite your friends and family to come hear what we’ve been working on together. I’m so looking forward to sharing our music with them!</p>
+    <p style="${P}">You’ll find your <strong>${esc(r.location)}</strong> invitations at the top of the <strong>My Choir</strong> page. Download and save them to your phone, tablet or computer, then share them by text or email. There are English and French versions in both portrait and landscape, so choose whichever works best for you.</p>
+    ${BTN(`${SITE_URL}/this-week`, "Open My Choir")}
+    <p style="${P}">I’ve also attached all four invitations for your location to this email. You can save the attachments directly, or use these download buttons:</p>
+    ${links("en")}
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:20px;">Let’s sing and celebrate — karaoke next Sunday! 🎤</h2>
+    <p style="${P}">Our choir get-together is <strong>Sunday, November 1, 2026, from 2:00–5:00 PM</strong> at <strong>The Wheel Club, 3373 Cavendish, Montreal</strong>. All four locations are invited — no rehearsal, just a relaxed afternoon of karaoke and good company!</p>
+    <p style="${P}">If you’d like to bring a friend or your spouse, please feel free to invite them. They’re very welcome! Thank you to everyone who has already replied. If you haven’t yet, let me know on My Choir whether you’ll be joining us.</p>
+    ${BTN(`${SITE_URL}/this-week#choir-social-rsvp`, "Reply for the karaoke get-together")}
+    <p style="${P}">I can’t wait to see you there — and to welcome your friends and family at our showcases!</p>
+    ${SIGN}${DIVIDER}${greetFr(r)}
+    <p style="${P}"><strong>Nos invitations aux spectacles sont prêtes!</strong> C’est le moment d’inviter vos amis et votre famille à venir entendre ce que nous préparons ensemble. J’ai tellement hâte de partager notre musique avec eux!</p>
+    <p style="${P}">Vous trouverez les invitations de <strong>${esc(r.location)}</strong> tout en haut de la page <strong>Ma chorale</strong>. Téléchargez-les et enregistrez-les sur votre téléphone, votre tablette ou votre ordinateur, puis partagez-les par texto ou par courriel. Elles sont offertes en anglais et en français, en format portrait et paysage : choisissez ce qui vous convient le mieux.</p>
+    ${BTN(`${SITE_URL}/this-week`, "Ouvrir Ma chorale")}
+    <p style="${P}">J’ai aussi joint les quatre invitations de votre lieu à ce courriel. Vous pouvez enregistrer les pièces jointes directement ou utiliser ces boutons :</p>
+    ${links("fr")}
+    <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:20px;">Chantons et célébrons — karaoké dimanche prochain! 🎤</h2>
+    <p style="${P}">Notre rencontre aura lieu le <strong>dimanche 1er novembre 2026, de 14 h à 17 h</strong>, au <strong>Wheel Club, 3373 Cavendish, Montréal</strong>. Les membres de nos quatre lieux sont invités — pas de répétition, simplement un bel après-midi de karaoké en bonne compagnie!</p>
+    <p style="${P}">Si vous souhaitez venir avec un ami, une amie ou votre conjoint ou conjointe, n’hésitez pas à les inviter. Ils sont les bienvenus! Merci à tous ceux qui ont déjà répondu. Si ce n’est pas encore fait, dites-moi sur Ma chorale si vous serez des nôtres.</p>
+    ${BTN(`${SITE_URL}/this-week#choir-social-rsvp`, "Répondre pour la rencontre karaoké")}
+    <p style="${P}">J’ai hâte de vous y retrouver — et d’accueillir vos amis et votre famille à nos spectacles!</p>
+    ${SIGN}`;
+  return { subject: `Your ${r.location} showcase invitations + karaoke next Sunday! / Vos invitations au spectacle + karaoké dimanche prochain!`, html: wrap(inner, "Save and share your showcase invitations, and bring a friend to karaoke on November 1!") };
+}
+
+function renderEmail(segment: Segment, r: Recipient, invitations: EmailInvitation[] = []): { subject: string; html: string } {
+  if (segment === SHOWCASE_SEGMENT) return renderShowcaseInvitations(r, invitations);
 
   if (segment === "fall-paid") return renderPaid(r);
   if (segment === "fall-unpaid") return renderUnpaid(r);
@@ -905,6 +963,12 @@ const NEVER_EMAIL = new Set<string>(["testmember@clubchoir.ca"]);
 
 async function loadRecipients(supabase: any, segment: Segment): Promise<Recipient[]> {
   const loaded = await loadRecipientsInner(supabase, segment);
+  if (segment === SHOWCASE_SEGMENT) {
+    const { data, error } = await supabase.from("members").select("email, status, archived_at");
+    if (error) throw error;
+    const inactive = new Set((data || []).filter((m: any) => m.archived_at || m.status === "INACTIVE").map((m: any) => String(m.email || "").trim().toLowerCase()));
+    return loaded.filter((r) => !inactive.has(r.email) && !NEVER_EMAIL.has(r.email));
+  }
   return loaded.filter((r) => !NEVER_EMAIL.has(String(r.email || "").toLowerCase().trim()));
 }
 
@@ -968,7 +1032,7 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
   if (segment === "welcome-new-paid" || segment === "welcome-late-paid") return Array.from(newlyPaidMap.values());
 
-  if (segment === "fall-paid" || segment === "resources-week3-paid") return Array.from(paidMap.values());
+  if (segment === "fall-paid" || segment === "resources-week3-paid" || segment === SHOWCASE_SEGMENT) return Array.from(paidMap.values());
 
   if (segment === "choir-tonight") {
     // Same-day reminders are for paid Fall 2026 members only.
@@ -1120,7 +1184,9 @@ async function loadAlreadySent(
     }
   }
   const skip = new Set<string>();
-  const { data } = await supabase.from("campaign_sends").select("recipient_email").in("campaign_key", keys);
+  let sentQuery = supabase.from("campaign_sends").select("recipient_email").in("campaign_key", keys);
+  if (segment === SHOWCASE_SEGMENT) sentQuery = sentQuery.eq("status", "sent");
+  const { data } = await sentQuery;
   for (const r of data || []) skip.add(String(r.recipient_email).toLowerCase());
   return skip;
 }
@@ -1283,13 +1349,19 @@ serve(async (req) => {
     }
 
 
+    const showcaseFiles = segment === SHOWCASE_SEGMENT
+      ? await loadShowcaseInvitations(supabase, previewOnly || testEmail
+        ? [location !== "all" && location !== "unknown" ? location : "Montreal"]
+        : recipients.map((r) => r.location))
+      : {};
+
     if (previewOnly) {
       const fallback: Recipient = {
         email: "sample@example.com", first_name: "Sample", last_name: "Singer",
         location: location !== "all" && location !== "unknown" ? location : "Montreal",
       };
-      const { subject, html } = renderEmail(segment, fallback);
-      return new Response(JSON.stringify({ subject, html, count: recipients.length }), {
+      const { subject, html } = renderEmail(segment, fallback, showcaseFiles[fallback.location]);
+      return new Response(JSON.stringify({ subject, html, count: recipients.length, attachments: showcaseFiles[fallback.location] || [] }), {
         status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
@@ -1310,13 +1382,15 @@ serve(async (req) => {
         email: TEST_RECIPIENT, first_name: "Ailsa", last_name: "Pehi",
         location: location !== "all" && location !== "unknown" ? location : "Montreal",
       };
-      const { subject, html } = renderEmail(segment, testRecipient);
-      await resend.emails.send({
+      const { subject, html } = renderEmail(segment, testRecipient, showcaseFiles[testRecipient.location]);
+      const testResult = await resend.emails.send({
         from: "Club Choir <noreply@clubchoir.ca>",
         to: [TEST_RECIPIENT],
         subject: `[TEST] ${subject}`,
         html,
+        attachments: (showcaseFiles[testRecipient.location] || []).map((inv) => ({ filename: inv.file_name, path: inv.url })),
       });
+      if (testResult.error) throw new Error(testResult.error.message);
       return new Response(JSON.stringify({ ok: true, sentTo: TEST_RECIPIENT }), {
         status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
@@ -1405,22 +1479,31 @@ serve(async (req) => {
       <p style="${P} margin-bottom:0;color:#555;">Désolée — nous vous avons envoyé un message test par erreur. Désolée pour la confusion! Voici les bonnes informations pour votre première soirée d'essai. À la semaine prochaine!</p>
     </div>`;
 
-    const batchSize = 5;
+    const batchSize = segment === SHOWCASE_SEGMENT ? 1 : 5;
     for (let i = 0; i < toSend.length; i += batchSize) {
       const batch = toSend.slice(i, i + batchSize);
       await Promise.all(batch.map(async (r) => {
         try {
-          const { subject, html: baseHtml } = renderEmail(segment, r);
+          const { subject, html: baseHtml } = renderEmail(segment, r, showcaseFiles[r.location]);
           const html = apologyNote
             ? baseHtml.replace("<p style=", `${APOLOGY_HTML}<p style=`)
             : baseHtml;
-          await resend.emails.send({
+          const payload = {
             from: "Club Choir <noreply@clubchoir.ca>",
             reply_to: CONTACT,
             to: [r.email],
             subject,
             html,
-          });
+            ...(segment === SHOWCASE_SEGMENT ? {
+              attachments: (showcaseFiles[r.location] || []).map((inv) => ({ filename: inv.file_name, path: inv.url })),
+            } : {}),
+          };
+          let delivery = await resend.emails.send(payload);
+          for (let retry = 0; segment === SHOWCASE_SEGMENT && delivery.error?.name === "rate_limit_exceeded" && retry < 3; retry++) {
+            await new Promise((resolve) => setTimeout(resolve, 1500 * (retry + 1)));
+            delivery = await resend.emails.send(payload);
+          }
+          if (delivery.error) throw new Error(delivery.error.message);
 
           results.success.push(r.email);
           await supabase.from("campaign_sends").insert({
@@ -1435,7 +1518,7 @@ serve(async (req) => {
           });
         }
       }));
-      await new Promise((res) => setTimeout(res, 350));
+      await new Promise((res) => setTimeout(res, segment === SHOWCASE_SEGMENT ? 650 : 350));
     }
 
     return new Response(JSON.stringify(results), {
