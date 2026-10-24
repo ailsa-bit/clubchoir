@@ -1,5 +1,5 @@
 import PageMeta from "@/components/PageMeta";
-import { Calendar, MapPin, Share2, Clock, Music, Ticket, ArrowLeft, ArrowRight, CheckCircle2, BellRing, Heart, ExternalLink } from "lucide-react";
+import { Calendar, MapPin, Share2, Download, Clock, Music, Ticket, ArrowLeft, ArrowRight, CheckCircle2, BellRing, Heart, ExternalLink } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import PhotoGallery from "@/components/PhotoGallery";
 import { porchfestPhotos } from "@/assets/photos/porchfest";
+const INVITES = import.meta.glob("@/assets/invitations/*.asset.json", { eager: true, import: "default" }) as Record<string, { url: string }>;
+const inviteUrl = (loc: string, lang: string) => INVITES[`/src/assets/invitations/${loc.toLowerCase()}-${lang}.png.asset.json`]?.url;
 import { victoriaVillagePhotos } from "@/assets/photos/victoriaVillage";
 
 
@@ -166,6 +168,15 @@ const Events = () => {
                   </span>
                 </div>
                 <p className="text-sm text-foreground/80 mb-4">{getText(event.description, language)}</p>
+                {(() => { const loc = getText(event.location, "en"); return (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {(["en", "fr"] as const).map((lg) => inviteUrl(loc, lg) && (
+                    <a key={lg} href={inviteUrl(loc, lg)} download={`club-choir-showcase-${loc.toLowerCase()}-${lg}.png`}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground hover:opacity-90">
+                      <Download className="w-3.5 h-3.5" />
+                      {lg === "en" ? (language === "fr" ? "Invitation (anglais)" : "Download invitation (English)") : (language === "fr" ? "Télécharger l'invitation (français)" : "Invitation (French)")}
+                    </a>))}
+                </div>); })()}
                 <button
                   onClick={() => handleShare(title)}
                   className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
