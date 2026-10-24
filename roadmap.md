@@ -22,3 +22,7 @@
 - [x] Reset both campaigns with new Week 8 tracking keys; deploy and verify previews without sending.
 - [x] Replace J'entends frapper YouTube link on resources and in both unsent Week 8 emails; verify.
 - [x] Add showcase venue addresses to Events page cards (from uploaded invitations)
+
+## Showcase invitation campaign
+- [x] Prepare bilingual location-specific invitation campaign with four attachments, download links, My Choir and November 1 karaoke invitation.
+- [x] Verify every location's preview and attachment downloads without sending member emails (16 PNG downloads, 243 eligible recipients, nine tests passed).

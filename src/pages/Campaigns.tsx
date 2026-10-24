@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "resources-week3-paid";
+type Segment = "choir-tonight" | "resources-week3-paid" | "showcase-invitations";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -37,16 +37,24 @@ interface Preflight {
 }
 
 const EMPTY_COUNTS = {
+  "showcase-invitations": 0,
   "choir-tonight": 0,
   "resources-week3-paid": 0,
 } as Record<Segment, number>;
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
+  "showcase-invitations": "fall-2026-showcase-invitations-v1",
   "choir-tonight": "fall-2026-choir-tonight-week8-v1",
   "resources-week3-paid": "fall-2026-resources-week8-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
+  {
+    key: "showcase-invitations",
+    title: "Showcase Invitations & November 1 Karaoke",
+    description: "Personalized bilingual invitation email. Each member receives only their location’s four invitations: portrait and landscape, English and French. Includes download links, My Choir and a warm invitation to bring friends or a spouse to karaoke.",
+    color: "bg-card border-primary/30",
+  },
   {
     key: "choir-tonight",
     title: "Week 8 — See You at Choir Tonight",
@@ -70,16 +78,19 @@ const Campaigns = () => {
   const { toast } = useToast();
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
+    "showcase-invitations": {},
     "choir-tonight": {},
     "resources-week3-paid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
+    "showcase-invitations": "all",
     "choir-tonight": "all",
     "resources-week3-paid": "all",
   });
   const [sentCounts, setSentCounts] = useState<Record<Segment, number>>({ ...EMPTY_COUNTS });
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
+    "showcase-invitations": {},
     "choir-tonight": {},
     "resources-week3-paid": {},
   });
