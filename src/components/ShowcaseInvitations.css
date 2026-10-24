@@ -1,0 +1,68 @@
+/* Festive greeting-card frame for the showcase invitations block.
+   Colours come only from the site's semantic tokens so dark mode keeps working. */
+
+.cc-invite-frame {
+  --cc-invite-bg: color-mix(in srgb, hsl(var(--primary)) 7%, hsl(var(--card)));
+  position: relative;
+  margin-bottom: 2rem;
+  padding: 1.75rem 1.75rem;
+  border: 2px solid hsl(var(--primary) / 0.55);
+  border-radius: 1.5rem;
+  background: var(--cc-invite-bg);
+}
+
+/* dashed inner line, like the edge of a holiday card */
+.cc-invite-inner {
+  border: 1px dashed hsl(var(--primary) / 0.35);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.cc-invite-band {
+  position: absolute;
+  display: flex;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  color: hsl(var(--primary));
+  line-height: 1;
+}
+
+.cc-invite-band-row {
+  left: 1.1rem;
+  right: 1.1rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cc-invite-band-col {
+  top: 1.4rem;
+  bottom: 1.4rem;
+  width: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cc-invite-top { top: 0; transform: translateY(-50%); }
+.cc-invite-bottom { bottom: 0; transform: translateY(50%); }
+.cc-invite-left { left: 0; transform: translateX(-50%); }
+.cc-invite-right { right: 0; transform: translateX(50%); }
+
+.cc-invite-glyph {
+  font-size: 13px;
+  font-variant-emoji: text;
+  opacity: 0.85;
+}
+
+.cc-invite-glyph-lg {
+  font-size: 18px;
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .cc-invite-frame { padding: 1.25rem 1.1rem; }
+  .cc-invite-inner { padding: 0.9rem; }
+  .cc-invite-band-col { display: none; }
+}
