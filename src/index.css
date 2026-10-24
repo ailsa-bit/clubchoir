@@ -34,6 +34,10 @@
     --orange-foreground: 0 0% 100%;
     --orange-light: 25 90% 92%;
 
+    /* Powder Blue — festive seasonal accent */
+    --powder-blue: 197 58% 72%;
+    --powder-blue-light: 197 55% 95%;
+
     --background: 40 30% 98%;
     --foreground: 240 10% 16%;
 
@@ -92,6 +96,8 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
     --border: 240 10% 20%;
+    --powder-blue: 197 55% 66%;
+    --powder-blue-light: 197 45% 16%;
     --input: 240 10% 20%;
     --ring: 340 75% 60%;
     --sidebar-background: 240 5.9% 10%;
