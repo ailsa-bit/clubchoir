@@ -2,18 +2,18 @@
    Colours come only from the site's semantic tokens so dark mode keeps working. */
 
 .cc-invite-frame {
-  --cc-invite-bg: color-mix(in srgb, hsl(var(--primary)) 7%, hsl(var(--card)));
+  --cc-invite-bg: color-mix(in srgb, hsl(var(--powder-blue)) 14%, hsl(var(--card)));
   position: relative;
   margin-bottom: 2rem;
   padding: 1.75rem 1.75rem;
-  border: 2px solid hsl(var(--primary) / 0.55);
+  border: 2px solid hsl(var(--powder-blue) / 0.9);
   border-radius: 1.5rem;
   background: var(--cc-invite-bg);
 }
 
 /* dashed inner line, like the edge of a holiday card */
 .cc-invite-inner {
-  border: 1px dashed hsl(var(--primary) / 0.35);
+  border: 1px dashed hsl(var(--powder-blue) / 0.6);
   border-radius: 1rem;
   padding: 1.25rem;
 }
@@ -24,7 +24,7 @@
   overflow: hidden;
   pointer-events: none;
   user-select: none;
-  color: hsl(var(--primary));
+  color: hsl(var(--powder-blue));
   line-height: 1;
 }
 
