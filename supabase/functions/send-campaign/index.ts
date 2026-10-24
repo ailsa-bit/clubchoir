@@ -705,7 +705,7 @@ function renderResourcesWeek3(r: Recipient) {
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
       <p style="${P}"><strong>Save the date for our choir social! 🎤</strong></p>
-      <p style="${P}">All four locations are invited to The Wheel Club on <strong>Sunday, November 1, from 2:00–5:00 PM</strong> for karaoke, food, drinks and a fun afternoon together — no rehearsal, just singing and celebrating!</p>
+      <p style="${P}">All four locations are invited to The Wheel Club on <strong>Sunday, November 1, from 2:00–5:00 PM</strong> for a relaxed afternoon of karaoke and good company.</p>
       <p style="${P}">Please let me know if you'll be able to join us. You can choose yes, no or maybe, and change your answer anytime before the event.</p>
       ${BTN(SOCIAL_RSVP_URL, "Answer the choir social RSVP")}
     </div>
@@ -728,7 +728,7 @@ function renderResourcesWeek3(r: Recipient) {
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
       <p style="${P}"><strong>Réservez la date pour notre rencontre de la chorale! 🎤</strong></p>
-      <p style="${P}">Les membres de nos quatre lieux sont invités au Wheel Club le <strong>dimanche 1er novembre, de 14 h à 17 h</strong>, pour du karaoké, de la nourriture, des boissons et un bel après-midi ensemble — pas de répétition, seulement du chant et une belle célébration!</p>
+      <p style="${P}">Les membres de nos quatre lieux sont invités au Wheel Club le <strong>dimanche 1er novembre, de 14 h à 17 h</strong>, pour un bel après-midi de karaoké en bonne compagnie.</p>
       <p style="${P}">Dites-moi si vous pourrez vous joindre à nous. Vous pouvez répondre oui, non ou peut-être, puis modifier votre réponse en tout temps avant l'événement.</p>
       ${BTN(SOCIAL_RSVP_URL, "Répondre pour la rencontre")}
     </div>
