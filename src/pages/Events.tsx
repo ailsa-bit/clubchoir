@@ -9,8 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import PhotoGallery from "@/components/PhotoGallery";
 import { porchfestPhotos } from "@/assets/photos/porchfest";
-const INVITES = import.meta.glob("@/assets/invitations/*.asset.json", { eager: true, import: "default" }) as Record<string, { url: string }>;
-const inviteUrl = (loc: string, lang: string) => INVITES[`/src/assets/invitations/${loc.toLowerCase()}-${lang}.png.asset.json`]?.url;
+const inviteUrl = (loc: string, lang: string) => `/downloads/club-choir-showcase-${loc.toLowerCase()}-${lang}.png`;
 import { victoriaVillagePhotos } from "@/assets/photos/victoriaVillage";
 
 
