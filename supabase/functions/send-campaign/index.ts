@@ -917,7 +917,7 @@ function renderShowcaseInvitations(r: Recipient, invitations: EmailInvitation[])
     <p style="${P}">I’ve also attached all four invitations for your location to this email. You can save the attachments directly, or use these download buttons:</p>
     ${links("en")}
     <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:20px;">Let’s sing and celebrate — karaoke next Sunday! 🎤</h2>
-    <p style="${P}">Our choir get-together is <strong>Sunday, November 1, 2026, from 2:00–5:00 PM</strong> at <strong>The Wheel Club, 3373 Cavendish, Montreal</strong>. All four locations are invited — no rehearsal, just a relaxed afternoon of karaoke and good company!</p>
+    <p style="${P}">Our choir get-together is <strong>Sunday, November 1, 2026, from 2:00–5:00 PM</strong> at <strong>The Wheel Club, 3373 Cavendish, Montreal</strong>. All four locations are invited for a relaxed afternoon of karaoke and good company.</p>
     <p style="${P}">If you’d like to bring a friend or your spouse, please feel free to invite them. They’re very welcome! Thank you to everyone who has already replied. If you haven’t yet, let me know on My Choir whether you’ll be joining us.</p>
     ${BTN(`${SITE_URL}/this-week#choir-social-rsvp`, "Reply for the karaoke get-together")}
     <p style="${P}">I can’t wait to see you there — and to welcome your friends and family at our showcases!</p>
@@ -928,7 +928,7 @@ function renderShowcaseInvitations(r: Recipient, invitations: EmailInvitation[])
     <p style="${P}">J’ai aussi joint les quatre invitations de votre lieu à ce courriel. Vous pouvez enregistrer les pièces jointes directement ou utiliser ces boutons :</p>
     ${links("fr")}
     <h2 style="font-family:Quicksand,Arial,sans-serif;font-size:20px;">Chantons et célébrons — karaoké dimanche prochain! 🎤</h2>
-    <p style="${P}">Notre rencontre aura lieu le <strong>dimanche 1er novembre 2026, de 14 h à 17 h</strong>, au <strong>Wheel Club, 3373 Cavendish, Montréal</strong>. Les membres de nos quatre lieux sont invités — pas de répétition, simplement un bel après-midi de karaoké en bonne compagnie!</p>
+    <p style="${P}">Notre rencontre aura lieu le <strong>dimanche 1er novembre 2026, de 14 h à 17 h</strong>, au <strong>Wheel Club, 3373 Cavendish, Montréal</strong>. Les membres de nos quatre lieux sont invités à un bel après-midi de karaoké en bonne compagnie.</p>
     <p style="${P}">Si vous souhaitez venir avec un ami, une amie ou votre conjoint ou conjointe, n’hésitez pas à les inviter. Ils sont les bienvenus! Merci à tous ceux qui ont déjà répondu. Si ce n’est pas encore fait, dites-moi sur Ma chorale si vous serez des nôtres.</p>
     ${BTN(`${SITE_URL}/this-week#choir-social-rsvp`, "Répondre pour la rencontre karaoké")}
     <p style="${P}">J’ai hâte de vous y retrouver — et d’accueillir vos amis et votre famille à nos spectacles!</p>
