@@ -21,4 +21,4 @@
 - [x] Update resources and choir-night emails for J'entends frapper, recording links and showcase invitation news.
 - [x] Reset both campaigns with new Week 8 tracking keys; deploy and verify previews without sending.
 - [x] Replace J'entends frapper YouTube link on resources and in both unsent Week 8 emails; verify.
-- [ ] Add showcase venue addresses to Events page cards (from uploaded invitations)
+- [x] Add showcase venue addresses to Events page cards (from uploaded invitations)

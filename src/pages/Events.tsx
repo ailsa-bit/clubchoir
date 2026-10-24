@@ -17,6 +17,7 @@ const events = [
     title: { en: "Seasonal Showcase — Montreal", fr: "Spectacle saisonnier — Montréal" },
     date: { en: "Monday, December 7, 2026 · 7:00 PM", fr: "Lundi 7 décembre 2026 · 19 h" },
     location: "Montreal",
+    venue: { en: "Paroisse Notre-Dame-De-Grâce, 5333 avenue Notre-Dame-De-Grâce (corner Décarie), Montréal", fr: "Paroisse Notre-Dame-De-Grâce, 5333, avenue Notre-Dame-De-Grâce (coin Décarie), Montréal" },
     color: "border-pink/30 bg-pink-light",
     dot: "bg-pink",
     description: { en: "Join us for our end-of-season showcase! Friends and family are welcome to come enjoy the songs we've been working on all season.", fr: "Joignez-vous à nous pour notre spectacle de fin de saison ! Amis et famille sont les bienvenus pour profiter des chansons que nous avons travaillées toute la saison." },
@@ -25,6 +26,7 @@ const events = [
     title: { en: "Seasonal Showcase — Hudson", fr: "Spectacle saisonnier — Hudson" },
     date: { en: "Tuesday, December 8, 2026 · 7:00 PM", fr: "Mardi 8 décembre 2026 · 19 h" },
     location: "Hudson",
+    venue: { en: "Hudson Community Centre, 394 Rue Main, Hudson", fr: "Centre communautaire de Hudson, 394, rue Main, Hudson" },
     color: "border-orange/30 bg-orange-light",
     dot: "bg-orange",
     description: { en: "Celebrate the season with our Hudson choir! Friends and family are welcome to enjoy an evening of song.", fr: "Célébrez la saison avec notre chorale d'Hudson ! Amis et famille sont les bienvenus pour une soirée en chanson." },
@@ -33,6 +35,7 @@ const events = [
     title: { en: "Seasonal Showcase — Saint-Hubert", fr: "Spectacle saisonnier — Saint-Hubert" },
     date: { en: "Wednesday, December 9, 2026 · 7:00 PM", fr: "Mercredi 9 décembre 2026 · 19 h" },
     location: "Saint-Hubert",
+    venue: { en: "St-Gabriel Catholic Church, 5070 Rue Gilbert, Saint-Hubert", fr: "Église St-Gabriel, 5070, rue Gilbert, Saint-Hubert" },
     color: "border-lime/20 bg-lime-light",
     dot: "bg-lime",
     description: { en: "A special evening showcasing what we've been rehearsing all season. Bring your friends and family along!", fr: "Une soirée spéciale mettant en vedette ce que nous avons répété toute la saison. Amenez vos amis et votre famille !" },
@@ -41,6 +44,7 @@ const events = [
     title: { en: "Seasonal Showcase — Pointe-Claire", fr: "Spectacle saisonnier — Pointe-Claire" },
     date: { en: "Thursday, December 10, 2026 · 7:00 PM", fr: "Jeudi 10 décembre 2026 · 19 h" },
     location: "Pointe-Claire",
+    venue: { en: "Valois United Church, 70 Av. Belmont, Pointe-Claire", fr: "Église unie Valois, 70, av. Belmont, Pointe-Claire" },
     color: "border-purple/30 bg-purple-light",
     dot: "bg-purple",
     description: { en: "Our seasonal celebration of song — come cheer on your favourite choir members. Friends and family welcome!", fr: "Notre célébration saisonnière en chanson — venez encourager vos membres préférés. Amis et famille bienvenus !" },
@@ -105,7 +109,7 @@ const Events = () => {
                 startDate: ["2026-12-07","2026-12-08","2026-12-09","2026-12-10"][i] ?? "2026-12-07",
                 eventStatus: "https://schema.org/EventScheduled",
                 eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-                location: { "@type": "Place", name: `${e.location}, QC, Canada` },
+                location: { "@type": "Place", name: e.venue.en.split(",")[0], address: `${e.venue.en}, QC, Canada` },
                 description: e.description.en,
                 organizer: { "@type": "Organization", name: "Club Choir", url: "https://clubchoir.ca" },
               },
@@ -151,14 +155,14 @@ const Events = () => {
                   </span>
                 </div>
                 <h3 className="font-heading font-bold text-lg text-foreground mb-1">{title}</h3>
-                <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
+                <div className="flex flex-col gap-1.5 text-sm text-muted-foreground mb-3">
                   <span className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5" />
+                    <Calendar className="w-3.5 h-3.5 shrink-0" />
                     {getText(event.date, language)}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5" />
-                    {getText(event.location, language)}
+                  <span className="flex items-start gap-1">
+                    <MapPin className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                    {getText(event.venue, language)}
                   </span>
                 </div>
                 <p className="text-sm text-foreground/80 mb-4">{getText(event.description, language)}</p>
