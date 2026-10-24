@@ -1,6 +1,7 @@
 import PageMeta from "@/components/PageMeta";
 import { MemberWelcomeMessage } from "@/components/MemberWelcomeMessage";
 import { ChoirSocialRsvp } from "@/components/ChoirSocialRsvp";
+import { ShowcaseInvitations } from "@/components/ShowcaseInvitations";
 import { Link } from "react-router-dom";
 import { Music, MapPin, Clock, Calendar, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -21,6 +22,7 @@ const ThisWeek = () => {
       <PageMeta title={t("meta.thisWeek.title")} description={t("meta.thisWeek.desc")} path="/this-week" />
       <div className="container mx-auto max-w-4xl lg:max-w-5xl px-4">
         {new Date() <= new Date("2026-11-02T04:59:59Z") && <ChoirSocialRsvp />}
+        <ShowcaseInvitations />
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
           {t("thisWeek.title")}
         </h1>
