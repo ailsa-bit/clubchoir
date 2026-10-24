@@ -37,9 +37,9 @@
 }
 
 .cc-invite-band-col {
-  top: 1.4rem;
-  bottom: 1.4rem;
-  width: 20px;
+  top: 1.9rem;
+  bottom: 1.9rem;
+  width: 34px;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
@@ -51,13 +51,13 @@
 .cc-invite-right { right: 0; transform: translateX(50%); }
 
 .cc-invite-glyph {
-  font-size: 13px;
+  font-size: 21px;
   font-variant-emoji: text;
   opacity: 0.85;
 }
 
 .cc-invite-glyph-lg {
-  font-size: 18px;
+  font-size: 28px;
   opacity: 1;
 }
 
@@ -65,4 +65,8 @@
   .cc-invite-frame { padding: 1.25rem 1.1rem; }
   .cc-invite-inner { padding: 0.9rem; }
   .cc-invite-band-col { display: none; }
+  .cc-invite-band-row { left: 0.6rem; right: 0.6rem; }
+  .cc-invite-band-row .cc-invite-glyph:nth-child(even) { display: none; }
+  .cc-invite-glyph { font-size: 18px; }
+  .cc-invite-glyph-lg { font-size: 23px; }
 }
