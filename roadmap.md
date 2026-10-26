@@ -29,4 +29,4 @@
 
 ## Member note privacy
 - [x] Check administrator accounts: two accounts currently have administrator access.
-- [ ] Restrict member notes to Ailsa and close member/public exposure; confirm whether the other administrator should retain access.
+- [x] Restrict member notes to Ailsa, remove the public member file, preserve Martin’s administrator access, and verify owner access plus blocked direct reads and four privacy tests.
