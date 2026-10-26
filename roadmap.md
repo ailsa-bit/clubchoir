@@ -26,3 +26,7 @@
 ## Showcase invitation campaign
 - [x] Prepare bilingual location-specific invitation campaign with four attachments, download links, My Choir and November 1 karaoke invitation.
 - [x] Verify every location's preview and attachment downloads without sending member emails (16 PNG downloads, 243 eligible recipients, nine tests passed).
+
+## Member note privacy
+- [x] Check administrator accounts: two accounts currently have administrator access.
+- [ ] Restrict member notes to Ailsa and close member/public exposure; confirm whether the other administrator should retain access.
