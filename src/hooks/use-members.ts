@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface Member {
   firstName: string;
@@ -16,48 +17,17 @@ export function useMembers() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/data/members.csv")
-      .then((res) => res.text())
-      .then((text) => {
-        const lines = text.trim().split("\n");
-        const parsed: Member[] = [];
-        for (let i = 1; i < lines.length; i++) {
-          const cols = parseCSVLine(lines[i]);
-          if (cols.length < 9) continue;
-          parsed.push({
-            firstName: cols[0].trim(),
-            lastName: cols[1].trim(),
-            // skip email (cols[2]) for privacy
-            location: cols[3].trim(),
-            status: cols[4].trim() as Member["status"],
-            joined: cols[5].trim(),
-            lastSession: cols[6].trim(),
-            paymentStatus: cols[7].trim(),
-            notes: cols[8].trim(),
-          });
-        }
-        setMembers(parsed);
-        setLoading(false);
-      });
+    let live = true;
+    const load = async () => {
+      const { data } = await supabase.from("members").select("first_name,last_name,location,status,joined,last_session");
+      if (!live) return;
+      setMembers((data || []).map(m => ({ firstName: m.first_name, lastName: m.last_name, location: m.location, status: m.status as Member["status"], joined: m.joined || "", lastSession: m.last_session || "", paymentStatus: "", notes: "" })));
+      setLoading(false);
+    };
+    void load();
+    return () => { live = false; };
   }, []);
 
   return { members, loading };
 }
 
-function parseCSVLine(line: string): string[] {
-  const result: string[] = [];
-  let current = "";
-  let inQuotes = false;
-  for (const char of line) {
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === "," && !inQuotes) {
-      result.push(current);
-      current = "";
-    } else {
-      current += char;
-    }
-  }
-  result.push(current);
-  return result;
-}

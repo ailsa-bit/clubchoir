@@ -865,6 +865,7 @@ export type Database = {
           terms_accepted_at: string
         }[]
       }
+      can_manage_private_member_notes: { Args: never; Returns: boolean }
       expire_stale_members: { Args: never; Returns: number }
       get_my_member_profile: {
         Args: never
@@ -875,6 +876,13 @@ export type Database = {
           location: string
           member_since: string
           status: string
+        }[]
+      }
+      get_private_member_file_notes: {
+        Args: never
+        Returns: {
+          id: string
+          notes: string
         }[]
       }
       get_public_choir_stats: {

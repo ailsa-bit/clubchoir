@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { MemberEditForm } from "@/components/MemberEditForm";
 import { Helmet } from "react-helmet-async";
+import { usePrivateMemberNotes } from "@/hooks/use-private-member-notes";
 
 interface MemberRow {
   id: string;
@@ -52,6 +53,7 @@ const PAST_SESSIONS = ["Winter 2025", "Fall 2025", "Winter 2026"] as const;
 const UPCOMING_SESSION = "Fall 2026";
 
 const MemberDetail = () => {
+  const canViewNotes = usePrivateMemberNotes();
   const { memberId } = useParams<{ memberId: string }>();
   const navigate = useNavigate();
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -86,28 +88,32 @@ const MemberDetail = () => {
   };
 
   const fetchMember = async () => {
+    if (!memberId) return;
     const { data } = await supabase
       .from("members")
-      .select("*")
-      .eq("id", memberId!)
+      .select("id,first_name,last_name,email,location,status,joined,last_session,payment_status")
+      .eq("id", memberId)
       .single();
-    setMember(data as MemberRow | null);
+    const { data: privateNotes } = await supabase.rpc("get_private_member_file_notes");
+    setMember(data ? { ...data, notes: privateNotes?.find(n => n.id === memberId)?.notes || "" } : null);
   };
 
   const fetchNotes = async () => {
+    if (!memberId) return;
     const { data } = await supabase
       .from("member_notes")
       .select("id, note, created_at")
-      .eq("member_id", memberId!)
+      .eq("member_id", memberId)
       .order("created_at", { ascending: false });
     setNotes((data as MemberNote[]) || []);
   };
 
   const fetchSessionCount = async () => {
+    if (!memberId) return;
     const { data: memberData } = await supabase
       .from("members")
       .select("location, joined")
-      .eq("id", memberId!)
+      .eq("id", memberId)
       .single();
     if (!memberData) return;
 
@@ -122,10 +128,11 @@ const MemberDetail = () => {
   };
 
   const fetchAttendedSessions = async () => {
+    if (!memberId) return;
     const { data } = await supabase
       .from("member_sessions")
       .select("session_name")
-      .eq("member_id", memberId!);
+      .eq("member_id", memberId);
     setAttendedSessions(new Set((data || []).map((d: { session_name: string }) => d.session_name)));
   };
 
@@ -159,10 +166,11 @@ const MemberDetail = () => {
     if (!newNote.trim() || !memberId) return;
     setSaving(true);
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user || !canViewNotes) { setSaving(false); return; }
     const { error } = await supabase.from("member_notes").insert({
       member_id: memberId,
       note: newNote.trim(),
-      created_by: user!.id,
+      created_by: user.id,
     });
     if (error) {
       toast({ title: "Error saving note", description: error.message, variant: "destructive" });
@@ -221,7 +229,7 @@ const MemberDetail = () => {
               )}
             </div>
           </div>
-          <MemberEditForm member={member} onSaved={fetchAll} />
+          <MemberEditForm member={member} onSaved={fetchAll} canViewNotes={canViewNotes} />
         </div>
 
         {/* Info cards */}
@@ -326,6 +334,7 @@ const MemberDetail = () => {
         )}
 
         {/* Add note */}
+        {canViewNotes && <>
         <div className="mb-6">
           <h2 className="font-heading font-bold text-lg text-foreground flex items-center gap-2 mb-3">
             <StickyNote className="w-5 h-5" /> Notes Timeline
@@ -369,6 +378,7 @@ const MemberDetail = () => {
             ))}
           </div>
         )}
+        </>}
       </div>
     </div>
   );

@@ -34,6 +34,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { usePrivateMemberNotes } from "@/hooks/use-private-member-notes";
 
 interface MemberRow {
   id: string;
@@ -70,6 +71,7 @@ const emptyForm = {
 
 
 const ManageMembers = () => {
+  const canViewNotes = usePrivateMemberNotes();
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -101,9 +103,11 @@ const ManageMembers = () => {
   const fetchMembers = async () => {
     const { data } = await supabase
       .from("members")
-      .select("*")
+      .select("id,first_name,last_name,email,location,status,joined,last_session,payment_status")
       .order("first_name", { ascending: true });
-    setMembers((data as MemberRow[]) || []);
+    const { data: privateNotes } = await supabase.rpc("get_private_member_file_notes");
+    const notesById = new Map((privateNotes || []).map(n => [n.id, n.notes]));
+    setMembers((data || []).map(m => ({ ...m, notes: notesById.get(m.id) || "" })));
     setLoading(false);
   };
 
@@ -183,7 +187,7 @@ const ManageMembers = () => {
       location: form.location,
       status: isPaid ? "ACTIVE" : form.status,
       payment_status: form.payment_status.trim(),
-      notes: form.notes.trim(),
+      ...(canViewNotes ? { notes: form.notes.trim() } : {}),
     };
 
     if (editingId) {
@@ -490,10 +494,10 @@ const ManageMembers = () => {
               <Label>Payment Status</Label>
               <Input value={form.payment_status} onChange={(e) => setForm({ ...form, payment_status: e.target.value })} placeholder="e.g. Paid, Pending" />
             </div>
-            <div>
+            {canViewNotes && <div>
               <Label>Notes</Label>
               <Input value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
-            </div>
+            </div>}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
