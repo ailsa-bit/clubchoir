@@ -30,12 +30,13 @@ interface MemberRow {
 interface MemberEditFormProps {
   member: MemberRow;
   onSaved: () => void;
+  canViewNotes?: boolean;
 }
 
 const STATUS_OPTIONS = ["ACTIVE", "INACTIVE", "PROSPECT", "TRIAL"];
 const PAYMENT_OPTIONS = ["", "Paid", "Unpaid", "Partial", "Comp", "N/A"];
 
-export function MemberEditForm({ member, onSaved }: MemberEditFormProps) {
+export function MemberEditForm({ member, onSaved, canViewNotes = false }: MemberEditFormProps) {
   const { toast } = useToast();
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -83,7 +84,7 @@ export function MemberEditForm({ member, onSaved }: MemberEditFormProps) {
         status: isPaid ? "ACTIVE" : form.status,
         joined: form.joined || null,
         payment_status: form.payment_status,
-        notes: form.notes.trim(),
+        ...(canViewNotes ? { notes: form.notes.trim() } : {}),
       })
       .eq("id", member.id);
 
@@ -169,10 +170,10 @@ export function MemberEditForm({ member, onSaved }: MemberEditFormProps) {
         </div>
       </div>
 
-      <div className="mt-4">
+      {canViewNotes && <div className="mt-4">
         <Label htmlFor="notes">Notes</Label>
         <Textarea id="notes" value={form.notes} onChange={(e) => update("notes", e.target.value)} className="min-h-[60px]" />
-      </div>
+      </div>}
     </div>
   );
 }
