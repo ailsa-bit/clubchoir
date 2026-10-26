@@ -1,0 +1,16 @@
+CREATE OR REPLACE FUNCTION public.can_manage_private_member_notes() RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT auth.uid() = '1020a8b8-1c6f-47de-8881-4dc97e377968'::uuid AND public.has_role(auth.uid(), 'admin'::public.app_role) $$;
+REVOKE ALL ON FUNCTION public.can_manage_private_member_notes() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.can_manage_private_member_notes() TO authenticated, service_role;
+CREATE OR REPLACE FUNCTION public.get_private_member_file_notes() RETURNS TABLE(id uuid, notes text) LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT m.id,m.notes FROM public.members m WHERE public.can_manage_private_member_notes() $$;
+REVOKE ALL ON FUNCTION public.get_private_member_file_notes() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.get_private_member_file_notes() TO authenticated, service_role;
+REVOKE SELECT ON public.members FROM anon, authenticated;
+GRANT SELECT (id,first_name,last_name,email,location,status,joined,last_session,payment_status,created_at,updated_at,crm_tags,source,follow_up_date,archived_at) ON public.members TO authenticated;
+REVOKE SELECT (notes) ON public.members FROM anon,authenticated;
+CREATE OR REPLACE FUNCTION public.protect_private_member_file_notes() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF auth.role() = 'authenticated' AND NOT public.can_manage_private_member_notes() AND ((TG_OP='INSERT' AND COALESCE(NEW.notes,'')<>'') OR (TG_OP='UPDATE' AND NEW.notes IS DISTINCT FROM OLD.notes)) THEN RAISE EXCEPTION 'Member notes are private to their owner' USING ERRCODE='42501'; END IF; RETURN NEW; END $$;
+CREATE TRIGGER protect_private_member_file_notes BEFORE INSERT OR UPDATE ON public.members FOR EACH ROW EXECUTE FUNCTION public.protect_private_member_file_notes();
+DROP POLICY "Admins can manage member notes" ON public.member_notes;
+CREATE POLICY "Only note owner can manage member notes" ON public.member_notes FOR ALL TO authenticated USING (public.can_manage_private_member_notes()) WITH CHECK (public.can_manage_private_member_notes() AND created_by=auth.uid());
+REVOKE SELECT ON public.session_registrations FROM anon,authenticated;
+GRANT SELECT (id,member_id,session_label,location,first_name,last_name,email,is_returning_member,payment_status,payment_link_sent_at,created_at,updated_at,amount_paid,utm_source,utm_medium,utm_campaign,utm_content,utm_term,landing_page,referrer,attribution_captured_at,terms_accepted_at,email_consent_at) ON public.session_registrations TO authenticated;
+REVOKE SELECT (notes) ON public.session_registrations FROM anon,authenticated;
