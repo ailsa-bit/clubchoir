@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAdmin } from "@/hooks/use-admin";
@@ -56,7 +56,7 @@ const SECTION_TITLES = {
 
 const formatDateInput = (d: string) => d.split("T")[0];
 
-export function MemberWelcomeMessage() {
+export function MemberWelcomeMessage({ belowSong }: { belowSong?: ReactNode } = {}) {
   const { language } = useLanguage();
   const { isAdmin } = useAdmin();
   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
@@ -242,6 +242,8 @@ export function MemberWelcomeMessage() {
           {song.body}
         </div>
       </div>
+
+      {belowSong}
 
       <div className="rounded-xl border border-border bg-card p-6 text-center shadow-sm">
         <Star className="mx-auto mb-2 h-6 w-6 text-primary" />
