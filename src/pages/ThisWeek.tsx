@@ -3,7 +3,7 @@ import { MemberWelcomeMessage } from "@/components/MemberWelcomeMessage";
 import { ChoirSocialRsvp } from "@/components/ChoirSocialRsvp";
 import { ShowcaseInvitations } from "@/components/ShowcaseInvitations";
 import { Link } from "react-router-dom";
-import { Music, MapPin, Clock, Calendar, ArrowRight } from "lucide-react";
+import { Music, MapPin, Clock, Calendar, ArrowRight, Download } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const ThisWeek = () => {
@@ -21,7 +21,6 @@ const ThisWeek = () => {
     <div className="py-16 px-4">
       <PageMeta title={t("meta.thisWeek.title")} description={t("meta.thisWeek.desc")} path="/this-week" />
       <div className="container mx-auto max-w-4xl lg:max-w-5xl px-4">
-        <ShowcaseInvitations />
         {new Date() <= new Date("2026-11-02T04:59:59Z") && <ChoirSocialRsvp />}
         <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground mb-2 text-center">
           {t("thisWeek.title")}
@@ -30,8 +29,22 @@ const ThisWeek = () => {
           {t("thisWeek.subtitle")}
         </p>
 
+        <div className="mb-8 flex justify-center">
+          <a
+            href="#showcase-invitations"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById("showcase-invitations")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            className="inline-flex items-center gap-2 rounded-full bg-powder-blue px-6 py-3 text-sm font-semibold text-powder-blue-foreground shadow hover:brightness-95"
+          >
+            <Download className="h-4 w-4" />
+            {language === "fr" ? "Votre invitation au spectacle" : "Your showcase invitation"}
+          </a>
+        </div>
+
         <div className="mb-8">
-          <MemberWelcomeMessage />
+          <MemberWelcomeMessage belowSong={<ShowcaseInvitations />} />
           <div className="mt-6 flex justify-center">
             <Link
               to="/resources/fall-2026"
