@@ -34,4 +34,4 @@
 ## Week 9 email campaigns
 - [x] Remove the showcase invitation campaign card, retaining send history.
 - [x] Refresh both bilingual weekly emails for Losing My Religion and use fresh Week 9 tracking keys.
-- [ ] Verify campaign cards and live previews without sending.
+- [x] Verify campaign cards and live previews without sending; both show 242 eligible, not yet emailed.
