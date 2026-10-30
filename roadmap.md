@@ -30,3 +30,8 @@
 ## Member note privacy
 - [x] Check administrator accounts: two accounts currently have administrator access.
 - [x] Restrict member notes to Ailsa, remove the public member file, preserve Martin’s administrator access, and verify owner access plus blocked direct reads and four privacy tests.
+
+## Week 9 email campaigns
+- [x] Remove the showcase invitation campaign card, retaining send history.
+- [x] Refresh both bilingual weekly emails for Losing My Religion and use fresh Week 9 tracking keys.
+- [ ] Verify campaign cards and live previews without sending.

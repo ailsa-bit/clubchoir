@@ -782,7 +782,7 @@ function renderChoirTonight(r: Recipient) {
     <p style="${P}">🎟️ <strong>Send out your showcase invitations!</strong> I can't wait to share our music with your friends and family. Your invitations are on My Choir, ready to download — if you have any trouble, just email me and I'll send you a copy.</p>
     ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Get your showcase invitation")}
     <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning two more songs together — so now is the time to bring a friend to choir!</p>
-    <p style="${P}">⏰ <strong>Don't forget:</strong> the clocks fall back an hour this weekend.</p>
+
     <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
     <p style="${P}"><strong>See you tonight — I can't wait to find those harmonies with you!</strong></p>
     ${SIGN}
@@ -802,7 +802,7 @@ function renderChoirTonight(r: Recipient) {
     <p style="${P}">🎟️ <strong>Envoyez vos invitations au spectacle!</strong> J'ai tellement hâte de partager notre musique avec vos amis et votre famille. Vos invitations sont sur Ma chorale, prêtes à télécharger — en cas de difficulté, écrivez-moi et je vous en enverrai une copie par courriel.</p>
     ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Obtenir votre invitation")}
     <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et il nous reste deux chansons à apprendre ensemble — c'est le moment d'amener une amie ou un ami à la chorale!</p>
-    <p style="${P}">⏰ <strong>N'oubliez pas :</strong> on recule l'heure d'une heure cette fin de semaine.</p>
+
     <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
     <p style="${P}"><strong>À ce soir — j'ai très hâte de trouver ces harmonies avec vous!</strong></p>
     ${SIGN}`;
