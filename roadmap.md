@@ -37,5 +37,5 @@
 - [x] Verify campaign cards and live previews without sending; both show 242 eligible, not yet emailed.
 
 ## Week 9 scheduled choir-night reminders
-- [ ] Schedule Montreal Nov 2, Hudson Nov 3, Saint-Hubert Nov 4 and Pointe-Claire Nov 5 at 8 AM Toronto time.
-- [ ] Verify one-time jobs, pinned Week 9 campaign and safe paced delivery without sending early.
+- [x] Schedule Montreal Nov 2, Hudson Nov 3, Saint-Hubert Nov 4 and Pointe-Claire Nov 5 at 8 AM Toronto time.
+- [x] Verify all four active one-time jobs, pinned Week 9 version and six tests; deploy paced sending without sending early.
