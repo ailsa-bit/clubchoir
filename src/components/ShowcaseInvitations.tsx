@@ -108,7 +108,7 @@ export function ShowcaseInvitations() {
   };
 
   return (
-    <section className="cc-invite-frame mb-8">
+    <section id="showcase-invitations" className="cc-invite-frame mb-8 scroll-mt-24">
       <FlakeBand sides="cc-invite-band-row cc-invite-top" count={FLAKES.length} />
       <FlakeBand sides="cc-invite-band-row cc-invite-bottom" count={FLAKES.length} />
       <FlakeBand sides="cc-invite-band-col cc-invite-left" count={FLAKES_SIDE.length} />
