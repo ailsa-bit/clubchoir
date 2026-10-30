@@ -41,12 +41,16 @@ Ailsa 🎤✨`,
 
 const SONG_OF_WEEK = {
   en: {
-    title: "Song of the Week: “J'entends frapper” by Michel Pagliaro",
-    body: `The biggest-selling single in Quebec music history. Montreal's own Michel Pagliaro released “J'entends frapper” in 1972, and this Chuck Berry-charged rocker was such a hit it reached #1 in English-speaking Kingston. The lyrics reflect a turning point where luck and fortune finally seem to shift for the better after facing disappointment or being abandoned by others. The chorus emphasizes that success or survival depends on personal drive and hard work rather than pure luck, and it calls for people to come together “la main dans la main” to share and support one another.`,
+    title: "Song of the Week: “Losing My Religion” by R.E.M.",
+    body: `This week we slow down. After the full-throttle joy of “J'entends frapper,” we lean into one of the most iconic songs of the 1990s, R.E.M.'s “Losing My Religion,” and give it room to breathe. Listen to the recording this week, and listen close: under that haunting melody there are lots of beautiful harmonies waiting to be found, and that is exactly what we will be building together, voice by voice.
+
+And here is the best part: the whole song started as a practice session. Guitarist Peter Buck had just bought a mandolin and was taping himself learning it while watching television, when a riff in the middle of the tape turned into “Losing My Religion.” Released February 19, 1991 as the first single from “Out of Time,” it reached No. 4 on the Billboard Hot 100, won two Grammys in 1992, and its video passed one billion views on YouTube in 2020. Michael Stipe recorded his vocal in a single take. A song about unrequited love, sung best by a whole room at once.`,
   },
   fr: {
-    title: "Chanson de la semaine : « J'entends frapper » de Michel Pagliaro",
-    body: `Le plus grand succès de l'histoire de la musique québécoise. Le Montréalais Michel Pagliaro a lancé « J'entends frapper » en 1972, et ce rocher chargé à la Chuck Berry a connu un tel succès qu'il a atteint le no 1 à Kingston, dans le monde anglophone. Les paroles reflètent un moment tournant où la chance et la fortune semblent enfin tourner pour le mieux après des déceptions ou des abandons. Le refrain souligne que le succès ou la survie repose sur la détermination et le travail personnel plutôt que sur la pure chance, et il invite les gens à se réunir « la main dans la main » pour partager et se soutenir les uns les autres.`,
+    title: "Chanson de la semaine : « Losing My Religion » de R.E.M.",
+    body: `Cette semaine, on ralentit. Après la joie à plein régime de « J'entends frapper », on s'installe dans l'une des chansons les plus iconiques des années 1990, « Losing My Religion » de R.E.M., et on lui laisse de l'espace pour respirer. Écoutez l'enregistrement cette semaine, et écoutez bien : sous cette mélodie envoûtante se cachent de magnifiques harmonies qui n'attendent que d'être découvertes — et c'est exactement ce que nous allons construire ensemble, voix après voix.
+
+Et le plus beau dans tout ça : la chanson est née d'une simple période de pratique. Le guitariste Peter Buck venait d'acheter une mandoline et s'enregistrait pendant qu'il l'apprenait devant la télévision, lorsqu'un riff au milieu de la bande est devenu « Losing My Religion ». Sortie le 19 février 1991 comme premier extrait de « Out of Time », elle a atteint le no 4 du Billboard Hot 100, a remporté deux Grammy en 1992, et son vidéoclip a dépassé le milliard de visionnements sur YouTube en 2020. Michael Stipe a enregistré sa voix en une seule prise. Une chanson sur l'amour non partagé, qui se chante le mieux en une salle remplie, tous ensemble.`,
   },
 };
 
