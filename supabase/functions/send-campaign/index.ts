@@ -1187,7 +1187,7 @@ async function loadAlreadySent(
   }
   const skip = new Set<string>();
   let sentQuery = supabase.from("campaign_sends").select("recipient_email").in("campaign_key", keys);
-  if (segment === SHOWCASE_SEGMENT) sentQuery = sentQuery.eq("status", "sent");
+    if (segment === SHOWCASE_SEGMENT || segment === "choir-tonight") sentQuery = sentQuery.eq("status", "sent");
   const { data } = await sentQuery;
   for (const r of data || []) skip.add(String(r.recipient_email).toLowerCase());
   return skip;
@@ -1481,7 +1481,8 @@ serve(async (req) => {
       <p style="${P} margin-bottom:0;color:#555;">Désolée — nous vous avons envoyé un message test par erreur. Désolée pour la confusion! Voici les bonnes informations pour votre première soirée d'essai. À la semaine prochaine!</p>
     </div>`;
 
-    const batchSize = segment === SHOWCASE_SEGMENT ? 1 : 5;
+    const pacedSend = segment === SHOWCASE_SEGMENT || isCron;
+    const batchSize = pacedSend ? 1 : 5;
     // Stay well under the 150s request limit; the page calls again for the rest
     // (already-sent people are skipped automatically).
     const deadline = Date.now() + 100_000;
@@ -1506,7 +1507,7 @@ serve(async (req) => {
             } : {}),
           };
           let delivery = await resend.emails.send(payload);
-          for (let retry = 0; segment === SHOWCASE_SEGMENT && delivery.error?.name === "rate_limit_exceeded" && retry < 3; retry++) {
+          for (let retry = 0; pacedSend && delivery.error?.name === "rate_limit_exceeded" && retry < 3; retry++) {
             await new Promise((resolve) => setTimeout(resolve, 1500 * (retry + 1)));
             delivery = await resend.emails.send(payload);
           }
@@ -1525,7 +1526,7 @@ serve(async (req) => {
           });
         }
       }));
-      await new Promise((res) => setTimeout(res, segment === SHOWCASE_SEGMENT ? 650 : 350));
+      await new Promise((res) => setTimeout(res, pacedSend ? 650 : 350));
     }
 
     return new Response(JSON.stringify({ ...results, remaining }), {
