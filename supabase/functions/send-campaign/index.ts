@@ -30,10 +30,10 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   
-  "resources-week3-paid": "fall-2026-resources-week8-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week9-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week8-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week9-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -675,12 +675,12 @@ function renderResourcesWeek3(r: Recipient) {
     const items = lang === "en" ? [
       { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
       { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
-      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "J'entends frapper".`, url: RES_URL, label: "Open the song resources" },
+      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Losing My Religion".`, url: RES_URL, label: "Open the song resources" },
       { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
     ] : [
       { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
       { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
-      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « J'entends frapper ».`, url: RES_URL, label: "Voir les ressources" },
+      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Losing My Religion ».`, url: RES_URL, label: "Voir les ressources" },
       { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
     ];
     return items.map((i) => `
@@ -694,53 +694,53 @@ function renderResourcesWeek3(r: Recipient) {
   };
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">🎶 <strong>Week 8 resources are up!</strong> This week we're singing <strong>"J'entends frapper"</strong> — Michel Pagliaro's energetic rock classic! This is a big one, so bring lots of energy, focus and your best rock-'n'-roll spirit. Everything you need is below.</p>
+    <p style="${P}">🎶 <strong>Week 9 resources are up!</strong> I can't believe we're heading into the final stretch — you have all done amazing work together. This week we slow down with <strong>"Losing My Religion"</strong> by R.E.M. Give the recording a close listen: under that haunting melody there are lots of beautiful harmonies waiting to be found, and we'll build them together, voice by voice.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
-    <p style="${P}">My recording of <strong>"J'entends frapper"</strong> is now on the Week 8 song card and in the Ailsa recordings playlist — ready for a listen or a sing-along!</p>
-    ${BTN("https://youtu.be/uahZbV3445U", "Ailsa's recording on YouTube")} 
-    <p style="${P}">🎬 <strong>New on the song resources page: a YouTube Resources section!</strong> All of our YouTube links now live in one place on the resources page — including <strong>Ailsa's YouTube recordings</strong> (including "J'entends frapper," now on its own song card and in the playlist), the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups below. Easy to find, any time.</p>
+    <p style="${P}">🎬 <strong>Your YouTube Resources</strong> — all our YouTube links in one place on the song resources page: <strong>Ailsa's YouTube recordings</strong>, the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Fall 2026 (Original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
-      <p style="${P}"><strong>Save the date for our choir social! 🎤</strong></p>
-      <p style="${P}">All four locations are invited to The Wheel Club on <strong>Sunday, November 1, from 2:00–5:00 PM</strong> for a relaxed afternoon of karaoke and good company.</p>
-      <p style="${P}">Please let me know if you'll be able to join us. You can choose yes, no or maybe, and change your answer anytime before the event.</p>
-      ${BTN(SOCIAL_RSVP_URL, "Answer the choir social RSVP")}
+      <p style="${P}"><strong>Choir social this Sunday! 🎤</strong></p>
+      <p style="${P}"><strong>Sunday, November 1, 2:00–5:00 PM</strong> at The Wheel Club, 3373 Cavendish Blvd, Montreal — a relaxed afternoon of karaoke and good company for all four locations.</p>
+      <p style="${P}">I can't wait to celebrate with those of you who can make it. See you there!</p>
     </div>
     <p style="${P}">⭐ Got a minute? A quick Google review helps new singers find Club Choir — thank you!</p>
     ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Leave us a Google review")}
     
-    <p style="${P}">🎟️ <strong>Showcase invitations are coming!</strong> I'm preparing an invitation for each show that you can easily share with friends and family by text or email. I'll email the attachments this Sunday, so keep an eye on your inbox! I'll also put a copy on the portal for you to download.</p>
+    <p style="${P}">🎟️ <strong>Send out your showcase invitations!</strong> I can't wait to share our music with your friends and family. Your invitations are on My Choir, ready to download — if you have any trouble, just email me and I'll send you a copy.</p>
+    ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Get your showcase invitation")}
+    <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning two more songs together — so now is the time to bring a friend to choir!</p>
+    <p style="${P}">⏰ <strong>Don't forget:</strong> the clocks fall back an hour this weekend.</p>
     <p style="${P}">Have a fantastic weekend — see you at choir!</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">🎶 <strong>Les ressources de la semaine 8 sont en ligne!</strong> Cette semaine, nous chantons <strong>« J'entends frapper »</strong> — le grand classique rock de Michel Pagliaro! C'est un gros morceau : apportez votre énergie, votre concentration et votre meilleur esprit rock. Tout ce qu'il vous faut est ci-dessous.</p>
+    <p style="${P}">🎶 <strong>Les ressources de la semaine 9 sont en ligne!</strong> Je n'en reviens pas : nous entamons déjà le dernier droit — vous avez tous fait un travail extraordinaire ensemble. Cette semaine, on ralentit avec <strong>« Losing My Religion »</strong> de R.E.M. Écoutez bien l'enregistrement : sous cette mélodie envoûtante se cachent de magnifiques harmonies, et nous allons les construire ensemble, voix par voix.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
-    <p style="${P}">Mon enregistrement de <strong>« J'entends frapper »</strong> est maintenant sur la fiche de la semaine 8 et dans la liste des enregistrements d'Ailsa — pour écouter ou chanter avec moi!</p>
-    ${BTN("https://youtu.be/uahZbV3445U", "Enregistrement d'Ailsa sur YouTube")} 
-    <p style="${P}">🎬 <strong>Nouveau sur la page des ressources : une section Ressources YouTube!</strong> Tous nos liens YouTube se trouvent maintenant au même endroit sur la page des ressources — dont <strong>les enregistrements YouTube d'Ailsa</strong> (dont « J'entends frapper », maintenant sur sa fiche de chanson et dans la liste de lecture), la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo ci-dessous. Facile à retrouver, en tout temps.</p>
+    <p style="${P}">🎬 <strong>Vos ressources YouTube</strong> — tous nos liens YouTube au même endroit sur la page des ressources : <strong>les enregistrements YouTube d'Ailsa</strong>, la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Automne 2026 (original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
-      <p style="${P}"><strong>Réservez la date pour notre rencontre de la chorale! 🎤</strong></p>
-      <p style="${P}">Les membres de nos quatre lieux sont invités au Wheel Club le <strong>dimanche 1er novembre, de 14 h à 17 h</strong>, pour un bel après-midi de karaoké en bonne compagnie.</p>
-      <p style="${P}">Dites-moi si vous pourrez vous joindre à nous. Vous pouvez répondre oui, non ou peut-être, puis modifier votre réponse en tout temps avant l'événement.</p>
-      ${BTN(SOCIAL_RSVP_URL, "Répondre pour la rencontre")}
+      <p style="${P}"><strong>Rencontre de la chorale ce dimanche! 🎤</strong></p>
+      <p style="${P}"><strong>Dimanche 1er novembre, de 14 h à 17 h</strong>, au Wheel Club, 3373, boul. Cavendish, Montréal — un bel après-midi de karaoké en bonne compagnie pour nos quatre lieux.</p>
+      <p style="${P}">J'ai hâte de célébrer avec celles et ceux qui pourront venir. À dimanche!</p>
     </div>
     <p style="${P}">⭐ Vous avez une minute? Un petit avis Google aide de nouveaux choristes à découvrir Club Choir — merci!</p>
     ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Laisser un avis Google")}
     
-    <p style="${P}">🎟️ <strong>Les invitations aux spectacles s'en viennent!</strong> Je prépare une invitation pour chaque spectacle, facile à partager avec vos amis et votre famille par texto ou par courriel. Je vous enverrai les pièces jointes ce dimanche : surveillez votre boîte de réception! Une copie sera aussi disponible sur le portail pour téléchargement.</p>
+    <p style="${P}">🎟️ <strong>Envoyez vos invitations au spectacle!</strong> J'ai tellement hâte de partager notre musique avec vos amis et votre famille. Vos invitations sont sur Ma chorale, prêtes à télécharger — en cas de difficulté, écrivez-moi et je vous en enverrai une copie par courriel.</p>
+    ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Obtenir votre invitation")}
+    <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et il nous reste deux chansons à apprendre ensemble — c'est le moment d'amener une amie ou un ami à la chorale!</p>
+    <p style="${P}">⏰ <strong>N'oubliez pas :</strong> on recule l'heure d'une heure cette fin de semaine.</p>
     <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
     ${SIGN}`;
   return {
-    subject: `Week 8 resources are up — "J'entends frapper" 🎶 / Ressources de la semaine 8 en ligne!`,
-    html: wrap(inner, `Week 8 resources for "J'entends frapper" are live, with the new YouTube Resources links and your invitation to the November 1 choir social.`),
+    subject: `Week 9 resources are up — "Losing My Religion" 🎶 / Ressources de la semaine 9 en ligne!`,
+    html: wrap(inner, `Week 9 resources for "Losing My Religion" are live — plus Sunday's choir social and your showcase invitations.`),
   };
 }
 
@@ -769,44 +769,46 @@ function renderChoirTonight(r: Recipient) {
   const inner = `
     ${greetEn(r)}
     <p style="${P}"><strong>It's choir night! 🎶</strong> We're back for another beautiful week of singing together.</p>
-    <p style="${P}">Tonight we're taking on <strong>"J'entends frapper" by Michel Pagliaro!</strong> This is a BIG one — full of rock-'n'-roll energy — and we'll need plenty of focus as we bring it to life together. Bring your full voice and your good energy. Let's make the room ring!</p>
+    <p style="${P}">Tonight we slow down with <strong>"Losing My Religion" by R.E.M.</strong> — one of the most iconic songs of the 1990s. Under that haunting melody are lots of beautiful harmonies, and we'll build them together, voice by voice. We're heading into the final stretch — you've all done amazing work!</p>
     ${box("en")}
     ${bring("en")}
     <p style="${P}">Want a quick listen before we meet? Your recordings, lyrics and lyric slides are waiting on the resource page. If you need help signing in, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Open the song resources")}
-    <p style="${P}">My recording of <strong>"J'entends frapper"</strong> is now on the Week 8 song card and in the Ailsa recordings playlist — ready for a listen or a sing-along!</p>
-    ${BTN("https://youtu.be/uahZbV3445U", "Ailsa's recording on YouTube")} 
     <p style="${P}">🎤 <strong>Vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
     <p style="${P}">🎬 <strong>Ailsa's recordings!</strong> There's now a playlist of me recording our songs — a handy way to hear a part, learn a song or simply sing along at home. I'll keep adding to it as we go.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
     
-    <p style="${P}">🎟️ <strong>Showcase invitations are coming!</strong> I'm preparing an invitation for each show that you can easily share with friends and family by text or email. I'll email the attachments this Sunday, so keep an eye on your inbox! I'll also put a copy on the portal for you to download.</p>
+    <p style="${P}">🎟️ <strong>Send out your showcase invitations!</strong> I can't wait to share our music with your friends and family. Your invitations are on My Choir, ready to download — if you have any trouble, just email me and I'll send you a copy.</p>
+    ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Get your showcase invitation")}
+    <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning two more songs together — so now is the time to bring a friend to choir!</p>
+
     <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
-    <p style="${P}"><strong>See you tonight — I can't wait to sing this one with you!</strong></p>
+    <p style="${P}"><strong>See you tonight — I can't wait to find those harmonies with you!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
     <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> Nous voilà repartis pour une nouvelle belle semaine de chant ensemble.</p>
-    <p style="${P}">Ce soir, nous attaquons <strong>« J'entends frapper » de Michel Pagliaro!</strong> C'est un GROS morceau, rempli d'énergie rock, et nous aurons besoin de beaucoup de concentration pour lui donner vie ensemble. Apportez votre voix et votre belle énergie. Faisons vibrer la salle!</p>
+    <p style="${P}">Ce soir, on ralentit avec <strong>« Losing My Religion » de R.E.M.</strong> — l'une des chansons les plus marquantes des années 1990. Sous cette mélodie envoûtante se cachent de magnifiques harmonies, et nous allons les construire ensemble, voix par voix. Nous entamons le dernier droit — vous faites un travail extraordinaire!</p>
     ${box("fr")}
     ${bring("fr")}
     <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
     ${BTN(RES, "Voir les ressources musicales")}
-    <p style="${P}">Mon enregistrement de <strong>« J'entends frapper »</strong> est maintenant sur la fiche de la semaine 8 et dans la liste des enregistrements d'Ailsa — pour écouter ou chanter avec moi!</p>
-    ${BTN("https://youtu.be/uahZbV3445U", "Enregistrement d'Ailsa sur YouTube")} 
     <p style="${P}">🎤 <strong>Échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
     <p style="${P}">🎬 <strong>Les enregistrements d'Ailsa!</strong> Il y a maintenant une liste de lecture avec mes enregistrements de nos chansons — une façon pratique d'entendre une voix, d'apprendre une chanson ou simplement de chanter à la maison. Je l'enrichis au fil des semaines.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
     
-    <p style="${P}">🎟️ <strong>Les invitations aux spectacles s'en viennent!</strong> Je prépare une invitation pour chaque spectacle, facile à partager avec vos amis et votre famille par texto ou par courriel. Je vous enverrai les pièces jointes ce dimanche : surveillez votre boîte de réception! Une copie sera aussi disponible sur le portail pour téléchargement.</p>
+    <p style="${P}">🎟️ <strong>Envoyez vos invitations au spectacle!</strong> J'ai tellement hâte de partager notre musique avec vos amis et votre famille. Vos invitations sont sur Ma chorale, prêtes à télécharger — en cas de difficulté, écrivez-moi et je vous en enverrai une copie par courriel.</p>
+    ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Obtenir votre invitation")}
+    <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et il nous reste deux chansons à apprendre ensemble — c'est le moment d'amener une amie ou un ami à la chorale!</p>
+
     <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
-    <p style="${P}"><strong>À ce soir — j'ai très hâte de chanter cette chanson avec vous!</strong></p>
+    <p style="${P}"><strong>À ce soir — j'ai très hâte de trouver ces harmonies avec vous!</strong></p>
     ${SIGN}`;
   return {
-    subject: `Week 8 — It's choir night${city ? ` — ${city}` : ""}! 🎶 / Semaine 8 — C'est soir de chorale${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Week 8 is here — bring your energy for J'entends frapper by Michel Pagliaro!"),
+    subject: `Week 9 — It's choir night${city ? ` — ${city}` : ""}! 🎶 / Semaine 9 — C'est soir de chorale${city ? ` — ${city}` : ""}!`,
+    html: wrap(inner, "Week 9 is here — Losing My Religion by R.E.M., harmonies and the final stretch!"),
   };
 }
 

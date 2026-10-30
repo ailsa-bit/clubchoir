@@ -8,16 +8,16 @@ function trackingKey(source: string, segment: string) {
   return source.match(new RegExp(`"${segment}":\\s*"([^"]+)"`))?.[1];
 }
 
-describe("Week 8 campaign tracking resets", () => {
-  it("starts the resources campaign with a fresh Week 8 key on server and page", () => {
+describe("Week 9 campaign tracking resets", () => {
+  it("starts the resources campaign with a fresh Week 9 key on server and page", () => {
     for (const source of [serverSource, pageSource]) {
-      expect(trackingKey(source, "resources-week3-paid")).toBe("fall-2026-resources-week8-paid-v1");
+      expect(trackingKey(source, "resources-week3-paid")).toBe("fall-2026-resources-week9-paid-v1");
     }
   });
 
-  it("starts the weekly reminder with a fresh Week 8 key on server and page", () => {
+  it("starts the weekly reminder with a fresh Week 9 key on server and page", () => {
     for (const source of [serverSource, pageSource]) {
-      expect(trackingKey(source, "choir-tonight")).toBe("fall-2026-choir-tonight-week8-v1");
+      expect(trackingKey(source, "choir-tonight")).toBe("fall-2026-choir-tonight-week9-v1");
     }
   });
 });

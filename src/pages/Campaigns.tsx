@@ -43,28 +43,21 @@ const EMPTY_COUNTS = {
 } as Record<Segment, number>;
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
-  "showcase-invitations": "fall-2026-showcase-invitations-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week8-v1",
-  "resources-week3-paid": "fall-2026-resources-week8-paid-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week9-v1",
+  "resources-week3-paid": "fall-2026-resources-week9-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
-    key: "showcase-invitations",
-    title: "Showcase Invitations & November 1 Karaoke",
-    description: "Personalized bilingual invitation email. Each member receives only their location’s four invitations: portrait and landscape, English and French. Includes download links, My Choir and a warm invitation to bring friends or a spouse to karaoke.",
-    color: "bg-card border-primary/30",
-  },
-  {
     key: "choir-tonight",
-    title: "Week 8 — See You at Choir Tonight",
-    description: "Week 8 same-day reminder for paid members, sent by location. J’entends frapper by Michel Pagliaro, with energy and focus, venue details, song resources, Ailsa’s recording, Singeo warm-ups and showcase invitation news. Bilingual EN/FR.",
+    title: "Week 9 — See You at Choir Tonight",
+    description: "Week 9 same-day reminder for paid members, sent by location. \"Losing My Religion\" by R.E.M., final stretch, venue details, song resources, Singeo warm-ups, Ailsa’s YouTube recordings, Sunday choir social, showcase invitations, bring-a-friend and the time change. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {
     key: "resources-week3-paid",
-    title: "Week 8 Resources Are Up — \"J'entends frapper\"",
-    description: "Send by location to paid members. Announces Week 8 song \"J'entends frapper\" by Michel Pagliaro, includes the weekly links, the new Week 8 recording and Sunday showcase invitation news, the new YouTube Resources section on the song resources page (Ailsa's YouTube recordings, Fall 2026 Original and the Singeo warm-up playlist), and warmly invites members to RSVP for the November 1 choir social. Bilingual EN/FR.",
+    title: "Week 9 Resources Are Up — \"Losing My Religion\"",
+    description: "Send by location to paid members. Week 9 song \"Losing My Religion\" by R.E.M., the usual four links, YouTube Resources, this Sunday’s choir social at The Wheel Club, showcase invitation download, bring-a-friend note, time change and the Google review box. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];
