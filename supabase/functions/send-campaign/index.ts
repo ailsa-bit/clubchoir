@@ -894,7 +894,7 @@ function renderGaryKingfisher(r: Recipient) {
     </div>
     <p style="${P}">The pub can get busy, so I recommend <strong>reserving a table</strong> ahead of time.</p>
     ${BTN(URL, "Visit Kingfisher Pub & reserve")}
-    <p style="${P}">Gary keeps us singing and smiling every week — let's go cheer him on! I'd love to see some choir faces in the room.</p>
+    <p style="${P}">Gary keeps us singing and smiling every week — let's go cheer him on! Bonus points if you sneak in a little sing-along from your table. 🎶</p>
     ${SIGN}${DIVIDER}${greetFr(r)}
     <p style="${P}">Petite nouvelle amusante pour ce soir : notre cher <strong>Gary White</strong> se produit au <strong>Kingfisher Pub</strong>! 🎶</p>
     <div style="background:#fef3c7;border-left:4px solid #f59e0b;border-radius:8px;padding:14px 16px;margin:0 0 16px;">
@@ -902,7 +902,7 @@ function renderGaryKingfisher(r: Recipient) {
     </div>
     <p style="${P}">Le pub peut être très achalandé, alors je vous conseille de <strong>réserver une table</strong> à l'avance.</p>
     ${BTN(URL, "Visiter le Kingfisher Pub et réserver")}
-    <p style="${P}">Gary nous fait chanter et sourire chaque semaine — allons l'encourager! J'ai hâte de voir quelques visages de la chorale dans la salle.</p>
+    <p style="${P}">Gary nous fait chanter et sourire chaque semaine — allons l'encourager! Points bonus si vous chantez un petit refrain depuis votre table. 🎶</p>
     ${SIGN}`;
   return {
     subject: "Gary is performing tonight at the Kingfisher Pub! 🎶 / Gary en spectacle ce soir au Kingfisher Pub!",
