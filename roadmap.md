@@ -35,3 +35,7 @@
 - [x] Remove the showcase invitation campaign card, retaining send history.
 - [x] Refresh both bilingual weekly emails for Losing My Religion and use fresh Week 9 tracking keys.
 - [x] Verify campaign cards and live previews without sending; both show 242 eligible, not yet emailed.
+
+## Week 9 scheduled choir-night reminders
+- [x] Schedule Montreal Nov 2, Hudson Nov 3, Saint-Hubert Nov 4 and Pointe-Claire Nov 5 at 8 AM Toronto time.
+- [x] Verify all four active one-time jobs, pinned Week 9 version and six tests; deploy paced sending without sending early.
