@@ -955,7 +955,6 @@ function renderEmail(segment: Segment, r: Recipient, invitations: EmailInvitatio
   if (segment === "welcome-new-paid") return renderWelcomeNewPaid(r);
   if (segment === "welcome-late-paid") return renderWelcomeLatePaid(r);
   if (segment === "choir-tonight") return renderChoirTonight(r);
-  if (segment === "gary-kingfisher") return renderGaryKingfisher(r);
   return renderConsidering(r);
 }
 
