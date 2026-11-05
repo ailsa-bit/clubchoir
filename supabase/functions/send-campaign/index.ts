@@ -15,7 +15,7 @@ const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 const GARY_WHITE_EMAIL = "garwhite@hotmail.com";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "showcase-invitations" | "gary-kingfisher";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "showcase-invitations";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "showcase-invitations": SHOWCASE_CAMPAIGN_KEY,
@@ -34,7 +34,6 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week9-v1",
-  "gary-kingfisher": "hudson-gary-kingfisher-oct30-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
