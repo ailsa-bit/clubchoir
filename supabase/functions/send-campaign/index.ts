@@ -883,32 +883,6 @@ function renderGaryWhiteShoutout(r: Recipient) {
   };
 }
 
-function renderGaryKingfisher(r: Recipient) {
-  const URL = "https://kingfisherpub.ca/";
-  const inner = `
-    ${greetEn(r)}
-    <p style="${P}">A fun little heads-up for tonight: our very own <strong>Gary White</strong> is performing at the <strong>Kingfisher Pub</strong>! 🎶</p>
-    <div style="background:#fef3c7;border-left:4px solid #f59e0b;border-radius:8px;padding:14px 16px;margin:0 0 16px;">
-      <p style="margin:0;font-size:16px;line-height:1.55;color:#78350f;"><strong>Tonight, Friday, October 30 — Gary is on at 7:30 PM</strong><br />Kingfisher Pub</p>
-    </div>
-    <p style="${P}">The pub can get busy, so I recommend <strong>reserving a table</strong> ahead of time.</p>
-    ${BTN(URL, "Visit Kingfisher Pub & reserve")}
-    <p style="${P}">Gary keeps us singing and smiling every week — let's go cheer him on! Bonus points if you sneak in a little sing-along from your table. 🎶</p>
-    ${SIGN}${DIVIDER}${greetFr(r)}
-    <p style="${P}">Petite nouvelle amusante pour ce soir : notre cher <strong>Gary White</strong> se produit au <strong>Kingfisher Pub</strong>! 🎶</p>
-    <div style="background:#fef3c7;border-left:4px solid #f59e0b;border-radius:8px;padding:14px 16px;margin:0 0 16px;">
-      <p style="margin:0;font-size:16px;line-height:1.55;color:#78350f;"><strong>Ce soir, vendredi 30 octobre — Gary monte sur scène à 19 h 30</strong><br />Kingfisher Pub</p>
-    </div>
-    <p style="${P}">Le pub peut être très achalandé, alors je vous conseille de <strong>réserver une table</strong> à l'avance.</p>
-    ${BTN(URL, "Visiter le Kingfisher Pub et réserver")}
-    <p style="${P}">Gary nous fait chanter et sourire chaque semaine — allons l'encourager! Points bonus si vous chantez un petit refrain depuis votre table. 🎶</p>
-    ${SIGN}`;
-  return {
-    subject: "Gary is performing tonight at the Kingfisher Pub! 🎶 / Gary en spectacle ce soir au Kingfisher Pub!",
-    html: wrap(inner, "Gary White is on at 7:30 PM tonight at the Kingfisher Pub — reserve a table!"),
-  };
-}
-
 async function loadShowcaseInvitations(supabase: any, locations: string[]): Promise<Record<string, EmailInvitation[]>> {
   const { data, error } = await supabase.from("song_resources")
     .select("location, part, file_name, storage_path")
@@ -1063,11 +1037,6 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
 
   if (segment === "fall-paid" || segment === "resources-week3-paid" || segment === SHOWCASE_SEGMENT) return Array.from(paidMap.values());
 
-  if (segment === "gary-kingfisher") {
-    // Paid Hudson members only; Gary himself doesn't need the invite.
-    return Array.from(paidMap.values()).filter((r) => normLocation(r.location) === "Hudson" && r.email.toLowerCase() !== GARY_WHITE_EMAIL);
-  }
-
   if (segment === "choir-tonight") {
     // Same-day reminders are for paid Fall 2026 members only.
     return Array.from(paidMap.values());
@@ -1219,7 +1188,7 @@ async function loadAlreadySent(
   }
   const skip = new Set<string>();
   let sentQuery = supabase.from("campaign_sends").select("recipient_email").in("campaign_key", keys);
-    if (segment === SHOWCASE_SEGMENT || segment === "choir-tonight" || segment === "gary-kingfisher") sentQuery = sentQuery.eq("status", "sent");
+    if (segment === SHOWCASE_SEGMENT || segment === "choir-tonight") sentQuery = sentQuery.eq("status", "sent");
   const { data } = await sentQuery;
   for (const r of data || []) skip.add(String(r.recipient_email).toLowerCase());
   return skip;
