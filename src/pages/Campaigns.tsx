@@ -46,6 +46,9 @@ const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week9-v1",
   "resources-week3-paid": "fall-2026-resources-week9-paid-v1",
 };
+
+const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
+  {
     key: "choir-tonight",
     title: "Week 9 — See You at Choir Tonight",
     description: "Week 9 same-day reminder for paid members, sent by location. \"Losing My Religion\" by R.E.M., final stretch, venue details, song resources, Singeo warm-ups, Ailsa’s YouTube recordings, Sunday choir social, showcase invitations, bring-a-friend and the time change. Bilingual EN/FR.",
