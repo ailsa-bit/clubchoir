@@ -33,7 +33,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "resources-week3-paid": "fall-2026-resources-week9-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week9-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week10-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -769,7 +769,7 @@ function renderChoirTonight(r: Recipient) {
   const inner = `
     ${greetEn(r)}
     <p style="${P}"><strong>It's choir night! 🎶</strong> We're back for another beautiful week of singing together.</p>
-    <p style="${P}">Tonight we slow down with <strong>"Losing My Religion" by R.E.M.</strong> — one of the most iconic songs of the 1990s. Under that haunting melody are lots of beautiful harmonies, and we'll build them together, voice by voice. We're heading into the final stretch — you've all done amazing work!</p>
+    <p style="${P}">It's <strong>Week 10</strong>, and tonight we learn <strong>our last new song of the session!</strong> I can't believe how far we've come together. You've all done amazing work, and I can't wait to bring our songs together for the showcase and share them with your friends and family.</p>
     ${box("en")}
     ${bring("en")}
     <p style="${P}">Want a quick listen before we meet? Your recordings, lyrics and lyric slides are waiting on the resource page. If you need help signing in, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
@@ -781,15 +781,15 @@ function renderChoirTonight(r: Recipient) {
     
     <p style="${P}">🎟️ <strong>Send out your showcase invitations!</strong> I can't wait to share our music with your friends and family. Your invitations are on My Choir, ready to download — if you have any trouble, just email me and I'll send you a copy.</p>
     ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Get your showcase invitation")}
-    <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning two more songs together — so now is the time to bring a friend to choir!</p>
+    <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning our last new song tonight — so now is the time to bring a friend to choir!</p>
 
     <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
-    <p style="${P}"><strong>See you tonight — I can't wait to find those harmonies with you!</strong></p>
+    <p style="${P}"><strong>See you tonight — let's make this last new song something special together!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
     <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> Nous voilà repartis pour une nouvelle belle semaine de chant ensemble.</p>
-    <p style="${P}">Ce soir, on ralentit avec <strong>« Losing My Religion » de R.E.M.</strong> — l'une des chansons les plus marquantes des années 1990. Sous cette mélodie envoûtante se cachent de magnifiques harmonies, et nous allons les construire ensemble, voix par voix. Nous entamons le dernier droit — vous faites un travail extraordinaire!</p>
+    <p style="${P}">C'est la <strong>semaine 10</strong>, et ce soir, nous apprenons <strong>notre dernière nouvelle chanson de la session!</strong> Je n'en reviens pas de tout le chemin parcouru ensemble. Vous avez tous fait un travail extraordinaire, et j'ai tellement hâte de réunir nos chansons pour le spectacle et de les partager avec vos amis et votre famille.</p>
     ${box("fr")}
     ${bring("fr")}
     <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
@@ -801,14 +801,14 @@ function renderChoirTonight(r: Recipient) {
     
     <p style="${P}">🎟️ <strong>Envoyez vos invitations au spectacle!</strong> J'ai tellement hâte de partager notre musique avec vos amis et votre famille. Vos invitations sont sur Ma chorale, prêtes à télécharger — en cas de difficulté, écrivez-moi et je vous en enverrai une copie par courriel.</p>
     ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Obtenir votre invitation")}
-    <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et il nous reste deux chansons à apprendre ensemble — c'est le moment d'amener une amie ou un ami à la chorale!</p>
+    <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et nous apprenons notre dernière nouvelle chanson ce soir — c'est le moment d'amener une amie ou un ami à la chorale!</p>
 
     <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
-    <p style="${P}"><strong>À ce soir — j'ai très hâte de trouver ces harmonies avec vous!</strong></p>
+    <p style="${P}"><strong>À ce soir — faisons de cette dernière nouvelle chanson un beau moment ensemble!</strong></p>
     ${SIGN}`;
   return {
-    subject: `Week 9 — It's choir night${city ? ` — ${city}` : ""}! 🎶 / Semaine 9 — C'est soir de chorale${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Week 9 is here — Losing My Religion by R.E.M., harmonies and the final stretch!"),
+    subject: `Week 10 — It's choir night${city ? ` — ${city}` : ""}! 🎶 / Semaine 10 — C'est soir de chorale${city ? ` — ${city}` : ""}!`,
+    html: wrap(inner, "Week 10 is here — our last new song of the session and the final stretch before our showcase!"),
   };
 }
 
