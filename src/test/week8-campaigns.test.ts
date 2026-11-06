@@ -9,9 +9,9 @@ function trackingKey(source: string, segment: string) {
 }
 
 describe("Current campaign tracking resets", () => {
-  it("starts the resources campaign with a fresh Week 9 key on server and page", () => {
+  it("starts the resources campaign with a fresh Week 10 key on server and page", () => {
     for (const source of [serverSource, pageSource]) {
-      expect(trackingKey(source, "resources-week3-paid")).toBe("fall-2026-resources-week9-paid-v1");
+      expect(trackingKey(source, "resources-week3-paid")).toBe("fall-2026-resources-week10-paid-v1");
     }
   });
 
