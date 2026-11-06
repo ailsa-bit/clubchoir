@@ -30,7 +30,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   
-  "resources-week3-paid": "fall-2026-resources-week9-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week10-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week10-v1",
@@ -675,12 +675,12 @@ function renderResourcesWeek3(r: Recipient) {
     const items = lang === "en" ? [
       { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
       { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
-      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "Losing My Religion".`, url: RES_URL, label: "Open the song resources" },
+      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "So Easy (To Fall in Love)".`, url: RES_URL, label: "Open the song resources" },
       { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
     ] : [
       { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
       { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
-      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « Losing My Religion ».`, url: RES_URL, label: "Voir les ressources" },
+      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « So Easy (To Fall in Love) ».`, url: RES_URL, label: "Voir les ressources" },
       { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
     ];
     return items.map((i) => `
@@ -694,53 +694,47 @@ function renderResourcesWeek3(r: Recipient) {
   };
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">🎶 <strong>Week 9 resources are up!</strong> I can't believe we're heading into the final stretch — you have all done amazing work together. This week we slow down with <strong>"Losing My Religion"</strong> by R.E.M. Give the recording a close listen: under that haunting melody there are lots of beautiful harmonies waiting to be found, and we'll build them together, voice by voice.</p>
+    <p style="${P}">🎶 <strong>Week 10 resources are up!</strong></p>
+    <h2>Song of the Week: "So Easy (To Fall in Love)" by Olivia Dean</h2>
+    <p style="${P}">This week we fall in love, the easy way! Our last new song of the session is Olivia Dean's "So Easy (To Fall in Love)," and it is pure sunshine: a bossa-nova groove, cocktail piano, a trumpet, and Olivia calling herself "the perfect mix of Saturday night and the rest of your life." Listen to the recording this week, and listen for the back-and-forth, voices answering each other, which is exactly what we will be singing together.</p>
+    <p style="${P}">And here is the best part: Olivia wrote it as a pep talk for first dates. She told Elle she wanted to say, "You'd be really easy to fall in love with. Anyone will be lucky to have you in their life," instead of worrying whether the other person likes you. Released September 26, 2025 as the fourth single from her second album "The Art of Loving," it is only 2 minutes 49 seconds long, and it went to No. 2 in the UK, No. 5 on the Billboard Hot 100, and No. 3 in Canada. A brand-new classic, sung best by a whole room at once.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
     <p style="${P}">🎬 <strong>Your YouTube Resources</strong> — all our YouTube links in one place on the song resources page: <strong>Ailsa's YouTube recordings</strong>, the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Fall 2026 (Original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
-    <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
-      <p style="${P}"><strong>Choir social this Sunday! 🎤</strong></p>
-      <p style="${P}"><strong>Sunday, November 1, 2:00–5:00 PM</strong> at The Wheel Club, 3373 Cavendish Blvd, Montreal — a relaxed afternoon of karaoke and good company for all four locations.</p>
-      <p style="${P}">I can't wait to celebrate with those of you who can make it. See you there!</p>
-    </div>
     <p style="${P}">⭐ Got a minute? A quick Google review helps new singers find Club Choir — thank you!</p>
     ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Leave us a Google review")}
     
     <p style="${P}">🎟️ <strong>Send out your showcase invitations!</strong> I can't wait to share our music with your friends and family. Your invitations are on My Choir, ready to download — if you have any trouble, just email me and I'll send you a copy.</p>
     ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Get your showcase invitation")}
-    <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning two more songs together — so now is the time to bring a friend to choir!</p>
-    <p style="${P}">⏰ <strong>Don't forget:</strong> the clocks fall back an hour this weekend.</p>
+    <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning our last new song this week — so now is the time to bring a friend to choir!</p>
     <p style="${P}">Have a fantastic weekend — see you at choir!</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">🎶 <strong>Les ressources de la semaine 9 sont en ligne!</strong> Je n'en reviens pas : nous entamons déjà le dernier droit — vous avez tous fait un travail extraordinaire ensemble. Cette semaine, on ralentit avec <strong>« Losing My Religion »</strong> de R.E.M. Écoutez bien l'enregistrement : sous cette mélodie envoûtante se cachent de magnifiques harmonies, et nous allons les construire ensemble, voix par voix.</p>
+    <p style="${P}">🎶 <strong>Les ressources de la semaine 10 sont en ligne!</strong></p>
+    <h2>Chanson de la semaine : « So Easy (To Fall in Love) » d'Olivia Dean</h2>
+    <p style="${P}">Cette semaine, on tombe amoureux, tout simplement! Notre dernière nouvelle chanson de la session est « So Easy (To Fall in Love) » d'Olivia Dean, et c'est un véritable rayon de soleil : un rythme de bossa-nova, un piano d'ambiance, une trompette, et Olivia qui se décrit comme « le mélange parfait du samedi soir et du reste de votre vie ». Écoutez l'enregistrement cette semaine et prêtez attention aux échanges, aux voix qui se répondent : c'est exactement ce que nous allons chanter ensemble.</p>
+    <p style="${P}">Et le plus beau dans tout ça : Olivia l'a écrite comme un petit discours d'encouragement avant un premier rendez-vous. Elle a expliqué à Elle qu'elle voulait dire : « Ce serait vraiment facile de tomber amoureux de toi. N'importe qui aurait de la chance de t'avoir dans sa vie », plutôt que de se demander si l'autre personne nous aime. Sortie le 26 septembre 2025 comme quatrième extrait de son deuxième album, « The Art of Loving », elle ne dure que 2 minutes 49 secondes et a atteint le no 2 au Royaume-Uni, le no 5 du Billboard Hot 100 et le no 3 au Canada. Un tout nouveau classique, qui se chante le mieux dans une salle remplie, tous ensemble.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
     <p style="${P}">🎬 <strong>Vos ressources YouTube</strong> — tous nos liens YouTube au même endroit sur la page des ressources : <strong>les enregistrements YouTube d'Ailsa</strong>, la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
     ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Automne 2026 (original)")}
     ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
-    <div style="background:#fff1f6;border-left:4px solid #e5548a;border-radius:8px;padding:18px 20px;margin:26px 0;">
-      <p style="${P}"><strong>Rencontre de la chorale ce dimanche! 🎤</strong></p>
-      <p style="${P}"><strong>Dimanche 1er novembre, de 14 h à 17 h</strong>, au Wheel Club, 3373, boul. Cavendish, Montréal — un bel après-midi de karaoké en bonne compagnie pour nos quatre lieux.</p>
-      <p style="${P}">J'ai hâte de célébrer avec celles et ceux qui pourront venir. À dimanche!</p>
-    </div>
     <p style="${P}">⭐ Vous avez une minute? Un petit avis Google aide de nouveaux choristes à découvrir Club Choir — merci!</p>
     ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Laisser un avis Google")}
     
     <p style="${P}">🎟️ <strong>Envoyez vos invitations au spectacle!</strong> J'ai tellement hâte de partager notre musique avec vos amis et votre famille. Vos invitations sont sur Ma chorale, prêtes à télécharger — en cas de difficulté, écrivez-moi et je vous en enverrai une copie par courriel.</p>
     ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Obtenir votre invitation")}
-    <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et il nous reste deux chansons à apprendre ensemble — c'est le moment d'amener une amie ou un ami à la chorale!</p>
-    <p style="${P}">⏰ <strong>N'oubliez pas :</strong> on recule l'heure d'une heure cette fin de semaine.</p>
+    <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et nous apprenons notre dernière nouvelle chanson cette semaine — c'est le moment d'amener une amie ou un ami à la chorale!</p>
     <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
     ${SIGN}`;
   return {
-    subject: `Week 9 resources are up — "Losing My Religion" 🎶 / Ressources de la semaine 9 en ligne!`,
-    html: wrap(inner, `Week 9 resources for "Losing My Religion" are live — plus Sunday's choir social and your showcase invitations.`),
+    subject: `Week 10 resources are up — "So Easy (To Fall in Love)" 🎶 / Ressources de la semaine 10 en ligne!`,
+    html: wrap(inner, `Week 10 resources for "So Easy (To Fall in Love)" are live — our last new song of the session, YouTube resources and your showcase invitations.`),
   };
 }
 

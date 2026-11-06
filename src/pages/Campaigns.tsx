@@ -44,7 +44,7 @@ const EMPTY_COUNTS = {
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week10-v1",
-  "resources-week3-paid": "fall-2026-resources-week9-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week10-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
@@ -56,8 +56,8 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   },
   {
     key: "resources-week3-paid",
-    title: "Week 9 Resources Are Up — \"Losing My Religion\"",
-    description: "Send by location to paid members. Week 9 song \"Losing My Religion\" by R.E.M., the usual four links, YouTube Resources, this Sunday’s choir social at The Wheel Club, showcase invitation download, bring-a-friend note, time change and the Google review box. Bilingual EN/FR.",
+    title: "Week 10 Resources Are Up — \"So Easy (To Fall in Love)\"",
+    description: "Send by location to paid members. Week 10’s last new song, \"So Easy (To Fall in Love)\" by Olivia Dean, the usual four links, YouTube Resources, showcase invitations, bring-a-friend and the Google review box. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];
