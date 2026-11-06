@@ -696,8 +696,7 @@ function renderResourcesWeek3(r: Recipient) {
     ${greetEn(r)}
     <p style="${P}">🎶 <strong>Week 10 resources are up!</strong></p>
     <h2>Song of the Week: "So Easy (To Fall in Love)" by Olivia Dean</h2>
-    <p style="${P}">This week we fall in love, the easy way! Our last new song of the session is Olivia Dean's "So Easy (To Fall in Love)," and it is pure sunshine: a bossa-nova groove, cocktail piano, a trumpet, and Olivia calling herself "the perfect mix of Saturday night and the rest of your life." Listen to the recording this week, and listen for the back-and-forth, voices answering each other, which is exactly what we will be singing together.</p>
-    <p style="${P}">And here is the best part: Olivia wrote it as a pep talk for first dates. She told Elle she wanted to say, "You'd be really easy to fall in love with. Anyone will be lucky to have you in their life," instead of worrying whether the other person likes you. Released September 26, 2025 as the fourth single from her second album "The Art of Loving," it is only 2 minutes 49 seconds long, and it went to No. 2 in the UK, No. 5 on the Billboard Hot 100, and No. 3 in Canada. A brand-new classic, sung best by a whole room at once.</p>
+    <p style="${P}">Our last new song of the session is here! Listen to the recording this week, and find the full Song of the Week blurb on My Choir.</p>
     <p style="${P}">Here are your four handy links for the week:</p>
     ${linkBox("en")}
     <p style="${P}">🎬 <strong>Your YouTube Resources</strong> — all our YouTube links in one place on the song resources page: <strong>Ailsa's YouTube recordings</strong>, the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups.</p>
@@ -716,8 +715,7 @@ function renderResourcesWeek3(r: Recipient) {
     ${greetFr(r)}
     <p style="${P}">🎶 <strong>Les ressources de la semaine 10 sont en ligne!</strong></p>
     <h2>Chanson de la semaine : « So Easy (To Fall in Love) » d'Olivia Dean</h2>
-    <p style="${P}">Cette semaine, on tombe amoureux, tout simplement! Notre dernière nouvelle chanson de la session est « So Easy (To Fall in Love) » d'Olivia Dean, et c'est un véritable rayon de soleil : un rythme de bossa-nova, un piano d'ambiance, une trompette, et Olivia qui se décrit comme « le mélange parfait du samedi soir et du reste de votre vie ». Écoutez l'enregistrement cette semaine et prêtez attention aux échanges, aux voix qui se répondent : c'est exactement ce que nous allons chanter ensemble.</p>
-    <p style="${P}">Et le plus beau dans tout ça : Olivia l'a écrite comme un petit discours d'encouragement avant un premier rendez-vous. Elle a expliqué à Elle qu'elle voulait dire : « Ce serait vraiment facile de tomber amoureux de toi. N'importe qui aurait de la chance de t'avoir dans sa vie », plutôt que de se demander si l'autre personne nous aime. Sortie le 26 septembre 2025 comme quatrième extrait de son deuxième album, « The Art of Loving », elle ne dure que 2 minutes 49 secondes et a atteint le no 2 au Royaume-Uni, le no 5 du Billboard Hot 100 et le no 3 au Canada. Un tout nouveau classique, qui se chante le mieux dans une salle remplie, tous ensemble.</p>
+    <p style="${P}">Notre dernière nouvelle chanson de la session est arrivée! Écoutez l'enregistrement cette semaine et retrouvez le texte complet de la chanson de la semaine sur Ma chorale.</p>
     <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
     ${linkBox("fr")}
     <p style="${P}">🎬 <strong>Vos ressources YouTube</strong> — tous nos liens YouTube au même endroit sur la page des ressources : <strong>les enregistrements YouTube d'Ailsa</strong>, la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo.</p>
