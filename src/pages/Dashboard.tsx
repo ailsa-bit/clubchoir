@@ -232,21 +232,6 @@ const Dashboard = () => {
       <Helmet><title>Admin Dashboard | Club Choir</title><meta name="robots" content="noindex" /></Helmet>
 
       <div className="container mx-auto max-w-6xl px-4 py-8">
-        <div className="mb-6 rounded-xl border border-primary/30 bg-primary/5 p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h2 className="flex items-center gap-2 font-heading text-xl font-bold"><CalendarCheck className="h-5 w-5 text-primary" />November 1 choir social</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Wheel Club RSVP responses from all four locations.</p>
-            </div>
-            <Button size="sm" asChild><Link to="/reports?report=social-rsvp">View RSVP list <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
-          </div>
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <StatCard icon={Check} label="Yes" value={rsvps.filter((r) => r.response === "yes").length} sub="See list" to="/reports?report=social-rsvp&response=yes" />
-            <StatCard icon={CalendarCheck} label="Maybe" value={rsvps.filter((r) => r.response === "maybe").length} sub="See list" to="/reports?report=social-rsvp&response=maybe" />
-            <StatCard icon={Users} label="Cannot attend" value={rsvps.filter((r) => r.response === "no").length} sub="See list" to="/reports?report=social-rsvp&response=no" />
-            <StatCard icon={MapPin} label="Total replies" value={rsvps.length} sub="See list" to="/reports?report=social-rsvp" />
-          </div>
-        </div>
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div>
             <h1 className="font-heading font-bold text-3xl text-foreground">Resource activity</h1>
