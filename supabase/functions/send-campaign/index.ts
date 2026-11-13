@@ -679,11 +679,13 @@ function renderResourcesWeek3(r: Recipient) {
       { n: "2", t: `<strong>Fall 2026 song resources</strong> — recordings, lyrics, lyric slides and sheet music for all 10 showcase songs, in showcase order.`, url: RES_URL, label: "Open the song resources" },
       { n: "3", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
       { n: "4", t: `<strong>Your location's video playlist${city ? ` (${esc(city)})` : ""}</strong> — the videos we record at the end of each session. This link never changes, and I upload new videos every week, so save it!`, url: playlist, label: "Watch your location's videos" },
+      { n: "5", t: `<strong>Ailsa (YouTube Recordings)</strong> — my own recordings of the songs. A handy way to hear a part, learn a song or just sing along at home.`, url: "https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", label: "Listen to Ailsa's recordings" },
     ] : [
       { n: "1", t: `<strong>Cette semaine à la chorale</strong> — votre message de la semaine, les rappels et les annonces.`, url: THIS_WEEK, label: "Voir Cette semaine" },
       { n: "2", t: `<strong>Ressources des chansons — automne 2026</strong> — enregistrements, paroles, diapositives et partitions des 10 chansons du spectacle, dans l'ordre du spectacle.`, url: RES_URL, label: "Voir les ressources" },
       { n: "3", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
       { n: "4", t: `<strong>La liste de vidéos de votre lieu${city ? ` (${esc(city)})` : ""}</strong> — les vidéos que nous enregistrons à la fin de chaque séance. Ce lien ne change jamais et j'ajoute de nouvelles vidéos chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
+      { n: "5", t: `<strong>Ailsa (enregistrements YouTube)</strong> — mes propres enregistrements des chansons. Une façon pratique d'entendre une partie, d'apprendre une chanson ou simplement de chanter à la maison.`, url: "https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", label: "Écouter les enregistrements d'Ailsa" },
     ];
     return items.map((i) => `
       <div style="display:flex;align-items:flex-start;gap:10px;margin:0 0 14px;">
