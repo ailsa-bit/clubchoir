@@ -30,7 +30,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "binder-count-unpaid": "fall-2026-binder-count-unpaid-v1",
   "binder-count-considering": "fall-2026-binder-count-considering-v1",
   
-  "resources-week3-paid": "fall-2026-resources-week10-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week11-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week10-v1",
@@ -669,19 +669,21 @@ const FALL_PLAYLIST = "https://www.youtube.com/playlist?list=PLcV8Anv7jfrk";
 function renderResourcesWeek3(r: Recipient) {
   const THIS_WEEK = `${SITE_URL}/this-week`;
   const RES_URL = `${SITE_URL}/resources/fall-2026`;
-  const SOCIAL_RSVP_URL = `${SITE_URL}/this-week#choir-social-rsvp`;
+  const CONCERT_LIST_URL = `${SITE_URL}/resources/fall-2026#concert-song-list`;
+  const REGISTER_URL = `${SITE_URL}/register`;
   const playlist = LOCATION_PLAYLISTS[r.location] || FALL_PLAYLIST;
+  const city = LOCATIONS[r.location]?.city || "";
   const linkBox = (lang: "en" | "fr") => {
     const items = lang === "en" ? [
-      { n: "1", t: `<strong>This Week at Choir</strong> — important messages, reminders and announcements, plus the story behind the song we're singing.`, url: THIS_WEEK, label: "Open This Week" },
-      { n: "2", t: `<strong>Your location's video playlist</strong> — the videos we record at the end of each session. This link never changes: I upload the new videos here every week, so save it!`, url: playlist, label: "Watch your location's videos" },
-      { n: "3", t: `<strong>Jump straight to the song resources</strong> — recordings, lyrics, lyric slides and sheet music for "So Easy (To Fall in Love)".`, url: RES_URL, label: "Open the song resources" },
-      { n: "4", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
+      { n: "1", t: `<strong>This Week at Choir</strong> — your weekly message, reminders and announcements.`, url: THIS_WEEK, label: "Open This Week" },
+      { n: "2", t: `<strong>Fall 2026 song resources</strong> — recordings, lyrics, lyric slides and sheet music for all 10 showcase songs, in showcase order.`, url: RES_URL, label: "Open the song resources" },
+      { n: "3", t: `<strong>Session playlist</strong> — all the songs we're learning this fall, in one place.`, url: FALL_PLAYLIST, label: "Listen to the session playlist" },
+      { n: "4", t: `<strong>Your location's video playlist${city ? ` (${esc(city)})` : ""}</strong> — the videos we record at the end of each session. This link never changes, and I upload new videos every week, so save it!`, url: playlist, label: "Watch your location's videos" },
     ] : [
-      { n: "1", t: `<strong>Cette semaine à la chorale</strong> — messages importants, rappels et annonces, et l'histoire de la chanson que nous chantons.`, url: THIS_WEEK, label: "Voir Cette semaine" },
-      { n: "2", t: `<strong>La liste de vidéos de votre lieu</strong> — les vidéos enregistrées à la fin de chaque session. Ce lien ne change jamais : j'ajoute les nouvelles vidéos ici chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
-      { n: "3", t: `<strong>Accédez directement aux ressources</strong> — enregistrements, paroles, diapositives et partitions de « So Easy (To Fall in Love) ».`, url: RES_URL, label: "Voir les ressources" },
-      { n: "4", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
+      { n: "1", t: `<strong>Cette semaine à la chorale</strong> — votre message de la semaine, les rappels et les annonces.`, url: THIS_WEEK, label: "Voir Cette semaine" },
+      { n: "2", t: `<strong>Ressources des chansons — automne 2026</strong> — enregistrements, paroles, diapositives et partitions des 10 chansons du spectacle, dans l'ordre du spectacle.`, url: RES_URL, label: "Voir les ressources" },
+      { n: "3", t: `<strong>Liste de la session</strong> — toutes les chansons que nous apprenons cet automne, au même endroit.`, url: FALL_PLAYLIST, label: "Écouter la liste de la session" },
+      { n: "4", t: `<strong>La liste de vidéos de votre lieu${city ? ` (${esc(city)})` : ""}</strong> — les vidéos que nous enregistrons à la fin de chaque séance. Ce lien ne change jamais et j'ajoute de nouvelles vidéos chaque semaine, alors gardez-le précieusement!`, url: playlist, label: "Voir les vidéos de votre lieu" },
     ];
     return items.map((i) => `
       <div style="display:flex;align-items:flex-start;gap:10px;margin:0 0 14px;">
@@ -692,47 +694,69 @@ function renderResourcesWeek3(r: Recipient) {
         </div>
       </div>`).join("");
   };
+  const reviewBox = (lang: "en" | "fr") => {
+    const lines = lang === "en" ? [
+      `📖 <strong>No more screen at rehearsal</strong> as of Monday, November 16 — please bring your <strong>binder every week</strong>, with your lyric sheets in <strong>showcase order</strong>.`,
+      `✅ Check that you have <strong>all 10 songs</strong> in your binder.`,
+      `🎨 <strong>Pink and Blue</strong> alternate between melody and parts depending on the song, so check the concert song list for which part you sing on each song, and <strong>highlight your own part</strong>.`,
+      `🖨️ The concert song list is in the portal, and I will print additional copies for those of you who did not get one this week.`,
+      `🚪 Review weeks are <strong>closed to guests</strong>.`,
+    ] : [
+      `📖 <strong>Plus d'écran aux répétitions</strong> à partir du lundi 16 novembre — veuillez apporter votre <strong>cartable chaque semaine</strong>, avec vos feuilles de paroles dans <strong>l'ordre du spectacle</strong>.`,
+      `✅ Vérifiez que vous avez bien <strong>les 10 chansons</strong> dans votre cartable.`,
+      `🎨 <strong>Rose et Bleu</strong> alternent entre la mélodie et les harmonies selon la chanson : consultez la liste des chansons du spectacle pour savoir quelle partie vous chantez dans chaque chanson, et <strong>surlignez votre partie</strong>.`,
+      `🖨️ La liste des chansons du spectacle est sur le portail, et j'imprimerai des copies supplémentaires pour celles et ceux qui n'en ont pas reçu cette semaine.`,
+      `🚪 Les semaines de révision sont <strong>fermées aux invités</strong>.`,
+    ];
+    return `
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Getting ready for the review weeks" : "Pour bien se préparer aux semaines de révision"}</div>
+      ${lines.map((l) => `<p style="margin:6px 0;font-size:15px;color:#831843;line-height:1.55;">${l}</p>`).join("")}
+    </div>`;
+  };
+  const bringBox = (lang: "en" | "fr") => `
+    <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "A few things to bring" : "Quelques choses à apporter"}</div>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;">👓 ${lang === "en" ? "<strong>Your glasses</strong>" : "<strong>Vos lunettes</strong>"}</p>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;">💧 ${lang === "en" ? "<strong>Water</strong> — these preparation weeks might feel a little more intense, and singing is thirsty work!" : "<strong>De l'eau</strong> — ces semaines de préparation pourraient être un peu plus intenses, et chanter donne soif!"}</p>
+    </div>`;
   const inner = `
     ${greetEn(r)}
-    <p style="${P}">🎶 <strong>Week 10 resources are up!</strong></p>
-    <h2>Song of the Week: "So Easy (To Fall in Love)" by Olivia Dean</h2>
-    <p style="${P}">Our last new song of the session is here! Listen to the recording this week, and find the full Song of the Week blurb on My Choir.</p>
-    <p style="${P}">Here are your four handy links for the week:</p>
+    <p style="${P}">Welcome to <strong>Review Week 1</strong>! 🎶 No new song this week — we have learned all 10, and now the fun really starts: we put the whole show together, start to finish, in the order we will sing it.</p>
+    <p style="${P}"><strong>Here is how the review weeks will roll out:</strong> this upcoming week and next, we will go through as many songs as we can, singing each one right through and then going back to the moments that need a little more love. I am hoping we will get through all 10 songs in the first two weeks. In week three, we will have a full rehearsal standing in position, just like show night.</p>
+    ${reviewBox("en")}
+    ${BTN(CONCERT_LIST_URL, "Open the concert song list")}
+    ${bringBox("en")}
+    <p style="${P}">💪 <strong>Want some extra practice?</strong> You are welcome to join any of the other choirs during the week for an additional rehearsal. It is completely optional, but it is there for you if you want it. And do review the material available to you: the YouTube links and the recordings in the portal.</p>
+    <p style="${P}"><strong>To review this week:</strong></p>
     ${linkBox("en")}
-    <p style="${P}">🎬 <strong>Your YouTube Resources</strong> — all our YouTube links in one place on the song resources page: <strong>Ailsa's YouTube recordings</strong>, the <strong>Fall 2026 (Original)</strong> playlist and the Singeo vocal warm-ups.</p>
-    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
-    ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Fall 2026 (Original)")}
-    ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
+    <p style="${P}">🎤 <strong>One more thing:</strong> as I mentioned this week, I will be looking for members to introduce the songs at the showcase. I will provide the introductions this week, and you are welcome to edit or adjust yours — a personal story is always fun! You can translate it to French or create a bilingual version, that is entirely up to you. If you would like to take on this task, <a href="mailto:${CONTACT}" style="color:#f472b6;">send me an email</a> and let me know which song you would like — first come, first served!</p>
+    <p style="${P}">📝 <strong>Registration for our February session is already open!</strong></p>
+    ${BTN(REGISTER_URL, "Register for February")}
     <p style="${P}">⭐ Got a minute? A quick Google review helps new singers find Club Choir — thank you!</p>
     ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Leave us a Google review")}
-    
-    <p style="${P}">🎟️ <strong>Send out your showcase invitations!</strong> I can't wait to share our music with your friends and family. Your invitations are on My Choir, ready to download — if you have any trouble, just email me and I'll send you a copy.</p>
-    ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Get your showcase invitation")}
-    <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning our last new song this week — so now is the time to bring a friend to choir!</p>
-    <p style="${P}">Have a fantastic weekend — see you at choir!</p>
+    <p style="${P}">I look forward to a full week of singing — see you at choir!</p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}">🎶 <strong>Les ressources de la semaine 10 sont en ligne!</strong></p>
-    <h2>Chanson de la semaine : « So Easy (To Fall in Love) » d'Olivia Dean</h2>
-    <p style="${P}">Notre dernière nouvelle chanson de la session est arrivée! Écoutez l'enregistrement cette semaine et retrouvez le texte complet de la chanson de la semaine sur Ma chorale.</p>
-    <p style="${P}">Voici vos quatre liens pratiques pour la semaine :</p>
+    <p style="${P}">Bienvenue à la <strong>semaine de révision 1</strong>! 🎶 Pas de nouvelle chanson cette semaine — nous avons appris les 10, et c'est maintenant que le plaisir commence vraiment : nous assemblons tout le spectacle, du début à la fin, dans l'ordre où nous allons le chanter.</p>
+    <p style="${P}"><strong>Voici comment se dérouleront les semaines de révision :</strong> cette semaine et la suivante, nous passerons en revue le plus de chansons possible, en chantant chacune du début à la fin, puis en revenant sur les passages qui ont besoin d'un peu plus d'amour. J'espère que nous aurons repassé les 10 chansons au cours des deux premières semaines. À la troisième semaine, nous ferons une répétition complète debout, en position, exactement comme le soir du spectacle.</p>
+    ${reviewBox("fr")}
+    ${BTN(CONCERT_LIST_URL, "Voir la liste des chansons du spectacle")}
+    ${bringBox("fr")}
+    <p style="${P}">💪 <strong>Envie de pratiquer un peu plus?</strong> Vous êtes les bienvenus à n'importe quelle autre chorale pendant la semaine pour une répétition supplémentaire. C'est entièrement facultatif, mais c'est là pour vous si vous le souhaitez. Et n'hésitez pas à revoir le matériel à votre disposition : les liens YouTube et les enregistrements sur le portail.</p>
+    <p style="${P}"><strong>À réviser cette semaine :</strong></p>
     ${linkBox("fr")}
-    <p style="${P}">🎬 <strong>Vos ressources YouTube</strong> — tous nos liens YouTube au même endroit sur la page des ressources : <strong>les enregistrements YouTube d'Ailsa</strong>, la liste <strong>Automne 2026 (original)</strong> et les échauffements vocaux Singeo.</p>
-    ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
-    ${BTN("https://www.youtube.com/watch?v=bEeaS6fuUoA&list=PLcV8Anv7jfrk", "Automne 2026 (original)")}
-    ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
+    <p style="${P}">🎤 <strong>Une dernière chose :</strong> comme je l'ai mentionné cette semaine, je cherche des membres pour présenter les chansons au spectacle. Je fournirai les présentations cette semaine, et vous pourrez modifier ou adapter la vôtre — une histoire personnelle, c'est toujours sympathique! Vous pouvez la traduire en français ou en faire une version bilingue, c'est entièrement à vous de choisir. Si cette tâche vous intéresse, <a href="mailto:${CONTACT}" style="color:#f472b6;">envoyez-moi un courriel</a> en m'indiquant la chanson que vous aimeriez présenter — premier arrivé, premier servi!</p>
+    <p style="${P}">📝 <strong>Les inscriptions pour notre session de février sont déjà ouvertes!</strong></p>
+    ${BTN(REGISTER_URL, "S'inscrire pour février")}
     <p style="${P}">⭐ Vous avez une minute? Un petit avis Google aide de nouveaux choristes à découvrir Club Choir — merci!</p>
     ${BTN("https://g.page/r/CU1hiLJTYmtXEAE/review", "Laisser un avis Google")}
-    
-    <p style="${P}">🎟️ <strong>Envoyez vos invitations au spectacle!</strong> J'ai tellement hâte de partager notre musique avec vos amis et votre famille. Vos invitations sont sur Ma chorale, prêtes à télécharger — en cas de difficulté, écrivez-moi et je vous en enverrai une copie par courriel.</p>
-    ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Obtenir votre invitation")}
-    <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et nous apprenons notre dernière nouvelle chanson cette semaine — c'est le moment d'amener une amie ou un ami à la chorale!</p>
-    <p style="${P}">Passez une merveilleuse fin de semaine — à la chorale!</p>
+    <p style="${P}">J'ai hâte de vivre une belle semaine de chant avec vous — à bientôt à la chorale!</p>
     ${SIGN}`;
   return {
-    subject: `Week 10 resources are up — "So Easy (To Fall in Love)" 🎶 / Ressources de la semaine 10 en ligne!`,
-    html: wrap(inner, `Week 10 resources for "So Easy (To Fall in Love)" are live — our last new song of the session, YouTube resources and your showcase invitations.`),
+    subject: `Week 11 — Review Week 1 is here, and the whole show comes together! 🎶 / Semaine 11 — La révision commence, le spectacle prend forme!`,
+    html: wrap(inner, "Review Week 1 — no new song this week: we put the whole show together, in showcase order. Bring your binder!"),
   };
 }
 
