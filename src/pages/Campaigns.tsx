@@ -44,7 +44,7 @@ const EMPTY_COUNTS = {
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week10-v1",
-  "resources-week3-paid": "fall-2026-resources-week10-paid-v1",
+  "resources-week3-paid": "fall-2026-resources-week11-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
@@ -56,8 +56,8 @@ const SEGMENTS: { key: Segment; title: string; description: string; color: strin
   },
   {
     key: "resources-week3-paid",
-    title: "Week 10 Resources Are Up — \"So Easy (To Fall in Love)\"",
-    description: "Send by location to paid members. Week 10’s last new song, \"So Easy (To Fall in Love)\" by Olivia Dean, the usual four links, YouTube Resources, showcase invitations, bring-a-friend and the Google review box. Bilingual EN/FR.",
+    title: "Week 11 — Review Week 1 Resources",
+    description: "Send by location to paid members. Review Week 1: how the review weeks work, binder in showcase order, Pink/Blue parts and the concert song list, things to bring, extra practice, the four review links (with each location's video playlist), showcase song introductions, February registration and the Google review box. Bilingual EN/FR.",
     color: "bg-pink-50 border-pink-300",
   },
 ];
