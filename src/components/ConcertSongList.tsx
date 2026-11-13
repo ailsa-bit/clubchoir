@@ -74,10 +74,10 @@ export function ConcertSongList({ language, onOpenWeek }: { language: string; on
                 <span className="block font-semibold leading-tight">{s.title}</span>
                 <span className="mt-1 flex flex-wrap gap-1.5 text-xs">
                   <span className="rounded-full bg-pink-light px-2 py-0.5 font-semibold text-foreground">
-                    {fr ? "Rose" : "Pink"} : {partLabel(s.pink)}
+                    {fr ? "Rose : " : "Pink: "}{partLabel(s.pink)}
                   </span>
                   <span className="rounded-full bg-powder-blue-light px-2 py-0.5 font-semibold text-foreground">
-                    {fr ? "Bleu" : "Blue"} : {partLabel(s.blue)}
+                    {fr ? "Bleu : " : "Blue: "}{partLabel(s.blue)}
                   </span>
                 </span>
               </span>
