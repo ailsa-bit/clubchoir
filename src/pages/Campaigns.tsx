@@ -43,15 +43,15 @@ const EMPTY_COUNTS = {
 } as Record<Segment, number>;
 
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
-  "choir-tonight": "fall-2026-choir-tonight-week10-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week11-v1",
   "resources-week3-paid": "fall-2026-resources-week11-paid-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
     key: "choir-tonight",
-    title: "Week 10 — See You at Choir Tonight",
-    description: "Week 10 same-day reminder for paid members, sent by location. Our last new song of the session, showcase preparation, venue details, song resources, Singeo warm-ups, Ailsa’s YouTube recordings, showcase invitations and bring-a-friend. Bilingual EN/FR.",
+    title: "Week 11 — See You at Choir Tonight (Review Week 1)",
+    description: "Week 11 same-day reminder for paid members, sent by location. Review Week 1 reminders: no more screen, binder in showcase order with all 10 songs, Pink/Blue parts, glasses and water, closed to guests, concert song list, song introductions, extra practice, resources, Singeo warm-ups and showcase invitations. Bilingual EN/FR.",
     color: "bg-indigo-50 border-indigo-300",
   },
   {

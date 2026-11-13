@@ -33,7 +33,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "resources-week3-paid": "fall-2026-resources-week11-paid-v1",
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
-  "choir-tonight": "fall-2026-choir-tonight-week10-v1",
+  "choir-tonight": "fall-2026-choir-tonight-week11-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -769,62 +769,74 @@ function renderChoirTonight(r: Recipient) {
   const whereEn = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "your usual location";
   const whereFr = loc ? `${esc(loc.venue)}, ${esc(loc.address)}` : "votre lieu habituel";
   const RES = `${SITE_URL}/resources/fall-2026`;
+  const CONCERT_LIST_URL = `${SITE_URL}/resources/fall-2026#concert-song-list`;
   const box = (lang: "en" | "fr") => `
     <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? `Tonight${city ? ` — ${city}` : ""}` : `Ce soir${city ? ` — ${city}` : ""}`}</div>
       <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "Where:" : "Où :"}</strong> ${lang === "en" ? whereEn : whereFr}</p>
       <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "We start singing at:" : "On commence à chanter à :"}</strong> ${lang === "en" ? startEn : startFr}</p>
     </div>`;
-  const bring = (lang: "en" | "fr") => `
+  const reminders = (lang: "en" | "fr") => {
+    const lines = lang === "en" ? [
+      `📖 <strong>No more screen at rehearsal</strong> from tonight on — please bring your <strong>binder</strong>, with your lyric sheets in <strong>showcase order</strong>.`,
+      `✅ Check that you have <strong>all 10 songs</strong> in your binder.`,
+      `🎨 <strong>Pink and Blue</strong> alternate between melody and parts depending on the song — check the concert song list for your part on each song, and <strong>highlight your own part</strong>.`,
+      `👓 <strong>Your glasses</strong>, if you need them to read.`,
+      `💧 <strong>Water</strong> — these preparation weeks might feel a little more intense, and singing is thirsty work!`,
+      `🚪 Review weeks are <strong>closed to guests</strong>.`,
+    ] : [
+      `📖 <strong>Plus d'écran aux répétitions</strong> à partir de ce soir — veuillez apporter votre <strong>cartable</strong>, avec vos feuilles de paroles dans <strong>l'ordre du spectacle</strong>.`,
+      `✅ Vérifiez que vous avez bien <strong>les 10 chansons</strong> dans votre cartable.`,
+      `🎨 <strong>Rose et Bleu</strong> alternent entre la mélodie et les harmonies selon la chanson — consultez la liste des chansons du spectacle pour connaître votre partie dans chaque chanson, et <strong>surlignez votre partie</strong>.`,
+      `👓 <strong>Vos lunettes</strong>, si vous en avez besoin pour lire.`,
+      `💧 <strong>De l'eau</strong> — ces semaines de préparation pourraient être un peu plus intenses, et chanter donne soif!`,
+      `🚪 Les semaines de révision sont <strong>fermées aux invités</strong>.`,
+    ];
+    return `
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
-      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Quick reminders" : "Petits rappels"}</div>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">👓 ${lang === "en" ? "<strong>Your glasses</strong>, if you need them to read." : "<strong>Vos lunettes</strong>, si vous en avez besoin pour lire."}</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">✏️ ${lang === "en" ? "<strong>A pen or pencil</strong> for notes on your lyric sheets." : "<strong>Un crayon ou un stylo</strong> pour annoter vos paroles."}</p>
-      <p style="margin:3px 0;font-size:15px;color:#831843;">💧 ${lang === "en" ? "<strong>Water</strong> — singing is thirsty work!" : "<strong>De l'eau</strong> — chanter donne soif!"}</p>
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "Reminders for tonight" : "Rappels pour ce soir"}</div>
+      ${lines.map((l) => `<p style="margin:6px 0;font-size:15px;color:#831843;line-height:1.55;">${l}</p>`).join("")}
     </div>`;
+  };
   const inner = `
     ${greetEn(r)}
-    <p style="${P}"><strong>It's choir night! 🎶</strong> We're back for another beautiful week of singing together.</p>
-    <p style="${P}">It's <strong>Week 10</strong>, and tonight we learn <strong>our last new song of the session!</strong> I can't believe how far we've come together. You've all done amazing work, and I can't wait to bring our songs together for the showcase and share them with your friends and family.</p>
+    <p style="${P}"><strong>It's choir night! 🎶</strong> Welcome to <strong>Review Week 1</strong>.</p>
+    <p style="${P}">No new song tonight — we have learned all 10, and now the fun really starts: we put the whole show together, start to finish, in the order we will sing it. We will sing each song right through, then go back to the moments that need a little more love.</p>
     ${box("en")}
-    ${bring("en")}
-    <p style="${P}">Want a quick listen before we meet? Your recordings, lyrics and lyric slides are waiting on the resource page. If you need help signing in, send me an email at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    ${reminders("en")}
+    <p style="${P}">Not sure of the order or your part? The concert song list is on the song resources page, ready to download and print. I'll also bring printed copies for anyone who didn't get one last week.</p>
+    ${BTN(CONCERT_LIST_URL, "Open the concert song list")}
+    <p style="${P}">🎤 <strong>Introduce a song at the showcase!</strong> I'm looking for members to introduce our songs. I'll provide the introductions this week, and you're welcome to adjust yours — a personal story is always fun, and French or bilingual is up to you. <a href="mailto:${CONTACT}" style="color:#f472b6;">Email me</a> with the song you'd like — first come, first served!</p>
+    <p style="${P}">💪 <strong>Want some extra practice?</strong> You're welcome to join any of the other choirs during the week for an additional rehearsal — completely optional. Your recordings, lyrics and Ailsa's YouTube recordings are all there to review at home too.</p>
     ${BTN(RES, "Open the song resources")}
-    <p style="${P}">🎤 <strong>Vocal warm-ups!</strong> I've added a playlist of easy, very helpful warm-ups from Singeo for every level (there's one a little more advanced for those who want to try it). I use these every day, several times a day!</p>
-    ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
-    <p style="${P}">🎬 <strong>Ailsa's recordings!</strong> There's now a playlist of me recording our songs — a handy way to hear a part, learn a song or simply sing along at home. I'll keep adding to it as we go.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (YouTube Recordings)")}
-    
-    <p style="${P}">🎟️ <strong>Send out your showcase invitations!</strong> I can't wait to share our music with your friends and family. Your invitations are on My Choir, ready to download — if you have any trouble, just email me and I'll send you a copy.</p>
+    ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Warm up with Singeo")}
+    <p style="${P}">🎟️ <strong>Don't forget to send out your showcase invitations!</strong> They're on My Choir, ready to download — if you have any trouble, just email me and I'll send you a copy.</p>
     ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Get your showcase invitation")}
-    <p style="${P}">💛 <strong>Know someone who'd love to sing?</strong> We won't be holding an open house before our next session, and we're learning our last new song tonight — so now is the time to bring a friend to choir!</p>
-
-    <p style="${P}">Bring your voice, your binder and your good energy. If you're feeling sick, please rest at home and take good care of yourself.</p>
-    <p style="${P}"><strong>See you tonight — let's make this last new song something special together!</strong></p>
+    <p style="${P}">If you're feeling sick, please rest at home and take good care of yourself. If you need help signing in, email me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}"><strong>See you tonight — let's put our show together!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> Nous voilà repartis pour une nouvelle belle semaine de chant ensemble.</p>
-    <p style="${P}">C'est la <strong>semaine 10</strong>, et ce soir, nous apprenons <strong>notre dernière nouvelle chanson de la session!</strong> Je n'en reviens pas de tout le chemin parcouru ensemble. Vous avez tous fait un travail extraordinaire, et j'ai tellement hâte de réunir nos chansons pour le spectacle et de les partager avec vos amis et votre famille.</p>
+    <p style="${P}"><strong>C'est soir de chorale! 🎶</strong> Bienvenue à la <strong>semaine de révision 1</strong>.</p>
+    <p style="${P}">Pas de nouvelle chanson ce soir — nous avons appris les 10, et c'est maintenant que le plaisir commence vraiment : nous assemblons tout le spectacle, du début à la fin, dans l'ordre où nous allons le chanter. Nous chanterons chaque chanson du début à la fin, puis nous reviendrons sur les passages qui ont besoin d'un peu plus d'amour.</p>
     ${box("fr")}
-    ${bring("fr")}
-    <p style="${P}">Envie d'une petite écoute avant notre rencontre? Vos enregistrements, paroles et diapositives vous attendent sur la page des ressources. Si vous avez besoin d'aide pour vous connecter, envoyez-moi un courriel à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    ${reminders("fr")}
+    <p style="${P}">Vous ne connaissez pas encore l'ordre ou votre partie? La liste des chansons du spectacle est sur la page des ressources, prête à télécharger et à imprimer. J'apporterai aussi des copies imprimées pour celles et ceux qui n'en ont pas reçu la semaine dernière.</p>
+    ${BTN(CONCERT_LIST_URL, "Voir la liste des chansons du spectacle")}
+    <p style="${P}">🎤 <strong>Présentez une chanson au spectacle!</strong> Je cherche des membres pour présenter nos chansons. Je fournirai les présentations cette semaine, et vous pourrez adapter la vôtre — une histoire personnelle, c'est toujours sympathique, et le français ou une version bilingue, c'est à vous de choisir. <a href="mailto:${CONTACT}" style="color:#f472b6;">Écrivez-moi</a> en m'indiquant la chanson que vous aimeriez — premier arrivé, premier servi!</p>
+    <p style="${P}">💪 <strong>Envie de pratiquer un peu plus?</strong> Vous êtes les bienvenus à n'importe quelle autre chorale pendant la semaine pour une répétition supplémentaire — entièrement facultatif. Vos enregistrements, paroles et les enregistrements YouTube d'Ailsa sont aussi là pour réviser à la maison.</p>
     ${BTN(RES, "Voir les ressources musicales")}
-    <p style="${P}">🎤 <strong>Échauffements vocaux!</strong> J'ai ajouté une liste de lecture d'échauffements faciles et très utiles de Singeo, pour tous les niveaux (une est un peu plus avancée pour ceux qui veulent essayer). Je les utilise plusieurs fois par jour!</p>
-    ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
-    <p style="${P}">🎬 <strong>Les enregistrements d'Ailsa!</strong> Il y a maintenant une liste de lecture avec mes enregistrements de nos chansons — une façon pratique d'entendre une voix, d'apprendre une chanson ou simplement de chanter à la maison. Je l'enrichis au fil des semaines.</p>
     ${BTN("https://youtube.com/playlist?list=PLRCosHNTvops&si=2TDdHamGWowrP-_t", "Ailsa (enregistrements YouTube)")}
-    
-    <p style="${P}">🎟️ <strong>Envoyez vos invitations au spectacle!</strong> J'ai tellement hâte de partager notre musique avec vos amis et votre famille. Vos invitations sont sur Ma chorale, prêtes à télécharger — en cas de difficulté, écrivez-moi et je vous en enverrai une copie par courriel.</p>
+    ${BTN("https://youtube.com/playlist?list=PLMuitaLUSyZs&si=xESO2NJJw30HF3kF", "Échauffements vocaux avec Singeo")}
+    <p style="${P}">🎟️ <strong>N'oubliez pas d'envoyer vos invitations au spectacle!</strong> Elles sont sur Ma chorale, prêtes à télécharger — en cas de difficulté, écrivez-moi et je vous en enverrai une copie.</p>
     ${BTN(`${SITE_URL}/this-week#showcase-invitations`, "Obtenir votre invitation")}
-    <p style="${P}">💛 <strong>Vous connaissez quelqu'un qui aimerait chanter?</strong> Il n'y aura pas de soirée portes ouvertes avant la prochaine session, et nous apprenons notre dernière nouvelle chanson ce soir — c'est le moment d'amener une amie ou un ami à la chorale!</p>
-
-    <p style="${P}">Apportez votre voix, votre cartable et votre belle énergie. Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous.</p>
-    <p style="${P}"><strong>À ce soir — faisons de cette dernière nouvelle chanson un beau moment ensemble!</strong></p>
+    <p style="${P}">Si vous ne vous sentez pas bien, reposez-vous à la maison et prenez soin de vous. Besoin d'aide pour vous connecter? Écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}"><strong>À ce soir — assemblons notre spectacle!</strong></p>
     ${SIGN}`;
   return {
-    subject: `Week 10 — It's choir night${city ? ` — ${city}` : ""}! 🎶 / Semaine 10 — C'est soir de chorale${city ? ` — ${city}` : ""}!`,
-    html: wrap(inner, "Week 10 is here — our last new song of the session and the final stretch before our showcase!"),
+    subject: `Week 11 — Review Week 1: choir tonight${city ? ` — ${city}` : ""}! 🎶 / Semaine 11 — Révision 1 : chorale ce soir${city ? ` — ${city}` : ""}!`,
+    html: wrap(inner, "Review Week 1 tonight — bring your binder in showcase order. No more screen from tonight on!"),
   };
 }
 
