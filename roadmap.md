@@ -43,4 +43,4 @@
 ## Week 11 — Review Week 1
 - [x] Bilingual Week 11 resources email with per-location video playlist and fresh counter (unsent).
 - [x] Week 11 note from Ailsa and Review Week box on My Choir.
-- [ ] Post the concert song list PDF on the song resources page (waiting for Ailsa's PDF).
+- [x] Post the concert song list PDF (showcase order, Pink/Blue parts, dates) on the song resources page.
