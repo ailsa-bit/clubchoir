@@ -39,3 +39,8 @@
 ## Week 9 scheduled choir-night reminders
 - [x] Schedule Montreal Nov 2, Hudson Nov 3, Saint-Hubert Nov 4 and Pointe-Claire Nov 5 at 8 AM Toronto time.
 - [x] Verify all four active one-time jobs, pinned Week 9 version and six tests; deploy paced sending without sending early.
+
+## Week 11 — Review Week 1
+- [x] Bilingual Week 11 resources email with per-location video playlist and fresh counter (unsent).
+- [x] Week 11 note from Ailsa and Review Week box on My Choir.
+- [ ] Post the concert song list PDF on the song resources page (waiting for Ailsa's PDF).
