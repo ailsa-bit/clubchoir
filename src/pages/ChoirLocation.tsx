@@ -1,5 +1,5 @@
 import { Link, useParams, Navigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin, Sparkles } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, MapPin, Sparkles } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import PhotoGallery from "@/components/PhotoGallery";
 import ChoirFaq from "@/components/ChoirFaq";
@@ -161,13 +161,6 @@ const ChoirLocation = () => {
             >
               <Sparkles className="w-4 h-4" />
               {isFr ? "Inscription anticipée — Hiver/Printemps 2027" : "Early registration — Winter/Spring 2027"}
-            </Link>
-            <Link
-              to="/try"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-background border border-border text-foreground font-semibold text-sm hover:bg-muted transition-all"
-            >
-              {isFr ? "Essayer une session gratuite" : "Try a free session"}
-              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 

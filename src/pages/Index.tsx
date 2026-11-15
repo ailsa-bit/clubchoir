@@ -95,20 +95,13 @@ const Index = () => {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
+              <div className="grid grid-cols-1 gap-3 max-w-xl">
                 <Link
                   to="/register"
                   className="min-h-14 inline-flex items-center justify-center gap-2 rounded-xl bg-pink px-4 py-3 text-center text-sm font-bold text-pink-foreground shadow-md shadow-pink/20 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
                   <Sparkles className="w-4 h-4 shrink-0" />
                   <span>{t("home.hero.registerFall")}</span>
-                </Link>
-                <Link
-                  to="/try"
-                  className="min-h-14 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-orange bg-background px-4 py-3 text-center text-sm font-bold text-orange hover:bg-orange hover:text-orange-foreground transition-colors"
-                >
-                  <Calendar className="w-4 h-4 shrink-0" />
-                  <span>{t("home.hero.tryASession")}</span>
                 </Link>
               </div>
 
@@ -397,13 +390,13 @@ const Index = () => {
           </Accordion>
           <div className="text-center mt-10">
             <p className="text-base text-muted-foreground mb-4 leading-relaxed">{t("home.faq.still")}</p>
-            <Link
-              to="/try"
+            <a
+              href="mailto:ailsa@clubchoir.ca"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-base shadow-md hover:shadow-lg hover:bg-primary/90 transition-all"
             >
               <MessageCircle className="w-5 h-5" />
               {t("home.faq.touch")}
-            </Link>
+            </a>
           </div>
         </div>
       </section>
