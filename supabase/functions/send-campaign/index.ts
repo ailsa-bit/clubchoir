@@ -995,7 +995,7 @@ function renderEarlyRegShowcase(r: Recipient) {
     <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
       <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "All four Winter Showcases" : "Nos quatre spectacles d'hiver"}</div>
       ${SHOWCASES.map((s) => `<p style="margin:8px 0;font-size:15px;color:#831843;line-height:1.5;"><strong>${esc(lang === "en" ? s.city : cityFr(s.city))}</strong> — ${lang === "en" ? s.dateEn : s.dateFr}<br/>${esc(s.venue)}, ${esc(s.address)}</p>`).join("")}
-      <p style="margin:8px 0 0;font-size:14px;color:#831843;">${lang === "en" ? `Every showcase: ${timeEn.toLowerCase().replace("doors", "Doors")}. Free admission.` : `Pour chaque spectacle : ${timeFr.charAt(0).toLowerCase() + timeFr.slice(1)}. Entrée gratuite.`}</p>
+      <p style="margin:8px 0 0;font-size:14px;color:#831843;">${lang === "en" ? `Every showcase: ${timeEn}. Free admission.` : `Pour chaque spectacle : ${timeFr}. Entrée gratuite.`}</p>
     </div>`;
   const inner = `
     ${greetEn(r)}
