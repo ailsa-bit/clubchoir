@@ -1000,25 +1000,25 @@ function renderEarlyRegShowcase(r: Recipient) {
     </div>`;
   const inner = `
     ${greetEn(r)}
-    ${r.newsletter ? `<p style="${P}">Thank you so much for staying in touch with Club Choir — I'm so glad you're part of our community!</p>` : `<p style="${P}">Thank you so much for registering early for our <strong>February 2027 session</strong> — I'm so happy you'll be singing with us!</p>`}
+    ${r.newsletter ? `<p style="${P}">Thank you so much for staying in touch with Club Choir — I'm so glad you're part of our community!</p>` : `<p style="${P}">Thank you so much for your interest in our <strong>February 2027 session</strong>! Whether you're all set or still thinking it over, I'd love to help you get a feel for what Club Choir is all about.</p>`}
     <p style="${P}">${r.newsletter ? "I'd love" : "Before we begin, I'd love"} for you to come and see one of our <strong>Winter Showcases</strong> this December. It's the very best way to get a sense of the vibe — and of what we work towards together during a session: weeks of learning songs, building harmonies and laughing a lot, all leading up to one joyful evening of song with friends and family.</p>
     ${myBox("en")}
     <p style="${P}">Can't make that night? You're welcome at <strong>any</strong> of our four showcases:</p>
     ${allList("en")}
     <p style="${P}">Feel free to bring someone along! We'll also be collecting non-perishable food items for the local food bank — every little bit helps (completely optional).</p>
     <p style="${P}">Questions? Just reply to this email or write to me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
-    <p style="${P}"><strong>I can't wait to see you there${r.newsletter ? "" : " — and to start singing with you in February"}!</strong></p>
+    <p style="${P}"><strong>I can't wait to see you there${r.newsletter ? "" : " — and, I hope, to start singing with you in February"}!</strong></p>
     ${SIGN}
     ${DIVIDER}
     ${greetFr(r)}
-    ${r.newsletter ? `<p style="${P}">Merci beaucoup de suivre Club Choir — je suis si contente que vous fassiez partie de notre communauté!</p>` : `<p style="${P}">Merci beaucoup de vous être inscrit·e à l'avance pour notre <strong>session de février 2027</strong> — je suis si heureuse que vous chantiez avec nous!</p>`}
+    ${r.newsletter ? `<p style="${P}">Merci beaucoup de suivre Club Choir — je suis si contente que vous fassiez partie de notre communauté!</p>` : `<p style="${P}">Merci beaucoup de votre intérêt pour notre <strong>session de février 2027</strong>! Que votre décision soit prise ou que vous y réfléchissiez encore, j'aimerais vous aider à découvrir ce qu'est Club Choir.</p>`}
     <p style="${P}">${r.newsletter ? "J'aimerais" : "Avant de commencer, j'aimerais"} beaucoup que vous veniez voir l'un de nos <strong>spectacles d'hiver</strong> en décembre. C'est la meilleure façon de découvrir l'ambiance — et ce vers quoi nous travaillons ensemble pendant une session : des semaines à apprendre des chansons, à bâtir des harmonies et à beaucoup rire, jusqu'à une belle soirée de chansons avec nos amis et nos familles.</p>
     ${myBox("fr")}
     <p style="${P}">Ce soir-là ne vous convient pas? Vous êtes le ou la bienvenu·e à <strong>n'importe lequel</strong> de nos quatre spectacles :</p>
     ${allList("fr")}
     <p style="${P}">N'hésitez pas à venir accompagné·e! Nous recueillerons aussi des denrées non périssables pour la banque alimentaire locale — chaque petit geste compte (entièrement facultatif).</p>
     <p style="${P}">Des questions? Répondez simplement à ce courriel ou écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
-    <p style="${P}"><strong>J'ai bien hâte de vous y voir${r.newsletter ? "" : " — et de commencer à chanter avec vous en février"}!</strong></p>
+    <p style="${P}"><strong>J'ai bien hâte de vous y voir${r.newsletter ? "" : " — et, je l'espère, de chanter avec vous en février"}!</strong></p>
     ${SIGN}`;
   return {
     subject: "You're invited to our Winter Showcase! 🎶 / Invitation à notre spectacle d'hiver!",
