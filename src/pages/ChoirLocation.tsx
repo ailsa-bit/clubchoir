@@ -1,5 +1,5 @@
 import { Link, useParams, Navigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Calendar, Clock, MapPin, Sparkles } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, MapPin, Sparkles } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import PhotoGallery from "@/components/PhotoGallery";
 import ChoirFaq from "@/components/ChoirFaq";
