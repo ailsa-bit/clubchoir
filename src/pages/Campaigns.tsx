@@ -52,8 +52,8 @@ const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
   {
     key: "early-reg-showcase",
-    title: "February 2027 Early Registrants — Winter Showcase Invitation",
-    description: "For people who registered early for the February 2027 session and are NOT current members. Invites them to the showcase in their area and lists all four showcases (dates, venues, doors 6:30 PM / show 7:00 PM, free admission) so they can get a sense of the vibe. Bilingual EN/FR.",
+    title: "Feb 2027 Early Registrants + Newsletter — Winter Showcase Invitation",
+    description: "For February 2027 early registrants and newsletter sign-ups who are NOT current members. Invites them to the showcase in their area and lists all four showcases (dates, venues, doors 6:30 PM / show 7:00 PM, free admission) so they can get a sense of the vibe. Bilingual EN/FR.",
     color: "bg-blue-50 border-blue-300",
   },
   {
