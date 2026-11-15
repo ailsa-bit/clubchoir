@@ -15,7 +15,7 @@ const CONTACT = "ailsa@clubchoir.ca";
 const TEST_RECIPIENT = "ailsa@clubchoir.ca";
 const GARY_WHITE_EMAIL = "garwhite@hotmail.com";
 
-type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "showcase-invitations";
+type Segment = "fall-paid" | "fall-unpaid" | "fall-considering" | "hudson-open-house" | "fall-unpaid-reminder" | "fall-considering-reminder" | "hudson-open-house-reminder" | "hudson-open-house-thanks" | "binder-count-unpaid" | "binder-count-considering" | "resources-week3-paid" | "welcome-new-paid" | "welcome-late-paid" | "choir-tonight" | "showcase-invitations" | "early-reg-showcase";
 
 const CAMPAIGN_KEYS: Record<Segment, string> = {
   "showcase-invitations": SHOWCASE_CAMPAIGN_KEY,
@@ -34,6 +34,7 @@ const CAMPAIGN_KEYS: Record<Segment, string> = {
   "welcome-new-paid": "fall-2026-welcome-new-paid-v1",
   "welcome-late-paid": "fall-2026-welcome-late-paid-v1",
   "choir-tonight": "fall-2026-choir-tonight-week11-v1",
+  "early-reg-showcase": "winter-2027-early-reg-showcase-invite-v1",
 };
 
 // Aug 18, 2026 Hudson Open House
@@ -968,8 +969,65 @@ function renderShowcaseInvitations(r: Recipient, invitations: EmailInvitation[])
   return { subject: `Your ${r.location} showcase invitations + karaoke next Sunday! / Vos invitations au spectacle + karaoké dimanche prochain!`, html: wrap(inner, "Save and share your showcase invitations, and bring a friend to karaoke on November 1!") };
 }
 
+// ---------- Winter Showcase invitation for Feb 2027 early registrants (not current members) ----------
+
+const SHOWCASES: { city: string; dateEn: string; dateFr: string; venue: string; address: string }[] = [
+  { city: "Montreal", dateEn: "Monday, December 7, 2026", dateFr: "lundi 7 décembre 2026", venue: "Paroisse Notre-Dame-De-Grâce", address: "5333 avenue Notre-Dame-De-Grâce (corner Décarie), Montréal" },
+  { city: "Hudson", dateEn: "Tuesday, December 8, 2026", dateFr: "mardi 8 décembre 2026", venue: "Hudson Community Centre", address: "394 Rue Main, Hudson" },
+  { city: "Saint-Hubert", dateEn: "Wednesday, December 9, 2026", dateFr: "mercredi 9 décembre 2026", venue: "St-Gabriel Catholic Church", address: "5070 Rue Gilbert, Saint-Hubert" },
+  { city: "Pointe-Claire", dateEn: "Thursday, December 10, 2026", dateFr: "jeudi 10 décembre 2026", venue: "Valois United Church", address: "70 Av. Belmont, Pointe-Claire" },
+];
+
+function renderEarlyRegShowcase(r: Recipient) {
+  const mine = SHOWCASES.find((s) => s.city === r.location);
+  const cityFr = (c: string) => (c === "Montreal" ? "Montréal" : c);
+  const timeEn = "Doors open 6:30 PM — show starts 7:00 PM";
+  const timeFr = "Ouverture des portes à 18 h 30 — spectacle à 19 h";
+  const myBox = (lang: "en" | "fr") => !mine ? "" : `
+    <div style="background:#eff6ff;border-left:4px solid #3b82f6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#1e3a8a;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? `Your showcase — ${esc(mine.city)}` : `Votre spectacle — ${esc(cityFr(mine.city))}`}</div>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "When:" : "Quand :"}</strong> ${lang === "en" ? mine.dateEn : mine.dateFr}</p>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "Time:" : "Heure :"}</strong> ${lang === "en" ? timeEn : timeFr}</p>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "Where:" : "Où :"}</strong> ${esc(mine.venue)}, ${esc(mine.address)}</p>
+      <p style="margin:3px 0;font-size:15px;color:#1e3a8a;"><strong>${lang === "en" ? "Admission:" : "Entrée :"}</strong> ${lang === "en" ? "free" : "gratuite"}</p>
+    </div>`;
+  const allList = (lang: "en" | "fr") => `
+    <div style="background:#fdf2f8;border-left:4px solid #f472b6;border-radius:10px;padding:14px 18px;margin:18px 0;">
+      <div style="font-weight:700;color:#9d174d;margin-bottom:6px;font-family:Quicksand,Arial,sans-serif;">${lang === "en" ? "All four Winter Showcases" : "Nos quatre spectacles d'hiver"}</div>
+      ${SHOWCASES.map((s) => `<p style="margin:8px 0;font-size:15px;color:#831843;line-height:1.5;"><strong>${esc(lang === "en" ? s.city : cityFr(s.city))}</strong> — ${lang === "en" ? s.dateEn : s.dateFr}<br/>${esc(s.venue)}, ${esc(s.address)}</p>`).join("")}
+      <p style="margin:8px 0 0;font-size:14px;color:#831843;">${lang === "en" ? `Every showcase: ${timeEn}. Free admission.` : `Pour chaque spectacle : ${timeFr}. Entrée gratuite.`}</p>
+    </div>`;
+  const inner = `
+    ${greetEn(r)}
+    <p style="${P}">Thank you so much for registering early for our <strong>February 2027 session</strong> — I'm so happy you'll be singing with us!</p>
+    <p style="${P}">Before we begin, I'd love for you to come and see one of our <strong>Winter Showcases</strong> this December. It's the very best way to get a sense of the vibe — and of what we work towards together during a session: weeks of learning songs, building harmonies and laughing a lot, all leading up to one joyful evening of song with friends and family.</p>
+    ${myBox("en")}
+    <p style="${P}">Can't make that night? You're welcome at <strong>any</strong> of our four showcases:</p>
+    ${allList("en")}
+    <p style="${P}">Feel free to bring someone along! We'll also be collecting non-perishable food items for the local food bank — every little bit helps (completely optional).</p>
+    <p style="${P}">Questions? Just reply to this email or write to me at <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}"><strong>I can't wait to see you there — and to start singing with you in February!</strong></p>
+    ${SIGN}
+    ${DIVIDER}
+    ${greetFr(r)}
+    <p style="${P}">Merci beaucoup de vous être inscrit·e à l'avance pour notre <strong>session de février 2027</strong> — je suis si heureuse que vous chantiez avec nous!</p>
+    <p style="${P}">Avant de commencer, j'aimerais beaucoup que vous veniez voir l'un de nos <strong>spectacles d'hiver</strong> en décembre. C'est la meilleure façon de découvrir l'ambiance — et ce vers quoi nous travaillons ensemble pendant une session : des semaines à apprendre des chansons, à bâtir des harmonies et à beaucoup rire, jusqu'à une belle soirée de chansons avec nos amis et nos familles.</p>
+    ${myBox("fr")}
+    <p style="${P}">Ce soir-là ne vous convient pas? Vous êtes le ou la bienvenu·e à <strong>n'importe lequel</strong> de nos quatre spectacles :</p>
+    ${allList("fr")}
+    <p style="${P}">N'hésitez pas à venir accompagné·e! Nous recueillerons aussi des denrées non périssables pour la banque alimentaire locale — chaque petit geste compte (entièrement facultatif).</p>
+    <p style="${P}">Des questions? Répondez simplement à ce courriel ou écrivez-moi à <a href="mailto:${CONTACT}" style="color:#f472b6;">${CONTACT}</a>.</p>
+    <p style="${P}"><strong>J'ai bien hâte de vous y voir — et de commencer à chanter avec vous en février!</strong></p>
+    ${SIGN}`;
+  return {
+    subject: "You're invited to our Winter Showcase! 🎶 / Invitation à notre spectacle d'hiver!",
+    html: wrap(inner, "Come see a Club Choir Winter Showcase in December — free admission, all four locations."),
+  };
+}
+
 function renderEmail(segment: Segment, r: Recipient, invitations: EmailInvitation[] = []): { subject: string; html: string } {
   if (segment === SHOWCASE_SEGMENT) return renderShowcaseInvitations(r, invitations);
+  if (segment === "early-reg-showcase") return renderEarlyRegShowcase(r);
 
   if (segment === "fall-paid") return renderPaid(r);
   if (segment === "fall-unpaid") return renderUnpaid(r);
@@ -1069,6 +1127,29 @@ async function loadRecipientsInner(supabase: any, segment: Segment): Promise<Rec
   if (segment === "choir-tonight") {
     // Same-day reminders are for paid Fall 2026 members only.
     return Array.from(paidMap.values());
+  }
+
+  if (segment === "early-reg-showcase") {
+    // Feb 2027 early registrants who are NOT already active members
+    // (no paid Fall 2026 registration, member status not ACTIVE, not no-email).
+    const { data: statusRows } = await supabase.from("members").select("email, status");
+    const activeMembers = new Set<string>();
+    for (const m of statusRows || []) {
+      if (m.email && m.status === "ACTIVE") activeMembers.add(String(m.email).trim().toLowerCase());
+    }
+    const nice = (v: any) => {
+      const t = String(v || "").trim();
+      return t && t === t.toLowerCase() ? t.replace(/(^|[\s'-])(\p{L})/gu, (_m: string, a: string, b: string) => a + b.toUpperCase()) : t;
+    };
+    const early = new Map<string, Recipient>();
+    const sorted = [...(allRegs || [])].sort((a: any, b: any) => +new Date(b.updated_at || 0) - +new Date(a.updated_at || 0));
+    for (const r of sorted) {
+      if (r.session_label !== "winter-spring-2027") continue;
+      const e = String(r.email || "").trim().toLowerCase();
+      if (!e.includes("@") || suppressed.has(e) || paidMap.has(e) || activeMembers.has(e) || early.has(e)) continue;
+      early.set(e, { email: e, first_name: nice(r.first_name), last_name: nice(r.last_name), location: normLocation(r.location) });
+    }
+    return Array.from(early.values());
   }
 
   if (segment === "fall-unpaid" || segment === "fall-unpaid-reminder" || segment === "binder-count-unpaid") return Array.from(unpaidMap.values());
@@ -1511,7 +1592,7 @@ serve(async (req) => {
       <p style="${P} margin-bottom:0;color:#555;">Désolée — nous vous avons envoyé un message test par erreur. Désolée pour la confusion! Voici les bonnes informations pour votre première soirée d'essai. À la semaine prochaine!</p>
     </div>`;
 
-    const pacedSend = segment === SHOWCASE_SEGMENT || isCron;
+    const pacedSend = segment === SHOWCASE_SEGMENT || segment === "early-reg-showcase" || isCron;
     const batchSize = pacedSend ? 1 : 5;
     // Stay well under the 150s request limit; the page calls again for the rest
     // (already-sent people are skipped automatically).

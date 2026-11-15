@@ -11,7 +11,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from "@/components/ui/dialog";
 
-type Segment = "choir-tonight" | "resources-week3-paid" | "showcase-invitations";
+type Segment = "choir-tonight" | "resources-week3-paid" | "showcase-invitations" | "early-reg-showcase";
 
 const LOCATIONS = ["Montreal", "Hudson", "Saint-Hubert", "Pointe-Claire"] as const;
 type LocationFilter = "all" | (typeof LOCATIONS)[number] | "unknown";
@@ -38,6 +38,7 @@ interface Preflight {
 
 const EMPTY_COUNTS = {
   "showcase-invitations": 0,
+  "early-reg-showcase": 0,
   "choir-tonight": 0,
   "resources-week3-paid": 0,
 } as Record<Segment, number>;
@@ -45,9 +46,16 @@ const EMPTY_COUNTS = {
 const CURRENT_CAMPAIGN_KEYS: Partial<Record<Segment, string>> = {
   "choir-tonight": "fall-2026-choir-tonight-week11-v1",
   "resources-week3-paid": "fall-2026-resources-week11-paid-v1",
+  "early-reg-showcase": "winter-2027-early-reg-showcase-invite-v1",
 };
 
 const SEGMENTS: { key: Segment; title: string; description: string; color: string }[] = [
+  {
+    key: "early-reg-showcase",
+    title: "February 2027 Early Registrants — Winter Showcase Invitation",
+    description: "For people who registered early for the February 2027 session and are NOT current members. Invites them to the showcase in their area and lists all four showcases (dates, venues, doors 6:30 PM / show 7:00 PM, free admission) so they can get a sense of the vibe. Bilingual EN/FR.",
+    color: "bg-blue-50 border-blue-300",
+  },
   {
     key: "choir-tonight",
     title: "Week 11 — See You at Choir Tonight (Review Week 1)",
@@ -72,11 +80,13 @@ const Campaigns = () => {
   const [counts, setCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [byLocation, setByLocation] = useState<Record<Segment, Record<string, number>>>({
     "showcase-invitations": {},
+    "early-reg-showcase": {},
     "choir-tonight": {},
     "resources-week3-paid": {},
   });
   const [locFilter, setLocFilter] = useState<Record<Segment, LocationFilter>>({
     "showcase-invitations": "all",
+    "early-reg-showcase": "all",
     "choir-tonight": "all",
     "resources-week3-paid": "all",
   });
@@ -84,6 +94,7 @@ const Campaigns = () => {
   const [newCounts, setNewCounts] = useState<Record<Segment, number | null>>({ ...EMPTY_COUNTS } as unknown as Record<Segment, number | null>);
   const [newByLocation, setNewByLocation] = useState<Record<Segment, Record<string, number>>>({
     "showcase-invitations": {},
+    "early-reg-showcase": {},
     "choir-tonight": {},
     "resources-week3-paid": {},
   });
