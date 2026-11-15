@@ -162,13 +162,6 @@ const ChoirLocation = () => {
               <Sparkles className="w-4 h-4" />
               {isFr ? "Inscription anticipée — Hiver/Printemps 2027" : "Early registration — Winter/Spring 2027"}
             </Link>
-            <Link
-              to="/try"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-background border border-border text-foreground font-semibold text-sm hover:bg-muted transition-all"
-            >
-              {isFr ? "Essayer une session gratuite" : "Try a free session"}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
           </div>
 
         </div>

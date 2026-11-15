@@ -324,7 +324,6 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
             <Link to="/about" className="hover:text-foreground transition-colors">{t("footer.nav.about")}</Link>
             <Link to="/register" className="hover:text-foreground transition-colors">{t("footer.nav.register")}</Link>
             <Link to="/events" className="hover:text-foreground transition-colors">{t("footer.nav.events")}</Link>
-            <Link to="/try" className="hover:text-foreground transition-colors">{t("footer.nav.try")}</Link>
             <Link to="/bring-a-friend" className="hover:text-foreground transition-colors">{t("footer.nav.bringFriend")}</Link>
             <Link to="/corporate" className="hover:text-foreground transition-colors">{t("footer.nav.corporate")}</Link>
             <Link to="/subscribe" className="hover:text-foreground transition-colors">{t("footer.nav.mailing")}</Link>
