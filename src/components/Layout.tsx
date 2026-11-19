@@ -6,6 +6,7 @@ import clubChoirWordmark from "@/assets/club-choir-wordmark.webp";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAdmin } from "@/hooks/use-admin";
+import { hasSavedSession, watchSessionUser } from "@/lib/authSession";
 
 const Layout = ({ children }: {children: React.ReactNode;}) => {
   const location = useLocation();
@@ -13,21 +14,12 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
   const toggleMenu = (path: string) =>
     setExpandedMenus((prev) => ({ ...prev, [path]: !prev[path] }));
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(hasSavedSession);
   const { language, setLanguage, t } = useLanguage();
   const { isAdmin } = useAdmin();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setIsLoggedIn(!!session);
-    };
-    checkAuth();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsLoggedIn(!!session);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
+  // Stay in the signed-in layout unless the member really signed out.
+  useEffect(() => watchSessionUser((user) => setIsLoggedIn(!!user)), []);
 
   const publicNavItems = [
     { label: t("nav.home"), path: "/" },
@@ -63,7 +55,7 @@ const Layout = ({ children }: {children: React.ReactNode;}) => {
     isLoggedIn ? [...loggedInPublicItems, ...memberNavItems] : publicNavItems;
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    await supabase.auth.signOut({ scope: "local" });
     setMobileOpen(false);
   };
 

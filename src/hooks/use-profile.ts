@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { watchSessionUser } from "@/lib/authSession";
 
 export function useProfile() {
   const [location, setLocation] = useState<string | null>(null);
@@ -11,59 +12,48 @@ export function useProfile() {
     let isMounted = true;
 
     const fetchProfile = async (userId: string) => {
-      try {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("location, status")
-          .eq("user_id", userId)
-          .maybeSingle();
-        if (!isMounted) return;
-        if (!error && data) {
-          lastKnownRef.current = { location: data.location, status: data.status };
-          setLocation(data.location ?? null);
-          setStatus(data.status ?? null);
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          const { data, error } = await supabase
+            .from("profiles")
+            .select("location, status")
+            .eq("user_id", userId)
+            .abortSignal(AbortSignal.timeout(8000))
+            .maybeSingle();
+          if (!isMounted) return;
+          if (!error) {
+            if (data) {
+              lastKnownRef.current = { location: data.location, status: data.status };
+              setLocation(data.location ?? null);
+              setStatus(data.status ?? null);
+            }
+            break;
+          }
+        } catch (err) {
+          console.error("Profile fetch error:", err);
         }
-        // On error or no data, preserve last known state (don't reset to null)
-      } catch (err) {
-        console.error("Profile fetch error:", err);
+        // On error, keep the last known state and try again shortly
+        if (attempt < 2) await new Promise((r) => setTimeout(r, 1000));
       }
       if (isMounted) setLoading(false);
     };
 
-    // Initial load
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Only a real sign-out (or no saved sign-in on this device) reports null.
+    const stop = watchSessionUser((user) => {
       if (!isMounted) return;
-      if (session?.user) {
-        fetchProfile(session.user.id);
+      if (user) {
+        fetchProfile(user.id);
       } else {
+        lastKnownRef.current = { location: null, status: null };
+        setLocation(null);
+        setStatus(null);
         setLoading(false);
       }
     });
 
-    // Auth state changes (token refresh, login, logout)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (!isMounted) return;
-        if (session?.user) {
-          const id = session.user.id;
-          setTimeout(() => fetchProfile(id), 0);
-        } else if (event === "SIGNED_OUT") {
-          lastKnownRef.current = { location: null, status: null };
-          setLocation(null);
-          setStatus(null);
-        }
-      }
-    );
-
-    // Safety timeout
-    const timeout = setTimeout(() => {
-      if (isMounted) setLoading(false);
-    }, 5000);
-
     return () => {
       isMounted = false;
-      subscription.unsubscribe();
-      clearTimeout(timeout);
+      stop();
     };
   }, []);
 

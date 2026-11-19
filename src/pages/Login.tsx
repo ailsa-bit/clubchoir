@@ -218,7 +218,7 @@ const Login = () => {
           <button
             type="button"
             className="text-sm text-muted-foreground hover:text-foreground hover:underline"
-            onClick={async () => { await supabase.auth.signOut(); }}
+            onClick={async () => { await supabase.auth.signOut({ scope: "local" }); }}
           >
             {t("login.alreadySignedIn.signOut")}
           </button>
